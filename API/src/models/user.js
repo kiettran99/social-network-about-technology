@@ -4,9 +4,21 @@ const jwt = require('jsonwebtoken');
 
 //Create a Schema
 const userSchema = mongoose.Schema({
-  name: {
+  fullname: {
     type: String,
     required: true,
+    trim: true
+  },
+  email: {
+    type: String,
+    unique: true,
+    trim: true
+  },
+  gender: {
+    type: String
+  },
+  country: {
+    type: String,
     trim: true
   },
   username: {
@@ -22,7 +34,7 @@ const userSchema = mongoose.Schema({
   role: {
     type: String,
     trim: true,
-    default: 'customer'
+    default: 'user'
   },
   tokens: [{
     token: {

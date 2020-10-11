@@ -9,7 +9,8 @@ const { createNotification } = require('../../utils/notification');
 // @desc Registry user
 // @access Public
 router.post('/register', [
-  body('name', 'Name is required').not().isEmpty(),
+  body('fullname', 'Full Name is required').not().isEmpty(),
+  body('email', 'Email is required').not().isEmpty(),
   body('username', 'Username is required').not().isEmpty(),
   body('password', 'Please enter a password with 6 or more character').isLength({ min: 6 })
 ], async (req, res) => {
@@ -19,7 +20,7 @@ router.post('/register', [
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { name, username, password } = req.body;
+  const { fullname, username, password, email, gender = 'm', country = '' } = req.body;
 
   try {
     //Check user is exists.
@@ -30,7 +31,10 @@ router.post('/register', [
     }
 
     user = new User({
-      name,
+      fullname,
+      email,
+      gender,
+      country,
       username,
       password
     })

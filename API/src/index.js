@@ -4,6 +4,7 @@ require('./db/mongoose');
 const userRouter = require('./routers/api/user');
 const authRouter = require('./routers/api/auth');
 const postRouter = require('./routers/api/post');
+const groupRouter = require('./routers/api/group');
 
 const notificationRouter = require('./routers/api/notification');
 
@@ -28,6 +29,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/posts', postRouter);
 // app.use('/api/following', followingRouter);
 app.use('/api/notification', notificationRouter);
+app.use('/api/groups', groupRouter);
 //The 404 Route (ALWAYS Keep this as the last route)
 app.use('*', notFoundRouter);
 
