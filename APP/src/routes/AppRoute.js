@@ -11,6 +11,8 @@ import Alert from '../components/layout/Alert';
 // import NotFoundPage from '../components/not-found-page/NotFoundPage';
 import PrivateRoute from '../components/routing/PrivateRoute';
 import Spinnet from '../components/layout/Spinnet';
+import Footer from '../components/layout/Footer';
+import SideBar from '../components/layout/SideBar';
 
 const Login = lazy(() => import('../components/auth/Login'));
 const Register = lazy(() => import('../components/auth/Register'));
@@ -25,6 +27,12 @@ const GroupPage = lazy(() => import('../components/groups/GroupPage'));
 const AppRoute = () => (
     <BrowserRouter>
         <>
+            <div id="loading">
+                <div id="loading-center">
+                </div>
+            </div>
+
+            <SideBar />
             <NavBar />
             <section className=''>
                 <Alert />
@@ -42,6 +50,7 @@ const AppRoute = () => (
                     </Switch>
                 </Suspense>
             </section>
+            <Footer />
         </>
     </BrowserRouter>
 );

@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { login, register } from '../../actions/auth';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import '../../assets/css/hide-header.css';
 
 const Login = ({ auth: { isAuthenticated, user }, login, register, history }) => {
 
