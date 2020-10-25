@@ -69,7 +69,7 @@ router.post('/', authByRole('admin'), upload.single('avatar'), [
         if (req.file) {
 
             // Create a storage ref
-            const storageRef = storage.ref(`/groups/${group.id}/${req.file.originalname}`);
+            const storageRef = storage.ref(`/groups/${group.id}/avatar/${req.file.originalname}`);
 
             // Upload Image
             await storageRef.put(req.file.buffer);
@@ -87,16 +87,11 @@ router.post('/', authByRole('admin'), upload.single('avatar'), [
     }
 });
 
-// @route PUT /api/groups/:id/name
+// @route PUT /api/groups/:id
 // @desc update profile a group.
 // @access private Admin
 router.put('/:id', authByRole('admin'), async (req, res) => {
     try {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
 
         const id = req.params.id;
         const { name, info } = req.body;
@@ -122,10 +117,11 @@ router.put('/:id', authByRole('admin'), async (req, res) => {
 // @route PUT /api/groups/:id/avatar
 // @desc upload avatar
 // @access private Admin
-router.put('/:id/avatar', authByRole('admin'), async (req, res) => {
+router.put('/:id/avatar', [authByRole('admin'), upload.single('avatar')
+], async (req, res) => {
     try {
-        const id = req.params.id;
 
+        const id = req.params.id;
         // Check id is not empty
         if (!id) {
             return res.status(400).send('Group id is empty.');
@@ -135,14 +131,75 @@ router.put('/:id/avatar', authByRole('admin'), async (req, res) => {
 
         // Check image is uploaded
         if (req.file) {
-            const prevStorageRef = storage.ref(`/groups/${group.id}`);
+
+            const prevStorageRef = storage.ref(`/groups/${group.id}/avatar`);
 
             // Remove image just uploaded before
             prevStorageRef.listAll().then((res) => {
-
+                res.items.forEach(item => {
+                    item.delete();
+                })
+            }).catch(e => {
+                console.log('Fail to remove image Firebase.', e);
             });
+
+            const storageRef = storage.ref(`/groups/${group.id}/avatar/${req.file.originalname}`);
+
+            //Upload image
+            await storageRef.put(req.file.buffer);
+
+            group.avatar = await storageRef.getDownloadURL();
+
+            await group.save();
         }
+
+        res.json(group);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route PUT /api/groups/:id/wallpaper
+// @desc Edit wallpaper group
+// @access private Admin
+router.put('/:id/wallpaper', [authByRole('admin'), upload.single('wallpaper')
+], async (req, res) => {
+    try {
         
+        const id = req.params.id;
+        // Check id is not empty
+        if (!id) {
+            return res.status(400).send('Group id is empty.');
+        }
+
+        const group = await Group.findById(id);
+
+        // Check image is uploaded
+        if (req.file) {
+
+            const prevStorageRef = storage.ref(`/groups/${group.id}/wallpaper`);
+
+            // Remove image just uploaded before
+            prevStorageRef.listAll().then((res) => {
+                res.items.forEach(item => {
+                    item.delete();
+                })
+            }).catch(e => {
+                console.log('Fail to remove image Firebase.', e);
+            });
+
+            const storageRef = storage.ref(`/groups/${group.id}/wallpaper/${req.file.originalname}`);
+
+            //Upload image
+            await storageRef.put(req.file.buffer);
+
+            group.wallpaper = await storageRef.getDownloadURL();
+
+            await group.save();
+        }
+
         res.json(group);
     }
     catch (e) {
