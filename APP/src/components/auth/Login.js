@@ -1,26 +1,18 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { login, register } from '../../actions/auth';
+import { login } from '../../actions/auth';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
-const Login = ({ auth: { isAuthenticated, user }, login, register, history }) => {
+const Login = ({ auth: { isAuthenticated, user }, login, history }) => {
 
     const [formData, setFormData] = useState({
         username: '',
-        password: '',
-        repeatPassword: '',
-        gender: false,
-        country: '',
-        email: '',
-        fullname: ''
+        password: ''
     })
 
-    const [isSignUp, setIsSignUp] = useState(false);
-    const [checkedTerms, setCheckedTerms] = useState(false);
-
-    const { username, password, repeatPassword, gender, country, email, fullname } = formData;
+    const { username, password } = formData;
 
     if (isAuthenticated && user) {
         history.goBack();
@@ -29,217 +21,103 @@ const Login = ({ auth: { isAuthenticated, user }, login, register, history }) =>
     /*
         Another solution: When Login is successfully, check isAuthenticated true
         Redirect to home through Redirect (react-router-dom).
-
         if (isAuthenticated) {
             return <Redirect to="/" />
         }
-
         Current solution: When Login is successfully, check user is loadded then
         Go back previous page.
     */
 
     const onSubmit = async (e) => {
         e.preventDefault();
-
-        if (isSignUp) {
-            if (password === repeatPassword) {
-                register({ username, password, country, email, fullname });
-            }
-        }
-        else {
-            login(username, password);
-        }
+        login(username, password);
     }
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     return (
-        <div className="sign-in-page" style={{ backgroundColor: "#e75348" }}>
-            <div className="signin-popup">
-                <div className="signin-pop">
-                    <div className="row">
-                        <div className="col-lg-6">
-                            <div className="cmp-info">
-                                <div className="cm-logo">
-                                    <img src="images/cm-logo.png" alt="" />
-                                    <p>Workwise,  is a global freelancing platform and social networking where businesses and independent professionals connect and collaborate remotely</p>
-                                </div>{/*cm-logo end*/}
-                                <img src="images/cm-main-img.png" alt="" />
-                            </div>{/*cmp-info end*/}
-                        </div>
-                        <div className="col-lg-6">
-                            <div className="login-sec">
-                                <ul className="sign-control">
-                                    <li data-tab="tab-1" className={isSignUp ? 'animated fadeIn' : 'animated fadeIn current'} onClick={() => setIsSignUp(!isSignUp)}><a href="#">Sign in</a></li>
-                                    <li data-tab="tab-2" className={isSignUp ? 'animated fadeIn current' : 'animated fadeIn'} onClick={() => setIsSignUp(!isSignUp)}><a href="#">Sign up</a></li>
-                                </ul>
-                                <div className={isSignUp ? "sign_in_sec" : "sign_in_sec current"} id="tab-1">
-                                    <h3>Sign in</h3>
-                                    <form onSubmit={(e) => onSubmit(e)}>
-                                        <div className="row">
-                                            <div className="col-lg-12 no-pdd">
-                                                <div className="sn-field">
-                                                    <input type="text" name="username" placeholder="Username"
-                                                        onChange={(e) => onChange(e)} />
-                                                    <i className="la la-user" />
-                                                </div>{/*sn-field end*/}
-                                            </div>
-                                            <div className="col-lg-12 no-pdd">
-                                                <div className="sn-field">
-                                                    <input type="password" name="password" placeholder="Password"
-                                                        value={password}
-                                                        onChange={(e) => onChange(e)} />
-                                                    <i className="la la-lock" />
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-12 no-pdd">
-                                                <div className="checky-sec">
-                                                    <div className="fgt-sec">
-                                                        <input type="checkbox" name="cc" id="c1" />
-                                                        <label htmlFor="c1">
-                                                            <span />
-                                                        </label>
-                                                        <small>Remember me</small>
-                                                    </div>{/*fgt-sec end*/}
-                                                    <a href="sign-in.html#">Forgot Password?</a>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-12 no-pdd">
-                                                <button type="submit" value="submit">Sign in</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <div className="login-resources">
-                                        <h4>Login Via Social Account</h4>
-                                        <ul>
-                                            <li><a href="sign-in.html#" className="fb"><i className="fab fa-facebook" />Login Via Facebook</a></li>
-                                            <li><a href="sign-in.html#" className="tw"><i className="fab fa-twitter" />Login Via Twitter</a></li>
-                                        </ul>
-                                    </div>{/*login-resources end*/}
-                                </div>{/*sign_in_sec end*/}
-                                <div className={isSignUp ? "sign_in_sec current" : "sign_in_sec"} id="tab-2">
-                                    {/* <div className="signup-tab">
-                                        <i className="fas fa-long-arrow-left" />
-                                        <h2>johndoe@example.com</h2>
-                                    </div> */}
-                                    <div className="dff-tab current" id="tab-3">
-                                        <form onSubmit={e => onSubmit(e)}>
-                                            <h3>Sign up</h3>
-                                            <div className="row">
-                                                <div className="col-lg-12 no-pdd">
-                                                    <div className="sn-field">
-                                                        <input type="text" name="username" placeholder="Username"
-                                                            value={username}
-                                                            onChange={(e) => onChange(e)} />
-                                                        <i className="la la-user" />
-                                                    </div>
-                                                </div>
-                                                <div className="col-lg-12 no-pdd">
-                                                    <div className="sn-field">
-                                                        <input type="text" name="email" placeholder="Email"
-                                                            value={email}
-                                                            onChange={e => onChange(e)} />
-                                                        <i className="la la-inbox" />
-                                                    </div>
-                                                </div>
-                                                <div className="col-lg-12 no-pdd">
-                                                    <div className="sn-field">
-                                                        <input type="text" name="fullname" placeholder="Full Name"
-                                                            value={fullname}
-                                                            onChange={e => onChange(e)} />
-                                                        <i className="la la-user" />
-                                                    </div>
-                                                </div>
-                                                <div className="col-lg-12 no-pdd">
-                                                    <div className="sn-field">
-                                                        <input type="text" name="country" placeholder="Country (optional)"
-                                                            value={country}
-                                                            onChange={e => onChange(e)} />
-                                                        <i className="la la-globe" />
-                                                    </div>
-                                                </div>
-                                                <div className="col-lg-12 no-pdd">
-                                                    <div className="sn-field">
-                                                        <select>
-                                                            <option>Category</option>
-                                                            <option>Category 1</option>
-                                                            <option>Category 2</option>
-                                                            <option>Category 3</option>
-                                                            <option>Category 4</option>
-                                                        </select>
-                                                        <i className="la la-genderless" />
-                                                        <span><i className="fas fa-ellipsis-h" /></span>
-                                                    </div>
-                                                </div>
-                                                <div className="col-lg-12 no-pdd">
-                                                    <div className="sn-field">
-                                                        <input type="password" name="password" placeholder="Password"
-                                                            value={password}
-                                                            onChange={e => onChange(e)} />
-                                                        <i className="la la-lock" />
-                                                    </div>
-                                                </div>
-                                                <div className="col-lg-12 no-pdd">
-                                                    <div className="sn-field">
-                                                        <input type="password" name="repeatPassword" placeholder="Repeat Password"
-                                                            value={repeatPassword}
-                                                            onChange={e => onChange(e)} />
-                                                        <i className="la la-lock" />
-                                                    </div>
-                                                </div>
-                                                <div className="col-lg-12 no-pdd">
-                                                    <div className="checky-sec st2">
-                                                        <div className="fgt-sec">
-                                                            <input type="checkbox"
-                                                                value={checkedTerms}
-                                                                onChange={() => setCheckedTerms(!checkedTerms)}
-                                                                name="cc" id="c2" />
-                                                            <label htmlFor="c2">
-                                                                <span />
-                                                            </label>
-                                                            <small>Yes, I understand and agree to the workwise Terms &amp; Conditions.</small>
-                                                        </div>{/*fgt-sec end*/}
-                                                    </div>
-                                                </div>
-                                                <div className="col-lg-12 no-pdd">
-                                                    <button type="submit" disabled={!checkedTerms} value="submit">Get Started</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>{/*dff-tab end*/}
+        <section className="sign-in-page">
+            <div id="container-inside">
+                <div id="circle-small" />
+                <div id="circle-medium" />
+                <div id="circle-large" />
+                <div id="circle-xlarge" />
+                <div id="circle-xxlarge" />
+            </div>
+            <div className="container p-0">
+                <div className="row no-gutters">
+                    <div className="col-md-6 text-center pt-5">
+                        <div className="sign-in-detail text-white">
+                            <a className="sign-in-logo mb-5" href="sign-in.html#"><img src="images/logo-full.png" className="img-fluid" alt="logo" /></a>
+                            <div className="owl-carousel" data-autoplay="true" data-loop="true" data-nav="false" data-dots="true" data-items={1} data-items-laptop={1} data-items-tab={1} data-items-mobile={1} data-items-mobile-sm={1} data-margin={0}>
+                                <div className="item">
+                                    <img src="images/login/1.png" className="img-fluid mb-4" alt="logo" />
+                                    <h4 className="mb-1 text-white">Find new friends</h4>
+                                    <p>It is a long established fact that a reader will be distracted by the readable content.</p>
                                 </div>
-                            </div>{/*login-sec end*/}
+                                <div className="item">
+                                    <img src="images/login/2.png" className="img-fluid mb-4" alt="logo" />
+                                    <h4 className="mb-1 text-white">Connect with the world</h4>
+                                    <p>It is a long established fact that a reader will be distracted by the readable content.</p>
+                                </div>
+                                <div className="item">
+                                    <img src="images/login/3.png" className="img-fluid mb-4" alt="logo" />
+                                    <h4 className="mb-1 text-white">Create new events</h4>
+                                    <p>It is a long established fact that a reader will be distracted by the readable content.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>{/*signin-pop end*/}
-            </div>{/*signin-popup end*/}
-            <div className="footy-sec">
-                <div className="container">
-                    <ul>
-                        <li><a href="help-center.html">Help Center</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="sign-in.html#">Privacy Policy</a></li>
-                        <li><a href="sign-in.html#">Community Guidelines</a></li>
-                        <li><a href="sign-in.html#">Cookies Policy</a></li>
-                        <li><a href="sign-in.html#">Career</a></li>
-                        <li><a href="forum.html">Forum</a></li>
-                        <li><a href="sign-in.html#">Language</a></li>
-                        <li><a href="sign-in.html#">Copyright Policy</a></li>
-                    </ul>
-                    <p><img src="images/copy-icon.png" alt="" />Copyright 2019</p>
+                    <div className="col-md-6 bg-white pt-5">
+                        <div className="sign-in-from">
+                            <h1 className="mb-0">Sign in</h1>
+                            <p>Enter your username and password to access more feature.</p>
+                            <form className="mt-4" onSubmit={e => onSubmit(e)}>
+                                <div className="form-group">
+                                    <label htmlFor="exampleInputEmail1">Username</label>
+                                    <input type="text" className="form-control mb-0" id="exampleInputEmail1" placeholder="Username"
+                                        name="username"
+                                        value={username}
+                                        onChange={(e) => onChange(e)} />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="exampleInputPassword1">Password</label>
+                                    <a href="sign-in.html#" className="float-right">Forgot password?</a>
+                                    <input type="password" className="form-control mb-0" id="exampleInputPassword1" placeholder="Password"
+                                        name="password"
+                                        value={password}
+                                        onChange={(e) => onChange(e)} />
+                                </div>
+                                <div className="d-inline-block w-100">
+                                    <div className="custom-control custom-checkbox d-inline-block mt-2 pt-1">
+                                        <input type="checkbox" className="custom-control-input" id="customCheck1" />
+                                        <label className="custom-control-label" htmlFor="customCheck1">Remember Me</label>
+                                    </div>
+                                    <button type="submit" className="btn btn-primary float-right">Sign in</button>
+                                </div>
+                                <div className="sign-info">
+                                    <span className="dark-color d-inline-block line-height-2">Don't have an account? <Link to="/register">Sign up</Link></span>
+                                    <ul className="iq-social-media">
+                                        <li><a href="sign-in.html#"><i className="ri-facebook-box-line" /></a></li>
+                                        <li><a href="sign-in.html#"><i className="ri-twitter-line" /></a></li>
+                                        <li><a href="sign-in.html#"><i className="ri-instagram-line" /></a></li>
+                                    </ul>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-            </div>{/*footy-sec end*/}
-        </div>
+            </div>
+        </section>
     );
 };
 
 Login.propTypes = {
-    login: PropTypes.func.isRequired,
-    register: PropTypes.func.isRequired
+    login: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, { login, register })(withRouter(Login));
+export default connect(mapStateToProps, { login })(withRouter(Login));

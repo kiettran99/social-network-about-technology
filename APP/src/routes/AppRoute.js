@@ -18,6 +18,28 @@ import Home from '../components/home/Home'
 import Groups from '../components/groups/Groups';
 import GroupPage from '../components/groups/GroupPage';
 
+const MainComponent = () => {
+    return (
+        <>
+            <SideBar />
+            <NavBar />
+            <section className=''>
+                <Alert />
+                <Switch>
+                    <Route exact path="/" component={Home} />
+                    <Route exact path="/groups" component={Groups} />
+                    <Route exact path="/group-page" component={GroupPage} />
+                    <Route exact path={["/product", "/products"]} component={ProductList} />
+                    <PrivateRoute exact path="/products/add" component={AddProduct} />
+                    <Route exact path="/products/:id" component={ProductDetail} />
+                    <Route component={NotFoundPage} />
+                </Switch>
+            </section>
+            <Footer />
+        </>
+    )
+};
+
 const AppRoute = () => (
     <BrowserRouter>
         <>
@@ -25,24 +47,11 @@ const AppRoute = () => (
                 <div id="loading-center">
                 </div>
             </div>
-
-            <SideBar />
-            <NavBar />
-            <section className=''>
-                <Alert />
-                    <Switch>
-                        <Route exact path="/" component={Home} />
-                        <Route exact path="/groups" component={Groups} />
-                        <Route exact path="/group-page" component={GroupPage} />
-                        <Route exact path={["/product", "/products"]} component={ProductList} />
-                        <Route exact path="/login" component={Login} />
-                        <Route exact path="/register" component={Register} />
-                        <PrivateRoute exact path="/products/add" component={AddProduct} />
-                        <Route exact path="/products/:id" component={ProductDetail} />
-                        <Route component={NotFoundPage} />
-                    </Switch>
-            </section>
-            <Footer />
+            <Switch>
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/register" component={Register} />
+                <Route component={MainComponent} />
+            </Switch>
         </>
     </BrowserRouter>
 );

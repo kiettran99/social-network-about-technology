@@ -1,20 +1,10 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { logout } from '../../actions/auth';
+import { connect } from 'react-redux';
 
-const NavBar = () => {
-
-    const userAccountSettings = useRef();
-
-    const onClickUserAccount = () => {
-        const style = userAccountSettings.current.style;
-        if (style.display === 'block') {
-            style.display = 'none';
-        }
-        else {
-            style.display = 'block';
-        }
-    };
+const NavBar = ({ auth: { isAuthenticated, user, loading }, logout }) => {
 
     return (
 
@@ -22,10 +12,10 @@ const NavBar = () => {
           <div className="iq-navbar-custom">
             <nav className="navbar navbar-expand-lg navbar-light p-0">
               <div className="iq-navbar-logo d-flex justify-content-between">
-                <a href="index.html">
+                <Link to="/">
                   <img src="images/logo.png" className="img-fluid" alt="" />
                   <span>SocialV</span>
-                </a>
+                </Link>
                 <div className="iq-menu-bt align-self-center">
                   <div className="wrapper-menu">
                     <div className="main-circle"><i className="ri-menu-line" /></div>
@@ -344,4 +334,13 @@ const NavBar = () => {
       );
 };
 
-export default NavBar;
+NavBar.propTypes = {
+  auth: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired
+};
+
+const mapStateToProps = (state) => ({
+  auth: state.auth
+})
+
+export default connect(mapStateToProps, { logout })(NavBar);

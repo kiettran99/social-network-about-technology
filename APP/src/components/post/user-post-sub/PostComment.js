@@ -11,9 +11,9 @@ const PostComment = () => {
                 <h6>Monty Carlo</h6>
                 <p className="mb-0">Lorem ipsum dolor sit amet</p>
                 <div className="d-flex flex-wrap align-items-center comment-activity">
-                    <a href="javascript:void();">like</a>
-                    <a href="javascript:void();">reply</a>
-                    <a href="javascript:void();">translate</a>
+                    <a href="">like</a>
+                    <a href="">reply</a>
+                    <a href="">translate</a>
                     <span> 5 min </span>
                 </div>
             </div>

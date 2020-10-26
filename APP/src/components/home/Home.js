@@ -5,6 +5,7 @@ import Stories from './Stories';
 import Events from './Events';
 import UpcomingBirthday from './UpcomingBirthday';
 import SuggestedPages from './SuggestedPages';
+import Process from '../layout/Process';
 
 const Home = () => {
   return (
@@ -82,7 +83,7 @@ const Home = () => {
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nulla dolor, ornare at commodo non, feugiat non nisi. Phasellus faucibus mollis pharetra. Proin blandit ac massa sed rhoncus</p>
                   </div>
                   <div className="user-post">
-                    <a href="javascript:void();"><img src="images/page-img/p4.jpg" alt="post-image" className="img-fluid rounded w-100" /></a>
+                    <a href=""><img src="images/page-img/p4.jpg" alt="post-image" className="img-fluid rounded w-100" /></a>
                   </div>
                   <div className="comment-area mt-3">
                     <div className="d-flex justify-content-between align-items-center">
@@ -139,7 +140,7 @@ const Home = () => {
                         </div>
                       </div>
                       <div className="share-block d-flex align-items-center feather-icon mr-3">
-                        <a href="javascript:void();"><i className="ri-share-line" />
+                        <a href=""><i className="ri-share-line" />
                           <span className="ml-1">99 Share</span></a>
                       </div>
                     </div>
@@ -154,9 +155,9 @@ const Home = () => {
                             <h6>Monty Carlo</h6>
                             <p className="mb-0">Lorem ipsum dolor sit amet</p>
                             <div className="d-flex flex-wrap align-items-center comment-activity">
-                              <a href="javascript:void();">like</a>
-                              <a href="javascript:void();">reply</a>
-                              <a href="javascript:void();">translate</a>
+                              <a href="">like</a>
+                              <a href="">reply</a>
+                              <a href="">translate</a>
                               <span> 5 min </span>
                             </div>
                           </div>
@@ -171,9 +172,9 @@ const Home = () => {
                             <h6>Paul Molive</h6>
                             <p className="mb-0">Lorem ipsum dolor sit amet</p>
                             <div className="d-flex flex-wrap align-items-center comment-activity">
-                              <a href="javascript:void();">like</a>
-                              <a href="javascript:void();">reply</a>
-                              <a href="javascript:void();">translate</a>
+                              <a href="">like</a>
+                              <a href="">reply</a>
+                              <a href="">translate</a>
                               <span> 5 min </span>
                             </div>
                           </div>
@@ -183,9 +184,9 @@ const Home = () => {
                     <form className="comment-text d-flex align-items-center mt-3" action="javascript:void(0);">
                       <input type="text" className="form-control rounded" />
                       <div className="comment-attagement d-flex">
-                        <a href="javascript:void();"><i className="ri-link mr-3" /></a>
-                        <a href="javascript:void();"><i className="ri-user-smile-line mr-3" /></a>
-                        <a href="javascript:void();"><i className="ri-camera-line mr-3" /></a>
+                        <a href=""><i className="ri-link mr-3" /></a>
+                        <a href=""><i className="ri-user-smile-line mr-3" /></a>
+                        <a href=""><i className="ri-camera-line mr-3" /></a>
                       </div>
                     </form>
                   </div>
@@ -310,7 +311,7 @@ const Home = () => {
                         </div>
                       </div>
                       <div className="share-block d-flex align-items-center feather-icon mr-3">
-                        <a href="javascript:void();"><i className="ri-share-line" />
+                        <a href=""><i className="ri-share-line" />
                           <span className="ml-1">99 Share</span></a>
                       </div>
                     </div>
@@ -325,9 +326,9 @@ const Home = () => {
                             <h6>Monty Carlo</h6>
                             <p className="mb-0">Lorem ipsum dolor sit amet</p>
                             <div className="d-flex flex-wrap align-items-center comment-activity">
-                              <a href="javascript:void();">like</a>
-                              <a href="javascript:void();">reply</a>
-                              <a href="javascript:void();">translate</a>
+                              <a href="">like</a>
+                              <a href="">reply</a>
+                              <a href="">translate</a>
                               <span> 5 min </span>
                             </div>
                           </div>
@@ -342,9 +343,9 @@ const Home = () => {
                             <h6>Paul Molive</h6>
                             <p className="mb-0">Lorem ipsum dolor sit amet</p>
                             <div className="d-flex flex-wrap align-items-center comment-activity">
-                              <a href="javascript:void();">like</a>
-                              <a href="javascript:void();">reply</a>
-                              <a href="javascript:void();">translate</a>
+                              <a href="">like</a>
+                              <a href="">reply</a>
+                              <a href="">translate</a>
                               <span> 5 min </span>
                             </div>
                           </div>
@@ -354,9 +355,9 @@ const Home = () => {
                     <form className="comment-text d-flex align-items-center mt-3" action="javascript:void(0);">
                       <input type="text" className="form-control rounded" />
                       <div className="comment-attagement d-flex">
-                        <a href="javascript:void();"><i className="ri-link mr-3" /></a>
-                        <a href="javascript:void();"><i className="ri-user-smile-line mr-3" /></a>
-                        <a href="javascript:void();"><i className="ri-camera-line mr-3" /></a>
+                        <a href=""><i className="ri-link mr-3" /></a>
+                        <a href=""><i className="ri-user-smile-line mr-3" /></a>
+                        <a href=""><i className="ri-camera-line mr-3" /></a>
                       </div>
                     </form>
                   </div>
@@ -424,7 +425,7 @@ const Home = () => {
                     </div>
                   </div>
                   <div className="user-post text-center">
-                    <a href="javascript:void();"><img src="images/page-img/p5.jpg" alt="post-image" className="img-fluid rounded w-100 mt-3" /></a>
+                    <a href=""><img src="images/page-img/p5.jpg" alt="post-image" className="img-fluid rounded w-100 mt-3" /></a>
                   </div>
                   <div className="comment-area mt-3">
                     <div className="d-flex justify-content-between align-items-center">
@@ -481,7 +482,7 @@ const Home = () => {
                         </div>
                       </div>
                       <div className="share-block d-flex align-items-center feather-icon mr-3">
-                        <a href="javascript:void();"><i className="ri-share-line" />
+                        <a href=""><i className="ri-share-line" />
                           <span className="ml-1">99 Share</span></a>
                       </div>
                     </div>
@@ -496,9 +497,9 @@ const Home = () => {
                             <h6>Monty Carlo</h6>
                             <p className="mb-0">Lorem ipsum dolor sit amet</p>
                             <div className="d-flex flex-wrap align-items-center comment-activity">
-                              <a href="javascript:void();">like</a>
-                              <a href="javascript:void();">reply</a>
-                              <a href="javascript:void();">translate</a>
+                              <a href="">like</a>
+                              <a href="">reply</a>
+                              <a href="">translate</a>
                               <span> 5 min </span>
                             </div>
                           </div>
@@ -513,9 +514,9 @@ const Home = () => {
                             <h6>Paul Molive</h6>
                             <p className="mb-0">Lorem ipsum dolor sit amet</p>
                             <div className="d-flex flex-wrap align-items-center comment-activity">
-                              <a href="javascript:void();">like</a>
-                              <a href="javascript:void();">reply</a>
-                              <a href="javascript:void();">translate</a>
+                              <a href="">like</a>
+                              <a href="">reply</a>
+                              <a href="">translate</a>
                               <span> 5 min </span>
                             </div>
                           </div>
@@ -525,9 +526,9 @@ const Home = () => {
                     <form className="comment-text d-flex align-items-center mt-3" action="javascript:void(0);">
                       <input type="text" className="form-control rounded" />
                       <div className="comment-attagement d-flex">
-                        <a href="javascript:void();"><i className="ri-link mr-3" /></a>
-                        <a href="javascript:void();"><i className="ri-user-smile-line mr-3" /></a>
-                        <a href="javascript:void();"><i className="ri-camera-line mr-3" /></a>
+                        <a href=""><i className="ri-link mr-3" /></a>
+                        <a href=""><i className="ri-user-smile-line mr-3" /></a>
+                        <a href=""><i className="ri-camera-line mr-3" /></a>
                       </div>
                     </form>
                   </div>
@@ -657,7 +658,7 @@ const Home = () => {
                         </div>
                       </div>
                       <div className="share-block d-flex align-items-center feather-icon mr-3">
-                        <a href="javascript:void();"><i className="ri-share-line" />
+                        <a href=""><i className="ri-share-line" />
                           <span className="ml-1">99 Share</span></a>
                       </div>
                     </div>
@@ -672,9 +673,9 @@ const Home = () => {
                             <h6>Monty Carlo</h6>
                             <p className="mb-0">Lorem ipsum dolor sit amet</p>
                             <div className="d-flex flex-wrap align-items-center comment-activity">
-                              <a href="javascript:void();">like</a>
-                              <a href="javascript:void();">reply</a>
-                              <a href="javascript:void();">translate</a>
+                              <a href="">like</a>
+                              <a href="">reply</a>
+                              <a href="">translate</a>
                               <span> 5 min </span>
                             </div>
                           </div>
@@ -689,9 +690,9 @@ const Home = () => {
                             <h6>Paul Molive</h6>
                             <p className="mb-0">Lorem ipsum dolor sit amet</p>
                             <div className="d-flex flex-wrap align-items-center comment-activity">
-                              <a href="javascript:void();">like</a>
-                              <a href="javascript:void();">reply</a>
-                              <a href="javascript:void();">translate</a>
+                              <a href="">like</a>
+                              <a href="">reply</a>
+                              <a href="">translate</a>
                               <span> 5 min </span>
                             </div>
                           </div>
@@ -701,9 +702,9 @@ const Home = () => {
                     <form className="comment-text d-flex align-items-center mt-3" action="javascript:void(0);">
                       <input type="text" className="form-control rounded" />
                       <div className="comment-attagement d-flex">
-                        <a href="javascript:void();"><i className="ri-link mr-3" /></a>
-                        <a href="javascript:void();"><i className="ri-user-smile-line mr-3" /></a>
-                        <a href="javascript:void();"><i className="ri-camera-line mr-3" /></a>
+                        <a href=""><i className="ri-link mr-3" /></a>
+                        <a href=""><i className="ri-user-smile-line mr-3" /></a>
+                        <a href=""><i className="ri-camera-line mr-3" /></a>
                       </div>
                     </form>
                   </div>
@@ -718,7 +719,7 @@ const Home = () => {
             <SuggestedPages />
           </div>
           <div className="col-sm-12 text-center">
-            <img src="images/page-img/page-load-loader.gif" alt="loader" style={{ height: '100px' }} />
+            <Process />
           </div>
         </div>
       </div>

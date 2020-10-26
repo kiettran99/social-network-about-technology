@@ -13,7 +13,7 @@ const CreatePost = () => {
             <div className="user-img">
               <img src="images/user/1.jpg" alt="userimg" className="avatar-60 rounded-circle" />
             </div>
-            <form className="post-text ml-3 w-100" action="javascript:void();">
+            <form className="post-text ml-3 w-100" action="">
               <input type="text" className="form-control rounded" placeholder="Write something here..." style={{ border: 'none' }} />
             </form>
           </div>
@@ -52,7 +52,7 @@ const CreatePost = () => {
                   <div className="user-img">
                     <img src="images/user/1.jpg" alt="userimg" className="avatar-60 rounded-circle img-fluid" />
                   </div>
-                  <form className="post-text ml-3 w-100" action="javascript:void();">
+                  <form className="post-text ml-3 w-100" action="">
                     <input type="text" className="form-control rounded" placeholder="Write something here..." style={{ border: 'none' }} />
                   </form>
                 </div>
