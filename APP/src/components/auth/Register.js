@@ -13,11 +13,11 @@ const Register = ({ auth: { isAuthenticated }, register, setAlert }) => {
         username: '',
         password: '',
         password2: '',
-        name: '',
+        fullname: '',
         email: ''
     })
 
-    const { username, password, password2, name, email } = formData;
+    const { username, password, password2, fullname, email } = formData;
 
     if (isAuthenticated) {
         return <Redirect to='/' />
@@ -27,7 +27,7 @@ const Register = ({ auth: { isAuthenticated }, register, setAlert }) => {
         e.preventDefault();
 
         if (password === password2) {
-            register({ username, password, name });
+            register({ username, password, fullname, email });
         }
         else {
             setAlert('Password is not match', 'dangger');
@@ -50,7 +50,7 @@ const Register = ({ auth: { isAuthenticated }, register, setAlert }) => {
                 <div className="row no-gutters">
                     <div className="col-md-6 text-center pt-5">
                         <div className="sign-in-detail text-white">
-                            <a className="sign-in-logo mb-5" href="sign-up.html#"><img src="images/logo-full.png" className="img-fluid" alt="logo" /></a>
+                            <Link className="sign-in-logo mb-5" to="/"><img src="images/logo-full.png" className="img-fluid" alt="logo" /></Link>
                             <div className="owl-carousel" data-autoplay="true" data-loop="true" data-nav="false" data-dots="true" data-items={1} data-items-laptop={1} data-items-tab={1} data-items-mobile={1} data-items-mobile-sm={1} data-margin={0}>
                                 <div className="item">
                                     <img src="images/login/1.png" className="img-fluid mb-4" alt="logo" />
@@ -78,8 +78,8 @@ const Register = ({ auth: { isAuthenticated }, register, setAlert }) => {
                                 <div className="form-group">
                                     <label htmlFor="exampleInputEmail1">Your Full Name</label>
                                     <input type="text" className="form-control mb-0" id="exampleInputEmail1" placeholder="Your Full Name"
-                                        name="name"
-                                        value={name}
+                                        name="fullname"
+                                        value={fullname}
                                         onChange={(e) => onChange(e)} />
                                 </div>
                                 <div className="form-group">

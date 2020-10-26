@@ -48,7 +48,7 @@ const Login = ({ auth: { isAuthenticated, user }, login, history }) => {
                 <div className="row no-gutters">
                     <div className="col-md-6 text-center pt-5">
                         <div className="sign-in-detail text-white">
-                            <a className="sign-in-logo mb-5" href="sign-in.html#"><img src="images/logo-full.png" className="img-fluid" alt="logo" /></a>
+                            <Link className="sign-in-logo mb-5" to="/"><img src="images/logo-full.png" className="img-fluid" alt="logo" /></Link>
                             <div className="owl-carousel" data-autoplay="true" data-loop="true" data-nav="false" data-dots="true" data-items={1} data-items-laptop={1} data-items-tab={1} data-items-mobile={1} data-items-mobile-sm={1} data-margin={0}>
                                 <div className="item">
                                     <img src="images/login/1.png" className="img-fluid mb-4" alt="logo" />
