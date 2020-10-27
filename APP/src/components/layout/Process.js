@@ -2,13 +2,7 @@ import React from 'react';
 
 const Process = () => {
     return (
-        <div className="process-comm">
-            <div className="spinner">
-                <div className="bounce1" />
-                <div className="bounce2" />
-                <div className="bounce3" />
-            </div>
-        </div>
+        <img src="images/page-img/page-load-loader.gif" alt="loader" style={{ height: '100px' }} />
     );
 };
 

@@ -2,8 +2,6 @@ import ReactDOM from 'react-dom';
 import React, { useEffect } from 'react';
 
 import 'normalize.css/normalize.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './assets/styles-template';
 import './styles/styles.scss';
 
 import AppRoute from './routes/AppRoute';
