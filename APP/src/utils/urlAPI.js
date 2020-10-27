@@ -1,2 +1,2 @@
-const urlAPI = 'https://mobile-store-1032.herokuapp.com';
+const urlAPI = 'https://tlcn-social-network-api.herokuapp.com';
 export default urlAPI;

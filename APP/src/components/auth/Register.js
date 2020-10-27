@@ -25,14 +25,7 @@ const Register = ({ auth: { isAuthenticated }, register, setAlert }) => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-
-        if (password === password2) {
-            register({ username, password, fullname, email });
-        }
-        else {
-            setAlert('Password is not match', 'dangger');
-        }
-
+        register({ username, password, fullname, email });
     }
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
