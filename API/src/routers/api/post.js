@@ -61,7 +61,7 @@ router.post('/', auth, upload.single('image'), [
         const newPost = {
             text: req.body.text,
             user: req.user.id,
-            name: req.user.name,
+            name: req.user.fullname,
         }
 
         // Create a instance post and save it.
