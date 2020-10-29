@@ -293,7 +293,7 @@ router.put('/comment/:id', [auth,
 
         const newComment = {
             text: req.body.text,
-            name: req.user.name,
+            name: req.user.fullname,
             user: req.user.id
         };
 
@@ -491,7 +491,7 @@ router.put('/:post_id/comments/reply/:comment_id', [auth,
 
         const newReply = {
             text: req.body.text,
-            name: req.user.name,
+            name: req.user.fullname,
             user: req.user.id
         };
 

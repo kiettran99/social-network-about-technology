@@ -62,6 +62,20 @@ export default function (state = initialState, action) {
                 loading: false,
                 posts: state.posts.filter(post => post._id !== _id)
             };
+        case ADD_COMMENT:
+            return {
+                ...state,
+                loading: false,
+                posts: state.posts.map(post => {
+                    if (post._id === action.id) {
+                        return {
+                            ...post,
+                            comments: payload
+                        }
+                    }
+                    return post;
+                })
+            };
         case POST_ERROR:
             return {
                 ...state,

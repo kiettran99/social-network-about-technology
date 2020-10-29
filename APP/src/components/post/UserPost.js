@@ -1,8 +1,8 @@
 import React from 'react';
-import PostComment from './user-post-sub/PostComment';
 import dayjs from '../../utils/relativeDate';
 import CommentsBar from './user-post-sub/CommentsBar';
 import PostComments from './user-post-sub/PostComments';
+import CommentForm from './user-post-sub/CommentForm';
 
 const UserPost = ({ post: { _id, name, text, avatar, imageUrl, likes, group, comments, createdAt } }) => {
     return (
@@ -87,15 +87,7 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrl, likes, group, com
                     <CommentsBar postId={_id} likes={likes} comments={comments} />
                     <hr />
                     <PostComments postId={_id} comments={comments}/>
-                    <form className="comment-text d-flex align-items-center mt-3" action="javascript:void(0);">
-                        <input type="text" className="form-control rounded" />
-                        <div className="comment-attagement d-flex">
-                            <a href=""><i className="ri-link mr-3" /></a>
-                            <a href=""><i className="ri-user-smile-line mr-3" /></a>
-                            <a href=""><i className="ri-camera-line mr-3" /></a>
-                            <a href=""><i class="ri-send-plane-fill mr-3 text-primary"></i></a>
-                        </div>
-                    </form>
+                    <CommentForm postId={_id} />                  
                 </div>
             </div>
         </div>

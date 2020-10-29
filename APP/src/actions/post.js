@@ -177,7 +177,8 @@ export const addComment = (postId, formData) => async dispatch => {
 
         dispatch({
             type: ADD_COMMENT,
-            payload: res.data
+            payload: res.data,
+            id: postId
         });
 
         dispatch(setAlert('Comment Added', 'success'));

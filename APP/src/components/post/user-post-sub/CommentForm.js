@@ -1,46 +1,32 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { addComment } from '../../../actions/post';
 
-const CommentsForm = ({ actionComment, auth: { isAuthenticated }, postId }) => {
+const CommentsForm = ({ addComment, auth: { isAuthenticated }, postId }) => {
 
     const [text, setText] = useState('');
 
     const onSubmit = (e) => {
         e.preventDefault();
-        //addComment(productId, { text });
-        actionComment({ text });
+        addComment(postId, { text });
         setText('');
     };
 
     return (
-        <div className="shadow-sm p-2 bg-light mt-2 rounded">
-            <form onSubmit={(e) => onSubmit(e)}>
-                <div className="row">
-                    {/* <div className="col-1 form-group ml-4">
-                        <img src={"https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png"}
-                            className="circle rounded" width="2.1875rem" />
-                    </div> */}
+        <form className="comment-text d-flex align-items-center mt-3" onSubmit={e => onSubmit(e)}>
+            <input type="text" className="form-control rounded"
+                name="text" value={text} onChange={(e) => setText(e.target.value)}
+                disabled={!isAuthenticated}
+                placeholder={isAuthenticated ? "Write comment here ...." :
+                    "To leave a comment, you need to login."} />
 
-                    {/* {"col-xl-10 col-lg-9 col-md-9 col-sm-8 col-7"} */}
-                    <div className="input-group col-sm-11 m-sm-auto mb-3">
-                        <textarea className="form-control"
-                            value={text}
-                            onChange={e => setText(e.target.value)}
-                            disabled={!isAuthenticated}
-                            placeholder={isAuthenticated ? "Write comment here ...." :
-                                "To leave a comment, you need to login."} />
-
-                        <div className="input-group-append">
-                            <button className="btn btn-primary p-3"
-                                disabled={!isAuthenticated}
-                                type="submit">
-                                <i className="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
+            <div className="comment-attagement d-flex">
+                <a href=""><i className="ri-link mr-3" /></a>
+                <a href=""><i className="ri-user-smile-line mr-3" /></a>
+                <a href=""><i className="ri-camera-line mr-3" /></a>
+                <a style={{ cursor: "pointer" }} disabled={!isAuthenticated} onClick={e => onSubmit(e)}><i class="ri-send-plane-fill mr-3 text-primary"></i></a>
+            </div>
+        </form>
     );
 }
 
@@ -48,4 +34,4 @@ const mapStateToProps = (state) => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps)(CommentsForm);
+export default connect(mapStateToProps, { addComment })(CommentsForm);
