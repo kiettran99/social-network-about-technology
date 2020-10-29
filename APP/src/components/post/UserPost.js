@@ -1,7 +1,8 @@
 import React from 'react';
 import PostComment from './user-post-sub/PostComment';
+import dayjs from '../../utils/relativeDate';
 
-const UserPost = ({ post: { _id, name, text, avatar, imageUrl, likes, group, comments } }) => {
+const UserPost = ({ post: { _id, name, text, avatar, imageUrl, likes, group, comments, createdAt } }) => {
     return (
         <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
             <div className="iq-card-body">
@@ -11,9 +12,9 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrl, likes, group, com
                             <img className="rounded-circle img-fluid" src="images/user/01.jpg" alt="" />
                         </div>
                         <div className="media-support-info mt-2">
-                            <h5 className="mb-0 d-inline-block"><a href="index.html#">{name}</a></h5>
+                            <h5 className="mb-0 d-inline-block"><a href="index.html#">{name}&nbsp;</a></h5>
                             <p className="mb-0 d-inline-block">Add New Post</p>
-                            <p className="mb-0 text-primary">Just Now</p>
+                            <p className="mb-0 text-primary">{dayjs(createdAt).fromNow()}</p>
                         </div>
                         <div className="iq-card-post-toolbar">
                             <div className="dropdown">
