@@ -12,17 +12,19 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar }
   const ref = useRef(null);
 
   useEffect(() => {
-    switch (loadingBar) {
-      case 'REQUEST_LOADING':
-        ref.current.continuousStart();
-        return;
-      case 'COMPLETE_LOADING':
-        ref.current.complete();
-        return;
-      default:
-        return;
+    if (ref.current) {
+      switch (loadingBar) {
+        case 'REQUEST_LOADING':
+          ref.current.continuousStart();
+          return;
+        case 'COMPLETE_LOADING':
+          ref.current.complete();
+          return;
+        default:
+          return;
+      }
     }
-  }, [LoadingBar]);
+  }, [loadingBar]);
 
   const userComponent = (user) => {
     return isAuthenticated && user && (
