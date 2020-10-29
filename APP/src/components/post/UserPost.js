@@ -1,7 +1,7 @@
 import React from 'react';
 import PostComment from './user-post-sub/PostComment';
 
-const UserPost = () => {
+const UserPost = ({ post: { _id, name, text, avatar, imageUrl, likes, group, comments } }) => {
     return (
         <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
             <div className="iq-card-body">
@@ -11,7 +11,7 @@ const UserPost = () => {
                             <img className="rounded-circle img-fluid" src="images/user/01.jpg" alt="" />
                         </div>
                         <div className="media-support-info mt-2">
-                            <h5 className="mb-0 d-inline-block"><a href="index.html#">Anna Sthesia</a></h5>
+                            <h5 className="mb-0 d-inline-block"><a href="index.html#">{name}</a></h5>
                             <p className="mb-0 d-inline-block">Add New Post</p>
                             <p className="mb-0 text-primary">Just Now</p>
                         </div>
@@ -63,7 +63,7 @@ const UserPost = () => {
                     </div>
                 </div>
                 <div className="mt-3">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nulla dolor, ornare at commodo non, feugiat non nisi. Phasellus faucibus mollis pharetra. Proin blandit ac massa sed rhoncus</p>
+                    <p>{text}</p>
                 </div>
                 <div className="user-post">
                     <div className="d-flex">
@@ -103,8 +103,8 @@ const UserPost = () => {
                                 <div className="total-like-block ml-2 mr-3">
                                     <div className="dropdown">
                                         <span className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                            140 Likes
-                      </span>
+                                            {likes && likes.length || 0}
+                                        </span>
                                         <div className="dropdown-menu">
                                             <a className="dropdown-item" href="index.html#">Max Emum</a>
                                             <a className="dropdown-item" href="index.html#">Bill Yerds</a>
@@ -120,8 +120,8 @@ const UserPost = () => {
                             <div className="total-comment-block">
                                 <div className="dropdown">
                                     <span className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                        20 Comment
-                    </span>
+                                        {comments && comments.length || 0} Comment
+                                    </span>
                                     <div className="dropdown-menu">
                                         <a className="dropdown-item" href="index.html#">Max Emum</a>
                                         <a className="dropdown-item" href="index.html#">Bill Yerds</a>
