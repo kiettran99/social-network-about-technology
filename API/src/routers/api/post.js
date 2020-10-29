@@ -12,8 +12,8 @@ const upload = require('../../utils/upload');
 router.get('/', async (req, res) => {
     try {
         // Limit post with 5 posts and if not skip then default value is 0.
-        const limit = req.query.limit || 5;
-        const skip = req.query.skip || 0;
+        const limit = parseInt(req.query.limit) || 5;
+        const skip = parseInt(req.query.skip) || 0;
 
         const posts = await Post.find({}).limit(limit).skip(skip);
 
@@ -86,7 +86,7 @@ router.post('/', auth, upload.single('image'), [
     }
     catch (e) {
         console.log(e);
-        res.status(500).send({ msg: e });
+        res.status(500).send('Server is errors.');
     }
 });
 

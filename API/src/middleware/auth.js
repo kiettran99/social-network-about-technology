@@ -16,7 +16,7 @@ const auth = async (req, res, next) => {
         const user = await User.findOne({ _id: decoded._id, 'tokens.token': token }).select('-password');
 
         if (!user) {
-            throw new Error();
+            return res.status(401).json({ message: 'Unauthorized' });
         }
 
         req.user = user;
