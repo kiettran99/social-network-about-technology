@@ -1,4 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
 
 const CreatePost = () => {
     return (
@@ -148,4 +151,8 @@ const CreatePost = () => {
     )
 };
 
-export default CreatePost;
+const mapStateToProps = (state) => ({
+    auth: state.auth
+});
+
+export default connect(mapStateToProps)(CreatePost);

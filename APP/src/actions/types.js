@@ -36,3 +36,12 @@ export const FOLLOWING_NOTIFICATION = 'FOLLOWING_NOTIFICATION';
 export const UNFOLLOWING_NOTIFICATION = 'UNFOLLOWING_NOTIFICATION';
 export const MAKE_AS_READ_NOTIFICATION = 'MAKE_AS_READ_NOTIFICATION';
 export const CLEAR_NOTIFICATION = 'CLEAR_NOTIFICATION';
+
+export const ADD_POST = 'ADD_POST';
+export const GET_POSTS = 'GET_POSTS';
+export const GET_POST = 'GET_POST';
+export const EDIT_POST = 'EDIT_POST';
+export const REMOVE_POST = 'REMOVE_POST';
+// Clear prev loading post
+export const CLEAR_POST = 'CLEAR_POST';
+export const POST_ERROR = 'POST_ERROR';
