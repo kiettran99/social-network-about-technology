@@ -2,16 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import dayjs from '../../../utils/relativeDate';
-import { removeComment, likeComment, unlikeComment, addReplyComment } from '../../../actions/post';
-import CommentForm from './CommentForm';
-import ReplyList from './ReplyList';
+import { removeReplyComment, likeReplyComment, unlikeReplyComment } from '../../../actions/post';
 
-const PostComment = ({ comment: { _id, name, text, date, likes, user: userComment, replies }, postId,
+const ReplyItem = ({ reply: { _id, name, text, date, user: userComment, likes }, postId,
+    commentId,
     auth: { user, isAuthenticated }, history,
-    removeComment, likeComment, unlikeComment, addReplyComment }) => {
+    removeReplyComment, likeReplyComment, unlikeReplyComment,
+    onCommentsForm }) => {
 
     const [isLiked, setIsLiked] = useState(false);
-    const [commentForm, setCommentForm] = useState(false);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            setIsLiked(likes.filter(like => like.user === user._id).length > 0);
+        }
+        else {
+            setIsLiked(false);
+        }
+    }, [isAuthenticated, likes]);
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -24,13 +32,7 @@ const PostComment = ({ comment: { _id, name, text, date, likes, user: userCommen
 
     const onRemoveComment = () => {
         if (window.confirm('Are you sure? This can NOT be undone !')) {
-            removeComment(postId, _id);
-        }
-    }
-
-    const onCommentsForm = () => {
-        if (!commentForm) {
-            setCommentForm(true);
+            removeReplyComment(postId, commentId, _id);
         }
     }
 
@@ -38,21 +40,17 @@ const PostComment = ({ comment: { _id, name, text, date, likes, user: userCommen
         if (!isAuthenticated) {
             history.push('/login');
         } else if (isLiked) {
-            unlikeComment(postId, _id);
+            unlikeReplyComment(postId, commentId, _id);
         }
         else {
-            likeComment(postId, _id);
+            likeReplyComment(postId, commentId, _id);
         }
         setIsLiked(!isLiked);
     };
 
-    const actionComment = (formData) => {
-        addReplyComment(postId, _id, formData);
-    };
-
     return (
         <li className="mb-2">
-            <div className="d-flex flex-wrap mb-2">
+            <div className="d-flex flex-wrap">
                 <div className="user-img">
                     <img src="images/user/02.jpg" alt="userimg" className="avatar-35 rounded-circle img-fluid" />
                 </div>
@@ -72,13 +70,6 @@ const PostComment = ({ comment: { _id, name, text, date, likes, user: userCommen
                     </div>
                 </div>
             </div>
-            <ReplyList postId={postId} commentId={_id} replies={replies} onCommentsForm={onCommentsForm}/>
-            {commentForm &&
-                <div className="d-flex flex-wrap row">
-                    <div className="offset-1 col-11">
-                        <CommentForm actionComment={actionComment} />
-                    </div>
-                </div>}
         </li>
     );
 };
@@ -88,4 +79,4 @@ const mapStateToProps = (state) => ({
     auth: state.auth
 })
 
-export default connect(mapStateToProps, { removeComment, likeComment, unlikeComment, addReplyComment })(withRouter(PostComment));
+export default connect(mapStateToProps, { removeReplyComment, likeReplyComment, unlikeReplyComment })(withRouter(ReplyItem));

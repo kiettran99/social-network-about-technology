@@ -4,13 +4,14 @@ import pusher from '../../../utils/pusher/pusher';
 const useNotificationPusher = (isAuthenticated, notification, loadNotification) => {
     useEffect(() => {
         if (isAuthenticated && notification) {
+
             const updateEvents = (data) => {
                 const { user, topicId } = data;
 
                 const { followingPosts, user: userId } = notification;
 
                 if (user && topicId && user !== userId && followingPosts.includes(topicId)) {
-                    console.log('loading notification ...');
+                    //console.log('loading notification ...');
                     loadNotification();
                 }
             };
@@ -24,7 +25,7 @@ const useNotificationPusher = (isAuthenticated, notification, loadNotification) 
                 pusher.unsubscribe(channel);
             };
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, notification]);
 };
 
 export default useNotificationPusher;

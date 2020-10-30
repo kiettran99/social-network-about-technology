@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { loadNotification, clearNotification, makeAsRead, makeAsReadAll } from '../../../actions/notification';
 import { Link } from 'react-router-dom';
@@ -20,12 +20,6 @@ const NotificationBar = ({ notification: { notification, loading }, auth: { isAu
         }
     }, [isAuthenticated]);
 
-    const [isToggle, setIsToggle] = useState(false);
-
-    const setToggle = () => {
-        setIsToggle(!isToggle);
-    };
-
     const onMarkAsRead = (id) => {
         makeAsRead(id);
     }
@@ -34,44 +28,56 @@ const NotificationBar = ({ notification: { notification, loading }, auth: { isAu
         makeAsReadAll();
     };
 
-    return (
-        <li className="nav-item dropdown no-arrow mx-1">
-            <a className="nav-link dropdown-toggle" href="#" onClick={() => setToggle()} id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i className="fas fa-bell"></i>
-                <span className="badge badge-primary badge-counter">
-                    {notification && notification.messages && notification.messages.filter(message => !message.status).length}
-                </span>
-            </a>
-            <div className={`dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in ${isToggle && 'show'}`} aria-labelledby="messagesDropdown">
-                <div className="dropdown-header d-flex justify-content-between">
-                    <span>Notification</span>
-                    <span className="button" onClick={() => onMarkAsReadAll()}>Mark as Read</span>
-                </div>
+    const notificationQuantity = (notification) => {
+        return notification && notification.messages && notification.messages.filter(message => !message.status).length
+    };
 
-                {loading ?
-                    <h6 className="dropdown-item d-flex align-items-center text-muted">Please login in to following notification.</h6>
-                    :
-                    <>
-                        <div className="overflow-auto">
-                            {notification.messages && notification.messages.length >= 0 && notification.messages.length === 0 ?  <h6 className="dropdown-item d-flex align-items-center text-muted">Notification's Box is empty.</h6> :
-                            notification.messages.map(message => (
-                                <Link key={message._id} className="dropdown-item d-flex align-items-center"
-                                    onClick={() => onMarkAsRead(message._id)}
-                                    to={`/${message.topic}/${message.topicId}`}>
-                                    <div className="dropdown-list-image mr-3"> <img className="rounded-circle" src="https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png" alt="" />
-                                        <div className="status-indicator bg-success"></div>
-                                    </div>
-                                    <div className={`${!message.status && "font-weight-bold"}`}>
-                                        <div className="text-truncate">{message.text}</div>
-                                        <div className="small text-gray-500">{message.name} · {dayjs(message.date).fromNow()}</div>
-                                    </div>
-                                </Link>))}
+    const notificationBox = (notification) => {
+        return notification && (
+            notification.messages && notification.messages.length >= 0 && notification.messages.length === 0 ?
+                <h6 className="d-flex align-items-center text-muted p-3">
+                    Notification's Box is empty.
+                 </h6> :
+                notification.messages.map(message => (
+
+                    <Link key={message._id} className="iq-sub-card"
+                        onClick={() => onMarkAsRead(message._id)}
+                        to={`/${message.topic}/${message.topicId}`}>
+                        <div className="media align-items-center">
+                            <div className="">
+                                <img className="avatar-40 rounded" src="images/user/01.jpg" alt="" />
+                            </div>
+                            <div className="media-body ml-3">
+                                <h6 className="mb-0 ">{message.text}</h6>
+                                <small className="float-right font-size-12">{message.name} · {dayjs(message.date).fromNow()}</small>
+                            </div>
                         </div>
+                    </Link>
+                ))
+        );
+    }
 
-                        <button className="dropdown-item text-center small text-gray-500" onClick={() => loadNotification(0, 3 + notification.messages.length)}>Read all Messages</button>
-                    </>}
+    return (
+        <li className="nav-item">
+            <a href="index.html#" className="search-toggle iq-waves-effect">
+                <div id="lottie-beil">
+                    <i class="ri-notification-line"></i>
+                </div>
+                {!!notificationQuantity(notification) && notificationQuantity(notification) !== 0 && <span className="bg-danger dots" />}
+            </a>
+            <div className="iq-sub-dropdown">
+                <div className="iq-card shadow-none m-0">
+                    <div className="iq-card-body p-0 ">
+                        <div className="bg-primary p-3">
+                            <h5 className="mb-0 text-white">All Notifications<small className="badge  badge-light float-right pt-1">{notificationQuantity(notification)}</small></h5>
+                        </div>
+                        {!loading && notification && notificationBox(notification)}
+
+                    </div>
+                </div>
             </div>
-        </li >
+        </li>
+
     );
 };
 
