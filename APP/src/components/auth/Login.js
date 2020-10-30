@@ -76,6 +76,8 @@ const Login = ({ auth: { isAuthenticated, user }, login, history }) => {
                                 <div className="form-group">
                                     <label htmlFor="exampleInputEmail1">Username</label>
                                     <input type="text" className="form-control mb-0" id="exampleInputEmail1" placeholder="Username"
+                                        tabIndex="1"
+                                        autoFocus={true}
                                         name="username"
                                         value={username}
                                         onChange={(e) => onChange(e)} />
@@ -84,6 +86,7 @@ const Login = ({ auth: { isAuthenticated, user }, login, history }) => {
                                     <label htmlFor="exampleInputPassword1">Password</label>
                                     <a href="sign-in.html#" className="float-right">Forgot password?</a>
                                     <input type="password" className="form-control mb-0" id="exampleInputPassword1" placeholder="Password"
+                                        tabIndex="2"
                                         name="password"
                                         value={password}
                                         onChange={(e) => onChange(e)} />

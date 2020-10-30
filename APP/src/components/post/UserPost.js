@@ -3,6 +3,7 @@ import dayjs from '../../utils/relativeDate';
 import CommentsBar from './user-post-sub/CommentsBar';
 import PostComments from './user-post-sub/PostComments';
 import CommentForm from './user-post-sub/CommentForm';
+import Following from './user-post-sub/Following';
 
 const UserPost = ({ post: { _id, name, text, avatar, imageUrl, likes, group, comments, createdAt } }) => {
     return (
@@ -51,15 +52,7 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrl, likes, group, com
                                             </div>
                                         </div>
                                     </a>
-                                    <a className="dropdown-item p-3" href="index.html#">
-                                        <div className="d-flex align-items-top">
-                                            <div className="icon font-size-20"><i className="ri-notification-line" /></div>
-                                            <div className="data ml-2">
-                                                <h6>Notifications</h6>
-                                                <p className="mb-0">Turn on notifications for this post</p>
-                                            </div>
-                                        </div>
-                                    </a>
+                                    <Following postId={_id} />
                                 </div>
                             </div>
                         </div>

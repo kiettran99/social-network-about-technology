@@ -55,6 +55,28 @@ export default function (state = initialState, action) {
                     return post;
                 })
             };
+        case UPDATE_LIKES_COMMENT:
+        case ADD_REPLY_COMMENT:
+        case REMOVE_REPLY_COMMENT:
+        case UPDATE_LIKES_REPLY:
+            return {
+                ...state,
+                loading: false,
+                posts: state.posts.map(post => {
+                    if (post._id === action.id) {
+                        return {
+                            ...post,
+                            comments: post.comments.map(comment => {
+                                if (comment._id === payload._id) {
+                                    return payload;
+                                }
+                                return comment;
+                            })
+                        }
+                    }
+                    return post;
+                })
+            };
         case REMOVE_POST:
             const { posts: { _id } } = payload;
             return {
@@ -71,6 +93,21 @@ export default function (state = initialState, action) {
                         return {
                             ...post,
                             comments: payload
+                        }
+                    }
+                    return post;
+                })
+            };
+        case REMOVE_COMMENT:
+            return {
+                ...state,
+                loading: false,
+                posts: state.posts.map(post => {
+                    if (post._id === action.id) {
+                        console.log(payload);
+                        return {
+                            ...post,
+                            comments: post.comments.filter(comment => comment._id !== payload)
                         }
                     }
                     return post;

@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import LoadingBar from 'react-top-loading-bar';
-
 import { logout } from '../../actions/auth';
-
+import NotificationBar from './notification-bar/NotificationBar';
 
 const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar }) => {
 
@@ -41,9 +40,9 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar }
               </a>
             </li>
             <li>
-              <a href="index.html" className="iq-waves-effect d-flex align-items-center">
+              <Link to="/" className="iq-waves-effect d-flex align-items-center">
                 <i className="ri-home-line" />
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
               <a className="search-toggle iq-waves-effect" href="index.html#"><i className="ri-group-line" /></a>
@@ -128,73 +127,13 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar }
                 </div>
               </div>
             </li>
-            <li className="nav-item">
+            <NotificationBar />
+           <li className="nav-item dropdown">
               <a href="index.html#" className="search-toggle iq-waves-effect">
-                <div id="lottie-beil" />
-                <span className="bg-danger dots" />
-              </a>
-              <div className="iq-sub-dropdown">
-                <div className="iq-card shadow-none m-0">
-                  <div className="iq-card-body p-0 ">
-                    <div className="bg-primary p-3">
-                      <h5 className="mb-0 text-white">All Notifications<small className="badge  badge-light float-right pt-1">4</small></h5>
-                    </div>
-                    <a href="index.html#" className="iq-sub-card">
-                      <div className="media align-items-center">
-                        <div className="">
-                          <img className="avatar-40 rounded" src="images/user/01.jpg" alt="" />
-                        </div>
-                        <div className="media-body ml-3">
-                          <h6 className="mb-0 ">Emma Watson Bni</h6>
-                          <small className="float-right font-size-12">Just Now</small>
-                          <p className="mb-0">95 MB</p>
-                        </div>
-                      </div>
-                    </a>
-                    <a href="index.html#" className="iq-sub-card">
-                      <div className="media align-items-center">
-                        <div className="">
-                          <img className="avatar-40 rounded" src="images/user/02.jpg" alt="" />
-                        </div>
-                        <div className="media-body ml-3">
-                          <h6 className="mb-0 ">New customer is join</h6>
-                          <small className="float-right font-size-12">5 days ago</small>
-                          <p className="mb-0">Cyst Bni</p>
-                        </div>
-                      </div>
-                    </a>
-                    <a href="index.html#" className="iq-sub-card">
-                      <div className="media align-items-center">
-                        <div className="">
-                          <img className="avatar-40 rounded" src="images/user/03.jpg" alt="" />
-                        </div>
-                        <div className="media-body ml-3">
-                          <h6 className="mb-0 ">Two customer is left</h6>
-                          <small className="float-right font-size-12">2 days ago</small>
-                          <p className="mb-0">Cyst Bni</p>
-                        </div>
-                      </div>
-                    </a>
-                    <a href="index.html#" className="iq-sub-card">
-                      <div className="media align-items-center">
-                        <div className="">
-                          <img className="avatar-40 rounded" src="images/user/04.jpg" alt="" />
-                        </div>
-                        <div className="media-body ml-3">
-                          <h6 className="mb-0 ">New Mail from Fenny</h6>
-                          <small className="float-right font-size-12">3 days ago</small>
-                          <p className="mb-0">Cyst Bni</p>
-                        </div>
-                      </div>
-                    </a>
-                  </div>
+                <div id="lottie-mail">
+                  <i class="ri-mail-line"></i>
                 </div>
-              </div>
-            </li>
-            <li className="nav-item dropdown">
-              <a href="index.html#" className="search-toggle iq-waves-effect">
-                <div id="lottie-mail" />
-                <span className="bg-primary count-mail" />
+                <span className="bg-primary dots" />
               </a>
               <div className="iq-sub-dropdown">
                 <div className="iq-card shadow-none m-0">

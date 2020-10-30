@@ -2,13 +2,19 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { addComment } from '../../../actions/post';
 
-const CommentsForm = ({ addComment, auth: { isAuthenticated }, postId }) => {
+const CommentsForm = ({ actionComment, auth: { isAuthenticated }, addComment, postId }) => {
 
     const [text, setText] = useState('');
 
     const onSubmit = (e) => {
         e.preventDefault();
-        addComment(postId, { text });
+
+        if (postId) {
+            addComment(postId, { text });
+        }
+        else {
+            actionComment({ text });
+        }
         setText('');
     };
 

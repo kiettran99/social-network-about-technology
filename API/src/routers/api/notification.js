@@ -95,7 +95,7 @@ router.put('/following/:id', auth, async (req, res) => {
     try {
         const postId = req.params.id;
 
-        if (!postId) {
+        if (!!!postId) {
             return res.status(400).send('Can\'\t following.');
         }
 

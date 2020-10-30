@@ -4,6 +4,7 @@ const Post = require('../../models/post');
 const auth = require('../../middleware/auth');
 const storage = require('../../firebase/firebase');
 const upload = require('../../utils/upload');
+const { notify } = require('../../utils/notification');
 
 // @route Get /api/posts/
 // @route-full Get /api/posts?limit=number&skip=number
@@ -301,6 +302,15 @@ router.put('/comment/:id', [auth,
         post.comments.push(newComment);
 
         await post.save();
+
+        const message = `${req.user.fullname} have just comment on ${post.name}`;
+
+        notify(message, {
+            user: req.user,
+            collection: post,
+            topic: 'posts',
+            following: 'followingPosts'
+        });
 
         res.json(post.comments);
     }

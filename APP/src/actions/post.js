@@ -207,7 +207,8 @@ export const removeComment = (postId, commentId) => async dispatch => {
 
         dispatch({
             type: REMOVE_COMMENT,
-            payload: commentId
+            payload: commentId,
+            id: postId
         });
 
         dispatch(setAlert('Comment Removed', 'success'));
@@ -232,7 +233,8 @@ export const likeComment = (postId, commentId) => async dispatch => {
 
         dispatch({
             type: UPDATE_LIKES_COMMENT,
-            payload: res.data
+            payload: res.data,
+            id: postId
         });
     }
     catch (e) {
@@ -251,7 +253,8 @@ export const unlikeComment = (postId, commentId) => async dispatch => {
 
         dispatch({
             type: UPDATE_LIKES_COMMENT,
-            payload: res.data
+            payload: res.data,
+            id: postId
         });
     }
     catch (e) {
@@ -277,7 +280,8 @@ export const addReplyComment = (postId, commentId, formData) => async dispatch =
 
         dispatch({
             type: ADD_REPLY_COMMENT,
-            payload: res.data
+            payload: res.data,
+            id: postId
         });
     }
     catch (e) {
@@ -299,7 +303,8 @@ export const removeReplyComment = (postId, commentId, replyId) => async dispatch
 
         dispatch({
             type: REMOVE_REPLY_COMMENT,
-            payload: res.data
+            payload: res.data,
+            id: postId
         });
     }
     catch (e) {
@@ -323,7 +328,8 @@ export const likeReplyComment = (postId, commentId, replyId) => async dispatch =
 
         dispatch({
             type: UPDATE_LIKES_REPLY,
-            payload: res.data
+            payload: res.data,
+            id: postId
         });
     }
     catch (e) {
@@ -342,7 +348,8 @@ export const unlikeReplyComment = (postId, commentId, replyId) => async dispatch
 
         dispatch({
             type: UPDATE_LIKES_REPLY,
-            payload: res.data
+            payload: res.data,
+            id: postId
         });
     }
     catch (e) {
