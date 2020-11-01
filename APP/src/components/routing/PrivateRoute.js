@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import { loadUser } from '../../actions/auth';
-import Spinnet from '../layout/Spinnet';
+import Process from '../layout/Process';
 
 const PrivateRoute = ({ component: Component, auth: { isAuthenticated, loading }, ...rest }) => {
 
@@ -11,7 +11,7 @@ const PrivateRoute = ({ component: Component, auth: { isAuthenticated, loading }
         loadUser();
     }, []);
 
-    return <Route {...rest} render={props => (loading ? <Spinnet /> : (!isAuthenticated && !loading ? <Redirect to="/" />
+    return <Route {...rest} render={props => (loading ? <Process /> : (!isAuthenticated && !loading ? <Redirect to="/" />
         : <Component {...props} />))} />
 };
 

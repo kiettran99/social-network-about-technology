@@ -17,6 +17,8 @@ import NotFoundPage from '../components/not-found-page/NotFoundPage';
 import Home from '../components/home/Home'
 import Groups from '../components/groups/Groups';
 import GroupPage from '../components/groups/GroupPage';
+import Profile from '../components/profiles/Profile';
+import EditProfile from '../components/profiles/EditProfile';
 
 const MainComponent = () => {
     return (
@@ -29,6 +31,8 @@ const MainComponent = () => {
                     <Route exact path="/" component={Home} />
                     <Route exact path="/groups" component={Groups} />
                     <Route exact path="/group-page" component={GroupPage} />
+                    <PrivateRoute exact path="/profile/edit" component={EditProfile} />
+                    <Route exact path="/profile/:id" component={Profile} />
                     <Route exact path={["/product", "/products"]} component={ProductList} />
                     <PrivateRoute exact path="/products/add" component={AddProduct} />
                     <Route exact path="/products/:id" component={ProductDetail} />
@@ -47,6 +51,7 @@ const AppRoute = () => (
                 <div id="loading-center">
                 </div>
             </div>
+            
             <Switch>
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />

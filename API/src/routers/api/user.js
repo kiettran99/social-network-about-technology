@@ -3,6 +3,7 @@ const User = require('../../models/user');
 const { body, validationResult } = require('express-validator');
 const isEmptyObject = require('../../utils/isEmptyObject');
 const authByRole = require('../../middleware/auth-by-role');
+const auth = require('../../middleware/auth');
 const { createNotification } = require('../../utils/notification');
 
 // @route Post api/users/register
@@ -51,6 +52,14 @@ router.post('/register', [
     console.log(e);
     res.status(500).send('Server is error.');
   }
+});
+
+
+// @route PUT /api/users/changepassword
+// @desc Change current user's password
+// @access private
+router.put('/changepassword', auth, async (req, res) => {
+    
 });
 
 

@@ -5,6 +5,7 @@ const userRouter = require('./routers/api/user');
 const authRouter = require('./routers/api/auth');
 const postRouter = require('./routers/api/post');
 const groupRouter = require('./routers/api/group');
+const profileRouter = require('./routers/api/profile');
 
 const notificationRouter = require('./routers/api/notification');
 
@@ -30,6 +31,8 @@ app.use('/api/posts', postRouter);
 // app.use('/api/following', followingRouter);
 app.use('/api/notification', notificationRouter);
 app.use('/api/groups', groupRouter);
+app.use('/api/profile', profileRouter);
+
 //The 404 Route (ALWAYS Keep this as the last route)
 app.use('*', notFoundRouter);
 

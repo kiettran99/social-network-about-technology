@@ -14,6 +14,9 @@ const userSchema = mongoose.Schema({
     unique: true,
     trim: true
   },
+  avatar: {
+    type: String
+  },
   gender: {
     type: String
   },
