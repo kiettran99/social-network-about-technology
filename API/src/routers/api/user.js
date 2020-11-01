@@ -54,6 +54,14 @@ router.post('/register', [
 });
 
 
+// @route PUT /api/users/changepassword
+// @desc Change current user's password
+// @access private
+router.put('/changepassword', auth, async (req, res) => {
+    
+});
+
+
 //CRUD Users
 // Get - Return the list users
 router.get('/', authByRole('admin'), async (req, res) => {
