@@ -2,14 +2,16 @@ const router = require('express').Router();
 const { body, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 const Profile = require('../../models/profile');
+const upload = require('../../utils/upload');
+const storage = require('../../firebase/firebase');
+const User = require('../../models/user');
 
 // @route GET /api/profile/me
 // @desc Get current user profile.
 // @access private
 router.get('/me', auth, async (req, res) => {
     try {
-        const profile = await Profile.findOne({ user: req.user.id }).populate('User',
-            ['name, avatar']);
+        const profile = await Profile.findOne({ user: req.user.id }).populate('user');
 
         if (!profile) {
             return res.status(400).json({ msg: 'There is no profile for this user' });
@@ -40,8 +42,7 @@ router.get('/user/:user_id', async (req, res) => {
             return res.status(400).send('User is not found !');
         }
 
-        const profile = await Profile.findOne({ user: userId }).populate('User',
-            ['name, avatar']);
+        const profile = await Profile.findOne({ user: userId }).populate('user');
 
         if (!profile) {
             return res.status(400).json({ msg: 'There is no profile for this user' });
@@ -60,10 +61,26 @@ router.get('/user/:user_id', async (req, res) => {
     }
 });
 
+// @route POST /api/profile
+// @desc Create user profile
+// @access private
+router.post('/', auth, async (req, res) => {
+    try {
+        const profile = await Profile.create({
+            user: req.user.id
+        });
+
+        res.json(profile);
+    }
+    catch (e) {
+        res.status(500).send('Server error.');
+    }
+});
+
 // @route PUT /api/profile/me
 // @desc Edit user profile
 // @access private
-router.put('/me', auth, [
+router.put('/me', auth, upload.single('avatar'), [
     body('fullname', 'Full Name is required').not().isEmpty()
 ], async (req, res) => {
     try {
@@ -74,20 +91,59 @@ router.put('/me', auth, [
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const profile = await Profile.findOne({ user: req.user.id }).populate('User',
-            ['name, avatar']);
+        const { fullname, dateOfBirth, city, age, maritalStatus,
+            address, job, email, gender, country } = req.body;
 
-        if (!profile) {
-            return res.status(400).json({ msg: 'There is no profile for this user' });
+        const updateProfile = async ({ dateOfBirth, city, age, maritalStatus,
+            address, job }) => {
+            const profile = await Profile.findOneAndUpdate({ user: req.user.id },
+                {
+                    dateOfBirth, city, age, maritalStatus,
+                    address, job
+                });
+
+            return profile;
+        };
+
+        const updateUser = async ({ fullname, email, gender, country }) => {
+            const user =  await User.findByIdAndUpdate(req.user.id, { fullname, email, gender, country });
+
+            if (req.file) {
+
+                if (user.avatar) {
+                    const prevImageRef = storage.ref(`/users/${user.id}/avatar`);
+
+                    // Remove previous images and add new image
+                    prevImageRef.listAll().then((res) => {
+                        res.items.forEach((itemRef) => {
+                            itemRef.delete();
+                        })
+                    }).catch((e) => {
+                        console.log('Fail', e);
+                    });
+    
+                }
+               
+                //Create a storage ref
+                const storageRef = storage.ref(`/users/${user.id}/avatar/${req.file.originalname}`);
+
+                //Upload image
+                await storageRef.put(req.file.buffer);
+
+                const avatar = await storageRef.getDownloadURL();        
+                
+                user.avatar = avatar;
+
+                await user.save();
+            }
+
+            return user;
         }
 
-        // -- Edit Infomation start -- //
-        
-        const { fullname, dateOfBirth, city, age, maritalStatus, address, job } = req.body;
-
-        profile = await profile.update({ fullname, dateOfBirth, city, age, maritalStatus, address, job });
-
-        // -- Edit Infomation End -- //
+        const [profile] = await Promise.all([updateProfile({
+            dateOfBirth, city, age, maritalStatus,
+            address, job
+        }), updateUser({ fullname, email, gender, country })]);
 
         res.json(profile);
     }

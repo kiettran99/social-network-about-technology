@@ -32,8 +32,8 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar }
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto navbar-list">
             <li>
-              <Link to={`/profiles/${user._id}`} className="iq-waves-effect d-flex align-items-center">
-                <img src="/images/user/1.jpg" className="img-fluid rounded-circle mr-3" alt="user" />
+              <Link to={`/profile/${user._id}`} className="iq-waves-effect d-flex align-items-center">
+                <img src={user.avatar} className="img-fluid rounded-circle mr-3" alt="user" />
                 <div className="caption">
                   <h6 className="mb-0 line-height">{user.fullname}</h6>
                 </div>

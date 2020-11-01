@@ -1,14 +1,14 @@
 import React from 'react';
 import PersonalProfile from './PersonalProfile';
 
-const Profile = () => {
+const Profile = ({ match }) => {
     return (
         <div id="content-page" className="content-page">
             <div className="container">
                 <div className="row">
                     <div className="col-sm-12">
-                        <PersonalProfile />
-                         <div className="iq-card">
+                        <PersonalProfile match={match} />
+                        <div className="iq-card">
                             <div className="iq-card-body p-0">
                                 <div className="user-tabing">
                                     <ul className="nav nav-pills d-flex align-items-center justify-content-center profile-feed-items p-0 m-0">

@@ -42,6 +42,12 @@ export const GET_POSTS = 'GET_POSTS';
 export const GET_POST = 'GET_POST';
 export const EDIT_POST = 'EDIT_POST';
 export const REMOVE_POST = 'REMOVE_POST';
+
 // Clear prev loading post
 export const CLEAR_POST = 'CLEAR_POST';
 export const POST_ERROR = 'POST_ERROR';
+
+export const GET_PROFILE = 'GET_PROFILE';
+export const CLEAR_PROFILE = 'GET_PROFILES';
+export const UPDATE_PROFILE = 'UPDATE_PROFILE';
+export const PROFILE_ERROR = 'PROFILE_ERROR';

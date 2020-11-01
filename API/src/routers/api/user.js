@@ -3,6 +3,7 @@ const User = require('../../models/user');
 const { body, validationResult } = require('express-validator');
 const isEmptyObject = require('../../utils/isEmptyObject');
 const authByRole = require('../../middleware/auth-by-role');
+const auth = require('../../middleware/auth');
 const { createNotification } = require('../../utils/notification');
 
 // @route Post api/users/register

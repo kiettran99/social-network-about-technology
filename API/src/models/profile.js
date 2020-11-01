@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const profileSchema = Schema({
     user: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
     dateOfBirth: {
         type: Date
