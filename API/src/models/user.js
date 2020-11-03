@@ -77,6 +77,18 @@ userSchema.methods.generateAuthToken = async function () {
   return token;
 }
 
+//Create a method in compare password
+userSchema.statics.comparePassword = async function (id, password) {
+
+  //Find user to access password
+  const user = await User.findById(id);
+
+  const isMatch = await bcrypt.compare(password, user.password);
+
+  return isMatch;
+}
+
+
 //Register function findByCredentals
 userSchema.statics.findByCredentals = async (username, password) => {
 

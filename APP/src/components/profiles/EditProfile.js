@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getMeProfile, updateProfile } from '../../actions/profile';
+import { getMeProfile, updateProfile, changePassword, manageContact } from '../../actions/profile';
 
-const EditProfile = ({ profile: { profile, loading }, getMeProfile, updateProfile }) => {
+const EditProfile = ({ profile: { profile, loading }, getMeProfile,
+    updateProfile, changePassword, manageContact: manageContactAction}) => {
 
     const inputFileRef = useRef(null);
 
@@ -22,8 +23,23 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile, updateProfil
         username: ''
     });
 
+    const [changePasswordData, setChangePasswordData] = useState({
+        currentPassword: '',
+        newPassword: '',
+        verifyPassword: ''
+    });
+
+    const [manageContact, setManageContact] = useState({
+        phoneNumber: '',
+        url: ''
+    });
+
     const { fullname, dateOfBirth, city, age, maritalStatus,
         address, job, image, email, gender, country, username } = formData;
+
+    const { currentPassword, newPassword, verifyPassword } = changePasswordData;
+
+    const { phoneNumber, url } = manageContact;
 
     useEffect(() => {
 
@@ -39,6 +55,12 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile, updateProfil
                 ...formData,
                 ...user,
                 ...rest
+            });
+
+            setManageContact({
+                ...manageContact,
+                phoneNumber: rest.phoneNumber || '',
+                url: rest.url || ''
             });
         }
 
@@ -79,22 +101,22 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile, updateProfil
                                 <div className="iq-edit-list">
                                     <ul className="iq-edit-profile d-flex nav nav-pills">
                                         <li className="col-md-3 p-0">
-                                            <a className="nav-link active" data-toggle="pill" href="profile-edit.html#personal-information">
+                                            <a className="nav-link active" data-toggle="pill" href="#personal-information">
                                                 Personal Information
                                             </a>
                                         </li>
                                         <li className="col-md-3 p-0">
-                                            <a className="nav-link" data-toggle="pill" href="profile-edit.html#chang-pwd">
+                                            <a className="nav-link" data-toggle="pill" href="#chang-pwd">
                                                 Change Password
                           </a>
                                         </li>
                                         <li className="col-md-3 p-0">
-                                            <a className="nav-link" data-toggle="pill" href="profile-edit.html#emailandsms">
+                                            <a className="nav-link" data-toggle="pill" href="#emailandsms">
                                                 Email and SMS
                           </a>
                                         </li>
                                         <li className="col-md-3 p-0">
-                                            <a className="nav-link" data-toggle="pill" href="profile-edit.html#manage-contact">
+                                            <a className="nav-link" data-toggle="pill" href="#manage-contact">
                                                 Manage Contact
                           </a>
                                         </li>
@@ -162,7 +184,7 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile, updateProfil
                                                     <div className="form-group col-sm-6">
                                                         <label htmlFor="uname">User Name:</label>
                                                         <input type="text" className="form-control" id="uname" defaultValue="Bni@01"
-                                                            disabled={true}
+                                                            readOnly={true}
                                                             value={username}
                                                         />
                                                     </div>
@@ -266,19 +288,30 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile, updateProfil
                                             </div>
                                         </div>
                                         <div className="iq-card-body">
-                                            <form>
+                                            <form onSubmit={(e) => {
+                                                e.preventDefault();
+                                                changePassword(changePasswordData);
+                                            }}>
                                                 <div className="form-group">
                                                     <label htmlFor="cpass">Current Password:</label>
-                                                    <a href="javascripe:void();" className="float-right">Forgot Password</a>
-                                                    <input type="Password" className="form-control" id="cpass" defaultValue />
+                                                    <a href="#" className="float-right">Forgot Password</a>
+                                                    <input type="Password" className="form-control" id="cpass"
+                                                        name="currentPassword"
+                                                        value={currentPassword}
+                                                        onChange={e => setChangePasswordData({ ...changePasswordData, [e.target.name]: e.target.value })} />
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="npass">New Password:</label>
-                                                    <input type="Password" className="form-control" id="npass" defaultValue />
+                                                    <input type="Password" className="form-control" id="npass"
+                                                        name="newPassword"
+                                                        value={newPassword}
+                                                        onChange={e => setChangePasswordData({ ...changePasswordData, [e.target.name]: e.target.value })} />
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="vpass">Verify Password:</label>
-                                                    <input type="Password" className="form-control" id="vpass" defaultValue />
+                                                    <input type="Password" className="form-control" id="vpass" name="verifyPassword"
+                                                        value={verifyPassword}
+                                                        onChange={e => setChangePasswordData({ ...changePasswordData, [e.target.name]: e.target.value })} />
                                                 </div>
                                                 <button type="submit" className="btn btn-primary mr-2">Submit</button>
                                                 <button type="reset" className="btn iq-bg-danger">Cancle</button>
@@ -357,18 +390,31 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile, updateProfil
                                             </div>
                                         </div>
                                         <div className="iq-card-body">
-                                            <form>
+                                            <form onSubmit={(e) => {
+                                                e.preventDefault();
+                                                manageContactAction(manageContact);
+                                            }}>
                                                 <div className="form-group">
                                                     <label htmlFor="cno">Contact Number:</label>
-                                                    <input type="text" className="form-control" id="cno" defaultValue="001 2536 123 458" />
+                                                    <input type="text" className="form-control" id="cno"
+                                                        placeholder="E.x. 092 123 3212"
+                                                        name="phoneNumber"
+                                                        value={phoneNumber}
+                                                        onChange={e => setManageContact({ ...manageContact, [e.target.name]: e.target.value })} />
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="email">Email:</label>
-                                                    <input type="text" className="form-control" id="email" defaultValue="Bnijone@demo.com" />
+                                                    <input type="text" className="form-control" id="email" placeholder="example@gmail.com"
+                                                        name="email"
+                                                        value={email}
+                                                        onChange={e => formData({ ...formData, [e.target.name]: e.target.value })} />
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="url">Url:</label>
-                                                    <input type="text" className="form-control" id="url" defaultValue="https://getbootstrap.com" />
+                                                    <input type="text" className="form-control" id="url" placeholder="E.x. https://user.profesional.com"
+                                                        name="url"
+                                                        value={url}
+                                                        onChange={e => setManageContact({ ...manageContact, [e.target.name]: e.target.value })} />
                                                 </div>
                                                 <button type="submit" className="btn btn-primary mr-2">Submit</button>
                                                 <button type="reset" className="btn iq-bg-danger">Cancle</button>
@@ -386,11 +432,14 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile, updateProfil
 };
 
 EditProfile.propTypes = {
-    getMeProfile: PropTypes.func.isRequired
+    getMeProfile: PropTypes.func.isRequired,
+    updateProfile: PropTypes.func.isRequired,
+    changePassword: PropTypes.func.isRequired,
+    manageContact: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
     profile: state.profile
 });
 
-export default connect(mapStateToProps, { getMeProfile, updateProfile })(EditProfile);
+export default connect(mapStateToProps, { getMeProfile, updateProfile, changePassword, manageContact })(EditProfile);

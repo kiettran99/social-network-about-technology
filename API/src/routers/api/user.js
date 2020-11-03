@@ -28,7 +28,7 @@ router.post('/register', [
     let user = await User.findOne({ username });
 
     if (user) {
-      return res.status(400).json({ msg: 'User is already exists.'})
+      return res.status(400).json({ msg: 'User is already exists.' })
     }
 
     user = new User({
@@ -58,8 +58,40 @@ router.post('/register', [
 // @route PUT /api/users/changepassword
 // @desc Change current user's password
 // @access private
-router.put('/changepassword', auth, async (req, res) => {
-    
+router.put('/changepassword', auth, [
+  body('currentPassword').not().isEmpty(),
+  body('newPassword').not().isEmpty(),
+  body('verifyPassword').not().isEmpty()
+], async (req, res) => {
+  try {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const user = req.user;
+
+    const { currentPassword, newPassword, verifyPassword } = req.body;
+
+    if (newPassword !== verifyPassword) {
+      return res.status(400).json({ msg: 'Password is not match. ' });
+    }
+
+    const isMatch = await User.comparePassword(user.id, currentPassword);
+
+    if (isMatch) {
+      user.password = currentPassword;
+      await user.save();
+      return res.json({ msg: 'Password changes sucessfully !' });
+    }
+
+    return res.status(400).json({ msg: 'Password is not match.' });
+  }
+  catch (e) {
+    console.log(e);
+    res.status(500).send('Server is error.');
+  }
 });
 
 

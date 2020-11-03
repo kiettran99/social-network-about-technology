@@ -32,7 +32,7 @@ export const getMeProfile = () => async dispatch => {
     finally {
         dispatch({
             type: COMPLETE_LOADING
-        }); 
+        });
     }
 };
 
@@ -62,7 +62,7 @@ export const getProfileById = (id) => async dispatch => {
     finally {
         dispatch({
             type: COMPLETE_LOADING
-        }); 
+        });
     }
 };
 
@@ -94,6 +94,54 @@ export const updateProfile = (formData) => async dispatch => {
     finally {
         dispatch({
             type: COMPLETE_LOADING
-        }); 
+        });
+    }
+};
+
+export const changePassword = (formData) => async dispatch => {
+    try {
+        dispatch({
+            type: REQUEST_LOADING
+        });
+
+        const res = await axios.put(`${urlAPI}/api/users/changepassword`, formData);
+
+        console.log(res.data);
+    }
+    catch (e) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: e.response.data, status: e.response.statusText }
+        });
+    }
+    finally {
+        dispatch({
+            type: COMPLETE_LOADING
+        });
+    }
+};
+
+export const manageContact = (formData) => async dispatch => {
+    try {
+        dispatch({
+            type: REQUEST_LOADING
+        });
+        console.log("1234");
+
+        const res = await axios.put(`${urlAPI}/api/profile/manage-contact`, formData);
+
+        console.log(res);
+        dispatch(loadUser());
+    }
+    catch (e) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: e.response.data, status: e.response.statusText }
+        });
+    }
+    finally {
+        dispatch({
+            type: COMPLETE_LOADING
+        });
     }
 };
