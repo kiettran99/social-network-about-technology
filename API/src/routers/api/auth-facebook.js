@@ -11,11 +11,12 @@ passport.use(new FacebookStrategy({
         User.findOrCreate({ facebookId: profile.id, }, function (err, user) {
             return cb(err, user);
         });
-        console.log(profile);
+        
     }
 ));
 
 router.get('/auth/facebook',
+    
     passport.authenticate('facebook'));
 
 router.get('/auth/facebook/callback',

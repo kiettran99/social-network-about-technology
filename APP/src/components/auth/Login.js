@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { login } from '../../actions/auth';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import urlAPI from '../../utils/urlAPI';
 
 const Login = ({ auth: { isAuthenticated, user }, login, history }) => {
 
@@ -102,9 +103,24 @@ const Login = ({ auth: { isAuthenticated, user }, login, history }) => {
                                     <span className="dark-color d-inline-block line-height-2">Don't have an account? <Link to="/register">Sign up</Link></span>
                                     <ul className="iq-social-media">
                                        
-                                        <li><a href="sign-in.html#"><i className="ri-facebook-box-line" /></a></li>
-                                        <li><a href="sign-in.html#"><i className="ri-twitter-line" /></a></li>
-                                        <li><a href="sign-in.html#"><i className="ri-instagram-line" /></a></li>
+                                    <div className="card social-block">
+                                           <div className="card-body">
+                                               <a className="btn btn-block btn-social btn-facebook" href={`${urlAPI}/auth/facebook`} role="button">
+                                                <i className="fab fa-facebook"></i>
+                                                Sing Up with Facebook
+                                                </a>
+                                           </div>
+                                           
+                                       </div>
+                                        <div className="card social-block">
+                                           <div className="card-body">
+                                               <a className="btn btn-block btn-social btn-google" href={`${urlAPI}/auth/google`} role="button">
+                                                <i className="fab fa-google"></i>
+                                                Sing Up with Google
+                                                </a>
+                                           </div>
+                                           
+                                       </div>
                                     </ul>
                                 </div>
                             </form>
