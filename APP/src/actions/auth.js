@@ -31,6 +31,9 @@ export const loadUser = () => async dispatch => {
     }
 };
 
+
+
+
 //Login user
 export const login = (username, password) => async dispatch => {
     const config = {
