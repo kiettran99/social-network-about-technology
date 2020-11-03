@@ -45,14 +45,14 @@ const CommentsBar = ({ likePost, unlikePost,
                                     onClick={() => onLikeHandler()} />
                             </span>
                             <div className="dropdown-menu">
-                                <a className="ml-2 mr-2" data-toggle="tooltip" data-placement="top" title data-original-title="Like"
+                                <a className="ml-2 mr-2" data-toggle="tooltip" data-placement="top" data-original-title="Like"
                                     onClick={() => onLikeHandler()} > <img src="images/icon/01.png" className="img-fluid" alt="" /></a>
-                                <a className="mr-2" href="index.html#" data-toggle="tooltip" data-placement="top" title data-original-title="Love"><img src="images/icon/02.png" className="img-fluid" alt="" /></a>
-                                <a className="mr-2" href="index.html#" data-toggle="tooltip" data-placement="top" title data-original-title="Happy"><img src="images/icon/03.png" className="img-fluid" alt="" /></a>
-                                <a className="mr-2" href="index.html#" data-toggle="tooltip" data-placement="top" title data-original-title="HaHa"><img src="images/icon/04.png" className="img-fluid" alt="" /></a>
-                                <a className="mr-2" href="index.html#" data-toggle="tooltip" data-placement="top" title data-original-title="Think"><img src="images/icon/05.png" className="img-fluid" alt="" /></a>
-                                <a className="mr-2" href="index.html#" data-toggle="tooltip" data-placement="top" title data-original-title="Sade"><img src="images/icon/06.png" className="img-fluid" alt="" /></a>
-                                <a className="mr-2" href="index.html#" data-toggle="tooltip" data-placement="top" title data-original-title="Lovely"><img src="images/icon/07.png" className="img-fluid" alt="" /></a>
+                                <a className="mr-2" href="index.html#" data-toggle="tooltip" data-placement="top" data-original-title="Love"><img src="images/icon/02.png" className="img-fluid" alt="" /></a>
+                                <a className="mr-2" href="index.html#" data-toggle="tooltip" data-placement="top" data-original-title="Happy"><img src="images/icon/03.png" className="img-fluid" alt="" /></a>
+                                <a className="mr-2" href="index.html#" data-toggle="tooltip" data-placement="top" data-original-title="HaHa"><img src="images/icon/04.png" className="img-fluid" alt="" /></a>
+                                <a className="mr-2" href="index.html#" data-toggle="tooltip" data-placement="top" data-original-title="Think"><img src="images/icon/05.png" className="img-fluid" alt="" /></a>
+                                <a className="mr-2" href="index.html#" data-toggle="tooltip" data-placement="top" data-original-title="Sade"><img src="images/icon/06.png" className="img-fluid" alt="" /></a>
+                                <a className="mr-2" href="index.html#" data-toggle="tooltip" data-placement="top" data-original-title="Lovely"><img src="images/icon/07.png" className="img-fluid" alt="" /></a>
                             </div>
                         </div>
                     </div>

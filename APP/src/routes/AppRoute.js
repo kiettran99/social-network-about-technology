@@ -51,7 +51,9 @@ const AppRoute = () => (
                 <div id="loading-center">
                 </div>
             </div>
-            
+
+            <Alert />
+
             <Switch>
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />

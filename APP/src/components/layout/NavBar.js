@@ -128,10 +128,10 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar }
               </div>
             </li>
             <NotificationBar />
-           <li className="nav-item dropdown">
+            <li className="nav-item dropdown">
               <a href="index.html#" className="search-toggle iq-waves-effect">
                 <div id="lottie-mail">
-                  <i class="ri-mail-line"></i>
+                  <i className="ri-mail-line"></i>
                 </div>
                 <span className="bg-primary dots" />
               </a>
@@ -258,9 +258,10 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar }
                       </div>
                     </a>
                     <div className="d-inline-block w-100 text-center p-3">
-                      <Link className="bg-primary iq-sign-btn text-light" role="button"
+                      <a className="bg-primary iq-sign-btn text-light" role="button"
+                        style={{ cursor: "pointer" }}
                         onClick={() => logout()}
-                      >Sign out<i className="ri-login-box-line ml-2" /></Link>
+                      >Sign out<i className="ri-login-box-line ml-2" /></a>
                     </div>
                   </div>
                 </div>
@@ -274,8 +275,8 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar }
 
   const guestComponent = (
     <>
-      <Link class="bg-primary iq-sign-btn m-3" to="/login" role="button">Login</Link>
-      <Link class="bg-primary iq-sign-btn" to="/register" role="button">Join us</Link>
+      <Link className="bg-primary iq-sign-btn m-3" to="/login" role="button">Login</Link>
+      <Link className="bg-primary iq-sign-btn" to="/register" role="button">Join us</Link>
     </>
   );
 

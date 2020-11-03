@@ -12,8 +12,8 @@ const PostsPage = ({ post: { posts, loading }, getPosts }) => {
 
     return !loading && (
         posts.map(post => (
-            <div className="col-sm-12">
-                <UserPost key={post._id} post={post} />
+            <div key={post._id} className="col-sm-12">
+                <UserPost post={post} />
             </div>
         ))
     );

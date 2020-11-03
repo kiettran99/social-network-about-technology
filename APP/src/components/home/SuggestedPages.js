@@ -35,7 +35,7 @@ const SuggestedPages = () => {
                         <img src="images/small/img-1.jpg" className="img-fluid rounded" alt="Responsive image" />
                         <div className="mt-3"><a href="index.html#" className="btn d-block"><i className="ri-thumb-up-line mr-2" /> Like Page</a></div>
                     </li>
-                    <li className>
+                    <li className="">
                         <div className="d-flex align-items-center mb-3">
                             <img src="images/page-img/42.png" alt="story-img" className="rounded-circle img-fluid avatar-50" />
                             <div className="stories-data ml-3">
