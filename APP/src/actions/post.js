@@ -1,4 +1,5 @@
-import { ADD_POST, GET_POSTS, GET_POST, REMOVE_POST,
+import {
+    ADD_POST, GET_POSTS, GET_POST, REMOVE_POST,
     CLEAR_POST, POST_ERROR,
     REQUEST_LOADING, COMPLETE_LOADING,
     ADD_COMMENT, REMOVE_COMMENT, UPDATE_LIKES,
@@ -33,7 +34,7 @@ export const addPost = (formData) => async dispatch => {
     finally {
         dispatch({
             type: COMPLETE_LOADING
-        }); 
+        });
     }
 };
 
@@ -84,17 +85,23 @@ export const getPosts = (skip = 0, limit = 5) => async dispatch => {
         });
     }
     catch (e) {
-        console.log(e);
-
-        dispatch({
-            type: POST_ERROR,
-            payload: { msg: e.response.data, status: e.response.statusText }
-        })
+        if (e.message === 'Network Error') {
+            dispatch({
+                type: POST_ERROR,
+                payload: e.message
+            })
+        }
+        else {
+            dispatch({
+                type: POST_ERROR,
+                payload: { msg: e.response.data, status: e.response.statusText }
+            })
+        }
     }
     finally {
         dispatch({
             type: COMPLETE_LOADING
-        }); 
+        });
     }
 };
 

@@ -24,6 +24,12 @@ const profileSchema = Schema({
     },
     job: {
         type: String
+    },
+    phoneNumber: {
+        type: String
+    },
+    url: {
+        type: String
     }
 });
 
