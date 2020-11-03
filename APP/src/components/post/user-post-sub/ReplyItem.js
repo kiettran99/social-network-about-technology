@@ -49,7 +49,7 @@ const ReplyItem = ({ reply: { _id, name, text, date, user: userComment, likes },
     };
 
     return (
-        <li className="mb-2">
+        <div className="mb-2">
             <div className="d-flex flex-wrap">
                 <div className="user-img">
                     <img src="images/user/02.jpg" alt="userimg" className="avatar-35 rounded-circle img-fluid" />
@@ -70,7 +70,7 @@ const ReplyItem = ({ reply: { _id, name, text, date, user: userComment, likes },
                     </div>
                 </div>
             </div>
-        </li>
+        </div>
     );
 };
 
