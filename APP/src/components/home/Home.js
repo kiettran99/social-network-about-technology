@@ -19,7 +19,7 @@ const Home = ({ location, loadUser }) => {
     const query = queryString.parse(location.search);
 
     if (query.token) {
-      setAuthToken(localStorage.token);
+      setAuthToken(query.token);
       loadUser();
     }
   }, []);

@@ -107,15 +107,7 @@ const Register = ({ auth: { isAuthenticated }, register, setAlert }) => {
                                     <span className="dark-color d-inline-block line-height-2">Already Have Account ? <Link to="/login">Log In</Link></span>
                                     <ul className="iq-social-media">
                                         <li><a href={`${urlAPI}/auth/facebook`}><i className="ri-facebook-box-line" /></a></li>
-                                       <div className="card social-block">
-                                           <div className="card-body">
-                                               <a className="btn btn-block btn-social btn-google" href="/auth/google/callback" role="button">
-                                                <i className="fab fa-google"></i>
-                                                Sing Up with Google
-                                                </a>
-                                           </div>
-                                           
-                                       </div>
+                                     
                                     </ul>
                                 </div>
                             </form>

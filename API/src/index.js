@@ -11,6 +11,9 @@ const socicalRouterGG = require('./routers/api/auth-google');
 const notificationRouter = require('./routers/api/notification');
 
 const notFoundRouter = require('./routers/not-found/not-found');
+
+const passport = require('passport');
+
 // const errorHandler = require('./middleware/error-handler');
 const PORT = process.env.PORT;
 
@@ -22,6 +25,7 @@ const app = express();
 //Middleware
 app.use(cors());
 app.use(express.json());
+app.use(passport.initialize());
 
 //Global error handler
 // app.use(errorHandler);

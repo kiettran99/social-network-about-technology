@@ -6,13 +6,14 @@ const User = require('../../models/user');
 passport.use(new GoogleStrategy({
   clientID: process.env.CLIENT_ID_GG,
   clientSecret: process.env.CLIENT_SECRET_GG,
-  callbackURL: `http://localhost:${process.env.PORT}/auth/facebook/callback`,
+  callbackURL: `http://localhost:${process.env.PORT}/auth/google/callback`,
   passReqToCallback: true
 },
   function (request, accessToken, refreshToken, profile, done) {
 
     User.findOne({ googleId: profile.id })
       .then((user) => {
+        console.log(profile);
         // 1. Check if user is registed before.
         if (user) done(null, user);
 
@@ -30,6 +31,13 @@ passport.use(new GoogleStrategy({
       })
   }
 ));
+
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+passport.deserializeUser(function (user, done) {
+  done(null, user);
+});
 
 router.get('/auth/google',
   passport.authenticate('google', {

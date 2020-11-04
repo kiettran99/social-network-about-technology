@@ -8,7 +8,7 @@ passport.use(new FacebookStrategy({
     clientSecret: process.env.CLIENT_SECRET_FB,
     callbackURL: `http://localhost:${process.env.PORT}/auth/facebook/callback`
 },
-    function (accessToken, refreshToken, profile, cb) {
+    function (accessToken, refreshToken, profile, done) {
         User.findOne({ facebookId: profile.id })
             .then((user) => {
                 // 1. Check if user is registed before.
@@ -16,8 +16,7 @@ passport.use(new FacebookStrategy({
 
                 //2. Create new user
                 User.create({
-                    fullname: profile.displayName,
-                    email: profile.emails[0].value,
+                    fullname: profile.displayName,           
                     facebookId: profile.id
                 }).then((user) => {
                     done(null, user);
