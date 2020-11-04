@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import queryString from 'query-string';
+import { connect } from 'react-redux';
+
 import CreatePost from '../post/CreatePost';
-import UserPost from '../post/UserPost';
 import Stories from './Stories';
 import Events from './Events';
 import UpcomingBirthday from './UpcomingBirthday';
@@ -8,7 +10,20 @@ import SuggestedPages from './SuggestedPages';
 import Process from '../layout/Process';
 import PostsPage from '../post/PostsPage';
 
-const Home = () => {
+import { loadUser } from '../../actions/auth';
+import setAuthToken from '../../utils/setAuthToken';
+
+const Home = ({ location, loadUser }) => {
+
+  useEffect(() => {
+    const query = queryString.parse(location.search);
+
+    if (query.token) {
+      setAuthToken(localStorage.token);
+      loadUser();
+    }
+  }, []);
+
   return (
     <div id="content-page" className="content-page" >
       <div className="container">
@@ -34,4 +49,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default connect(null, { loadUser })(Home);
