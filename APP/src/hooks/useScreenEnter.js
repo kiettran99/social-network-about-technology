@@ -26,6 +26,8 @@ const useScreenEnter = (ref, callback) => {
 
         return () => document.removeEventListener('scroll', active)
     }, [entered]);
+
+    return setEntered;
 };
 
 export default useScreenEnter;

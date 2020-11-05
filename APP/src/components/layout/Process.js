@@ -8,19 +8,27 @@ import { getMorePosts } from '../../actions/post';
 const Process = ({ post: { posts: { length }, loading }, getMorePosts }) => {
 
     const ref = useRef(null);
+    const skip = 5;
+
     const [isTrigged, setIsTrigged] = useState(false);
+    const [lastLength, setLastLength] = useState(0);
+
+    const setEntered = useScreenEnter(ref, () => {
+        setIsTrigged(true);
+    });
 
     useEffect(() => {
-        if (isTrigged) {    
-            console.log(length);     
-            getMorePosts(length);
+
+        if (length >= skip && lastLength !== length - skip) {
+            setLastLength(length - skip);
+            setEntered(false);
+        }
+
+        if (isTrigged) { 
+            getMorePosts(length, skip);
             setIsTrigged(false);
         }
     }, [isTrigged, length]);
-
-    useScreenEnter(ref, () => {
-        setIsTrigged(true);
-    });
 
     return !loading && (
         <img ref={ref} src="images/page-img/page-load-loader.gif" alt="loader" style={{ height: '100px' }} />
