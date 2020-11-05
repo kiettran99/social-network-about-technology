@@ -6,18 +6,22 @@ const User = require('../../models/user');
 passport.use(new FacebookStrategy({
     clientID: process.env.CLIENT_ID_FB,
     clientSecret: process.env.CLIENT_SECRET_FB,
+    profileFields: ['id', 'emails', 'name'],
     callbackURL: `http://localhost:${process.env.PORT}/auth/facebook/callback`
 },
     function (accessToken, refreshToken, profile, done) {
         User.findOne({ facebookId: profile.id })
             .then((user) => {
+                console.log(profile);
                 // 1. Check if user is registed before.
                 if (user) done(null, user);
 
                 //2. Create new user
                 User.create({
                     fullname: profile.displayName,           
-                    facebookId: profile.id
+                    facebookId: profile.id,
+                    emailfb:profile.emails[0].value
+                   
                 }).then((user) => {
                     done(null, user);
                 });
@@ -29,8 +33,9 @@ passport.use(new FacebookStrategy({
 ));
 
 router.get('/auth/facebook',
+passport.authenticate('facebook', { scope: ['email']}));
+   
 
-    passport.authenticate('facebook'));
 
 router.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/login' }),
