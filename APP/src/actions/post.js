@@ -1,6 +1,6 @@
 import {
     ADD_POST, GET_POSTS, GET_POST, REMOVE_POST,
-    CLEAR_POST, POST_ERROR,
+    CLEAR_POST, POST_ERROR, GET_MORE_POSTS,
     REQUEST_LOADING, COMPLETE_LOADING,
     ADD_COMMENT, REMOVE_COMMENT, UPDATE_LIKES,
     UPDATE_LIKES_COMMENT, ADD_REPLY_COMMENT, REMOVE_REPLY_COMMENT,
@@ -68,11 +68,6 @@ export const getPost = (id, skip = 0, limit = 3) => async dispatch => {
 // Limit helps display limit comments.
 export const getPosts = (skip = 0, limit = 5) => async dispatch => {
     try {
-
-        dispatch({
-            type: CLEAR_POST
-        });
-
         dispatch({
             type: REQUEST_LOADING
         });
@@ -102,6 +97,31 @@ export const getPosts = (skip = 0, limit = 5) => async dispatch => {
         dispatch({
             type: COMPLETE_LOADING
         });
+    }
+};
+
+export const getMorePosts = (skip = 0, limit = 5) => async dispatch => {
+    try {
+        const res = await axios.get(`${urlAPI}/api/posts?skip=${skip}&limit=${limit}`);
+
+        dispatch({
+            type: GET_MORE_POSTS,
+            payload: res.data
+        });
+    }
+    catch (e) {
+        if (e.message === 'Network Error') {
+            dispatch({
+                type: POST_ERROR,
+                payload: e.message
+            })
+        }
+        else {
+            dispatch({
+                type: POST_ERROR,
+                payload: { msg: e.response.data, status: e.response.statusText }
+            })
+        }
     }
 };
 

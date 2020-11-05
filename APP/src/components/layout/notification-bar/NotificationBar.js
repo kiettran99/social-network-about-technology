@@ -61,7 +61,7 @@ const NotificationBar = ({ notification: { notification, loading }, auth: { isAu
         <li className="nav-item">
             <a href="index.html#" className="search-toggle iq-waves-effect">
                 <div id="lottie-beil">
-                    <i class="ri-notification-line"></i>
+                    <i className="ri-notification-line"></i>
                 </div>
                 {!!notificationQuantity(notification) && notificationQuantity(notification) !== 0 && <span className="bg-danger dots" />}
             </a>
