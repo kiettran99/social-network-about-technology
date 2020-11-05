@@ -12,16 +12,18 @@ passport.use(new FacebookStrategy({
     function (accessToken, refreshToken, profile, done) {
         User.findOne({ facebookId: profile.id })
             .then((user) => {
-                console.log(profile);
                 // 1. Check if user is registed before.
                 if (user) done(null, user);
 
+                const email = profile.emails[0].value;
+                const username = email.split('@')[0].trim();
+
                 //2. Create new user
                 User.create({
-                    fullname: profile.displayName,           
+                    fullname: profile.displayName,
                     facebookId: profile.id,
-                    emailfb:profile.emails[0].value
-                   
+                    username,
+                    email
                 }).then((user) => {
                     done(null, user);
                 });
@@ -33,9 +35,7 @@ passport.use(new FacebookStrategy({
 ));
 
 router.get('/auth/facebook',
-passport.authenticate('facebook', { scope: ['email']}));
-   
-
+    passport.authenticate('facebook', { scope: ['email'] }));
 
 router.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/login' }),

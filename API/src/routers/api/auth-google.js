@@ -13,14 +13,17 @@ passport.use(new GoogleStrategy({
 
     User.findOne({ googleId: profile.id })
       .then((user) => {
-        console.log(profile);
         // 1. Check if user is registed before.
         if (user) done(null, user);
+
+        const email = profile.emails[0].value;
+        const username = email.split('@')[0].trim();
 
         //2. Create new user
         User.create({
           fullname: profile.displayName,
-          email: profile.emails[0].value,
+          email,
+          username,
           googleId: profile.id
         }).then((user) => {
           done(null, user);
