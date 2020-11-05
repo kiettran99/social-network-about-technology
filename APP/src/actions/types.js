@@ -40,6 +40,7 @@ export const CLEAR_NOTIFICATION = 'CLEAR_NOTIFICATION';
 
 export const ADD_POST = 'ADD_POST';
 export const GET_POSTS = 'GET_POSTS';
+export const GET_MORE_POSTS = 'GET_MORE_POSTS';
 export const GET_POST = 'GET_POST';
 export const EDIT_POST = 'EDIT_POST';
 export const REMOVE_POST = 'REMOVE_POST';

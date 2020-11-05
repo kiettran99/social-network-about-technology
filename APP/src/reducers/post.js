@@ -1,6 +1,6 @@
 import {
     ADD_POST, GET_POSTS, GET_POST, REMOVE_POST,
-    CLEAR_POST, POST_ERROR,
+    CLEAR_POST, POST_ERROR, GET_MORE_POSTS,
     ADD_COMMENT, REMOVE_COMMENT, UPDATE_LIKES,
     UPDATE_LIKES_COMMENT, ADD_REPLY_COMMENT, REMOVE_REPLY_COMMENT,
     UPDATE_LIKES_REPLY, GET_MORE_COMMENTS
@@ -28,6 +28,12 @@ export default function (state = initialState, action) {
                 ...state,
                 loading: false,
                 posts: payload
+            };
+        case GET_MORE_POSTS:
+            return {
+                ...state,
+                loading: false,
+                posts: [...state.posts, ...payload]
             };
         case GET_POST:
             return {
