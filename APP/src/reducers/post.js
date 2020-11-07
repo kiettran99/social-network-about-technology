@@ -3,7 +3,7 @@ import {
     CLEAR_POST, POST_ERROR, GET_MORE_POSTS,
     ADD_COMMENT, REMOVE_COMMENT, UPDATE_LIKES,
     UPDATE_LIKES_COMMENT, ADD_REPLY_COMMENT, REMOVE_REPLY_COMMENT,
-    UPDATE_LIKES_REPLY, GET_MORE_COMMENTS
+    UPDATE_LIKES_REPLY, GET_MORE_COMMENTS, GET_MORE_REPLIES
 } from '../actions/types';
 
 const initialState = {
@@ -34,6 +34,43 @@ export default function (state = initialState, action) {
                 ...state,
                 loading: false,
                 posts: [...state.posts, ...payload]
+            };
+        case GET_MORE_COMMENTS:
+            return {
+                ...state,
+                loading: false,
+                posts: state.posts.map(post => {
+                    if (post._id === action.id) {
+                        return {
+                            ...post,
+                            comments: [...post.comments, ...payload]
+                        }
+                    }
+                    return post;
+                })
+            };
+        case GET_MORE_REPLIES:
+            return {
+                ...state,
+                loading: false,
+                posts: state.posts.map(post => {
+                    if (post._id === action.postId) {
+                        return {
+                            ...post,
+                            comments: post.comments.map(comment => {
+                                if (comment._id === action.commentId) {
+                                    return {
+                                        ...comment,
+                                        replies: [...comment.replies, ...payload]
+                                    };
+                                }
+
+                                return comment;
+                            })
+                        }
+                    }
+                    return post;
+                })
             };
         case GET_POST:
             return {

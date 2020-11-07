@@ -4,7 +4,7 @@ import {
     REQUEST_LOADING, COMPLETE_LOADING,
     ADD_COMMENT, REMOVE_COMMENT, UPDATE_LIKES,
     UPDATE_LIKES_COMMENT, ADD_REPLY_COMMENT, REMOVE_REPLY_COMMENT,
-    UPDATE_LIKES_REPLY
+    GET_MORE_COMMENTS, UPDATE_LIKES_REPLY, GET_MORE_REPLIES
 } from '../actions/types';
 import axios from 'axios';
 import urlAPI from '../utils/urlAPI';
@@ -107,6 +107,61 @@ export const getMorePosts = (skip = 0, limit = 5) => async dispatch => {
         dispatch({
             type: GET_MORE_POSTS,
             payload: res.data
+        });
+    }
+    catch (e) {
+        if (e.message === 'Network Error') {
+            dispatch({
+                type: POST_ERROR,
+                payload: e.message
+            })
+        }
+        else {
+            dispatch({
+                type: POST_ERROR,
+                payload: { msg: e.response.data, status: e.response.statusText }
+            })
+        }
+    }
+};
+
+export const getMoreComments = (postId, skip = 0, limit = 5) => async dispatch => {
+    try {
+        const res = await axios.get(`${urlAPI}/api/posts/${postId}/comments/more?skip=${skip}&limit=${limit}`);
+
+        console.log(res.data);
+        dispatch({
+            type: GET_MORE_COMMENTS,
+            payload: res.data,
+            id: postId
+        });
+    }
+    catch (e) {
+        if (e.message === 'Network Error') {
+            dispatch({
+                type: POST_ERROR,
+                payload: e.message
+            })
+        }
+        else {
+            dispatch({
+                type: POST_ERROR,
+                payload: { msg: e.response.data, status: e.response.statusText }
+            })
+        }
+    }
+};
+
+export const getMoreReplies = (postId, commentId, skip = 0, limit = 5) => async dispatch => {
+    try {
+        console.log(postId + " " + commentId )
+        const res = await axios.get(`${urlAPI}/api/posts/${postId}/comments/${commentId}/replies/more?skip=${skip}&limit=${limit}`);
+
+        dispatch({
+            type: GET_MORE_REPLIES,
+            payload: res.data,
+            postId,
+            commentId
         });
     }
     catch (e) {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addPost } from '../../actions/post';
 
-const CreatePost = ({ auth: { user, isAuthenticated }, addPost }) => {
+const CreatePost = ({ auth: { user, isAuthenticated, loading }, addPost }) => {
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -23,8 +23,6 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost }) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    console.log({ text, image })
-
     const formData = new FormData();
     formData.append('text', text);
     formData.append('image', image);
@@ -42,7 +40,7 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost }) => {
   };
 
   return (
-    <div id="post-modal-data" className="iq-card iq-card-block iq-card-stretch iq-card-height">
+    <div id="post-modal-data" className="iq-card iq-card-block iq-card-stretch iq-card-height"  >
       <div className="iq-card-header d-flex justify-content-between">
         <div className="iq-header-title">
           <h4 className="card-title">Create Post</h4>
@@ -51,7 +49,7 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost }) => {
       <div className="iq-card-body" data-toggle="modal" data-target="#post-modal">
         <div className="d-flex align-items-center">
           <div className="user-img">
-            <img src="images/user/1.jpg" alt="userimg" className="avatar-60 rounded-circle" />
+            {user && user.avatar && <img src={user.avatar} alt="userimg" className="avatar-60 rounded-circle" />}
           </div>
           <form className="post-text ml-3 w-100" onSubmit={e => onSubmit(e)}>
             <input type="text" className="form-control rounded" placeholder="Write something here..."
@@ -95,7 +93,7 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost }) => {
             <div className="modal-body">
               <div className="d-flex align-items-center">
                 <div className="user-img">
-                  <img src="images/user/1.jpg" alt="userimg" className="avatar-60 rounded-circle img-fluid" />
+                  {user && user.avatar && <img src={user.avatar} alt="userimg" className="avatar-60 rounded-circle img-fluid" />}
                 </div>
                 <form className="post-text ml-3 w-100" onSubmit={e => onSubmit(e)}>
                   <input type="text" className="form-control rounded" placeholder="Write something here..."
@@ -138,7 +136,7 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost }) => {
                 <div className="d-flex align-items-center justify-content-between">
                   <div className="d-flex align-items-center">
                     <div className="user-img mr-3">
-                      <img src="images/user/1.jpg" alt="userimg" className="avatar-60 rounded-circle img-fluid" />
+                      {user && user.avatar && <img src={user.avatar} alt="userimg" className="avatar-60 rounded-circle img-fluid" />}
                     </div>
                     <h6>Your Story</h6>
                   </div>

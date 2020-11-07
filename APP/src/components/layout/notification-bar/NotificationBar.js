@@ -59,7 +59,7 @@ const NotificationBar = ({ notification: { notification, loading }, auth: { isAu
 
     return (
         <li className="nav-item">
-            <a href="index.html#" className="search-toggle iq-waves-effect">
+            <a href="#" className="search-toggle iq-waves-effect">
                 <div id="lottie-beil">
                     <i className="ri-notification-line"></i>
                 </div>

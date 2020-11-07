@@ -12,7 +12,7 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrl, likes, group, com
                 <div className="user-post-data">
                     <div className="d-flex flex-wrap">
                         <div className="media-support-user-img mr-3">
-                            <img className="rounded-circle img-fluid" src="images/user/01.jpg" alt="" />
+                            <img className="rounded-circle img-fluid" src={avatar} alt="" />
                         </div>
                         <div className="media-support-info mt-2">
                             <h5 className="mb-0 d-inline-block"><a href="index.html#">{name}&nbsp;</a></h5>
