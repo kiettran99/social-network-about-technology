@@ -5,6 +5,7 @@ const isEmptyObject = require('../../utils/isEmptyObject');
 const authByRole = require('../../middleware/auth-by-role');
 const auth = require('../../middleware/auth');
 const { createNotification } = require('../../utils/notification');
+const createProfile = require('../../utils/profile');
 
 // @route Post api/users/register
 // @desc Registry user
@@ -44,7 +45,9 @@ router.post('/register', [
 
     const token = await user.generateAuthToken();
 
+    // Create two collections about profile and notification.
     createNotification(user);
+    createProfile(user);
 
     res.json({ token });
   }

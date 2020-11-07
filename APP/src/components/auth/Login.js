@@ -102,28 +102,11 @@ const Login = ({ auth: { isAuthenticated, user }, login, history }) => {
                                 <div className="sign-info">
                                     <span className="dark-color d-inline-block line-height-2">Don't have an account? <Link to="/register">Sign up</Link></span>
                                     <ul className="iq-social-media">
-                                       
-                                    <div className="card social-block">
-                                           <div className="card-body">
-                                               <a className="btn btn-block btn-social btn-facebook" href={`${urlAPI}/auth/facebook`} role="button">
-                                                <i className="fab fa-facebook"></i>
-                                                Sing Up with Facebook
-                                                </a>
-                                           </div>
-                                           
-                                       </div>
-                                        <div className="card social-block">
-                                           <div className="card-body">
-                                               <a className="btn btn-block btn-social btn-google" href={`${urlAPI}/auth/google`} role="button">
-                                                <i className="fab fa-google"></i>
-                                                Sing Up with Google
-                                                </a>
-                                           </div>
-                                           
-                                       </div>
+                                        <li><a href={`${urlAPI}/auth/facebook`} role="button"><i className="ri-facebook-box-line" /></a></li>
+                                        <li><a href={`${urlAPI}/auth/google`}><i className="ri-google-line" /></a></li>
                                     </ul>
                                 </div>
-                            </form>
+                               </form>
                         </div>
                     </div>
                 </div>

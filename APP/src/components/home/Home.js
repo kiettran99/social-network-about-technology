@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import queryString from 'query-string';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import CreatePost from '../post/CreatePost';
 import Stories from './Stories';
@@ -13,13 +14,14 @@ import PostsPage from '../post/PostsPage';
 import { loadUser } from '../../actions/auth';
 import setAuthToken from '../../utils/setAuthToken';
 
-const Home = ({ location, loadUser }) => {
+const Home = ({ location, loadUser, history }) => {
 
   useEffect(() => {
     const query = queryString.parse(location.search);
 
     if (query.token) {
       setAuthToken(query.token);
+      history.push('/');
       loadUser();
     }
   }, []);
@@ -49,4 +51,4 @@ const Home = ({ location, loadUser }) => {
   );
 };
 
-export default connect(null, { loadUser })(Home);
+export default connect(null, { loadUser })(withRouter(Home));

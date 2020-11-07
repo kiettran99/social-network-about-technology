@@ -1,12 +1,12 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import LoadingBar from 'react-top-loading-bar';
 import { logout } from '../../actions/auth';
 import NotificationBar from './notification-bar/NotificationBar';
 
-const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar }) => {
+const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, history }) => {
 
   const ref = useRef(null);
 
@@ -259,7 +259,9 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar }
                     </a>
                     <div className="d-inline-block w-100 text-center p-3">
                       <Link className="bg-primary iq-sign-btn text-light" role="button"
-                        onClick={() => logout()}
+                        onClick={() => {
+                          logout(history);
+                        }}
                       >Sign out<i className="ri-login-box-line ml-2" /></Link>
                     </div>
                   </div>
@@ -324,4 +326,4 @@ const mapStateToProps = (state) => ({
   loadingBar: state.loadingBar
 })
 
-export default connect(mapStateToProps, { logout })(NavBar);
+export default connect(mapStateToProps, { logout })(withRouter(NavBar));

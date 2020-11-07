@@ -44,11 +44,11 @@ const userSchema = mongoose.Schema({
       required: true
     }
   }],
-  facebookId:{
-    type:String
+  facebookId: {
+    type: String
   },
-  googleId:{
-    type:String
+  googleId: {
+    type: String
   }
 }, {
   timestamps: true

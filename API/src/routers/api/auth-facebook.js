@@ -2,21 +2,41 @@ const router = require('express').Router();
 const FacebookStrategy = require('passport-facebook').Strategy;
 const passport = require('passport');
 const User = require('../../models/user');
+const { createNotification } = require('../../utils/notification');
+const createProfile = require('../../utils/profile');
+
+const appUrl = process.env.APP_URL || 'http://localhost:3000';
+const apiUrl = process.env.API_URL || `http://localhost:${process.env.PORT}`;
 
 passport.use(new FacebookStrategy({
     clientID: process.env.CLIENT_ID_FB,
     clientSecret: process.env.CLIENT_SECRET_FB,
     profileFields: ['id', 'emails', 'name'],
-    callbackURL: `http://localhost:${process.env.PORT}/auth/facebook/callback`
+    callbackURL: `${apiUrl}/auth/facebook/callback`
 },
     function (accessToken, refreshToken, profile, done) {
-        User.findOne({ facebookId: profile.id })
-            .then((user) => {
-                // 1. Check if user is registed before.
-                if (user) done(null, user);
+        const email = profile.emails[0].value;
+        const username = email.split('@')[0].trim();
 
-                const email = profile.emails[0].value;
-                const username = email.split('@')[0].trim();
+        User.findOne({ $or: [{ facebookId: profile.id }, { email: email }] })
+            .then((user) => {
+
+                // 1. Check if user is registed before.
+                if (user) {
+
+                    // 1.1. If others social account same email
+                    if (!user.facebookId) {
+                        user.facebookId = profile.id;
+
+                        user.save().then((user) => {
+                            return done(null, user);
+                        });
+                    }
+                    else {
+                        // 1.2. Callback current user
+                        return done(null, user);
+                    }
+                }
 
                 //2. Create new user
                 User.create({
@@ -25,6 +45,11 @@ passport.use(new FacebookStrategy({
                     username,
                     email
                 }).then((user) => {
+
+                    // Create two collections about profile and notification.
+                    createNotification(user);
+                    createProfile(user);
+
                     done(null, user);
                 });
             })
@@ -44,12 +69,12 @@ router.get('/auth/facebook/callback',
             const user = req.user;
 
             if (!user) {
-                return res.redirect("http://localhost:3000/notfound");
+                return res.redirect(`${appUrl}//notfound`);
             }
 
             const token = await user.generateAuthToken();
 
-            res.redirect("http://localhost:3000?token=" + token);
+            res.redirect(`${appUrl}?token=${token}`);
         }
         catch (e) {
             console.log(e);
