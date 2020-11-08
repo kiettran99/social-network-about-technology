@@ -41,6 +41,9 @@ const postSchema = Schema({
         name: {
             type: String
         },
+        avatar: {
+            type: String
+        },
         date: {
             type: Date,
             default: Date.now
@@ -60,6 +63,9 @@ const postSchema = Schema({
                 type: String
             },
             name: {
+                type: String
+            },
+            avatar: {
                 type: String
             },
             date: {

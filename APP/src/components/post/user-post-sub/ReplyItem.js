@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import dayjs from '../../../utils/relativeDate';
 import { removeReplyComment, likeReplyComment, unlikeReplyComment } from '../../../actions/post';
 
-const ReplyItem = ({ reply: { _id, name, text, date, user: userComment, likes }, postId,
+const ReplyItem = ({ reply: { _id, name, text, avatar, date, user: userComment, likes }, postId,
     commentId,
     auth: { user, isAuthenticated }, history,
     removeReplyComment, likeReplyComment, unlikeReplyComment,
@@ -49,10 +49,10 @@ const ReplyItem = ({ reply: { _id, name, text, date, user: userComment, likes },
     };
 
     return (
-        <li className="mb-2">
+        <div className="mb-2">
             <div className="d-flex flex-wrap">
                 <div className="user-img">
-                    <img src="images/user/02.jpg" alt="userimg" className="avatar-35 rounded-circle img-fluid" />
+                    <img src={avatar} alt="userimg" className="avatar-35 rounded-circle img-fluid" />
                 </div>
                 <div className="comment-data-block ml-3">
                     <h6>{name}</h6>
@@ -70,7 +70,7 @@ const ReplyItem = ({ reply: { _id, name, text, date, user: userComment, likes },
                     </div>
                 </div>
             </div>
-        </li>
+        </div>
     );
 };
 

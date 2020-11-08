@@ -19,6 +19,7 @@ import Groups from '../components/groups/Groups';
 import GroupPage from '../components/groups/GroupPage';
 import Profile from '../components/profiles/Profile';
 import EditProfile from '../components/profiles/EditProfile';
+import PostDetail from '../components/post/PostDetail';
 
 const MainComponent = () => {
     return (
@@ -29,6 +30,7 @@ const MainComponent = () => {
                 <Alert />
                 <Switch>
                     <Route exact path="/" component={Home} />
+                    <Route exact path="/posts/:id" component={PostDetail} />
                     <Route exact path="/groups" component={Groups} />
                     <Route exact path="/group-page" component={GroupPage} />
                     <PrivateRoute exact path="/profile/edit" component={EditProfile} />
@@ -51,7 +53,9 @@ const AppRoute = () => (
                 <div id="loading-center">
                 </div>
             </div>
-            
+
+            <Alert />
+
             <Switch>
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />

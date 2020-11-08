@@ -158,6 +158,35 @@ router.put('/me', auth, upload.single('avatar'), [
     }
 });
 
+// @route PUT /api/profile/manage-contact
+// @desc Edit manage contact
+// @access private
+router.put('/manage-contact', auth, [
+    body('phoneNumber').not().isEmpty(),
+    body('email').not().isEmpty()
+], async (req, res) => {
+    try {
+        const profile = await Profile.findOne({
+            user: req.user.id
+        });
 
+        const user = req.user;
+
+        const { phoneNumber, email, url } = req.body;
+
+        if (phoneNumber) profile.phoneNumber = phoneNumber;
+        if (email) user.email = email;
+        if (url) profile.url = url;
+
+        user.save();
+
+        await profile.save();
+
+        res.json(profile);
+    }
+    catch (e) {
+        res.status(500).send('Server error.');
+    }
+});
 
 module.exports = router;

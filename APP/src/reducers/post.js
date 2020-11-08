@@ -1,15 +1,16 @@
 import {
     ADD_POST, GET_POSTS, GET_POST, REMOVE_POST,
-    CLEAR_POST, POST_ERROR,
+    CLEAR_POST, POST_ERROR, GET_MORE_POSTS,
     ADD_COMMENT, REMOVE_COMMENT, UPDATE_LIKES,
     UPDATE_LIKES_COMMENT, ADD_REPLY_COMMENT, REMOVE_REPLY_COMMENT,
-    UPDATE_LIKES_REPLY, GET_MORE_COMMENTS
+    UPDATE_LIKES_REPLY, GET_MORE_COMMENTS, GET_MORE_REPLIES
 } from '../actions/types';
 
 const initialState = {
     posts: [],
     post: null,
     loading: true,
+    isInPosts: true,
     errors: {}
 };
 
@@ -27,22 +28,57 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loading: false,
-                posts: payload
+                posts: payload,
+                isInPosts: true
+            };
+        case GET_MORE_POSTS:
+            return {
+                ...state,
+                loading: false,
+                posts: [...state.posts, ...payload]
+            };
+        case GET_MORE_COMMENTS:
+            return {
+                ...state,
+                loading: false,
+                post: {
+                    ...state.post,
+                    comments: [...state.post.comments, ...payload]
+                }
+            };
+        case GET_MORE_REPLIES:
+            return {
+                ...state,
+                loading: false,
+                post: {
+                    ...state.post,
+                    comments: state.post.comments.map(comment => {
+                        if (comment._id === action.commentId) {
+                            return {
+                                ...comment,
+                                replies: [...comment.replies, ...payload]
+                            };
+                        }
+                        return comment;
+                    })
+                }
             };
         case GET_POST:
             return {
                 ...state,
                 loading: false,
-                post: payload
+                post: payload,
+                isInPosts: false
             };
         case CLEAR_POST:
+        case REMOVE_POST:
             return {
                 ...state,
                 loading: true,
                 post: null
             };
         case UPDATE_LIKES:
-            return {
+            return state.isInPosts ? {
                 ...state,
                 loading: false,
                 posts: state.posts.map(post => {
@@ -54,64 +90,106 @@ export default function (state = initialState, action) {
                     }
                     return post;
                 })
-            };
+            } : {
+                    ...state,
+                    loading: false,
+                    post: {
+                        ...state.post,
+                        likes: payload
+                    }
+                };
         case UPDATE_LIKES_COMMENT:
+            return {
+                ...state,
+                loading: false,
+                post: {
+                    ...state.post,
+                    comments: state.post.comments.map(comment => {
+                        if (comment._id === action.commentId) {
+                            return {
+                                ...comment,
+                                likes: payload
+                            };
+                        }
+                        return comment;
+                    })
+                }
+            };
         case ADD_REPLY_COMMENT:
+            return {
+                ...state,
+                loading: false,
+                post: {
+                    ...state.post,
+                    comments: state.post.comments.map(comment => {
+                        if (comment._id === action.commentId) {
+                            return {
+                                ...comment,
+                                replies: [payload, comment.replies]
+                            };
+                        }
+                        return comment;
+                    })
+                }
+            };
         case REMOVE_REPLY_COMMENT:
+            return {
+                ...state,
+                loading: false,
+                post: {
+                    ...state.post,
+                    comments: state.post.comments.map(comment => {
+                        if (comment._id === action.commentId) {
+                            return {
+                                ...comment,
+                                replies: comment.replies.filter(reply => reply._id !== payload)
+                            };
+                        }
+                        return comment;
+                    })
+                }
+            };
         case UPDATE_LIKES_REPLY:
             return {
                 ...state,
                 loading: false,
-                posts: state.posts.map(post => {
-                    if (post._id === action.id) {
-                        return {
-                            ...post,
-                            comments: post.comments.map(comment => {
-                                if (comment._id === payload._id) {
-                                    return payload;
-                                }
-                                return comment;
-                            })
+                post: {
+                    ...state.post,
+                    comments: state.post.comments.map(comment => {
+                        if (comment._id === action.commentId) {
+                            return {
+                                ...comment,
+                                replies: comment.replies.map(reply => {
+                                    if (reply._id === action.replyId)
+                                        return {
+                                            ...reply,
+                                            likes: payload
+                                        };
+                                    return reply;
+                                })
+                            };
                         }
-                    }
-                    return post;
-                })
-            };
-        case REMOVE_POST:
-            const { posts: { _id } } = payload;
-            return {
-                ...state,
-                loading: false,
-                posts: state.posts.filter(post => post._id !== _id)
+                        return comment;
+                    })
+                }
             };
         case ADD_COMMENT:
             return {
                 ...state,
                 loading: false,
-                posts: state.posts.map(post => {
-                    if (post._id === action.id) {
-                        return {
-                            ...post,
-                            comments: payload
-                        }
-                    }
-                    return post;
-                })
+                post: {
+                    ...state.post,
+                    comments: [payload, ...state.post.comments]
+                }
             };
         case REMOVE_COMMENT:
             return {
                 ...state,
                 loading: false,
-                posts: state.posts.map(post => {
-                    if (post._id === action.id) {
-                        console.log(payload);
-                        return {
-                            ...post,
-                            comments: post.comments.filter(comment => comment._id !== payload)
-                        }
-                    }
-                    return post;
-                })
+                post: {
+                    ...state.post,
+                    comments: state.post.comments.filter(comment => comment._id !== payload)
+                }
             };
         case POST_ERROR:
             return {

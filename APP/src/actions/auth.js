@@ -59,6 +59,8 @@ export const login = (username, password) => async dispatch => {
             payload: res.data
         });
 
+        dispatch(setAlert('Successfully login', 'Login', 'success', 2000));
+        
         dispatch(loadUser());
     }
     catch (e) {
@@ -67,7 +69,7 @@ export const login = (username, password) => async dispatch => {
         const errors = e.response.data.errors;
 
         if (errors) {
-            errors.map(error => dispatch(setAlert(error.msg, 'dangger')));
+            errors.map(error => dispatch(setAlert(error.msg, 'Authentication', 'error', 2000)));
         }
 
         dispatch({

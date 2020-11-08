@@ -1,4 +1,5 @@
 export const SET_ALERT = 'SET_ALERT';
+export const UPDATE_ACTIVE_ALERT = 'UPDATE_ACTIVE_ALERT';
 export const REMOVE_ALERT = 'REMOVE_ALERT';
 
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
@@ -24,6 +25,7 @@ export const UPDATE_LIKES = 'UPDATE_LIKES';
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const REMOVE_COMMENT = 'REMOVE_COMMENT';
 export const GET_MORE_COMMENTS = 'GET_MORE_COMMENTS';
+export const GET_MORE_REPLIES = 'GET_MORE_REPLIES';
 
 export const UPDATE_LIKES_COMMENT = 'UPDATE_LIKES_COMMENT';
 export const UPDATE_LIKES_REPLY = 'UPDATE_LIKES_REPLY';
@@ -39,6 +41,7 @@ export const CLEAR_NOTIFICATION = 'CLEAR_NOTIFICATION';
 
 export const ADD_POST = 'ADD_POST';
 export const GET_POSTS = 'GET_POSTS';
+export const GET_MORE_POSTS = 'GET_MORE_POSTS';
 export const GET_POST = 'GET_POST';
 export const EDIT_POST = 'EDIT_POST';
 export const REMOVE_POST = 'REMOVE_POST';

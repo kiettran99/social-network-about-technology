@@ -6,7 +6,7 @@ import { removeComment, likeComment, unlikeComment, addReplyComment } from '../.
 import CommentForm from './CommentForm';
 import ReplyList from './ReplyList';
 
-const PostComment = ({ comment: { _id, name, text, date, likes, user: userComment, replies }, postId,
+const PostComment = ({ comment: { _id, name, text, avatar, date, likes, user: userComment, replies }, postId,
     auth: { user, isAuthenticated }, history,
     removeComment, likeComment, unlikeComment, addReplyComment }) => {
 
@@ -54,7 +54,7 @@ const PostComment = ({ comment: { _id, name, text, date, likes, user: userCommen
         <li className="mb-2">
             <div className="d-flex flex-wrap mb-2">
                 <div className="user-img">
-                    <img src="images/user/02.jpg" alt="userimg" className="avatar-35 rounded-circle img-fluid" />
+                    <img src={avatar} alt="userimg" className="avatar-35 rounded-circle img-fluid" />
                 </div>
                 <div className="comment-data-block ml-3">
                     <h6>{name}</h6>
