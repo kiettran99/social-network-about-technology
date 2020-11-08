@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { getPosts } from '../../actions/post';
 import { connect } from 'react-redux';
 import UserPost from './UserPost';
+import { withRouter } from 'react-router-dom';
 
-const PostsPage = ({ post: { posts, loading }, getPosts }) => {
+const PostsPage = ({ post: { posts, loading }, getPosts, history }) => {
 
     useEffect(() => {
         getPosts();
@@ -12,7 +13,7 @@ const PostsPage = ({ post: { posts, loading }, getPosts }) => {
 
     return !loading && (
         posts.map(post => (
-            <div key={post._id} className="col-sm-12">
+            <div key={post._id} className="col-sm-12" onClick={() => history.push(`/posts/${post._id}`)}>
                 <UserPost post={post} />
             </div>
         ))
@@ -28,5 +29,5 @@ const mapStateToProps = (state) => ({
     post: state.post
 });
 
-export default connect(mapStateToProps, { getPosts })(PostsPage);
+export default connect(mapStateToProps, { getPosts })(withRouter(PostsPage));
 

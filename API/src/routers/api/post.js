@@ -16,7 +16,11 @@ router.get('/', async (req, res) => {
         const limit = parseInt(req.query.limit) || 5;
         const skip = parseInt(req.query.skip) || 0;
 
-        const posts = await Post.find({}).limit(limit).skip(skip);
+        const posts = await Post.find({}, {
+            comments: {
+                $slice: [0, 2]
+            }
+        }).limit(limit).skip(skip);
 
         res.send(posts);
 
@@ -32,8 +36,115 @@ router.get('/', async (req, res) => {
 // @access public
 router.get('/:id', async (req, res) => {
     try {
-        const post = await Post.findById(req.params.id);
+        // Validation params Id
+        const id = req.params.id;
+
+        if (!id) {
+            return res.status(400).json({ msg: 'Post\'\s ID is empty.' });
+        }
+
+        const post = await Post.findById(req.params.id, {
+            comments: {
+                $slice: [0, 3]
+            },
+            "comments.replies": {
+                $slice: [0, 1]
+            }
+        });
+
         res.json(post);
+    }
+    catch (e) {
+        console.log(e);
+
+        if (e.kind === 'ObjectId') {
+            return res.status(404).send('Post is not exists.');
+        }
+
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route Get /api/posts/:id/comments/more
+// @desc Get more comments
+// @access public
+router.get('/:id/comments/more', async (req, res) => {
+    try {
+        // Validation params Id
+        const id = req.params.id;
+
+        // Limit post with 5 posts and if not skip then default value is 0.
+        const limit = parseInt(req.query.limit) || 5;
+        const skip = parseInt(req.query.skip) || 0;
+
+        if (!id) {
+            return res.status(400).json({ msg: 'Post\'\s ID is empty.' });
+        }
+
+        const post = await Post.findById(id, {
+            comments: {
+                $slice: [skip, limit],
+            },
+            "comments.replies": {
+                $slice: [0, 1]
+            }
+        });
+
+        if (!post) {
+            return res.status(404).send("post is not exists");
+        }
+
+        res.json(post.comments);
+    }
+    catch (e) {
+        console.log(e);
+
+        if (e.kind === 'ObjectId') {
+            return res.status(404).send('Post is not exists.');
+        }
+
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route Get /api/posts/:postId/comments/:comment_id/replies/more
+// @desc Get more replies
+// @access public
+router.get('/:post_id/comments/:comment_id/replies/more', async (req, res) => {
+    try {
+
+        // Limit post with 5 posts and if not skip then default value is 0.
+        const limit = parseInt(req.query.limit) || 5;
+        const skip = parseInt(req.query.skip) || 0;
+
+        // Validation params Id
+        const postId = req.params.post_id;
+        const commentId = req.params.comment_id;
+
+        if (!postId) {
+            return res.status(400).json({ msg: 'Post\'\s ID is empty.' });
+        }
+
+        if (!commentId) {
+            return res.status(400).json({ msg: 'Comment\'\s ID is empty.' });
+        }
+
+        // Find a post by Id and comments has comment'id
+        const post = await Post.findOne({ _id: postId, 'comments._id': commentId }, {
+            "comments.replies": {
+                $slice: [skip, limit]
+            }
+        });
+
+
+        if (!post) {
+            return res.status(404).send("post is not exists");
+        }
+
+        // Find Comment by id
+        const comment = post.comments.find(comment => comment.id === commentId);
+
+        res.json(comment.replies);
     }
     catch (e) {
         console.log(e);
@@ -63,6 +174,7 @@ router.post('/', auth, upload.single('image'), [
             text: req.body.text,
             user: req.user.id,
             name: req.user.fullname,
+            avatar: req.user.avatar
         }
 
         // Create a instance post and save it.
@@ -295,11 +407,12 @@ router.put('/comment/:id', [auth,
         const newComment = {
             text: req.body.text,
             name: req.user.fullname,
-            user: req.user.id
+            user: req.user.id,
+            avatar: req.user.avatar
         };
 
         //Newest first page.
-        post.comments.push(newComment);
+        post.comments.unshift(newComment);
 
         await post.save();
 
@@ -312,7 +425,7 @@ router.put('/comment/:id', [auth,
             following: 'followingPosts'
         });
 
-        res.json(post.comments);
+        res.json(post.comments.find(e => true));
     }
     catch (e) {
         console.log(e);
@@ -402,7 +515,7 @@ router.put('/:post_id/comments/like/:comment_id', auth, async (req, res) => {
         await post.save();
 
         // Response to client
-        res.json(comment);
+        res.json(comment.likes);
     }
     catch (e) {
         console.log(e);
@@ -453,7 +566,7 @@ router.put('/:post_id/comments/unlike/:comment_id', auth, async (req, res) => {
         await post.save();
 
         // Response to client
-        res.json(comment);
+        res.json(comment.likes);
     }
     catch (e) {
         console.log(e);
@@ -502,15 +615,16 @@ router.put('/:post_id/comments/reply/:comment_id', [auth,
         const newReply = {
             text: req.body.text,
             name: req.user.fullname,
-            user: req.user.id
+            user: req.user.id,
+            avatar: req.user.avatar
         };
 
         //Newest first page.
-        comment.replies.push(newReply);
+        comment.replies.unshift(newReply);
 
         await post.save();
 
-        res.json(comment);
+        res.json(comment.replies.find(e => true));
     }
     catch (e) {
         console.log(e);
@@ -568,7 +682,7 @@ router.delete('/:post_id/comments/reply/:comment_id/:reply_id', auth, async (req
 
         await post.save();
 
-        res.json(comment);
+        res.json(reply);
     }
     catch (e) {
         console.log(e);
@@ -626,7 +740,7 @@ router.put('/:post_id/comments/:comment_id/reply/like/:reply_id', auth, async (r
         await post.save();
 
         // Response to client
-        res.json(comment);
+        res.json(reply.likes);
     }
     catch (e) {
         console.log(e);
@@ -685,7 +799,7 @@ router.put('/:post_id/comments/:comment_id/reply/unlike/:reply_id', auth, async 
         await post.save();
 
         // Response to client
-        res.json(comment);
+        res.json(reply.likes);
     }
     catch (e) {
         console.log(e);

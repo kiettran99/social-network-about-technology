@@ -1,6 +1,5 @@
 import React from 'react';
 import CreatePost from '../post/CreatePost';
-import UserPost from '../post/UserPost';
 import Stories from './Stories';
 import Events from './Events';
 import UpcomingBirthday from './UpcomingBirthday';

@@ -12,7 +12,7 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrl, likes, group, com
                 <div className="user-post-data">
                     <div className="d-flex flex-wrap">
                         <div className="media-support-user-img mr-3">
-                            <img className="rounded-circle img-fluid" src="images/user/01.jpg" alt="" />
+                            <img className="rounded-circle img-fluid" src={avatar} alt="" />
                         </div>
                         <div className="media-support-info mt-2">
                             <h5 className="mb-0 d-inline-block"><a href="index.html#">{name}&nbsp;</a></h5>
@@ -64,14 +64,14 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrl, likes, group, com
                 <div className="user-post">
                     <div className="d-flex">
                         <div className="col-md-6">
-                            <a href=""><img src="images/page-img/p2.jpg" alt="post-image" className="img-fluid rounded w-100" /></a>
+                            <a href=""><img src="/images/page-img/p2.jpg" alt="post-image" className="img-fluid rounded w-100" /></a>
                         </div>
                         <div className="col-md-6 row m-0 p-0">
                             <div className="col-sm-12">
-                                <a href=""><img src="images/page-img/p1.jpg" alt="post-image" className="img-fluid rounded w-100" /></a>
+                                <a href=""><img src="/images/page-img/p1.jpg" alt="post-image" className="img-fluid rounded w-100" /></a>
                             </div>
                             <div className="col-sm-12 mt-3">
-                                <a href=""><img src="images/page-img/p3.jpg" alt="post-image" className="img-fluid rounded w-100" /></a>
+                                <a href=""><img src="/images/page-img/p3.jpg" alt="post-image" className="img-fluid rounded w-100" /></a>
                             </div>
                         </div>
                     </div>
@@ -79,8 +79,8 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrl, likes, group, com
                 <div className="comment-area mt-3">
                     <CommentsBar postId={_id} likes={likes} comments={comments} />
                     <hr />
-                    <PostComments postId={_id} comments={comments}/>
-                    <CommentForm postId={_id} />                  
+                    <PostComments postId={_id} comments={comments} />
+                    <CommentForm postId={_id} />
                 </div>
             </div>
         </div>
