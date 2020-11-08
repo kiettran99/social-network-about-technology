@@ -40,7 +40,7 @@ export const addPost = (formData) => async dispatch => {
 
 // Skip helps passing number comments.
 // Limit helps display limit comments.
-export const getPost = (id, skip = 0, limit = 3) => async dispatch => {
+export const getPost = (id, history, skip = 0, limit = 3) => async dispatch => {
     try {
 
         dispatch({
@@ -55,7 +55,8 @@ export const getPost = (id, skip = 0, limit = 3) => async dispatch => {
         });
     }
     catch (e) {
-        console.log(e);
+
+        history.push('/notfound');
 
         dispatch({
             type: POST_ERROR,
@@ -129,11 +130,9 @@ export const getMoreComments = (postId, skip = 0, limit = 5) => async dispatch =
     try {
         const res = await axios.get(`${urlAPI}/api/posts/${postId}/comments/more?skip=${skip}&limit=${limit}`);
 
-        console.log(res.data);
         dispatch({
             type: GET_MORE_COMMENTS,
-            payload: res.data,
-            id: postId
+            payload: res.data
         });
     }
     catch (e) {
@@ -154,13 +153,11 @@ export const getMoreComments = (postId, skip = 0, limit = 5) => async dispatch =
 
 export const getMoreReplies = (postId, commentId, skip = 0, limit = 5) => async dispatch => {
     try {
-        console.log(postId + " " + commentId )
         const res = await axios.get(`${urlAPI}/api/posts/${postId}/comments/${commentId}/replies/more?skip=${skip}&limit=${limit}`);
 
         dispatch({
             type: GET_MORE_REPLIES,
             payload: res.data,
-            postId,
             commentId
         });
     }
@@ -180,18 +177,21 @@ export const getMoreReplies = (postId, commentId, skip = 0, limit = 5) => async 
     }
 };
 
-export const removePost = (id) => async dispatch => {
+export const removePost = (id, history) => async dispatch => {
     try {
 
         dispatch({
             type: CLEAR_POST
         });
 
-        const res = await axios.delete(`${urlAPI}/api/posts/${id}`);
+        await axios.delete(`${urlAPI}/api/posts/${id}`);
+
+        dispatch(setAlert('Remove post succesfully !', 'Notification', 'success'));
+
+        history.push('/');
 
         dispatch({
-            type: REMOVE_POST,
-            payload: res.data
+            type: REMOVE_POST
         });
     }
     catch (e) {
@@ -316,7 +316,8 @@ export const likeComment = (postId, commentId) => async dispatch => {
         dispatch({
             type: UPDATE_LIKES_COMMENT,
             payload: res.data,
-            id: postId
+            id: postId,
+            commentId
         });
     }
     catch (e) {
@@ -336,7 +337,8 @@ export const unlikeComment = (postId, commentId) => async dispatch => {
         dispatch({
             type: UPDATE_LIKES_COMMENT,
             payload: res.data,
-            id: postId
+            id: postId,
+            commentId
         });
     }
     catch (e) {
@@ -363,7 +365,8 @@ export const addReplyComment = (postId, commentId, formData) => async dispatch =
         dispatch({
             type: ADD_REPLY_COMMENT,
             payload: res.data,
-            id: postId
+            id: postId,
+            commentId
         });
     }
     catch (e) {
@@ -381,12 +384,13 @@ export const removeReplyComment = (postId, commentId, replyId) => async dispatch
             type: REQUEST_LOADING
         });
 
-        const res = await axios.delete(`${urlAPI}/api/posts/${postId}/comments/reply/${commentId}/${replyId}`);
+        await axios.delete(`${urlAPI}/api/posts/${postId}/comments/reply/${commentId}/${replyId}`);
 
         dispatch({
             type: REMOVE_REPLY_COMMENT,
-            payload: res.data,
-            id: postId
+            payload: replyId,
+            id: postId,
+            commentId
         });
     }
     catch (e) {
@@ -411,7 +415,9 @@ export const likeReplyComment = (postId, commentId, replyId) => async dispatch =
         dispatch({
             type: UPDATE_LIKES_REPLY,
             payload: res.data,
-            id: postId
+            id: postId,
+            commentId,
+            replyId
         });
     }
     catch (e) {
@@ -431,7 +437,9 @@ export const unlikeReplyComment = (postId, commentId, replyId) => async dispatch
         dispatch({
             type: UPDATE_LIKES_REPLY,
             payload: res.data,
-            id: postId
+            id: postId,
+            commentId,
+            replyId
         });
     }
     catch (e) {

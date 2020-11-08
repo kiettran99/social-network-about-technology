@@ -43,7 +43,14 @@ router.get('/:id', async (req, res) => {
             return res.status(400).json({ msg: 'Post\'\s ID is empty.' });
         }
 
-        const post = await Post.findById(req.params.id);
+        const post = await Post.findById(req.params.id, {
+            comments: {
+                $slice: [0, 3]
+            },
+            "comments.replies": {
+                $slice: [0, 1]
+            }
+        });
 
         res.json(post);
     }
@@ -129,7 +136,7 @@ router.get('/:post_id/comments/:comment_id/replies/more', async (req, res) => {
             }
         });
 
-        
+
         if (!post) {
             return res.status(404).send("post is not exists");
         }
@@ -418,7 +425,7 @@ router.put('/comment/:id', [auth,
             following: 'followingPosts'
         });
 
-        res.json(post.comments);
+        res.json(post.comments.find(e => true));
     }
     catch (e) {
         console.log(e);
@@ -508,7 +515,7 @@ router.put('/:post_id/comments/like/:comment_id', auth, async (req, res) => {
         await post.save();
 
         // Response to client
-        res.json(comment);
+        res.json(comment.likes);
     }
     catch (e) {
         console.log(e);
@@ -559,7 +566,7 @@ router.put('/:post_id/comments/unlike/:comment_id', auth, async (req, res) => {
         await post.save();
 
         // Response to client
-        res.json(comment);
+        res.json(comment.likes);
     }
     catch (e) {
         console.log(e);
@@ -617,7 +624,7 @@ router.put('/:post_id/comments/reply/:comment_id', [auth,
 
         await post.save();
 
-        res.json(comment);
+        res.json(comment.replies.find(e => true));
     }
     catch (e) {
         console.log(e);
@@ -675,7 +682,7 @@ router.delete('/:post_id/comments/reply/:comment_id/:reply_id', auth, async (req
 
         await post.save();
 
-        res.json(comment);
+        res.json(reply);
     }
     catch (e) {
         console.log(e);
@@ -733,7 +740,7 @@ router.put('/:post_id/comments/:comment_id/reply/like/:reply_id', auth, async (r
         await post.save();
 
         // Response to client
-        res.json(comment);
+        res.json(reply.likes);
     }
     catch (e) {
         console.log(e);
@@ -792,7 +799,7 @@ router.put('/:post_id/comments/:comment_id/reply/unlike/:reply_id', auth, async 
         await post.save();
 
         // Response to client
-        res.json(comment);
+        res.json(reply.likes);
     }
     catch (e) {
         console.log(e);
