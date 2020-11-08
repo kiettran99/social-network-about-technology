@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { login } from '../../actions/auth';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import urlAPI from '../../utils/urlAPI';
 
 const Login = ({ auth: { isAuthenticated, user }, login, history }) => {
 
@@ -101,12 +102,11 @@ const Login = ({ auth: { isAuthenticated, user }, login, history }) => {
                                 <div className="sign-info">
                                     <span className="dark-color d-inline-block line-height-2">Don't have an account? <Link to="/register">Sign up</Link></span>
                                     <ul className="iq-social-media">
-                                        <li><a href="sign-in.html#"><i className="ri-facebook-box-line" /></a></li>
-                                        <li><a href="sign-in.html#"><i className="ri-twitter-line" /></a></li>
-                                        <li><a href="sign-in.html#"><i className="ri-instagram-line" /></a></li>
+                                        <li><a href={`${urlAPI}/auth/facebook`} role="button"><i className="ri-facebook-box-line" /></a></li>
+                                        <li><a href={`${urlAPI}/auth/google`}><i className="ri-google-line" /></a></li>
                                     </ul>
                                 </div>
-                            </form>
+                               </form>
                         </div>
                     </div>
                 </div>

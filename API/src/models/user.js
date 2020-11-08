@@ -31,7 +31,6 @@ const userSchema = mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
     trim: true
   },
   role: {
@@ -44,7 +43,13 @@ const userSchema = mongoose.Schema({
       type: String,
       required: true
     }
-  }]
+  }],
+  facebookId: {
+    type: String
+  },
+  googleId: {
+    type: String
+  }
 }, {
   timestamps: true
 });

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-
+import urlAPI from '../../utils/urlAPI';
 import { register } from '../../actions/auth';
 import { setAlert } from '../../actions/alert';
 
@@ -106,9 +106,8 @@ const Register = ({ auth: { isAuthenticated }, register, setAlert }) => {
                                 <div className="sign-info">
                                     <span className="dark-color d-inline-block line-height-2">Already Have Account ? <Link to="/login">Log In</Link></span>
                                     <ul className="iq-social-media">
-                                        <li><a href="sign-up.html#"><i className="ri-facebook-box-line" /></a></li>
-                                        <li><a href="sign-up.html#"><i className="ri-twitter-line" /></a></li>
-                                        <li><a href="sign-up.html#"><i className="ri-instagram-line" /></a></li>
+                                        <li><a href={`${urlAPI}/auth/facebook`} role="button"><i className="ri-facebook-box-line" /></a></li>
+                                        <li><a href={`${urlAPI}/auth/google`}><i className="ri-google-line" /></a></li>
                                     </ul>
                                 </div>
                             </form>

@@ -6,10 +6,14 @@ const authRouter = require('./routers/api/auth');
 const postRouter = require('./routers/api/post');
 const groupRouter = require('./routers/api/group');
 const profileRouter = require('./routers/api/profile');
-
+const socicalRouter = require('./routers/api/auth-facebook');
+const socicalRouterGG = require('./routers/api/auth-google');
 const notificationRouter = require('./routers/api/notification');
 
 const notFoundRouter = require('./routers/not-found/not-found');
+
+const passport = require('passport');
+
 // const errorHandler = require('./middleware/error-handler');
 const PORT = process.env.PORT;
 
@@ -21,6 +25,7 @@ const app = express();
 //Middleware
 app.use(cors());
 app.use(express.json());
+app.use(passport.initialize());
 
 //Global error handler
 // app.use(errorHandler);
@@ -32,7 +37,8 @@ app.use('/api/posts', postRouter);
 app.use('/api/notification', notificationRouter);
 app.use('/api/groups', groupRouter);
 app.use('/api/profile', profileRouter);
-
+app.use(socicalRouter);
+app.use(socicalRouterGG);
 //The 404 Route (ALWAYS Keep this as the last route)
 app.use('*', notFoundRouter);
 

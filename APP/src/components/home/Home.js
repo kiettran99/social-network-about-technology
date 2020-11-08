@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import queryString from 'query-string';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+
 import CreatePost from '../post/CreatePost';
 import Stories from './Stories';
 import Events from './Events';
@@ -7,7 +11,21 @@ import SuggestedPages from './SuggestedPages';
 import Process from '../layout/Process';
 import PostsPage from '../post/PostsPage';
 
-const Home = () => {
+import { loadUser } from '../../actions/auth';
+import setAuthToken from '../../utils/setAuthToken';
+
+const Home = ({ location, loadUser, history }) => {
+
+  useEffect(() => {
+    const query = queryString.parse(location.search);
+
+    if (query.token) {
+      setAuthToken(query.token);
+      history.push('/');
+      loadUser();
+    }
+  }, []);
+
   return (
     <div id="content-page" className="content-page" >
       <div className="container">
@@ -33,4 +51,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default connect(null, { loadUser })(withRouter(Home));

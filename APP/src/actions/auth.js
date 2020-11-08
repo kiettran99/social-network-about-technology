@@ -31,6 +31,9 @@ export const loadUser = () => async dispatch => {
     }
 };
 
+
+
+
 //Login user
 export const login = (username, password) => async dispatch => {
     const config = {
@@ -131,7 +134,7 @@ export const register = ({ username, password, country, email, fullname }) => as
 };
 
 //Logout user
-export const logout = () => async dispatch => {
+export const logout = (history) => async dispatch => {
     try {
         dispatch({
             type: REQUEST_LOADING
@@ -142,6 +145,10 @@ export const logout = () => async dispatch => {
         dispatch({
             type: LOGOUT
         });
+
+        dispatch(setAlert('Logout successfully !', 'success', 2000));
+
+        history.push('/login');
     }
     catch (e) {
         console.log(e);
