@@ -1,20 +1,18 @@
 import React from 'react';
-import GroupsItem from './GroupsItem';
+import GroupList from './GroupList';
+import HeaderBackground from './header/HeaderBackground';
 
 const Groups = () => {
     return (
-        <section className="companies-info">
-            <div className="container">
-                <div className="company-title">
-                    <h3>All Companies</h3>
-                </div>{/*company- end*/}
-                <div className="companies-list">
-                    <div className="row">
-                        <GroupsItem />
-                    </div>
-                </div>{/*companies-list end*/}
+        <div>
+            <HeaderBackground title={'Groups'} imageUrl={'/images/page-img/profile-bg7.jpg'} />
+            {/* Page Content  */}
+            <div id="content-page" className="content-page">
+                <div className="container">
+                    <GroupList />
+                </div>
             </div>
-        </section>
+        </div>
     );
 };
 

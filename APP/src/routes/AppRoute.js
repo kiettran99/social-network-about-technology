@@ -10,9 +10,6 @@ import SideBar from '../components/layout/SideBar';
 
 import Login from '../components/auth/Login';
 import Register from '../components/auth/Register';
-import ProductList from '../components/products/ProductList';
-import AddProduct from '../components/products/product-forms/AddProduct';
-import ProductDetail from '../components/products/ProductDetail';
 import NotFoundPage from '../components/not-found-page/NotFoundPage';
 import Home from '../components/home/Home'
 import Groups from '../components/groups/Groups';
@@ -32,12 +29,9 @@ const MainComponent = () => {
                     <Route exact path="/" component={Home} />
                     <Route exact path="/posts/:id" component={PostDetail} />
                     <Route exact path="/groups" component={Groups} />
-                    <Route exact path="/group-page" component={GroupPage} />
+                    <Route exact path="/groups/:id" component={GroupPage} />
                     <PrivateRoute exact path="/profile/edit" component={EditProfile} />
                     <Route exact path="/profile/:id" component={Profile} />
-                    <Route exact path={["/product", "/products"]} component={ProductList} />
-                    <PrivateRoute exact path="/products/add" component={AddProduct} />
-                    <Route exact path="/products/:id" component={ProductDetail} />
                     <Route component={NotFoundPage} />
                 </Switch>
             </section>

@@ -5,6 +5,7 @@ import loadingBar from './loading-bar';
 import notification from './notifcation';
 import post from './post';
 import profile from './profiile';
+import group from './group';
 
 export default combineReducers({
     alert,
@@ -12,5 +13,6 @@ export default combineReducers({
     loadingBar,
     notification,
     post,
-    profile
+    profile,
+    group
 });

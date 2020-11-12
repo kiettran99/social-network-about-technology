@@ -5,11 +5,17 @@ import { connect } from 'react-redux';
 import UserPost from './UserPost';
 import { withRouter } from 'react-router-dom';
 
-const PostsPage = ({ post: { posts, loading }, getPosts, history }) => {
+const PostsPage = ({ post: { posts, loading }, getPosts, history, groupId = '' }) => {
 
     useEffect(() => {
-        getPosts();
-    }, []);
+
+        if (groupId == '') {
+            getPosts();
+        }
+        else {
+            getPosts(0, 5, groupId);
+        }
+    }, [groupId]);
 
     return !loading && (
         posts.map(post => (

@@ -7,7 +7,7 @@ const upload = require('../../utils/upload');
 const { notify } = require('../../utils/notification');
 
 // @route Get /api/posts/
-// @route-full Get /api/posts?limit=number&skip=number
+// @route-full Get /api/posts?limit=number&skip=number&groupId=id
 // @desc Feed a post
 // @access public
 router.get('/', async (req, res) => {
@@ -16,7 +16,13 @@ router.get('/', async (req, res) => {
         const limit = parseInt(req.query.limit) || 5;
         const skip = parseInt(req.query.skip) || 0;
 
-        const posts = await Post.find({}, {
+        const conditions = {};
+
+        if (req.query.groupId) {
+            conditions.group = req.query.groupId;
+        }
+
+        const posts = await Post.find(conditions, {
             comments: {
                 $slice: [0, 2]
             }
@@ -175,6 +181,11 @@ router.post('/', auth, upload.single('image'), [
             user: req.user.id,
             name: req.user.fullname,
             avatar: req.user.avatar
+        }
+
+        // if 'null' bugs.
+        if (!!req.body.groupId) {
+            newPost.group = req.body.groupId;
         }
 
         // Create a instance post and save it.
