@@ -15,7 +15,17 @@ const groupSchema = Schema({
     },
     avatar: {
         type: String
-    }
+    },
+    members: [{
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: 'user'
+        },
+        status: {
+            type: String,
+            default: 'pending'
+        }
+    }]
 });
 
 const Group = mongoose.model('Group', groupSchema);

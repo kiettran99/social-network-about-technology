@@ -11,8 +11,8 @@ const authByRole = require('../../middleware/auth-by-role');
 // @access public
 router.get('/', async (req, res) => {
     try {
-        const limit = req.query.limit || 5;
-        const skip = req.query.skip || 0;
+        const limit = parseInt(req.query.limit) || 5;
+        const skip = parseInt(req.query.skip) || 0;
 
         const groups = await Group.find({}).limit(limit).skip(skip);
 

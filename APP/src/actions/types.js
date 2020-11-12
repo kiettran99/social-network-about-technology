@@ -54,3 +54,9 @@ export const GET_PROFILE = 'GET_PROFILE';
 export const CLEAR_PROFILE = 'GET_PROFILES';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const PROFILE_ERROR = 'PROFILE_ERROR';
+
+export const GET_GROUPS = 'GET_GROUPS';
+export const GET_MORE_GROUPS = 'GET_MORE_GROUPS';
+export const GET_GROUP = 'GET_GROUP';
+export const CLEAR_GROUP = 'GET_PROFILES';
+export const GROUP_ERROR = 'GROUP_ERROR';

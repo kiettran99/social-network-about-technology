@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const SideBar = () => {
     return (
@@ -7,7 +8,7 @@ const SideBar = () => {
                 <nav className="iq-sidebar-menu">
                     <ul id="iq-sidebar-toggle" className="iq-menu">
                         <li className="active">
-                            <a href="index.html" className="iq-waves-effect"><i className="las la-newspaper" /><span>Newsfeed</span></a>
+                            <Link to="/" className="iq-waves-effect"><i className="las la-newspaper" /><span>Newsfeed</span></Link>
                         </li>
                         <li>
                             <a href="profile.html" className="iq-waves-effect"><i className="las la-user" /><span>Profile</span></a>
@@ -16,7 +17,7 @@ const SideBar = () => {
                             <a href="friend-list.html" className="iq-waves-effect"><i className="las la-user-friends" /><span>Friend Lists</span></a>
                         </li>
                         <li>
-                            <a href="group.html" className="iq-waves-effect"><i className="las la-users" /><span>Group</span></a>
+                            <Link to="/groups" className="iq-waves-effect"><i className="las la-users" /><span>Group</span></Link>
                         </li>
                         <li>
                             <a href="profile-images.html" className="iq-waves-effect"><i className="las la-image" /><span>Profile Image</span></a>
