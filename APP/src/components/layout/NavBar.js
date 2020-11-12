@@ -258,7 +258,7 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, 
                       </div>
                     </a>
                     <div className="d-inline-block w-100 text-center p-3">
-                      <Link className="bg-primary iq-sign-btn text-light" role="button"
+                      <Link to='' className="bg-primary iq-sign-btn text-light" role="button"
                         onClick={() => {
                           logout(history);
                         }}

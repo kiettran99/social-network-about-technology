@@ -67,13 +67,13 @@ export const getPost = (id, history, skip = 0, limit = 3) => async dispatch => {
 
 // Skip helps passing number comments.
 // Limit helps display limit comments.
-export const getPosts = (skip = 0, limit = 5) => async dispatch => {
+export const getPosts = (skip = 0, limit = 5, groupId) => async dispatch => {
     try {
         dispatch({
             type: REQUEST_LOADING
         });
 
-        const res = await axios.get(`${urlAPI}/api/posts?skip=${skip}&limit=${limit}`);
+        const res = await axios.get(`${urlAPI}/api/posts?skip=${skip}&limit=${limit}${groupId && "&groupId=" + groupId}`);
 
         dispatch({
             type: GET_POSTS,

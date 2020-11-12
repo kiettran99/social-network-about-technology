@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addPost } from '../../actions/post';
 
-const CreatePost = ({ auth: { user, isAuthenticated, loading }, addPost }) => {
+const CreatePost = ({ auth: { user, isAuthenticated, loading }, addPost, groupId }) => {
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -26,6 +26,12 @@ const CreatePost = ({ auth: { user, isAuthenticated, loading }, addPost }) => {
     const formData = new FormData();
     formData.append('text', text);
     formData.append('image', image);
+
+    if (groupId) {
+      formData.append('groupId', groupId);
+    }
+
+    console.log(formData);
 
     addPost(formData);
   };
@@ -62,9 +68,9 @@ const CreatePost = ({ auth: { user, isAuthenticated, loading }, addPost }) => {
         </div>
         <hr />
         <ul className="post-opt-block d-flex align-items-center list-inline m-0 p-0">
-          <li className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="images/small/07.png" alt="icon" className="img-fluid" /> Photo/Video</li>
-          <li className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="images/small/08.png" alt="icon" className="img-fluid" /> Tag Friend</li>
-          <li className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="images/small/09.png" alt="icon" className="img-fluid" /> Feeling/Activity</li>
+          <li className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/07.png" alt="icon" className="img-fluid" /> Photo/Video</li>
+          <li className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/08.png" alt="icon" className="img-fluid" /> Tag Friend</li>
+          <li className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/09.png" alt="icon" className="img-fluid" /> Feeling/Activity</li>
           <li className="iq-bg-primary rounded p-2 pointer">
             <div className="iq-card-header-toolbar d-flex align-items-center">
               <div className="dropdown">
@@ -107,28 +113,28 @@ const CreatePost = ({ auth: { user, isAuthenticated, loading }, addPost }) => {
               <hr />
               <ul className="d-flex flex-wrap align-items-center list-inline m-0 p-0">
                 <li className="col-md-6 mb-3">
-                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="images/small/07.png" alt="icon" className="img-fluid" /> Photo/Video</div>
+                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/07.png" alt="icon" className="img-fluid" /> Photo/Video</div>
                 </li>
                 <li className="col-md-6 mb-3">
-                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="images/small/08.png" alt="icon" className="img-fluid" /> Tag Friend</div>
+                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/08.png" alt="icon" className="img-fluid" /> Tag Friend</div>
                 </li>
                 <li className="col-md-6 mb-3">
-                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="images/small/09.png" alt="icon" className="img-fluid" /> Feeling/Activity</div>
+                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/09.png" alt="icon" className="img-fluid" /> Feeling/Activity</div>
                 </li>
                 <li className="col-md-6 mb-3">
-                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="images/small/10.png" alt="icon" className="img-fluid" /> Check in</div>
+                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/10.png" alt="icon" className="img-fluid" /> Check in</div>
                 </li>
                 <li className="col-md-6 mb-3">
-                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="images/small/11.png" alt="icon" className="img-fluid" /> Live Video</div>
+                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/11.png" alt="icon" className="img-fluid" /> Live Video</div>
                 </li>
                 <li className="col-md-6 mb-3">
-                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="images/small/12.png" alt="icon" className="img-fluid" /> Gif</div>
+                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/12.png" alt="icon" className="img-fluid" /> Gif</div>
                 </li>
                 <li className="col-md-6 mb-3">
-                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="images/small/13.png" alt="icon" className="img-fluid" /> Watch Party</div>
+                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/13.png" alt="icon" className="img-fluid" /> Watch Party</div>
                 </li>
                 <li className="col-md-6 mb-3">
-                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="images/small/14.png" alt="icon" className="img-fluid" /> Play with Friends</div>
+                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/14.png" alt="icon" className="img-fluid" /> Play with Friends</div>
                 </li>
               </ul>
               <hr />
