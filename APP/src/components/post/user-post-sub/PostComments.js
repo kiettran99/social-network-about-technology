@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { getMoreComments } from '../../../actions/post';
 
-const PostComments = ({ postId, comments, getMoreComments }) => {
+const PostComments = ({ postId, comments, getMoreComments, lengthOfComments }) => {
 
     const handleGetMoreComments = () => {
         getMoreComments(postId, comments.length);
@@ -12,7 +12,7 @@ const PostComments = ({ postId, comments, getMoreComments }) => {
 
     return (
         <>
-            {comments.length > 0 && (
+            {comments.length > 0 && comments.length !== lengthOfComments && (
                 <div className="pb-2">
                     <button className="btn btn-link" onClick={handleGetMoreComments}>View previous comments</button>
                 </div>

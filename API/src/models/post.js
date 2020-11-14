@@ -24,6 +24,12 @@ const postSchema = Schema({
         user: {
             type: ObjectId,
             ref: 'User'
+        },
+        name: {
+            type: String
+        },
+        emoji: {
+            type: Number
         }
     }],
     group: {
@@ -48,10 +54,20 @@ const postSchema = Schema({
             type: Date,
             default: Date.now
         },
+        lengthOfReplies: {
+            type: Number,
+            default: 0
+        },
         likes: [{
             user: {
                 type: ObjectId,
                 ref: 'User'
+            },
+            name: {
+                type: String
+            },
+            emoji: {
+                type: Number
             }
         }],
         replies: [{
@@ -76,11 +92,20 @@ const postSchema = Schema({
                 user: {
                     type: ObjectId,
                     ref: 'User'
+                },
+                name: {
+                    type: String
+                },
+                emoji: {
+                    type: Number
                 }
-            }],
-
+            }]
         }]
-    }]
+    }],
+    lengthOfComments: {
+        type: Number,
+        default: 0
+    }
 }, {
     timestamps: true
 });

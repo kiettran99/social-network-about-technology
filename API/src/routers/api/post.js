@@ -336,7 +336,7 @@ router.put('/like/:id', auth, async (req, res) => {
         }
 
         // Push User into Likes array.
-        post.likes.unshift({ user: req.user.id });
+        post.likes.unshift({ user: req.user.id, name: req.user.fullname });
 
         await post.save();
 
@@ -424,10 +424,11 @@ router.put('/comment/:id', [auth,
 
         //Newest first page.
         post.comments.unshift(newComment);
+        post.lengthOfComments += 1;
 
         await post.save();
 
-        const message = `${req.user.fullname} have just comment on ${post.name}`;
+        const message = `${req.user.fullname} have just commented on post.`;
 
         notify(message, {
             user: req.user,
@@ -472,6 +473,7 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
         const removeIndex = post.comments.map(comment => comment.id).indexOf(req.params.comment_id);
 
         post.comments.splice(removeIndex, 1);
+        post.lengthOfComments -= 1;
 
         await post.save();
 
@@ -521,7 +523,7 @@ router.put('/:post_id/comments/like/:comment_id', auth, async (req, res) => {
         }
 
         // Push User into Likes array.
-        comment.likes.unshift({ user: req.user.id });
+        comment.likes.unshift({ user: req.user.id, name: req.user.fullname });
 
         await post.save();
 
@@ -632,6 +634,7 @@ router.put('/:post_id/comments/reply/:comment_id', [auth,
 
         //Newest first page.
         comment.replies.unshift(newReply);
+        comment.lengthOfReplies += 1;
 
         await post.save();
 
@@ -690,6 +693,7 @@ router.delete('/:post_id/comments/reply/:comment_id/:reply_id', auth, async (req
         const removeIndex = comment.replies.map(reply => reply.id).indexOf(replyId);
 
         comment.replies.splice(removeIndex, 1);
+        comment.lengthOfReplies -= 1;
 
         await post.save();
 
@@ -746,7 +750,7 @@ router.put('/:post_id/comments/:comment_id/reply/like/:reply_id', auth, async (r
         }
 
         // Push User into Likes array.
-        reply.likes.unshift({ user: req.user.id });
+        reply.likes.unshift({ user: req.user.id, name: req.user.fullname });
 
         await post.save();
 

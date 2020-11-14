@@ -5,7 +5,7 @@ import PostComments from './user-post-sub/PostComments';
 import CommentForm from './user-post-sub/CommentForm';
 import Following from './user-post-sub/Following';
 
-const UserPost = ({ post: { _id, name, text, avatar, imageUrl, likes, group, comments, createdAt } }) => {
+const UserPost = ({ post: { _id, name, text, avatar, imageUrl, likes, group, comments, createdAt, lengthOfComments } }) => {
     return (
         <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
             <div className="iq-card-body">
@@ -79,7 +79,7 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrl, likes, group, com
                 <div className="comment-area mt-3">
                     <CommentsBar postId={_id} likes={likes} comments={comments} />
                     <hr />
-                    <PostComments postId={_id} comments={comments} />
+                    <PostComments postId={_id} comments={comments} lengthOfComments={lengthOfComments} />
                     <CommentForm postId={_id} />
                 </div>
             </div>
