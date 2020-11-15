@@ -18,7 +18,7 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrl, likes, group, com
                         </div>
                         <div className="media-support-info mt-2">
                             <h5 className="mb-0 d-inline-block"><Link to="index.html#">{name}&nbsp;</Link></h5>
-                            {group ? <p className="mb-0 d-inline-block"> <i class="fas fa-caret-right">&nbsp;</i><Link className='text-dark' to={`/groups/${group._id}`}>&nbsp;{group.name}</Link></p>
+                            {group ? <p className="mb-0 d-inline-block"> <i className="fas fa-caret-right">&nbsp;</i><Link className='text-dark' to={`/groups/${group._id}`}>&nbsp;{group.name}</Link></p>
                             : <p className="mb-0 d-inline-block">Add New Post</p>}
                             <p className="mb-0 text-primary">{dayjs(createdAt).fromNow()}</p>
                         </div>

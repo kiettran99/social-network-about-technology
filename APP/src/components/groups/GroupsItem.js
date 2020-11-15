@@ -67,7 +67,7 @@ const GroupsItem = ({ group: { _id, name, info, wallpaper, avatar, lengthOfMembe
                     <div className="group-member mb-3">
                         <div className="iq-media-group">
                             {members && members.map(member => (
-                                <Link to={`/profile/${member.user._id}`} className="iq-media">
+                                <Link to={`/profile/${member.user._id}`} className="iq-media" key={member._id}>
                                     <img className="img-fluid avatar-40 rounded-circle" src={member.user.avatar} alt="" />
                                 </Link>
                             ))}

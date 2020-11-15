@@ -169,7 +169,7 @@ router.get('/:post_id/comments/:comment_id/replies/more', async (req, res) => {
 // @route Post /api/posts/
 // @desc Upload a post
 // @access private
-router.post('/', auth, upload.single('image'), [
+router.post('/', auth, upload.array('images'), [
     body('text', 'Text is required.').not().isEmpty()
 ], async (req, res) => {
     try {
@@ -196,15 +196,19 @@ router.post('/', auth, upload.single('image'), [
         await post.save();
 
         // Check post uploaded image.
-        if (req.file) {
+        if (req.files) {
 
-            //Create a storage ref
-            const storageRef = storage.ref(`/posts/${post.id}/${req.file.originalname}`);
+            await Promise.all(req.files.map(async (file) => {
+                //Create a storage ref
+                const storageRef = storage.ref(`/posts/${post.id}/${file.originalname}`);
 
-            //Upload image
-            await storageRef.put(req.file.buffer);
+                //Upload image
+                await storageRef.put(file.buffer);
 
-            post.imageUrl = await storageRef.getDownloadURL();
+                const fileUrl = await storageRef.getDownloadURL();
+
+                post.imageUrls.push(fileUrl);
+            }));
 
             await post.save();
         }
@@ -220,7 +224,7 @@ router.post('/', auth, upload.single('image'), [
 // @route Put /api/posts/:id
 // @desc Edit a post By Id
 // @access private
-router.put('/:id', auth, upload.single('image'), [
+router.put('/:id', auth, upload.array('images'), [
     body('text', 'Text is required.').not().isEmpty()
 ], async (req, res) => {
     try {
@@ -243,7 +247,7 @@ router.put('/:id', auth, upload.single('image'), [
         await post.save();
 
         // Check image upload
-        if (req.file) {
+        if (req.files) {
             const prevImageRef = storage.ref(`/posts/${post.id}`);
 
             // Remove previous images and add new image
@@ -255,13 +259,19 @@ router.put('/:id', auth, upload.single('image'), [
                 console.log('Fail', e);
             });
 
-            //Create a storage ref
-            const storageRef = storage.ref(`/posts/${post.id}/${req.file.originalname}`);
+            post.imageUrls = [];
 
-            //Upload image
-            await storageRef.put(req.file.buffer);
+            await Promise.all(req.files.map(async (file) => {
+                //Create a storage ref
+                const storageRef = storage.ref(`/posts/${post.id}/${file.originalname}`);
 
-            post.imageUrl = await storageRef.getDownloadURL();
+                //Upload image
+                await storageRef.put(file.buffer);
+
+                const fileUrl = await storageRef.getDownloadURL();
+
+                post.imageUrls.push(fileUrl);
+            }));
 
             await post.save();
         }
