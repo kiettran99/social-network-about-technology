@@ -60,3 +60,6 @@ export const GET_MORE_GROUPS = 'GET_MORE_GROUPS';
 export const GET_GROUP = 'GET_GROUP';
 export const CLEAR_GROUP = 'GET_PROFILES';
 export const GROUP_ERROR = 'GROUP_ERROR';
+
+export const JOIN_GROUP = 'JOIN_GROUP';
+export const UNJOIN_GROUP = 'UNJOIN_GROUP';

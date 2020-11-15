@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { getGroup } from '../../actions/group';
 import GroupProfile from './GroupProfile';
 import CreatePost from '../post/CreatePost';
@@ -114,51 +115,21 @@ const GroupPage = ({ match, getGroup, group: { group, loading } }) => {
                                             <div className="iq-card">
                                                 <div className="iq-card-header d-flex justify-content-between">
                                                     <div className="iq-header-title">
-                                                        <h4 className="card-title">Friends</h4>
+                                                        <h4 className="card-title">Members</h4>
                                                     </div>
                                                     <div className="iq-card-header-toolbar d-flex align-items-center">
-                                                        <p className="m-0"><a href="javacsript:void();">Add New </a></p>
+                                                        {/* <p className="m-0"><a href="javacsript:void();">Add New </a></p> */}
                                                     </div>
                                                 </div>
                                                 <div className="iq-card-body">
                                                     <ul className="profile-img-gallary d-flex flex-wrap p-0 m-0">
-                                                        <li className="col-md-4 col-6 pl-2 pr-0 pb-3">
-                                                            <a href="javascript:void();">
-                                                                <img src="/images/user/05.jpg" alt="gallary-image" className="img-fluid" /></a>
-                                                            <h6 className="mt-2">Anna Rexia</h6>
-                                                        </li>
-                                                        <li className="col-md-4 col-6 pl-2 pr-0 pb-3">
-                                                            <a href="javascript:void();"><img src="/images/user/06.jpg" alt="gallary-image" className="img-fluid" /></a>
-                                                            <h6 className="mt-2">Tara Zona</h6>
-                                                        </li>
-                                                        <li className="col-md-4 col-6 pl-2 pr-0 pb-3">
-                                                            <a href="javascript:void();"><img src="/images/user/07.jpg" alt="gallary-image" className="img-fluid" /></a>
-                                                            <h6 className="mt-2">Polly Tech</h6>
-                                                        </li>
-                                                        <li className="col-md-4 col-6 pl-2 pr-0 pb-3">
-                                                            <a href="javascript:void();"><img src="/images/user/08.jpg" alt="gallary-image" className="img-fluid" /></a>
-                                                            <h6 className="mt-2">Bill Emia</h6>
-                                                        </li>
-                                                        <li className="col-md-4 col-6 pl-2 pr-0 pb-3">
-                                                            <a href="javascript:void();"><img src="/images/user/09.jpg" alt="gallary-image" className="img-fluid" /></a>
-                                                            <h6 className="mt-2">Moe Fugga</h6>
-                                                        </li>
-                                                        <li className="col-md-4 col-6 pl-2 pr-0 pb-3">
-                                                            <a href="javascript:void();"><img src="/images/user/10.jpg" alt="gallary-image" className="img-fluid" /></a>
-                                                            <h6 className="mt-2">Hal Appeno </h6>
-                                                        </li>
-                                                        <li className="col-md-4 col-6 pl-2 pr-0 pb-0">
-                                                            <a href="javascript:void();"><img src="/images/user/07.jpg" alt="gallary-image" className="img-fluid" /></a>
-                                                            <h6 className="mt-2">Zack Lee</h6>
-                                                        </li>
-                                                        <li className="col-md-4 col-6 pl-2 pr-0 pb-0">
-                                                            <a href="javascript:void();"><img src="/images/user/06.jpg" alt="gallary-image" className="img-fluid" /></a>
-                                                            <h6 className="mt-2">Terry Aki</h6>
-                                                        </li>
-                                                        <li className="col-md-4 col-6 pl-2 pr-0 pb-0">
-                                                            <a href="javascript:void();"><img src="/images/user/05.jpg" alt="gallary-image" className="img-fluid" /></a>
-                                                            <h6 className="mt-2">Greta Life</h6>
-                                                        </li>
+                                                        {group.members && group.members.map(member => (
+                                                            <li className="col-md-4 col-6 pl-2 pr-0 pb-3" key={member._id}>
+                                                                <Link to={`/profile/${member.user._id}`}>
+                                                                    <img src={member.user.avatar} alt="gallary-image" className="img-fluid" /></Link>
+                                                                <h6 className="mt-2">{member.user.name}</h6>
+                                                            </li>
+                                                        ))}
                                                     </ul>
                                                 </div>
                                             </div>

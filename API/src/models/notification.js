@@ -11,6 +11,14 @@ const notificationSchema = Schema({
         type: ObjectId,
         ref: 'Post'
     }],
+    followingGroups: [{
+        type: ObjectId,
+        ref: 'Group'
+    }],
+    followingFriends: [{
+        type: ObjectId,
+        ref: 'User'
+    }],
     messages: [{
         user: {
             type: ObjectId,

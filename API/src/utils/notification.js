@@ -67,4 +67,40 @@ const createNotification = async (user) => {
     }
 }
 
-module.exports = { notify, createNotification };
+const registerGroupNotification = async (user, group) => {
+    try {
+        const notification = await Notification.findOne({
+            user: user._id,
+            'followingGroups': { $nin: group._id }
+        });
+
+        if (notification) {
+            notification.followingGroups.push(group._id);
+        }
+
+        await notification.save();
+    }
+    catch (e) {
+        console.log(e);
+    }
+}
+
+const unregisterGroupNotification = async (user, group) => {
+    try {
+        const notification = await Notification.findOne({
+            user: user._id,
+            'followingGroups': group._id
+        });
+
+        if (notification) {
+            notification.followingGroups.pull(group._id);
+        }
+
+        await notification.save();
+    }
+    catch (e) {
+        console.log(e);
+    }
+}
+
+module.exports = { notify, createNotification, registerGroupNotification, unregisterGroupNotification };

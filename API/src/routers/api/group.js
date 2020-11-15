@@ -4,6 +4,8 @@ const upload = require('../../utils/upload');
 const storage = require('../../firebase/firebase');
 const Group = require('../../models/group');
 const authByRole = require('../../middleware/auth-by-role');
+const auth = require('../../middleware/auth');
+const { registerGroupNotification, unregisterGroupNotification } = require('../../utils/notification');
 
 // @route GET /api/groups
 // @rotue full GET /api/groups?limt=number&skip=number
@@ -14,7 +16,11 @@ router.get('/', async (req, res) => {
         const limit = parseInt(req.query.limit) || 5;
         const skip = parseInt(req.query.skip) || 0;
 
-        const groups = await Group.find({}).limit(limit).skip(skip);
+        const groups = await Group.find({}, {
+            members: {
+                $slice: [0, 6]
+            }
+        }).limit(limit).skip(skip).populate('members.user', 'avatar');
 
         res.json(groups);
     }
@@ -36,7 +42,11 @@ router.get('/:id', async (req, res) => {
             return res.status(400).send('Group id is empty.');
         }
 
-        const group = await Group.findById(id);
+        const group = await Group.findById(id, {
+            members: {
+                $slice: [0, 9]
+            }
+        }).populate('members.user', 'avatar name');
 
         res.json(group);
     }
@@ -114,6 +124,96 @@ router.put('/:id', authByRole('admin'), async (req, res) => {
     }
 });
 
+// @route PUT /api/groups/:id/join
+// @desc join a group.
+// @access private Admin
+router.put('/:id/join', auth, async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        // Check id is not empty
+        if (!id) {
+            return res.status(400).send('Group id is empty.');
+        }
+
+        const group = await Group.findById(id);
+
+        if (!group) {
+            return res.status(404).send('Group is not exists.');
+        }
+
+        // Make sure user liked post yet.
+        const isJoinedGroup = group.members.filter(member => member.user._id.toString() === req.user.id).length > 0;
+
+        if (isJoinedGroup) {
+            return res.status(400).json({ msg: 'Group is joined already.' });
+        }
+
+        group.members.push({ user: req.user.id });
+        group.lengthOfMembers += 1;
+
+        const [updatedGroup] = await Promise.all([group.populate('members.user', 'avatar').execPopulate(), group.save()])
+
+        if (updatedGroup) {
+            registerGroupNotification(req.user, updatedGroup);
+        }
+
+        res.json(updatedGroup.members.slice(0, 5));
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route PUT /api/groups/:id/unjoin
+// @desc unjoin a group.
+// @access private Admin
+router.put('/:id/unjoin', auth, async (req, res) => {
+    try {
+
+        const id = req.params.id;
+
+        // Check id is not empty
+        if (!id) {
+            return res.status(400).send('Group id is empty.');
+        }
+
+        const group = await Group.findById(id);
+
+        if (!group) {
+            return res.status(404).send('Group is not exists.');
+        }
+
+        // Make sure user liked post yet.
+        const isNotJoined = group.members.filter(member => member.user._id.toString() === req.user.id).length === 0;
+
+        if (isNotJoined) {
+            return res.status(400).json({ msg: 'Group has not been joined yet.' });
+        }
+
+        // Remove index
+        const removeIndex = group.members.map(member => member.user._id.toString()).indexOf(req.user.id);
+
+        group.members.splice(removeIndex, 1);
+
+        group.lengthOfMembers -= 1;
+
+        // Coppy document and populate user to get avatar, slice 0,5 to get 5th user.
+        const [updatedGroup] = await Promise.all([group.populate('members.user', 'avatar').execPopulate(), group.save()])
+
+        if (updatedGroup) {
+            unregisterGroupNotification(req.user, updatedGroup);
+        }
+
+        res.json(updatedGroup.members.slice(0, 5));
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
 // @route PUT /api/groups/:id/avatar
 // @desc upload avatar
 // @access private Admin
@@ -167,7 +267,7 @@ router.put('/:id/avatar', [authByRole('admin'), upload.single('avatar')
 router.put('/:id/wallpaper', [authByRole('admin'), upload.single('wallpaper')
 ], async (req, res) => {
     try {
-        
+
         const id = req.params.id;
         // Check id is not empty
         if (!id) {

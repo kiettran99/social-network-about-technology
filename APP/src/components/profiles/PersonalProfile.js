@@ -19,7 +19,7 @@ const PersonalProfile = ({ auth: { user, isAuthenticated },
                         <img src="/images/page-img/profile-bg1.jpg" alt="profile-bg" className="rounded img-fluid" />
                         <ul className="header-nav d-flex flex-wrap justify-end p-0 m-0">
                             {user && isAuthenticated && user._id === profile.user._id &&
-                                <li style={{ cursor: "pointer" }}><Link to={`/profile/edit`}><i className="ri-pencil-line" /></Link></li>}
+                                <li style={{ cursor: "pointer", zIndex: "2" }}><Link to={`/profile/edit`}><i className="ri-pencil-line" /></Link></li>}
                             <li><a href=""><i className="ri-settings-4-line" /></a></li>
                         </ul>
                     </div>

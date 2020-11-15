@@ -1,7 +1,39 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, withRouter } from 'react-router-dom';
+import { joinGroup, unjoinGroup } from '../../actions/group';
+import { connect } from 'react-redux';
 
-const GroupsItem = ({ group: { _id, name, info, wallpaper, avatar, members = [] } }) => {
+const GroupsItem = ({ group: { _id, name, info, wallpaper, avatar, lengthOfMembers, members = [] },
+    auth: { user, loading, isAuthenticated }, joinGroup, unjoinGroup, history
+}) => {
+
+    const [isJoinedGroup, setIsJoinedGroup] = useState(false);
+
+    useEffect(() => {
+        if (user && !loading) {
+            const isMembered = members.filter(member => member.user._id === user._id).length > 0;
+
+            setIsJoinedGroup(isMembered);
+        }
+    }, [user, loading, lengthOfMembers]);
+
+    const onHandlAassociationGroup = () => {
+        if (!loading) {
+            if (!user || !isAuthenticated) {
+                return history.push('/login');
+            }
+
+            if (isJoinedGroup) {
+                setIsJoinedGroup(false);
+                return unjoinGroup(_id);
+            }
+
+            joinGroup(_id);
+
+            setIsJoinedGroup(true);
+        }
+    };
+
     return (
         <div className="col-md-6 col-lg-4">
             <div className="iq-card">
@@ -24,7 +56,7 @@ const GroupsItem = ({ group: { _id, name, info, wallpaper, avatar, members = [] 
                             </li>
                             <li className="pl-3 pr-3">
                                 <p className="mb-0">Member</p>
-                                <h6>{members && members.length}</h6>
+                                <h6>{members && lengthOfMembers}</h6>
                             </li>
                             <li className="pl-3 pr-3">
                                 <p className="mb-0">Visit</p>
@@ -34,31 +66,23 @@ const GroupsItem = ({ group: { _id, name, info, wallpaper, avatar, members = [] 
                     </div>
                     <div className="group-member mb-3">
                         <div className="iq-media-group">
-                            <a href="group.html#" className="iq-media">
-                                <img className="img-fluid avatar-40 rounded-circle" src="/images/user/05.jpg" alt="" />
-                            </a>
-                            <a href="group.html#" className="iq-media">
-                                <img className="img-fluid avatar-40 rounded-circle" src="/images/user/06.jpg" alt="" />
-                            </a>
-                            <a href="group.html#" className="iq-media">
-                                <img className="img-fluid avatar-40 rounded-circle" src="/images/user/07.jpg" alt="" />
-                            </a>
-                            <a href="group.html#" className="iq-media">
-                                <img className="img-fluid avatar-40 rounded-circle" src="/images/user/08.jpg" alt="" />
-                            </a>
-                            <a href="group.html#" className="iq-media">
-                                <img className="img-fluid avatar-40 rounded-circle" src="/images/user/09.jpg" alt="" />
-                            </a>
-                            <a href="group.html#" className="iq-media">
-                                <img className="img-fluid avatar-40 rounded-circle" src="/images/user/10.jpg" alt="" />
-                            </a>
+                            {members && members.map(member => (
+                                <Link to={`/profile/${member.user._id}`} className="iq-media">
+                                    <img className="img-fluid avatar-40 rounded-circle" src={member.user.avatar} alt="" />
+                                </Link>
+                            ))}
                         </div>
                     </div>
-                    <button type="submit" className="btn btn-primary d-block w-100">Join</button>
+                    <button type="submit" className="btn btn-primary d-block w-100"
+                        onClick={() => onHandlAassociationGroup()}>{isJoinedGroup ? 'UnJoin' : 'Join'}</button>
                 </div>
             </div>
         </div>
     );
 };
 
-export default GroupsItem;
+const mapStateToProps = (state) => ({
+    auth: state.auth
+});
+
+export default connect(mapStateToProps, { joinGroup, unjoinGroup })(withRouter(GroupsItem));
