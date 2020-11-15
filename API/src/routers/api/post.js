@@ -25,8 +25,11 @@ router.get('/', async (req, res) => {
         const posts = await Post.find(conditions, {
             comments: {
                 $slice: [0, 2]
+            },
+            "comments.replies": {
+                $slice: [0, 1]
             }
-        }).limit(limit).skip(skip);
+        }).limit(limit).skip(skip).populate('group', 'name');
 
         res.send(posts);
 
@@ -56,7 +59,7 @@ router.get('/:id', async (req, res) => {
             "comments.replies": {
                 $slice: [0, 1]
             }
-        });
+        }).populate('group', 'name');
 
         res.json(post);
     }

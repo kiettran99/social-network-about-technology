@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { getMoreReplies } from '../../../actions/post';
 
 
-const ReplyList = ({ replies, postId, lengthOfReplies, onCommentsForm, commentId, getMoreReplies }) => {
+const ReplyList = ({ replies, postId, lengthOfReplies, onCommentsForm, commentId, getMoreReplies, isInPosts }) => {
 
     const handleGetMoreReplies = () => {
         getMoreReplies(postId, commentId, replies.length);
@@ -13,7 +13,7 @@ const ReplyList = ({ replies, postId, lengthOfReplies, onCommentsForm, commentId
 
     return replies && (
         <>
-            { replies.length > 0 && replies.length !== lengthOfReplies && (
+            { replies.length > 0 && replies.length !== lengthOfReplies && !isInPosts && (
                 <div className="d-flex flex-wrap row p-2">
                     <div className="offset-1 col-11">
                         <button className="btn btn-link" onClick={handleGetMoreReplies}>View previous replies</button>
@@ -31,4 +31,8 @@ const ReplyList = ({ replies, postId, lengthOfReplies, onCommentsForm, commentId
     )
 };
 
-export default connect(null, { getMoreReplies })(ReplyList);
+const mapStateToProps = (state) => ({
+    isInPosts: state.post.isInPosts
+});
+
+export default connect(mapStateToProps, { getMoreReplies })(ReplyList);

@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import dayjs from '../../utils/relativeDate';
 import CommentsBar from './user-post-sub/CommentsBar';
 import PostComments from './user-post-sub/PostComments';
@@ -15,8 +17,9 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrl, likes, group, com
                             <img className="rounded-circle img-fluid" src={avatar} alt="" />
                         </div>
                         <div className="media-support-info mt-2">
-                            <h5 className="mb-0 d-inline-block"><a href="index.html#">{name}&nbsp;</a></h5>
-                            <p className="mb-0 d-inline-block">Add New Post</p>
+                            <h5 className="mb-0 d-inline-block"><Link to="index.html#">{name}&nbsp;</Link></h5>
+                            {group ? <p className="mb-0 d-inline-block"> <i class="fas fa-caret-right">&nbsp;</i><Link className='text-dark' to={`/groups/${group._id}`}>&nbsp;{group.name}</Link></p>
+                            : <p className="mb-0 d-inline-block">Add New Post</p>}
                             <p className="mb-0 text-primary">{dayjs(createdAt).fromNow()}</p>
                         </div>
                         <div className="iq-card-post-toolbar">
@@ -77,7 +80,7 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrl, likes, group, com
                     </div>
                 </div>
                 <div className="comment-area mt-3">
-                    <CommentsBar postId={_id} likes={likes} comments={comments} />
+                    <CommentsBar postId={_id} likes={likes} lengthOfComments={lengthOfComments} />
                     <hr />
                     <PostComments postId={_id} comments={comments} lengthOfComments={lengthOfComments} />
                     <CommentForm postId={_id} />
