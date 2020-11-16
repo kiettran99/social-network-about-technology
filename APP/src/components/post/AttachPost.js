@@ -24,12 +24,12 @@ const AttachPost = ({ imageUrls }) => {
         return (
             <div className="d-flex">
                 <div className="col-md-6">
-                   <a className="cursor-pointer" onClick={() => onClickHandleOpen(1)}>
+                    <a className="cursor-pointer" onClick={() => onClickHandleOpen(1)}>
                         <img src={imageUrls[0]} alt="post-image" className="img-fluid rounded w-100" />
                     </a>
                 </div>
                 <div className="col-md-6 row m-0 p-0">
-                   <a className="cursor-pointer" onClick={() => onClickHandleOpen(1)}>
+                    <a className="cursor-pointer" onClick={() => onClickHandleOpen(1)}>
                         <img src={imageUrls[1]} alt="post-image" className="img-fluid rounded w-100" />
                     </a>
                 </div>
@@ -39,18 +39,21 @@ const AttachPost = ({ imageUrls }) => {
 
     const displayThreeImages = () => {
         return (
-            <div className="d-flex">
-                <div className="col-md-6">
-                   <a className="cursor-pointer" onClick={() => onClickHandleOpen(0)}>
-                        <img src={imageUrls[0]} alt="post-image" className="img-fluid rounded w-100" />
-                    </a>
-                </div>
-                <div className="col-md-6 row m-0 p-0">
-                    <div className="col-sm-12">
-                       <a className="cursor-pointer" onClick={() => onClickHandleOpen(1)}><img src={imageUrls[1]} alt="post-image" className="img-fluid rounded w-100" /></a>
+            <div className="">
+                <div className="row">
+                    <div className="col-md-12">
+                        <a className="cursor-pointer" onClick={() => onClickHandleOpen(0)}>
+                            <img src={imageUrls[0]} alt="post-image" className="img-fluid rounded w-100" />
+                        </a>
                     </div>
-                    <div className="col-sm-12 mt-3">
-                       <a className="cursor-pointer" onClick={() => onClickHandleOpen(2)}><img src={imageUrls[2]} alt="post-image" className="img-fluid rounded w-100" /></a>
+                </div>
+
+                <div className="row">
+                    <div className="col-sm-6 mt-3">
+                        <a className="cursor-pointer" onClick={() => onClickHandleOpen(1)}><img src={imageUrls[1]} alt="post-image" className="img-fluid rounded w-100" /></a>
+                    </div>
+                    <div className="col-sm-6 mt-3">
+                        <a className="cursor-pointer" onClick={() => onClickHandleOpen(2)}><img src={imageUrls[2]} alt="post-image" className="img-fluid rounded w-100" /></a>
                     </div>
                 </div>
             </div>
@@ -59,18 +62,21 @@ const AttachPost = ({ imageUrls }) => {
 
     const displayMoreImages = () => {
         return (
-            <div className="d-flex">
-                <div className="col-md-6">
-                   <a className="cursor-pointer" onClick={() => onClickHandleOpen(0)}>
-                        <img src={imageUrls[0]} alt="post-image" className="img-fluid rounded w-100" />
-                    </a>
-                </div>
-                <div className="col-md-6 row m-0 p-0">
-                    <div className="col-sm-12">
-                       <a className="cursor-pointer" onClick={() => onClickHandleOpen(1)}><img src={imageUrls[1]} alt="post-image" className="img-fluid rounded w-100" /></a>
+            <div className="">
+                <div className="row">
+                    <div className="col-md-12">
+                        <a className="cursor-pointer" onClick={() => onClickHandleOpen(0)}>
+                            <img src={imageUrls[0]} alt="post-image" className="img-fluid rounded w-100" />
+                        </a>
                     </div>
-                    <div className="col-sm-12 mt-3">
-                       <a className="cursor-pointer" onClick={() => onClickHandleOpen(2)}>
+                </div>
+
+                <div className="row">
+                    <div className="col-sm-6 mt-3">
+                        <a className="cursor-pointer" onClick={() => onClickHandleOpen(1)}><img src={imageUrls[1]} alt="post-image" className="img-fluid rounded w-100" /></a>
+                    </div>
+                    <div className="col-sm-6 mt-3">
+                        <a className="cursor-pointer" onClick={() => onClickHandleOpen(2)}>
                             <img src={imageUrls[2]} alt="post-image"
                                 className="img-fluid rounded w-100 image-darken" />
                             <h1 className="text-light text-overlay-image m-0">+{imageUrls.length - 3}</h1>

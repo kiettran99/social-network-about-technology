@@ -54,7 +54,7 @@ const PostComment = ({ comment: { _id, name, text, avatar, date, likes, user: us
         <li className="mb-2">
             <div className="d-flex flex-wrap mb-2">
                 <div className="user-img">
-                    <img src={avatar} alt="userimg" className="avatar-35 rounded-circle img-fluid" />
+                    <img src={avatar} alt="userimg" className="avatar-35 rounded-circle img-fluid m-sm-0 m-2" />
                 </div>
                 <div className="comment-data-block ml-3">
                     <h6>{name}</h6>
