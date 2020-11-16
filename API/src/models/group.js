@@ -19,13 +19,17 @@ const groupSchema = Schema({
     members: [{
         user: {
             type: Schema.Types.ObjectId,
-            ref: 'user'
+            ref: 'User'
         },
         status: {
             type: String,
-            default: 'pending'
+            default: 'member'
         }
-    }]
+    }],
+    lengthOfMembers: {
+        type: Number,
+        default: 0
+    }
 });
 
 const Group = mongoose.model('Group', groupSchema);

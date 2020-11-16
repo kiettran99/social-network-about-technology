@@ -13,7 +13,7 @@ const GroupList = ({ group: { groups, loading }, getGroups }) => {
     return (
         <div className="row">
             {!loading && groups.map(group => (
-               <GroupsItem group={group} /> 
+               <GroupsItem group={group} key={group._id} /> 
             ))}
         </div>
     )

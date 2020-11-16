@@ -6,7 +6,7 @@ import { removeComment, likeComment, unlikeComment, addReplyComment } from '../.
 import CommentForm from './CommentForm';
 import ReplyList from './ReplyList';
 
-const PostComment = ({ comment: { _id, name, text, avatar, date, likes, user: userComment, replies }, postId,
+const PostComment = ({ comment: { _id, name, text, avatar, date, likes, user: userComment, replies, lengthOfReplies }, postId,
     auth: { user, isAuthenticated }, history,
     removeComment, likeComment, unlikeComment, addReplyComment }) => {
 
@@ -54,7 +54,7 @@ const PostComment = ({ comment: { _id, name, text, avatar, date, likes, user: us
         <li className="mb-2">
             <div className="d-flex flex-wrap mb-2">
                 <div className="user-img">
-                    <img src={avatar} alt="userimg" className="avatar-35 rounded-circle img-fluid" />
+                    <img src={avatar} alt="userimg" className="avatar-35 rounded-circle img-fluid m-sm-0 m-2" />
                 </div>
                 <div className="comment-data-block ml-3">
                     <h6>{name}</h6>
@@ -72,7 +72,7 @@ const PostComment = ({ comment: { _id, name, text, avatar, date, likes, user: us
                     </div>
                 </div>
             </div>
-            <ReplyList postId={postId} commentId={_id} replies={replies} onCommentsForm={onCommentsForm}/>
+            <ReplyList postId={postId} commentId={_id} replies={replies} onCommentsForm={onCommentsForm} lengthOfReplies={lengthOfReplies} />
             {commentForm &&
                 <div className="d-flex flex-wrap row">
                     <div className="offset-1 col-11">

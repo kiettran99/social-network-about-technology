@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { addComment } from '../../../actions/post';
 
-const CommentsForm = ({ actionComment, auth: { isAuthenticated }, addComment, postId }) => {
+const CommentsForm = ({ actionComment, auth: { isAuthenticated }, addComment, postId, isInPosts }) => {
 
     const [text, setText] = useState('');
 
@@ -18,7 +18,7 @@ const CommentsForm = ({ actionComment, auth: { isAuthenticated }, addComment, po
         setText('');
     };
 
-    return (
+    return !isInPosts && (
         <form className="comment-text d-flex align-items-center mt-3" onSubmit={e => onSubmit(e)}>
             <input type="text" className="form-control rounded"
                 name="text" value={text} onChange={(e) => setText(e.target.value)}
@@ -37,7 +37,8 @@ const CommentsForm = ({ actionComment, auth: { isAuthenticated }, addComment, po
 }
 
 const mapStateToProps = (state) => ({
-    auth: state.auth
+    auth: state.auth,
+    isInPosts: state.post.isInPosts
 });
 
 export default connect(mapStateToProps, { addComment })(CommentsForm);

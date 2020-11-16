@@ -1,11 +1,12 @@
 import { SET_ALERT, REMOVE_ALERT, UPDATE_ACTIVE_ALERT } from './types';
+import { v4 as uuid } from 'uuid';
 
 // @params
 // @message: error msessage api sent.
 // @timeout: a miliseconds to close alert
 // @return function has param dispatch.
 export const setAlert = (message, title, type, timeout = 5000) => dispatch => {
-    const id = (new Date().getMilliseconds()).toString();
+    const id = uuid();
 
     dispatch({
         type: SET_ALERT,

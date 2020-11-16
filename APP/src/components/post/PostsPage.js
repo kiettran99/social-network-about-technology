@@ -19,7 +19,15 @@ const PostsPage = ({ post: { posts, loading }, getPosts, history, groupId = '' }
 
     return !loading && (
         posts.map(post => (
-            <div key={post._id} className="col-sm-12" onClick={() => history.push(`/posts/${post._id}`)}>
+            <div key={post._id} className="col-sm-12" onClick={(e) => {
+                // Prevent Parent's on click from firing when a child is clicked.
+
+                const senderElementName = e.target.tagName.toLowerCase();
+
+                if (senderElementName === 'div') {
+                    history.push(`/posts/${post._id}`)
+                }
+            }}>
                 <UserPost post={post} />
             </div>
         ))

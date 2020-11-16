@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 const CommentsBar = ({ likePost, unlikePost,
     auth: { user, isAuthenticated },
     history,
-    likes, comments,
+    likes, lengthOfComments,
     postId
 }) => {
 
@@ -76,9 +76,9 @@ const CommentsBar = ({ likePost, unlikePost,
                 <div className="total-comment-block">
                     <div className="dropdown">
                         <span className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                            {comments && comments.length || 0} Comment
+                            {lengthOfComments || 0} Comment
                     </span>
-                        <div className="dropdown-menu">
+                        {/* <div className="dropdown-menu">
                             <a className="dropdown-item" href="index.html#">Max Emum</a>
                             <a className="dropdown-item" href="index.html#">Bill Yerds</a>
                             <a className="dropdown-item" href="index.html#">Hap E. Birthday</a>
@@ -86,7 +86,7 @@ const CommentsBar = ({ likePost, unlikePost,
                             <a className="dropdown-item" href="index.html#">Midge Itz</a>
                             <a className="dropdown-item" href="index.html#">Sal Vidge</a>
                             <a className="dropdown-item" href="index.html#">Other</a>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

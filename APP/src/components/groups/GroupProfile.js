@@ -1,6 +1,6 @@
 import React from 'react';
 
-const GroupProfile = ({ group: { _id, name, wallpaper, avatar, members = [] } }) => {
+const GroupProfile = ({ group: { _id, name, wallpaper, avatar, lengthOfMembers, members = [] } }) => {
     return (
         <div className="iq-card">
             <div className="iq-card-body profile-page p-0">
@@ -51,7 +51,7 @@ const GroupProfile = ({ group: { _id, name, wallpaper, avatar, members = [] } })
                                 </li>
                                 <li className="text-center pl-3">
                                     <h6>Followers</h6>
-                                    <p className="mb-0">206</p>
+                                    <p className="mb-0">{lengthOfMembers}</p>
                                 </li>
                                 <li className="text-center pl-3">
                                     <h6>Following</h6>

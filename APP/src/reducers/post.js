@@ -125,7 +125,8 @@ export default function (state = initialState, action) {
                         if (comment._id === action.commentId) {
                             return {
                                 ...comment,
-                                replies: [payload, comment.replies]
+                                replies: [payload, ...comment.replies],
+                                lengthOfReplies: comment.lengthOfReplies + 1
                             };
                         }
                         return comment;
@@ -142,7 +143,8 @@ export default function (state = initialState, action) {
                         if (comment._id === action.commentId) {
                             return {
                                 ...comment,
-                                replies: comment.replies.filter(reply => reply._id !== payload)
+                                replies: comment.replies.filter(reply => reply._id !== payload),
+                                lengthOfReplies:  comment.lengthOfReplies - 1
                             };
                         }
                         return comment;
@@ -179,7 +181,8 @@ export default function (state = initialState, action) {
                 loading: false,
                 post: {
                     ...state.post,
-                    comments: [payload, ...state.post.comments]
+                    comments: [payload, ...state.post.comments],
+                    lengthOfComments: state.post.lengthOfComments + 1
                 }
             };
         case REMOVE_COMMENT:
@@ -188,7 +191,8 @@ export default function (state = initialState, action) {
                 loading: false,
                 post: {
                     ...state.post,
-                    comments: state.post.comments.filter(comment => comment._id !== payload)
+                    comments: state.post.comments.filter(comment => comment._id !== payload),
+                    lengthOfComments: state.post.lengthOfComments - 1
                 }
             };
         case POST_ERROR:
