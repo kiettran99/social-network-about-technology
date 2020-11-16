@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { getMeProfile, updateProfile, changePassword, manageContact } from '../../actions/profile';
 
 const EditProfile = ({ profile: { profile, loading }, getMeProfile,
-    updateProfile, changePassword, manageContact: manageContactAction}) => {
+    updateProfile, changePassword, manageContact: manageContactAction }) => {
 
     const inputFileRef = useRef(null);
 

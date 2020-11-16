@@ -282,7 +282,7 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, 
   );
 
   return (
-    <div className="iq-top-navbar">
+    <div className="iq-top-navbar" style={{ zIndex: '2' }}>
       <div className="iq-navbar-custom">
         <nav className="navbar navbar-expand-lg navbar-light p-0">
           <div className="iq-navbar-logo d-flex justify-content-between">

@@ -13,31 +13,33 @@ const CreatePost = ({ auth: { user, isAuthenticated, loading }, addPost, groupId
 
   const [formData, setFormData] = useState({
     text: '',
-    image: null
+    images: []
   });
 
   const [disabledPost, setDisabledPost] = useState(true);
 
-  const { text, image } = formData;
+  const { text, images } = formData;
 
   const onSubmit = (e) => {
     e.preventDefault();
 
     const formData = new FormData();
     formData.append('text', text);
-    formData.append('image', image);
+
+    if (images && images.length > 0) {
+      images.forEach((image, index) => {
+        formData.append(`images`, image);
+      })
+    }
 
     if (groupId) {
       formData.append('groupId', groupId);
     }
 
-    console.log(formData);
-
     addPost(formData);
   };
 
   const onChange = (e) => {
-    console.log(text);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
@@ -111,9 +113,46 @@ const CreatePost = ({ auth: { user, isAuthenticated, loading }, addPost, groupId
                 </form>
               </div>
               <hr />
+              <div className="d-flex align-items-center">
+                <ul className="profile-img-gallary d-flex flex-wrap p-0 m-0">
+                  {images && images.length > 0 && images.map((image, index) => (
+                    <li className="col-md-4 col-6 pl-2 pr-0 pb-3" key={index}>
+                      <img className="img-fluid" src={URL.createObjectURL(image)} alt="profile-pic" />
+                      <i className="ri-close-circle-line text-muted" style={{
+                        position: 'absolute',
+                        left: "12px",
+                        top: '2px',
+                        fontSize: '1.4rem',
+                        cursor: 'pointer'
+                      }}
+                        onClick={() => {
+                          setFormData({
+                            ...formData,
+                            images: images.filter((image, position) => position !== index)
+                          });
+                        }}
+                      ></i>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <hr />
               <ul className="d-flex flex-wrap align-items-center list-inline m-0 p-0">
                 <li className="col-md-6 mb-3">
-                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/07.png" alt="icon" className="img-fluid" /> Photo/Video</div>
+                  <div className="iq-bg-primary rounded p-2 pointer mr-3">
+                    <input className="file-upload" type="file" accept="image/*" multiple={true} onChange={e => {
+                      e.preventDefault();
+
+                      setFormData({
+                        ...formData,
+                        images: [...images, ...e.target.files]
+                      });
+                    }} />
+                    <div className="upload-button" style={{ fontSize: "1em" }}>
+                      <img src="/images/small/07.png" alt="icon" className="img-fluid upload-button" />
+                      <span>Photo/Video</span>
+                    </div>
+                  </div>
                 </li>
                 <li className="col-md-6 mb-3">
                   <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/08.png" alt="icon" className="img-fluid" /> Tag Friend</div>

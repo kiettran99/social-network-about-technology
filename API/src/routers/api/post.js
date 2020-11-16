@@ -179,6 +179,8 @@ router.post('/', auth, upload.array('images'), [
             return res.status(400).json({ errors: errors.array() });
         }
 
+        debugger;
+
         const newPost = {
             text: req.body.text,
             user: req.user.id,

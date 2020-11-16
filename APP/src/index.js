@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 import 'react-notifications/lib/notifications.css';
+import 'react-image-lightbox/style.css';
 
 import AppRoute from './routes/AppRoute';
 import { Provider } from 'react-redux';
