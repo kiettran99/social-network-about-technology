@@ -6,6 +6,7 @@ const authByRole = require('../../middleware/auth-by-role');
 const auth = require('../../middleware/auth');
 const { createNotification } = require('../../utils/notification');
 const createProfile = require('../../utils/profile');
+const { sendEmail } = require('../../utils/email');
 
 // @route Post api/users/register
 // @desc Registry user
@@ -46,8 +47,7 @@ router.post('/register', [
     const token = await user.generateAuthToken();
 
     // Create two collections about profile and notification.
-    createNotification(user);
-    createProfile(user);
+    await Promise.all([createNotification(user), createProfile(user), sendEmail(user)]);
 
     res.json({ token });
   }
