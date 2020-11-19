@@ -49,7 +49,11 @@ const userSchema = mongoose.Schema({
   },
   googleId: {
     type: String
-  }
+  },
+  friends: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Friend'
+  }]
 }, {
   timestamps: true
 });
