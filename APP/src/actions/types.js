@@ -63,3 +63,10 @@ export const GROUP_ERROR = 'GROUP_ERROR';
 
 export const JOIN_GROUP = 'JOIN_GROUP';
 export const UNJOIN_GROUP = 'UNJOIN_GROUP';
+
+export const GET_FRIENDS = 'GET_FRIENDS';
+export const CLEAR_FRIEND = 'CLEAR_FRIEND';
+export const FRIEND_ERROR = 'FRIEND_ERROR';
+export const REQUEST_FRIEND = 'REQUEST_FRIEND';
+export const ACCEPT_FRIEND = 'ACCEPT_FRIEND';
+export const UNACCEPT_FRIEND = 'UNACCEPT_FRIEND';
