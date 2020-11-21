@@ -14,7 +14,10 @@ const SideBar = () => {
                             <a href="profile.html" className="iq-waves-effect"><i className="las la-user" /><span>Profile</span></a>
                         </li>
                         <li>
-                            <a href="friend-list.html" className="iq-waves-effect"><i className="las la-user-friends" /><span>Friend Lists</span></a>
+                            <Link to="/friend-list" className="iq-waves-effect"><i className="las la-user-friends" /><span>Friend Lists</span></Link>
+                        </li>
+                        <li>
+                            <Link to="/friend-request" className="iq-waves-effect"><i className="las la-anchor" /><span>Friend Request</span></Link>
                         </li>
                         <li>
                             <Link to="/groups" className="iq-waves-effect"><i className="las la-users" /><span>Group</span></Link>
@@ -33,9 +36,6 @@ const SideBar = () => {
                         </li>
                         <li>
                             <a href="file.html" className="iq-waves-effect"><i className="las la-file" /><span>Files</span></a>
-                        </li>
-                        <li>
-                            <a href="friend-request.html" className="iq-waves-effect"><i className="las la-anchor" /><span>Friend Request</span></a>
                         </li>
                         <li>
                             <a href="chat.html" className="iq-waves-effect"><i className="lab la-rocketchat" /><span>Chat</span></a>

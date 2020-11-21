@@ -2,7 +2,8 @@ const router = require('express').Router();
 const Friend = require('../../models/friend');
 const User = require('../../models/user');
 const auth = require('../../middleware/auth');
-const { getUserFriends } = require('../../utils/friend');
+const { getUserFriends, getRequestFriends, getUsersList, getAll
+} = require('../../utils/friend');
 
 // @route get /api/friends
 // @desc test api
@@ -19,16 +20,72 @@ router.get('/', async (req, res) => {
     }
 });
 
-// @route get /api/friends/getall
+// @route get /api/friends
 // @desc test api
 // @access private
 router.get('/getall', auth, async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit) || 5;
+        const skip = parseInt(req.query.skip) || 0;
+
+        const users = await getAll(req.user._id, limit, skip);
+
+        res.json(users);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route get /api/friends/get-friends
+// @desc Get current User's Friends list
+// @access private
+router.get('/get-friends', auth, async (req, res) => {
     try {
 
         const limit = parseInt(req.query.limit) || 5;
         const skip = parseInt(req.query.skip) || 0;
 
         const users = await getUserFriends(req.user._id, limit, skip);
+
+        res.json(users);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route get /api/friends/get-request
+// @desc Get current User's Friends request
+// @access private
+router.get('/get-request', auth, async (req, res) => {
+    try {
+
+        const limit = parseInt(req.query.limit) || 5;
+        const skip = parseInt(req.query.skip) || 0;
+
+        const users = await getRequestFriends(req.user._id, limit, skip);
+
+        res.json(users);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route get /api/friends/get-user
+// @desc Get current not User's Friends request
+// @access private
+router.get('/get-user', auth, async (req, res) => {
+    try {
+
+        const limit = parseInt(req.query.limit) || 5;
+        const skip = parseInt(req.query.skip) || 0;
+
+        const users = await getUsersList(req.user._id, limit, skip);
 
         res.json(users);
     }
@@ -80,7 +137,7 @@ router.put('/request/:user_id', auth, async (req, res) => {
 
         await Promise.all([userRequester, userRecipient]);
 
-        res.json({ recipientId, status: 1 });
+        res.json({ userId: recipientId, status: 1 });
     }
     catch (e) {
         console.log(e);
@@ -114,7 +171,7 @@ router.put('/accept/:user_id', auth, async (req, res) => {
 
         await Promise.all([friendReqeuster, friendRecipient]);
 
-        res.json({ requesterId, status: 3 });
+        res.json({ userId: requesterId, status: 3 });
     }
     catch (e) {
         console.log(e);
@@ -158,7 +215,7 @@ router.put('/unaccept/:user_id', auth, async (req, res) => {
 
         await Promise.all([userRequester, userRecipient]);
 
-        res.json({ requesterId, status: 0 });
+        res.json({ userId: requesterId, status: 0 });
     }
     catch (e) {
         console.log(e);

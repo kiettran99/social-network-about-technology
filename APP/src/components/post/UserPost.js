@@ -8,7 +8,7 @@ import CommentForm from './user-post-sub/CommentForm';
 import Following from './user-post-sub/Following';
 import AttachPost from './AttachPost';
 
-const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, group, comments, createdAt, lengthOfComments } }) => {
+const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, group, comments, createdAt, lengthOfComments, user: userId } }) => {
     return (
         <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
             <div className="iq-card-body">
@@ -18,7 +18,7 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, group, co
                             <img className="avatar-60 rounded-circle" src={avatar} alt="" />
                         </div>
                         <div className="media-support-info mt-2">
-                            <h5 className="mb-0 d-inline-block"><Link to="index.html#">{name}&nbsp;</Link></h5>
+                            <h5 className="mb-0 d-inline-block"><Link to={`/profile/${userId}`}>{name}&nbsp;</Link></h5>
                             {group ? <p className="mb-0 d-inline-block"> <i className="fas fa-caret-right">&nbsp;</i><Link className='text-dark' to={`/groups/${group._id}`}>&nbsp;{group.name}</Link></p>
                                 : <p className="mb-0 d-inline-block">Add New Post</p>}
                             <p className="mb-0 text-primary">{dayjs(createdAt).fromNow()}</p>

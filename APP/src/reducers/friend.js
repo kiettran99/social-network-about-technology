@@ -1,10 +1,13 @@
 import {
-    GET_FRIENDS, FRIEND_ERROR, REQUEST_FRIEND,
+    GET_FRIENDS, GET_REQUEST_FRIENDS, GET_USERS_FRIENDS,
+    FRIEND_ERROR, REQUEST_FRIEND,
     ACCEPT_FRIEND, UNACCEPT_FRIEND, CLEAR_FRIEND
 } from '../actions/types';
 
 const initialState = {
     friends: [],
+    requests: [],
+    users: [],
     loading: false,
     errors: {}
 };
@@ -17,7 +20,19 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loading: false,
-                firends: payload
+                friends: payload
+            };
+        case GET_REQUEST_FRIENDS:
+            return {
+                ...state,
+                loading: false,
+                requests: payload
+            };
+        case GET_USERS_FRIENDS:
+            return {
+                ...state,
+                loading: false,
+                users: payload
             };
         case FRIEND_ERROR:
             return {
@@ -37,15 +52,15 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loading: false,
-                friends: state.friends.map(friend => {
-                    if (friend === payload.requesterId) {
+                [action.reference]: state[action.reference].map(element => {
+                    if (element._id === payload.userId) {
                         return {
-                            ...friend,
-                            friendsStatus: status
+                            ...element,
+                            friendsStatus: payload.status
                         };
                     }
 
-                    return friend;
+                    return element;
                 })
             };
         default:

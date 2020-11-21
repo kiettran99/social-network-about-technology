@@ -65,6 +65,9 @@ export const JOIN_GROUP = 'JOIN_GROUP';
 export const UNJOIN_GROUP = 'UNJOIN_GROUP';
 
 export const GET_FRIENDS = 'GET_FRIENDS';
+export const GET_REQUEST_FRIENDS = 'GET_REQUEST_FRIENDS';
+export const GET_USERS_FRIENDS = 'GET_USERS_FRIENDS';
+
 export const CLEAR_FRIEND = 'CLEAR_FRIEND';
 export const FRIEND_ERROR = 'FRIEND_ERROR';
 export const REQUEST_FRIEND = 'REQUEST_FRIEND';
