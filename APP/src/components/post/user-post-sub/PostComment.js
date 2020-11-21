@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import dayjs from '../../../utils/relativeDate';
 import { removeComment, likeComment, unlikeComment, addReplyComment } from '../../../actions/post';
 import CommentForm from './CommentForm';
@@ -57,7 +57,7 @@ const PostComment = ({ comment: { _id, name, text, avatar, date, likes, user: us
                     <img src={avatar} alt="userimg" className="avatar-35 rounded-circle img-fluid m-sm-0 m-2" />
                 </div>
                 <div className="comment-data-block ml-3">
-                    <h6>{name}</h6>
+                    <h6><Link to={`/profile/${userComment}`}>{name}</Link></h6>
                     <p className="mb-0">{text}</p>
                     <div className="d-flex flex-wrap align-items-center comment-activity">
                         <a className={`${isLiked ? 'text-primary' : 'text-muted'}`}

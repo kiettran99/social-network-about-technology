@@ -6,6 +6,7 @@ import notification from './notifcation';
 import post from './post';
 import profile from './profiile';
 import group from './group';
+import friend from './friend';
 
 export default combineReducers({
     alert,
@@ -14,5 +15,6 @@ export default combineReducers({
     notification,
     post,
     profile,
-    group
+    group,
+    friend
 });
