@@ -31,6 +31,8 @@ Index Of Script
 :: Form Validation
 :: Sidebar Widget
 :: Flatpicker
+:: Checkout
+:: Button
 
 ------------------------------------------------
 Index Of Script
@@ -497,8 +499,47 @@ Index Of Script
             });
         }
 
-        
+        /*---------------------------------------------------------------------
+           checkout
+        -----------------------------------------------------------------------*/
 
+        jQuery(document).ready(function(){
+            jQuery('#place-order').click(function(){
+                jQuery('#cart').removeClass('show');
+                jQuery('#address').addClass('show');
+            });
+            jQuery('#deliver-address').click(function(){
+                jQuery('#address').removeClass('show');
+                jQuery('#payment').addClass('show');
+            });
+        });
+        
+        /*---------------------------------------------------------------------
+        Button 
+        -----------------------------------------------------------------------*/
+
+        jQuery('.qty-btn').on('click',function(){
+          var id = jQuery(this).attr('id');
+
+          var val = parseInt(jQuery('#quantity').val());
+
+          if(id == 'btn-minus')
+          {
+            if(val != 0)
+            {
+              jQuery('#quantity').val(val-1);
+            }
+            else
+            {
+              jQuery('#quantity').val(0);
+            }
+
+          }
+          else
+          {
+            jQuery('#quantity').val(val+1);
+          }
+        });
 
     });
 

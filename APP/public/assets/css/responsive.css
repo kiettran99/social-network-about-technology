@@ -80,6 +80,22 @@ NOTE: This file contains the styling for responsive Template.
 		.sign-in-from { padding: 0 30px; }
 		.sign-in-detail { padding: 100px 50px; }
 	}
+	@media (min-width: 992px) {
+		.blog-list .blog-description {
+		    position: relative;
+		    left: -70px;
+		    padding: 30px !important;
+		    background: var(--iq-white);
+		    border-radius: 5px;
+		    z-index: 9;
+		}
+		.blog-list.list-even .blog-description {
+			left: auto;
+			right: -70px;
+			text-align: right;
+		}
+		.blog-list.list-even .blog-description .date { text-align: right; }
+	}
 	@media(max-width:992px) {
 		.an-img-two .bodymovin { display: none; }
 		.display-1 { font-size: 4rem; font-weight: 300; }
