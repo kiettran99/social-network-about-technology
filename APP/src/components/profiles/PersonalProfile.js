@@ -14,7 +14,7 @@ const PersonalProfile = ({ auth: { user, isAuthenticated },
     return !loading && profile && (
         <div className="iq-card">
             <div className="iq-card-body profile-page p-0">
-                <div className="profile-header">
+                <div className="profile-header profile-info">
                     <div className="cover-container">
                         <img src="/images/page-img/profile-bg1.jpg" alt="profile-bg" className="rounded img-fluid" />
                         <ul className="header-nav d-flex flex-wrap justify-end p-0 m-0">

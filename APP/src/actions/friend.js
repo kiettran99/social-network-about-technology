@@ -32,6 +32,30 @@ export const getFriends = (skip = 0, limit = 5) => async dispatch => {
 };
 
 // Get List friends
+export const getFriendsById = (id, skip = 0, limit = 5) => async dispatch => {
+    try {
+        dispatch({
+            type: CLEAR_FRIEND
+        });
+
+        const res = await axios.get(`${urlAPI}/api/friends/get-friends/${id}?skip=${skip}&limit=${limit}`);
+
+        dispatch({
+            type: GET_FRIENDS,
+            payload: res.data
+        });
+    }
+    catch (e) {
+        console.log(e);
+
+        dispatch({
+            type: FRIEND_ERROR,
+            payload: { msg: e.response.data, status: e.response.statusText }
+        });
+    }
+};
+
+// Get List friends
 export const getRequests = (skip = 0, limit = 5) => async dispatch => {
     try {
         dispatch({

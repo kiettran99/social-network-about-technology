@@ -21,6 +21,10 @@ router.get('/', async (req, res) => {
         if (req.query.groupId) {
             conditions.group = req.query.groupId;
         }
+        
+        if (req.query.userId) {
+            conditions.user = req.query.userId;
+        }
 
         const posts = await Post.find(conditions, {
             comments: {

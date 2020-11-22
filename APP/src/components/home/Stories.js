@@ -18,21 +18,21 @@ const Stories = () => {
                         </div>
                     </li>
                     <li className="d-flex mb-4 align-items-center active">
-                        <img src="images/page-img/s2.jpg" alt="story-img" className="rounded-circle img-fluid" />
+                        <img src="/images/page-img/s2.jpg" alt="story-img" className="rounded-circle img-fluid" />
                         <div className="stories-data ml-3">
                             <h5>Anna Mull</h5>
                             <p className="mb-0">1 hour ago</p>
                         </div>
                     </li>
                     <li className="d-flex mb-4 align-items-center">
-                        <img src="images/page-img/s3.jpg" alt="story-img" className="rounded-circle img-fluid" />
+                        <img src="/images/page-img/s3.jpg" alt="story-img" className="rounded-circle img-fluid" />
                         <div className="stories-data ml-3">
                             <h5>Ira Membrit</h5>
                             <p className="mb-0">4 hour ago</p>
                         </div>
                     </li>
                     <li className="d-flex align-items-center">
-                        <img src="images/page-img/s1.jpg" alt="story-img" className="rounded-circle img-fluid" />
+                        <img src="/images/page-img/s1.jpg" alt="story-img" className="rounded-circle img-fluid" />
                         <div className="stories-data ml-3">
                             <h5>Bob Frapples</h5>
                             <p className="mb-0">9 hour ago</p>
