@@ -28,7 +28,7 @@ const PersonalProfile = ({ auth: { user, isAuthenticated },
                             <img src={profile.user.avatar} alt="profile-img" className="avatar-130 img-fluid" />
                         </div>
                         <div className="profile-detail">
-                            <h3 className>{profile.user.fullname}</h3>
+                            <h3>{profile.user.fullname}</h3>
                         </div>
                     </div>
                     <div className="profile-info p-4 d-flex align-items-center justify-content-between position-relative">

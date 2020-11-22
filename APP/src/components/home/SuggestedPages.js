@@ -2,7 +2,7 @@ import React from 'react';
 
 const SuggestedPages = () => {
     return (
-        <div className="iq-card">
+        <div className="iq-card d-none d-sm-block">
             <div className="iq-card-header d-flex justify-content-between">
                 <div className="iq-header-title">
                     <h4 className="card-title">Suggested Pages</h4>
