@@ -28,6 +28,13 @@ const getAll = async (userId, limit, skip) => {
             }
         },
         {
+            $match: {
+                '_id': {
+                    $ne: userId
+                }
+            }
+        },
+        {
             $skip: skip
         },
         {
@@ -76,6 +83,9 @@ const getUserFriends = async (userId, limit, skip) => {
         },
         {
             $match: {
+                '_id': {
+                    $ne: userId
+                },
                 friendsStatus: 3
             }
         },
@@ -127,6 +137,9 @@ const getRequestFriends = async (userId, limit, skip) => {
         },
         {
             $match: {
+                '_id': {
+                    $ne: userId
+                },
                 friendsStatus: 1
             }
         },
@@ -178,6 +191,9 @@ const getUsersList = async (userId, limit, skip) => {
         },
         {
             $match: {
+                '_id': {
+                    $ne: userId
+                },
                 $or: [{
                     friendsStatus: 0
                 },

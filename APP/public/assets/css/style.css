@@ -345,10 +345,10 @@ div#lottie-beil svg path, div#lottie-mail svg path, div#lottie-fullscreen svg pa
 .navbar-list li > .dropdown { line-height: 73px; cursor: pointer; }
 .iq-search-bar { padding: 0 15px; }
 .iq-search-bar .searchbox { width: 480px; position: relative; }
-.iq-search-bar .search-input { width: 100%; height: 40px; padding: 5px 40px 5px 15px; border-radius: 10px; border: none; background: var(--iq-light-primary); }
+.iq-search-bar .search-input { width: 100%; height: 40px; padding: 5px 40px 5px 15px; border-radius: 10px; border: 1px solid var(--iq-border-light); background: var(--iq-light-primary) !important; }
 .iq-navbar-logo { padding: 0; width: auto; position: relative; background: var(--iq-white); -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; background: transparent; }
 .iq-navbar-logo a { display: flex; align-items: flex-start; }
-.iq-navbar-logo a span { margin-left: 10px; font-size: 28px;font-family: 'Poppins', sans-serif; line-height: 45px; color: var(--iq-title-text); flex: 1; -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; }
+.iq-navbar-logo a span { margin-left: 10px; font-size: 28px; font-family: 'Poppins', sans-serif; line-height: 45px; color: var(--iq-title-text); flex: 1; -webkit-transition: all 0.3s ease-out 0s; -moz-transition: all 0.3s ease-out 0s; -ms-transition: all 0.3s ease-out 0s; -o-transition: all 0.3s ease-out 0s; transition: all 0.3s ease-out 0s; }
 .iq-navbar-logo a:hover, .iq-navbar-logo a:focus { text-decoration: none; }
 .iq-navbar-logo img { height: 45px; }
 
@@ -970,6 +970,7 @@ ul.header-nav { position: absolute; left: auto; right: 0; top: auto; bottom: 20p
 ul.header-nav li { list-style: none; }
 ul.header-nav li  a { display: block; list-style: none; height: 40px; width: 40px; background: var(--iq-white); border-radius: 50%; line-height: 40px; text-align: center; color: var(--iq-primary); font-size: 18px; margin: 0 15px 0 0; }
 .profile-header .user-detail { position: absolute; left: 0; right: 0; top: auto; bottom: 110px; }
+.profile-header.profile-info .user-detail { bottom: 20px; }
 .profile-feed-items li { list-style: none; }
 .profile-feed-items li:last-child a { margin: 0; }
 .profile-feed-items li a.nav-link { text-decoration: none; text-transform: capitalize; color: var(--iq-secondary); text-align: center; padding: 20px 15px; }
@@ -1048,3 +1049,47 @@ Add User Page
 -----------------------------------------------------------------------*/
 .add-img-user .p-image { position: static; text-align: left; display: block; height: auto; width: auto; background: transparent; margin-top: 20px; }
 .img-extension a, .img-extension span { color: var(--iq-body-text); padding: 0 3px; font-size: 13px; }
+
+/*---------------------------------------------------------------------
+Blog List Page
+-----------------------------------------------------------------------*/
+.group-smile .iq-media-group .iq-media img { background: var(--iq-white); }
+
+/*---------------------------------------------------------------------
+Blog Grid Page
+-----------------------------------------------------------------------*/
+.blog-grid .blog-description { background: var(--iq-white); border-radius: 5px; -webkit-box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1); box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1); }
+.blog-grid.blog-single .blog-description { bottom: 10px; left: 0; right: 0; margin: 0 10px; z-index: 9; position: absolute; }
+
+/*---------------------------------------------------------------------
+Profile Badges Page
+-----------------------------------------------------------------------*/
+.badges-icon { margin-top: -55px; margin-bottom: 20px; }
+
+/*---------------------------------------------------------------------
+Store Page
+-----------------------------------------------------------------------*/
+.product .offer { height: 50px; width: 50px; line-height: 50px; border-radius: 50%; font-size: 14px; font-weight: 700; text-align: center; color: var(--iq-dark); background: var(--iq-white); -webkit-box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1); box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1); position: absolute; top: 10px; left: 10px; }
+.product span.categry:before { content: ""; height: 8px; width: 8px; background: var(--iq-white); border: 2px solid var(--iq-primary); position: absolute; left: 0; top: 5px; border-radius: 50%; }
+.product h6.price { position: absolute; right: -8px; bottom: 15px; padding: 2px 10px; display: inline-block; color: var(--iq-white); background: var(--iq-primary); -webkit-box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1); box-shadow: 0px 0px 20px 0px rgba(44, 101, 144, 0.1); }
+.product h6.price:before { content: ""; width: 0; height: 0; border-style: solid; border-width: 8px 0px 0px 8px; border-color: transparent transparent transparent var(--iq-primary); position: absolute; left: auto; right: 0; top: -8px; margin: 0 auto; }
+.product h6.price:after { content: ""; width: 0; height: 0; border-style: solid; border-width: 0px 0px 8px 8px; border-color: transparent transparent transparent var(--iq-primary); position: absolute; left: auto; right: 0; bottom: -8px; margin: 0 auto; }
+.product .regular-price { text-decoration: line-through; font-size: 15px; }
+
+
+/*---------------------------------------------------------------------
+checkout
+-----------------------------------------------------------------------*/
+.cart-card-block { display: none; }
+.cart-card-block.show { display: block; }
+.checkout-product-img { vertical-align: middle; max-height: 100px; max-width: 80px; display: inline-block; }
+.iq-checkout-policy ul li { border-bottom: 1px solid var(--iq-border-light); }
+.iq-checkout-policy ul li:last-child { border: none; }
+.iq-checkout-policy .iq-checkout-icon { height: 60px; width: 60px; line-height: 60px; font-size: 20px; text-align: center; }
+li.checkout-product { margin-bottom: 20px; border-bottom: 1px solid var(--iq-border-light); padding-bottom: 25px; }
+li.checkout-product:last-child { margin-bottom: 5px; border-bottom: none; padding-bottom: 0; }
+
+/*------------------*/
+#quantity { display: inline-block; width: 30px; height: 28px; border: 1px solid var(--iq-border-light); text-align: center; }
+button.qty-btn { border: 1px solid var(--iq-border-light); background: var(--iq-white); height: 28px; width: 30px; vertical-align: top; }
+.form-add-btn { margin-bottom: 20px; }

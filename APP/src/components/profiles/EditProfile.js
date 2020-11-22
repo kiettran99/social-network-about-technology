@@ -138,7 +138,7 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                                         <div className="iq-card-body">
                                             <form onSubmit={e => onSubmit(e)}>
                                                 <div className="form-group row align-items-center">
-                                                    <div className="col-md-12">
+                                                    <div className="col-md-12 text-center">
                                                         <div className="profile-img-edit">
                                                             {image ? <img className="profile-pic" src={URL.createObjectURL(image)} alt="profile-pic" />
                                                                 : <img className="profile-pic" src={profile.user.avatar} alt="profile-pic" />
@@ -253,13 +253,13 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                                                             name="country" onChange={e => onChange(e)}>
                                                             <option>Caneda</option>
                                                             <option>Noida</option>
-                                                            <option selected>USA</option>
+                                                            <option selected>VN</option>
                                                             <option>India</option>
-                                                            <option>Africa</option>
+                                                            <option>USA</option>
                                                         </select>
                                                     </div>
                                                     <div className="form-group col-sm-6">
-                                                        <label htmlFor="cname">Jon:</label>
+                                                        <label htmlFor="cname">Job:</label>
                                                         <input type="text" className="form-control" id="cname" defaultValue="Atlanta"
                                                             name="job"
                                                             value={job}

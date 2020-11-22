@@ -57,6 +57,33 @@ router.get('/get-friends', auth, async (req, res) => {
     }
 });
 
+// @route get /api/friends/get-friends
+// @desc Get User's Friends list by userId
+// @access public
+router.get('/get-friends/:userId', async (req, res) => {
+    try {
+
+        const userId = req.params.userId;
+
+        if (!userId) {
+            return res.status(400).send('User is not exists.');
+        }
+
+        const user = await User.findById(userId).select('_id');
+
+        const limit = parseInt(req.query.limit) || 5;
+        const skip = parseInt(req.query.skip) || 0;
+
+        const users = await getUserFriends(user._id, limit, skip);
+
+        res.json(users);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
 // @route get /api/friends/get-request
 // @desc Get current User's Friends request
 // @access private

@@ -2,7 +2,7 @@ import React from 'react';
 
 const SuggestedPages = () => {
     return (
-        <div className="iq-card">
+        <div className="iq-card d-none d-sm-block">
             <div className="iq-card-header d-flex justify-content-between">
                 <div className="iq-header-title">
                     <h4 className="card-title">Suggested Pages</h4>
@@ -26,24 +26,24 @@ const SuggestedPages = () => {
                 <ul className="suggested-page-story m-0 p-0 list-inline">
                     <li className="mb-3">
                         <div className="d-flex align-items-center mb-3">
-                            <img src="images/page-img/42.png" alt="story-img" className="rounded-circle img-fluid avatar-50" />
+                            <img src="/images/page-img/42.png" alt="story-img" className="rounded-circle img-fluid avatar-50" />
                             <div className="stories-data ml-3">
                                 <h5>Iqonic Studio</h5>
                                 <p className="mb-0">Lorem Ipsum</p>
                             </div>
                         </div>
-                        <img src="images/small/img-1.jpg" className="img-fluid rounded" alt="Responsive image" />
+                        <img src="/images/small/img-1.jpg" className="img-fluid rounded" alt="Responsive image" />
                         <div className="mt-3"><a href="index.html#" className="btn d-block"><i className="ri-thumb-up-line mr-2" /> Like Page</a></div>
                     </li>
                     <li className="">
                         <div className="d-flex align-items-center mb-3">
-                            <img src="images/page-img/42.png" alt="story-img" className="rounded-circle img-fluid avatar-50" />
+                            <img src="/images/page-img/42.png" alt="story-img" className="rounded-circle img-fluid avatar-50" />
                             <div className="stories-data ml-3">
                                 <h5>Cakes &amp; Bakes </h5>
                                 <p className="mb-0">Lorem Ipsum</p>
                             </div>
                         </div>
-                        <img src="images/small/img-2.jpg" className="img-fluid rounded" alt="Responsive image" />
+                        <img src="/images/small/img-2.jpg" className="img-fluid rounded" alt="Responsive image" />
                         <div className="mt-3"><a href="index.html#" className="btn d-block"><i className="ri-thumb-up-line mr-2" /> Like Page</a></div>
                     </li>
                 </ul>

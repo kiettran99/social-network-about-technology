@@ -2,7 +2,7 @@ import React from 'react';
 
 const Events = () => {
     return (
-        <div className="iq-card">
+        <div className="iq-card d-none d-sm-block">
         <div className="iq-card-header d-flex justify-content-between">
           <div className="iq-header-title">
             <h4 className="card-title">Events</h4>
@@ -25,14 +25,14 @@ const Events = () => {
         <div className="iq-card-body">
           <ul className="media-story m-0 p-0">
             <li className="d-flex mb-4 align-items-center ">
-              <img src="images/page-img/s4.jpg" alt="story-img" className="rounded-circle img-fluid" />
+              <img src="/images/page-img/s4.jpg" alt="story-img" className="rounded-circle img-fluid" />
               <div className="stories-data ml-3">
                 <h5>Web Workshop</h5>
                 <p className="mb-0">1 hour ago</p>
               </div>
             </li>
             <li className="d-flex align-items-center">
-              <img src="images/page-img/s5.jpg" alt="story-img" className="rounded-circle img-fluid" />
+              <img src="/images/page-img/s5.jpg" alt="story-img" className="rounded-circle img-fluid" />
               <div className="stories-data ml-3">
                 <h5>Fun Events and Festivals</h5>
                 <p className="mb-0">1 hour ago</p>
