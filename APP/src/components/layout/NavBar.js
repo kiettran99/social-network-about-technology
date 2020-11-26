@@ -304,9 +304,9 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, 
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-label="Toggle navigation">
               <i className="ri-menu-3-line" />
             </button>
-            <div className="collapse navbar-collapse p-sm-0 pl-4" id="navbarSupportedContent">
+            <div className="collapse navbar-collapse" id="navbarSupportedContent">
               {!loading && user ? userComponent(user) : (
-                <div className="float-right">
+                <div className="float-right p-sm-0 pl-4">
                   {guestComponent}
                 </div>
               )}

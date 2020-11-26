@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { getGroup } from '../../actions/group';
 import GroupProfile from './GroupProfile';
 import CreatePost from '../post/CreatePost';
 import PostsPage from '../post/PostsPage';
 import HeaderBackground from './header/HeaderBackground';
+import Process from './Process';
 
 const GroupPage = ({ match, getGroup, group: { group, loading } }) => {
 
@@ -27,6 +28,9 @@ const GroupPage = ({ match, getGroup, group: { group, loading } }) => {
                                     <CreatePost groupId={group._id} />
                                 </div>
                                 <PostsPage groupId={group._id} />
+                                <div className="col-sm-12 text-center">
+                                    <Process groupId={group._id} />
+                                </div>
                             </div>
                         </div>
                         <div className="col-lg-4">

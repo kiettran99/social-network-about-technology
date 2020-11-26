@@ -63,7 +63,10 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, group, co
                     </div>
                 </div>
                 <div className="mt-3">
-                    <p>{text}</p>
+                    <p style={{
+                        whiteSpace: 'pre-wrap',
+                        overflowWrap: 'break-word'
+                    }}>{text}</p>
                 </div>
                 <div className="user-post">
                     <AttachPost imageUrls={imageUrls} />

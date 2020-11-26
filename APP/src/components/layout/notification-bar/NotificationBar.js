@@ -45,10 +45,10 @@ const NotificationBar = ({ notification: { notification, loading }, auth: { isAu
                         to={`/${message.topic}/${message.topicId}`}>
                         <div className="media align-items-center">
                             <div className="">
-                                <img className="avatar-40 rounded" src="images/user/01.jpg" alt="" />
+                                <img className="avatar-40 rounded" src={message.user.avatar} alt="" />
                             </div>
                             <div className="media-body ml-3">
-                                <h6 className="mb-0 ">{message.text}</h6>
+                                <h6 className={`mb-0 ${message.status ? '' : 'font-weight-bold'}`}>{message.text}</h6>
                                 <small className="float-right font-size-12">{message.name} · {dayjs(message.date).fromNow()}</small>
                             </div>
                         </div>
@@ -69,15 +69,21 @@ const NotificationBar = ({ notification: { notification, loading }, auth: { isAu
                 <div className="iq-card shadow-none m-0">
                     <div className="iq-card-body p-0 ">
                         <div className="bg-primary p-3">
-                            <h5 className="mb-0 text-white">All Notifications<small className="badge  badge-light float-right pt-1">{notificationQuantity(notification)}</small></h5>
+                            <h5 className="mb-0 text-white">
+                                All Notifications
+                                <small className="badge badge-light float-right pt-1">
+                                    {notificationQuantity(notification)}
+                                </small>
+                            </h5>
                         </div>
                         {!loading && notification && notificationBox(notification)}
-
+                        <div className="text-center">
+                            <Link to="/notification" className="mr-3 btn text-primary">View More Notifications</Link>
+                        </div>
                     </div>
                 </div>
             </div>
         </li>
-
     );
 };
 

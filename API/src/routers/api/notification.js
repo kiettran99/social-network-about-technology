@@ -19,7 +19,7 @@ router.get('/', auth, async (req, res) => {
                 messages: {
                     $slice: [skip, limit]
                 }
-            });
+            }).populate('messages.user', 'avatar');
 
         res.json(notification);
     }

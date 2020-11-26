@@ -104,7 +104,7 @@ const CreatePost = ({ auth: { user, isAuthenticated, loading }, addPost, groupId
                   {user && user.avatar && <img src={user.avatar} alt="userimg" className="avatar-60 rounded-circle img-fluid" />}
                 </div>
                 <form className="post-text ml-3 w-100" onSubmit={e => onSubmit(e)}>
-                  <input type="text" className="form-control rounded" placeholder="Write something here..."
+                  <textarea type="text" className="form-control rounded" placeholder="Write something here..."
                     name="text"
                     value={text}
                     onChange={onChange}
