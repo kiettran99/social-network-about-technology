@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addPost } from '../../actions/post';
 
-const CreatePost = ({ auth: { user, isAuthenticated, loading }, addPost, groupId }) => {
+const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -27,13 +27,18 @@ const CreatePost = ({ auth: { user, isAuthenticated, loading }, addPost, groupId
     formData.append('text', text);
 
     if (images && images.length > 0) {
-      images.forEach((image, index) => {
+      images.forEach((image) => {
         formData.append(`images`, image);
       })
     }
 
-    if (groupId) {
-      formData.append('groupId', groupId);
+    if (type) {
+      if (type.groupId) {
+        formData.append('groupId', type.groupId);
+      }
+      else {
+        formData.append('recipient', type.userId);
+      }
     }
 
     addPost(formData);

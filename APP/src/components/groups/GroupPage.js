@@ -25,7 +25,7 @@ const GroupPage = ({ match, getGroup, group: { group, loading } }) => {
                         <div className="col-lg-8">
                             <div className="row">
                                 <div className="col-sm-12">
-                                    <CreatePost groupId={group._id} />
+                                    <CreatePost type={{ groupId: group._id }} />
                                 </div>
                                 <PostsPage groupId={group._id} />
                                 <div className="col-sm-12 text-center">

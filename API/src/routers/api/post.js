@@ -18,12 +18,16 @@ router.get('/', async (req, res) => {
 
         const conditions = {};
 
-        if (req.query.groupId) {
-            conditions.group = req.query.groupId;
-        }
-        
-        if (req.query.userId) {
-            conditions.user = req.query.userId;
+        if (req.query.userId || req.query.groupId) {
+
+            const { groupId, userId } = req.query;
+
+            if (groupId) {
+                conditions['type.group'] = groupId;
+            }
+            else {
+                conditions['type.user'] =  userId;
+            }
         }
 
         const posts = await Post.find(conditions, {
@@ -33,7 +37,7 @@ router.get('/', async (req, res) => {
             "comments.replies": {
                 $slice: [0, 1]
             }
-        }).limit(limit).skip(skip).populate('group', 'name');
+        }).limit(limit).skip(skip).populate('type.group', 'name');
 
         res.send(posts);
 
@@ -63,7 +67,7 @@ router.get('/:id', async (req, res) => {
             "comments.replies": {
                 $slice: [0, 1]
             }
-        }).populate('group', 'name');
+        }).populate('type.group', 'name');
 
         res.json(post);
     }
@@ -183,18 +187,22 @@ router.post('/', auth, upload.array('images'), [
             return res.status(400).json({ errors: errors.array() });
         }
 
-        debugger;
-
         const newPost = {
             text: req.body.text,
             user: req.user.id,
             name: req.user.fullname,
-            avatar: req.user.avatar
-        }
+            avatar: req.user.avatar,
+            type: {}
+        };
 
         // if 'null' bugs.
         if (!!req.body.groupId) {
-            newPost.group = req.body.groupId;
+            newPost.type.group = req.body.groupId;
+        }
+        else if (!!req.body.recipient) {
+            newPost.type.user = req.body.recipient;
+        } else {
+            newPost.type.user = req.user.id;
         }
 
         // Create a instance post and save it.

@@ -15,7 +15,7 @@ const Profile = ({ match }) => {
                     </div>
                     <div className="row">
                         <div className="col-lg-4">
-                            <AboutProfile match={match} />
+                            <AboutProfile />
                             <div className="iq-card">
                                 <div className="iq-card-header d-flex justify-content-between">
                                     <div className="iq-header-title">
@@ -41,7 +41,7 @@ const Profile = ({ match }) => {
                         <div className="col-lg-8">
                             <div className="row">
                                 <div className="col-sm-12">
-                                    <CreatePost />
+                                    <CreatePost type={{ userId: match.params.id}}/>
                                 </div>
                                 <PostsPage match={match} />
                             </div>
