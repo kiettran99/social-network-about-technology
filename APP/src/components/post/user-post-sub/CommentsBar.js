@@ -91,8 +91,8 @@ const CommentsBar = ({ likePost, unlikePost,
                 </div>
             </div>
             <div className="share-block d-flex align-items-center feather-icon mr-3">
-                <a href=""><i className="ri-share-line" />
-                    <span className="ml-1">99 Share</span></a>
+                {/* <a href=""><i className="ri-share-line" />
+                    <span className="ml-1">99 Share</span></a> */}
             </div>
         </div>
     );
