@@ -2,9 +2,12 @@ import ReactDOM from 'react-dom';
 import React, { useEffect } from 'react';
 
 import 'normalize.css/normalize.css';
-import './styles/styles.scss';
 import 'react-notifications/lib/notifications.css';
 import 'react-image-lightbox/style.css';
+import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.bubble.css';
+import 'react-quill/dist/quill.core.css';
+import './styles/styles.scss';
 
 import AppRoute from './routes/AppRoute';
 import { Provider } from 'react-redux';

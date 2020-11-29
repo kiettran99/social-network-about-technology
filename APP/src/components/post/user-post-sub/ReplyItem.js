@@ -63,7 +63,7 @@ const ReplyItem = ({ reply: { _id, name, text, avatar, date, user: userComment, 
                             onClick={() => onLikeHandler()}>like</a>
                         <a style={{ cursor: "pointer" }}
                             onClick={() => onCommentsForm()}>reply</a>
-                        <a href="">translate</a>
+                        {/* <a href="">translate</a> */}
                         {user && isAuthenticated && user._id === userComment
                             && <a style={{ cursor: "pointer" }} className="text-danger" onClick={() => onRemoveComment()}>Remove</a>}
                         <span> {dayjs(date).fromNow()} </span>

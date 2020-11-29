@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addPost } from '../../actions/post';
 
-const CreatePost = ({ auth: { user, isAuthenticated, loading }, addPost, groupId }) => {
+import BubbleEditor from './editor/BubbleEditor';
+
+const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -27,21 +29,26 @@ const CreatePost = ({ auth: { user, isAuthenticated, loading }, addPost, groupId
     formData.append('text', text);
 
     if (images && images.length > 0) {
-      images.forEach((image, index) => {
+      images.forEach((image) => {
         formData.append(`images`, image);
       })
     }
 
-    if (groupId) {
-      formData.append('groupId', groupId);
+    if (type) {
+      if (type.groupId) {
+        formData.append('groupId', type.groupId);
+      }
+      else {
+        formData.append('recipient', type.userId);
+      }
     }
 
     addPost(formData);
   };
 
-  const onChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  }
+  // const onChange = (e) => {
+  //   setFormData({ ...formData, [e.target.name]: e.target.value });
+  // }
 
   const onHandleSubmitForm = (e) => {
     onSubmit(e);
@@ -60,12 +67,9 @@ const CreatePost = ({ auth: { user, isAuthenticated, loading }, addPost, groupId
             {user && user.avatar && <img src={user.avatar} alt="userimg" className="avatar-60 rounded-circle" />}
           </div>
           <form className="post-text ml-3 w-100" onSubmit={e => onSubmit(e)}>
-            <input type="text" className="form-control rounded" placeholder="Write something here..."
-              name="text"
-              value={text}
-              onChange={onChange}
-              style={{ border: 'none' }}
-            />
+            <div className="standalone-container">
+              <BubbleEditor readOnly={true} text={text} setText={(value) => setFormData({ ...formData, text: value })} />
+            </div>
           </form>
         </div>
         <hr />
@@ -104,12 +108,9 @@ const CreatePost = ({ auth: { user, isAuthenticated, loading }, addPost, groupId
                   {user && user.avatar && <img src={user.avatar} alt="userimg" className="avatar-60 rounded-circle img-fluid" />}
                 </div>
                 <form className="post-text ml-3 w-100" onSubmit={e => onSubmit(e)}>
-                  <input type="text" className="form-control rounded" placeholder="Write something here..."
-                    name="text"
-                    value={text}
-                    onChange={onChange}
-                    style={{ border: 'none' }}
-                  />
+                  <div className="standalone-container">
+                    <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />
+                  </div>
                 </form>
               </div>
               <hr />
@@ -150,7 +151,7 @@ const CreatePost = ({ auth: { user, isAuthenticated, loading }, addPost, groupId
                     }} />
                     <div className="upload-button" style={{ fontSize: "1em" }}>
                       <img src="/images/small/07.png" alt="icon" className="img-fluid upload-button" />
-                      <span>Photo/Video</span>
+                      <span>Photos</span>
                     </div>
                   </div>
                 </li>

@@ -8,7 +8,9 @@ import CommentForm from './user-post-sub/CommentForm';
 import Following from './user-post-sub/Following';
 import AttachPost from './AttachPost';
 
-const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, group, comments, createdAt, lengthOfComments, user: userId } }) => {
+import BubbleEditor from './editor/BubbleEditor';
+
+const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, comments, createdAt, lengthOfComments, user: userId } }) => {
     return (
         <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
             <div className="iq-card-body">
@@ -19,7 +21,7 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, group, co
                         </div>
                         <div className="media-support-info mt-2">
                             <h5 className="mb-0 d-inline-block"><Link to={`/profile/${userId}`}>{name}&nbsp;</Link></h5>
-                            {group ? <p className="mb-0 d-inline-block"> <i className="fas fa-caret-right">&nbsp;</i><Link className='text-dark' to={`/groups/${group._id}`}>&nbsp;{group.name}</Link></p>
+                            {type && type.group ? <p className="mb-0 d-inline-block"> <i className="fas fa-caret-right">&nbsp;</i><Link className='text-dark' to={`/groups/${type.group._id}`}>&nbsp;{type.group.name}</Link></p>
                                 : <p className="mb-0 d-inline-block">Add New Post</p>}
                             <p className="mb-0 text-primary">{dayjs(createdAt).fromNow()}</p>
                         </div>
@@ -63,7 +65,7 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, group, co
                     </div>
                 </div>
                 <div className="mt-3">
-                    <p>{text}</p>
+                    <BubbleEditor readOnly={true} text={text} />
                 </div>
                 <div className="user-post">
                     <AttachPost imageUrls={imageUrls} />

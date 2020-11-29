@@ -1,7 +1,7 @@
 import {
     GET_FRIENDS, GET_REQUEST_FRIENDS, GET_USERS_FRIENDS,
     FRIEND_ERROR, REQUEST_FRIEND,
-    ACCEPT_FRIEND, UNACCEPT_FRIEND, CLEAR_FRIEND
+    ACCEPT_FRIEND, UNACCEPT_FRIEND, CLEAR_FRIEND, GET_MORE_FRIENDS
 } from './types';
 
 import urlAPI from '../utils/urlAPI';
@@ -20,6 +20,26 @@ export const getFriends = (skip = 0, limit = 5) => async dispatch => {
             type: GET_FRIENDS,
             payload: res.data
         });
+    }
+    catch (e) {
+        console.log(e);
+
+        dispatch({
+            type: FRIEND_ERROR,
+            payload: { msg: e.response.data, status: e.response.statusText }
+        });
+    }
+};
+
+export const getMoreFriends = (skip = 0, limit = 5) => async dispatch => {
+    try {
+        const res = await axios.get(`${urlAPI}/api/friends/get-friends?skip=${skip}&limit=${limit}`);
+        
+        dispatch({
+            type: GET_MORE_FRIENDS,
+            payload: res.data
+        });
+
     }
     catch (e) {
         console.log(e);

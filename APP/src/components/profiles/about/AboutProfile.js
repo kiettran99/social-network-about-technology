@@ -1,16 +1,7 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
-import { getProfileById } from '../../../actions/profile';
 
-const AboutProfile = ({ match, getProfileById,
-    profile: { profile },
-}) => {
-
-    useEffect(() => {
-        getProfileById(match.params.id);
-    }, [match, getProfileById]);
-
+const AboutProfile = ({ profile: { profile } }) => {
     return (
         <div className="iq-card">
             <div className="iq-card-header d-flex justify-content-between">
@@ -35,7 +26,7 @@ const AboutProfile = ({ match, getProfileById,
                         </li>
                         <li className="d-flex align-items-center">
                             <i className="ri-service-line pr-3 font-size-20" />
-                            <p className="mb-0">{profile.user.gender === 'm' ? 'Male': 'Female' }</p>
+                            <p className="mb-0">{profile.user.gender === 'm' ? 'Male' : 'Female'}</p>
                         </li>
                         <li className="d-flex align-items-center">
                             <i className="ri-heart-line pr-3 font-size-20" />
@@ -52,4 +43,4 @@ const mapStateToProps = (state) => ({
     profile: state.profile
 });
 
-export default connect(mapStateToProps, { getProfileById })(AboutProfile);
+export default connect(mapStateToProps)(AboutProfile);

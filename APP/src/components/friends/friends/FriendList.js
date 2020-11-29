@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import FriendItem from './FriendItem';
 import { getFriends } from '../../../actions/friend';
+import FriendProcess from  '../lazy-loading/FriendProcess';
 
 const FriendList = ({ friend: { friends, loading }, getFriends }) => {
 
@@ -15,7 +16,10 @@ const FriendList = ({ friend: { friends, loading }, getFriends }) => {
             {!loading && friends && friends.length > 0 && friends.map(friend => (
                 <FriendItem key={friend._id} friend={friend} />
             ))}
-        </div>
+            <div className="col-sm-12 text-center">
+               <FriendProcess />
+            </div>
+        </div >
     );
 };
 

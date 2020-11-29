@@ -72,8 +72,10 @@ export const getPosts = (skip = 0, limit = 5, groupId, userId) => async dispatch
         dispatch({
             type: REQUEST_LOADING
         });
+
+        const queryString = `${groupId ? "&groupId=" + groupId: ''}${userId ? "&userId=" + userId : ''}`;
        
-        const res = await axios.get(`${urlAPI}/api/posts?skip=${skip}&limit=${limit}${groupId && "&groupId=" + groupId}${userId && "&userId=" + userId}`);
+        const res = await axios.get(`${urlAPI}/api/posts?skip=${skip}&limit=${limit}${queryString}`);
 
         dispatch({
             type: GET_POSTS,
@@ -101,9 +103,12 @@ export const getPosts = (skip = 0, limit = 5, groupId, userId) => async dispatch
     }
 };
 
-export const getMorePosts = (skip = 0, limit = 5) => async dispatch => {
+export const getMorePosts = (skip = 0, limit = 5, groupId, userId) => async dispatch => {
     try {
-        const res = await axios.get(`${urlAPI}/api/posts?skip=${skip}&limit=${limit}`);
+
+        const queryString = `${groupId ? "&groupId=" + groupId: ''}${userId ? "&userId=" + userId : ''}`;
+
+        const res = await axios.get(`${urlAPI}/api/posts?skip=${skip}&limit=${limit}${queryString}`);
 
         dispatch({
             type: GET_MORE_POSTS,

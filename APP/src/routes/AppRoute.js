@@ -19,6 +19,7 @@ import EditProfile from '../components/profiles/EditProfile';
 import PostDetail from '../components/post/PostDetail';
 import FriendRequest from '../components/friends/FriendRequest';
 import FriendsList from '../components/friends/FriendsList';
+import Notification from '../components/notification/Notification';
 
 const MainComponent = () => {
     return (
@@ -34,6 +35,7 @@ const MainComponent = () => {
                     <Route exact path="/groups/:id" component={GroupPage} />
                     <Route exact path="/friend-request" component={FriendRequest} />
                     <Route exact path="/friend-list" component={FriendsList} />
+                    <Route exact path="/notification" component={Notification} />
                     <PrivateRoute exact path="/profile/edit" component={EditProfile} />
                     <Route exact path="/profile/:id" component={Profile} />
                     <Route component={NotFoundPage} />

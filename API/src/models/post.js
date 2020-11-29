@@ -32,9 +32,16 @@ const postSchema = Schema({
             type: Number
         }
     }],
-    group: {
-        type: ObjectId,
-        ref: 'Group'
+    type: {
+        group: {
+            type: ObjectId,
+            ref: 'Group'
+        },
+        user: {
+            type: ObjectId,
+            ref: 'User'
+        },
+        default: {}
     },
     comments: [{
         user: {
