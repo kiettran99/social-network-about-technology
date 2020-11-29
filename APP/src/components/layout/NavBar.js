@@ -42,7 +42,7 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, 
               <i className="ri-home-line" />
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item d-none d-sm-block">
             <a className="search-toggle iq-waves-effect" href="index.html#"><i className="ri-group-line" /></a>
             <div className="iq-sub-dropdown iq-sub-dropdown-large">
               <div className="iq-card shadow-none m-0">
@@ -207,7 +207,7 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, 
             <div className="iq-sub-dropdown iq-user-dropdown">
               <div className="iq-card shadow-none m-0">
                 <div className="iq-card-body p-0 ">
-                  <div className="bg-primary p-3 line-height">
+                  <div className="bg-primary p-3 line-height d-none d-sm-block">
                     <h5 className="mb-0 text-white line-height">Hello {user.fullname}</h5>
                     <span className="text-white font-size-12">Available</span>
                   </div>

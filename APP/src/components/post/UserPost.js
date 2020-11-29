@@ -8,6 +8,8 @@ import CommentForm from './user-post-sub/CommentForm';
 import Following from './user-post-sub/Following';
 import AttachPost from './AttachPost';
 
+import BubbleEditor from './editor/BubbleEditor';
+
 const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, comments, createdAt, lengthOfComments, user: userId } }) => {
     return (
         <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
@@ -63,10 +65,7 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                     </div>
                 </div>
                 <div className="mt-3">
-                    <p style={{
-                        whiteSpace: 'pre-wrap',
-                        overflowWrap: 'break-word'
-                    }}>{text}</p>
+                    <BubbleEditor readOnly={true} text={text} />
                 </div>
                 <div className="user-post">
                     <AttachPost imageUrls={imageUrls} />
