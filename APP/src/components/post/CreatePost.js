@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { addPost } from '../../actions/post';
 
 import BubbleEditor from './editor/BubbleEditor';
+import SnowEditor from './editor/SnowEditor';
 
 const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
 
@@ -109,7 +110,8 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                 </div>
                 <form className="post-text ml-3 w-100" onSubmit={e => onSubmit(e)}>
                   <div className="standalone-container">
-                    <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />
+                    {type && type.groupId ? <SnowEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} /> :
+                      <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />}
                   </div>
                 </form>
               </div>

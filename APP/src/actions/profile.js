@@ -84,6 +84,7 @@ export const updateProfile = (formData) => async dispatch => {
         });
 
         dispatch(loadUser());
+        dispatch(getMeProfile());
     }
     catch (e) {
         dispatch({

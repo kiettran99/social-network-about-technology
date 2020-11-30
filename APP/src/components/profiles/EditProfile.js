@@ -228,7 +228,7 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                                                     <div className="form-group col-sm-6">
                                                         <label>Marital Status:</label>
                                                         <select className="form-control" id="exampleFormControlSelect1"
-                                                            name="maritalStatus" onChange={e => onChange(e)}>
+                                                            name="maritalStatus" value={maritalStatus} onChange={e => onChange(e)}>
                                                             <option selected>Single</option>
                                                             <option>Married</option>
                                                             <option>Widowed</option>
@@ -239,7 +239,7 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                                                     <div className="form-group col-sm-6">
                                                         <label>Age:</label>
                                                         <select className="form-control" id="exampleFormControlSelect2"
-                                                            name="age" onChange={e => onChange(e)}>
+                                                            name="age" value={age} onChange={e => onChange(e)}>
                                                             <option>12-18</option>
                                                             <option selected>19-32</option>
                                                             <option>33-45</option>
@@ -250,7 +250,7 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                                                     <div className="form-group col-sm-6">
                                                         <label>Country:</label>
                                                         <select className="form-control" id="exampleFormControlSelect3"
-                                                            name="country" onChange={e => onChange(e)}>
+                                                            name="country" value={country} onChange={e => onChange(e)}>
                                                             <option>Caneda</option>
                                                             <option>Noida</option>
                                                             <option selected>VN</option>
