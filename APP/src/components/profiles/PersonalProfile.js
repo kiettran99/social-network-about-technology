@@ -9,7 +9,7 @@ const PersonalProfile = ({ auth: { user, isAuthenticated },
 
     useEffect(() => {
         getProfileById(match.params.id);
-    }, [getProfileById, isAuthenticated]);
+    }, [getProfileById, isAuthenticated, match]);
 
     return !loading && profile && (
         <div className="iq-card">
