@@ -1,6 +1,6 @@
 import {
     NOTIFICATION_LOADED, NOTIFICATION_ERROR, FOLLOWING_NOTIFICATION,
-    UNFOLLOWING_NOTIFICATION, MAKE_AS_READ_NOTIFICATION,
+    UNFOLLOWING_NOTIFICATION, MAKE_AS_READ_NOTIFICATION, GET_MORE_NOTIFICATION,
     CLEAR_NOTIFICATION
 } from '../actions/types';
 
@@ -18,6 +18,25 @@ export const loadNotification = (skip = 0, limit = 3) => async dispatch => {
     }
     catch (e) {
         console.log(e.response);
+
+        dispatch({
+            type: NOTIFICATION_ERROR,
+            payload: { msg: e.response.data, status: e.response.statusText }
+        });
+    }
+};
+
+export const loadMoreNotification = (skip = 0, limit = 3) => async dispatch => {
+    try {
+        const res = await axios.get(`${urlAPI}/api/notification/more?skip=${skip}&limit=${limit}`);
+
+        dispatch({
+            type: GET_MORE_NOTIFICATION,
+            payload: res.data
+        });
+    }
+    catch (e) {
+        console.log(e);
 
         dispatch({
             type: NOTIFICATION_ERROR,

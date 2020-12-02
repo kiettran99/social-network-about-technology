@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 // import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addPost } from '../../actions/post';
 
-import BubbleEditor from './editor/BubbleEditor';
-import SnowEditor from './editor/SnowEditor';
+// import BubbleEditor from './editor/BubbleEditor';
+// import SnowEditor from './editor/SnowEditor';
+const BubbleEditor = lazy(() => import('./editor/BubbleEditor'));
+const SnowEditor = lazy(() => import('./editor/SnowEditor'));
 
 const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
 
@@ -69,7 +71,9 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
           </div>
           <form className="post-text ml-3 w-100" onSubmit={e => onSubmit(e)}>
             <div className="standalone-container">
-              <BubbleEditor readOnly={true} text={text} setText={(value) => setFormData({ ...formData, text: value })} />
+              <Suspense fallback={<div>Loading...</div>}>
+                <BubbleEditor readOnly={true} text={text} setText={(value) => setFormData({ ...formData, text: value })} />
+              </Suspense>
             </div>
           </form>
         </div>
@@ -110,8 +114,11 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                 </div>
                 <form className="post-text ml-3 w-100" onSubmit={e => onSubmit(e)}>
                   <div className="standalone-container">
-                    {type && type.groupId ? <SnowEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} /> :
-                      <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />}
+                    <Suspense fallback={<div>Loading...</div>}>
+                      {type && type.groupId ? <SnowEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} /> :
+                        <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />}
+                    </Suspense>
+
                   </div>
                 </form>
               </div>

@@ -32,7 +32,7 @@ const SideBar = () => {
                             <a href="profile-event.html" className="iq-waves-effect"><i className="las la-film" /><span>Profile Events</span></a>
                         </li>
                         <li>
-                            <a href="notification.html" className="iq-waves-effect"><i className="las la-bell" /><span>Notification</span></a>
+                            <Link to="/notification" className="iq-waves-effect"><i className="las la-bell" /><span>Notification</span></Link>
                         </li>
                         <li>
                             <a href="file.html" className="iq-waves-effect"><i className="las la-file" /><span>Files</span></a>

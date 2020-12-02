@@ -2,13 +2,18 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import dayjs from '../../utils/relativeDate';
 import { loadNotification, makeAsReadAll } from '../../actions/notification';
+import NotificationProcess from './lazy-loading/NotificationProcess';
 
 const Notification = ({ notification: { notification },
     loadNotification, makeAsReadAll
 }) => {
 
     useEffect(() => {
-        loadNotification(0, 12);
+        loadNotification();
+
+        return () => {
+            loadNotification();
+        }
     }, []);
 
     // Auto Sroll on Top, when component did mount
@@ -39,7 +44,7 @@ const Notification = ({ notification: { notification },
                                     Notification's Box is empty.
                                  </h6> :
                                 notification.messages.map(message => (
-                                    <div className="iq-card">
+                                    <div className="iq-card" key={message._id}>
                                         <div className="iq-card-body">
                                             <ul className="notification-list m-0 p-0">
                                                 <li className="d-flex align-items-center">
@@ -71,6 +76,9 @@ const Notification = ({ notification: { notification },
                                     </div>
                                 ))
                         )}
+                    </div>
+                    <div className="col-sm-12 text-center">
+                        {notification && <NotificationProcess />}
                     </div>
                 </div>
             </div>

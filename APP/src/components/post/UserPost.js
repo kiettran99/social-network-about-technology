@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 
 import dayjs from '../../utils/relativeDate';
@@ -8,7 +8,7 @@ import CommentForm from './user-post-sub/CommentForm';
 import Following from './user-post-sub/Following';
 import AttachPost from './AttachPost';
 
-import BubbleEditor from './editor/BubbleEditor';
+const BubbleEditor = lazy(() => import('./editor/BubbleEditor'));
 
 const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, comments, createdAt, lengthOfComments, user: userId } }) => {
     return (
@@ -65,7 +65,9 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                     </div>
                 </div>
                 <div className="mt-3">
-                    <BubbleEditor readOnly={true} text={text} />
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <BubbleEditor readOnly={true} text={text} />
+                    </Suspense>
                 </div>
                 <div className="user-post">
                     <AttachPost imageUrls={imageUrls} />

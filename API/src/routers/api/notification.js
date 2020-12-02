@@ -29,6 +29,33 @@ router.get('/', auth, async (req, res) => {
     }
 });
 
+// @route GET /api/notification/more
+// @desc Get more current notification. 
+// @access Private
+router.get('/more', auth, async (req, res) => {
+    try {
+        const skip = parseInt(req.query.skip) || 0;
+        const limit = parseInt(req.query.limit) || 1;
+
+        if (skip < 0 || limit < 0) {
+            return res.status(400).send('Skip or limit must be positive.');
+        }
+
+        const notification = await Notification.findOne({ user: req.user._id },
+            {
+                messages: {
+                    $slice: [skip, limit]
+                }
+            }).populate('messages.user', 'avatar');
+
+        res.json(notification.messages);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
 // @route PUT /api/notification/markasread/:id
 // @desc Make as read a message.
 // @access Private
