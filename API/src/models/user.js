@@ -44,6 +44,9 @@ const userSchema = mongoose.Schema({
       required: true
     }
   }],
+  resetToken: {
+    type: String
+  },
   facebookId: {
     type: String
   },

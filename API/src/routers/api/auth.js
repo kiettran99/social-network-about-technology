@@ -3,6 +3,8 @@ const auth = require('../../middleware/auth');
 const User = require('../../models/user');
 const { body, validationResult } = require('express-validator');
 const errorHandler = require('../../middleware/error-handler');
+const resetToken = require('../../utils/reset-password/token');
+const { sendEmail } = require('../../utils/email');
 
 // @route Get api/auth
 // @desc Test authentication
@@ -42,6 +44,106 @@ router.post('/', [
     catch (e) {
         res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] })
         //res.status(500).send('Server is error');
+    }
+});
+
+// @route Post api/auth/reset-password
+// @desc Logout user and remove current token.
+// @access public
+router.post('/reset-password', [
+    body('email', 'Email is required.').not().isEmpty()
+], async (req, res) => {
+    try {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const email = req.body.email;
+
+        // Find user to check exists
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ msg: 'User is not found .' });
+        }
+
+        // Generate token and send email to reset
+        user.resetToken = resetToken.generateToken(user.id, email);
+
+        await user.save();
+
+        // Send mail
+        await sendEmail(user, {
+            type: 'forgot-password',
+            data: `${process.env.APP_URL}/reset-password/${user.resetToken}`
+        });
+
+        res.json({ msg: 'Reset password successfully !' });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is error.');
+    }
+});
+
+// @route Post api/auth/reset-password/:token
+// @desc Validation token and allow retore new password
+// @access public
+router.post('/reset-password/:token', [
+    body('password', 'Password is required.').not().isEmpty(),
+    body('confirmPassword', 'Confirm password is required.').not().isEmpty()
+], async (req, res) => {
+    try {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        // Validation token
+        const token = req.params.token;
+        
+        if (!token) {
+            return res.status(400).json({ msg: 'Token is required.' });
+        }
+        debugger;
+
+        const { password, confirmPassword } = req.body;
+
+        if (password !== confirmPassword) {
+            return res.status(400).json({ msg: 'Password is not match.'});
+        }
+
+        // Decoded token to get _id and email
+        const decoded = resetToken.validateToken(token);
+
+        if (!decoded) {
+            return res.status(400).json({ msg: 'Please try forgot password again.'});
+        }
+
+        // Find user to check exists
+        const user = await User.findOne({
+            _id: decoded.id,
+            email: decoded.email,
+            resetToken: token
+        });
+
+        if (!user) {
+            return res.status(404).json({ msg: 'User is not found .' });
+        }
+
+        // Allow change new password
+        user.password = password;
+
+        await user.save();
+
+        res.json({ msg: 'Reset password successfully !' });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is error.');
     }
 });
 

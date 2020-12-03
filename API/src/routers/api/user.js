@@ -57,6 +57,19 @@ router.post('/register', [
   }
 });
 
+// @route GET /api/users/send-mail-welcome
+// @desc Test send mail
+// @access private
+router.get('/send-mail-welcome', auth, async (req, res) => {
+  try {
+    await sendEmail(req.user);
+    res.send('Send email ok');
+  }
+  catch (e) {
+    console.log(e);
+    res.status(500).send('Server is error.');
+  }
+});
 
 // @route PUT /api/users/changepassword
 // @desc Change current user's password
