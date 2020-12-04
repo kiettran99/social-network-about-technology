@@ -85,7 +85,7 @@ const Login = ({ auth: { isAuthenticated, user }, login, history }) => {
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="exampleInputPassword1">Password</label>
-                                    <a href="sign-in.html#" className="float-right">Forgot password?</a>
+                                    <Link to="/forgot-password" className="float-right">Forgot password?</Link>
                                     <input type="password" className="form-control mb-0" id="exampleInputPassword1" placeholder="Password"
                                         tabIndex="2"
                                         name="password"

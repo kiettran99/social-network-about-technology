@@ -20,6 +20,8 @@ import PostDetail from '../components/post/PostDetail';
 import FriendRequest from '../components/friends/FriendRequest';
 import FriendsList from '../components/friends/FriendsList';
 import Notification from '../components/notification/Notification';
+import ForgotPassword from '../components/auth/ForgotPassword';
+import ResetPassword from '../components/auth/ResetPassword';
 
 const MainComponent = () => {
     return (
@@ -59,6 +61,8 @@ const AppRoute = () => (
             <Switch>
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
+                <Route exact path="/forgot-password" component={ForgotPassword} />
+                <Route exact path="/reset-password/:token" component={ResetPassword} />
                 <Route component={MainComponent} />
             </Switch>
         </>
