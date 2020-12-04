@@ -1,7 +1,8 @@
 import {
     REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED, AUTH_ERROR,
     LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT,
-    REQUEST_LOADING, COMPLETE_LOADING
+    REQUEST_LOADING, COMPLETE_LOADING,
+    REQUEST_RESET_PASSWORD, RESET_PASSWORD
 } from '../actions/types';
 import axios from 'axios';
 import urlAPI from '../utils/urlAPI';
@@ -31,9 +32,6 @@ export const loadUser = () => async dispatch => {
     }
 };
 
-
-
-
 //Login user
 export const login = (username, password) => async dispatch => {
     const config = {
@@ -60,7 +58,7 @@ export const login = (username, password) => async dispatch => {
         });
 
         dispatch(setAlert('Successfully login', 'Login', 'success', 2000));
-        
+
         dispatch(loadUser());
     }
     catch (e) {
@@ -157,5 +155,37 @@ export const logout = (history) => async dispatch => {
         dispatch({
             type: COMPLETE_LOADING
         });
+    }
+};
+
+// Request to forgot password
+export const requestForgotPassword = (formData) => async dispatch => {
+    try {
+        await axios.post(`${urlAPI}/api/auth/reset-password`, formData);
+
+        dispatch({
+            type: REQUEST_RESET_PASSWORD,
+            payload: true
+        });
+    }
+    catch (e) {
+        console.log(e);
+    }
+};
+
+// Reset new Password 
+export const resettPassword = (token, formData) => async dispatch => {
+    try {
+        const res = await axios.post(`${urlAPI}/api/auth/reset-password/${token}`, formData);
+
+        console.log(res.data);
+
+        dispatch({
+            type: RESET_PASSWORD,
+            payload: true
+        });
+    }
+    catch (e) {
+        console.log(e);
     }
 };

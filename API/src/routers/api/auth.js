@@ -108,7 +108,6 @@ router.post('/reset-password/:token', [
         if (!token) {
             return res.status(400).json({ msg: 'Token is required.' });
         }
-        debugger;
 
         const { password, confirmPassword } = req.body;
 
@@ -136,6 +135,9 @@ router.post('/reset-password/:token', [
 
         // Allow change new password
         user.password = password;
+
+        // Remove key if changed password success.
+        user.resetToken = null;
 
         await user.save();
 

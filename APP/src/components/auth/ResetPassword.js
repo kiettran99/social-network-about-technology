@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { requestForgotPassword } from '../../actions/auth';
+import { resettPassword } from '../../actions/auth';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import urlAPI from '../../utils/urlAPI';
 
-const FortgotPassword = ({ auth: { isAuthenticated, user, isConfirmResetPassword }, requestForgotPassword, history }) => {
+const ResetPassword = ({ auth: { isAuthenticated, user, isConfirmResetPassword }, resettPassword, history,
+    match
+}) => {
 
     const [formData, setFormData] = useState({
-        email: ''
+        password: '',
+        confirmPassword: ''
     })
 
-    const { email } = formData;
+    const { password, confirmPassword } = formData;
 
     if (isAuthenticated && user) {
         history.goBack();
@@ -20,25 +22,24 @@ const FortgotPassword = ({ auth: { isAuthenticated, user, isConfirmResetPassword
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        requestForgotPassword({ email });
+        resettPassword(match.params.token, { password, confirmPassword });
     }
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    const confirmForgotPassword = () => {
+    const confirmResetPassword = () => {
         return (
             <div className="col-md-6 bg-white pt-5">
                 <div className="sign-in-from">
                     <img src="/images/login/mail.png" width={80} alt="" />
                     <h1 className="mt-3 mb-0">Success !</h1>
-                    <p>A email has been send to {email}.<br/>
-                    Please check for an email from company and click on the included link to reset your password.</p>
+                    <p>Password update successfully! You can now login to social network with the new password.</p>
                     <div className="d-inline-block w-100">
-                        <button type="submit" className="btn btn-primary mt-3">Back to Home</button>
+                        <Link to="/login" className="btn btn-primary mt-3">Back to Login</Link>
                     </div>
                 </div>
             </div>
-        );
+        )
     };
 
     const requestEmail = () => {
@@ -46,26 +47,28 @@ const FortgotPassword = ({ auth: { isAuthenticated, user, isConfirmResetPassword
             <div className="col-md-6 bg-white pt-5">
                 <div className="sign-in-from">
                     <h1 className="mb-3">Reset Your Password</h1>
-                    <p>Enter your email to reset password</p>
+                    <p>Enter a new password below.</p>
                     <form className="mt-4" onSubmit={e => onSubmit(e)}>
                         <div className="form-group">
-                            <label htmlFor="exampleInputEmail1">Email</label>
-                            <input type="text" className="form-control mb-0" id="exampleInputEmail1" placeholder="Email"
+                            <label htmlFor="exampleInputEmail1">New password</label>
+                            <input type="password" className="form-control mb-0" id="exampleInputEmail1" placeholder="Password"
                                 tabIndex="1"
                                 autoFocus={true}
-                                name="email"
-                                value={email}
+                                name="password"
+                                value={password}
+                                onChange={(e) => onChange(e)} />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputEmail1">Confirm new password</label>
+                            <input type="password" className="form-control mb-0" id="exampleInputEmail1" placeholder="Confirm Password"
+                                tabIndex="1"
+                                autoFocus={true}
+                                name="confirmPassword"
+                                value={confirmPassword}
                                 onChange={(e) => onChange(e)} />
                         </div>
                         <div className="d-inline-block w-100">
                             <button type="submit" className="btn btn-primary float-right">Reset Password</button>
-                        </div>
-                        <div className="sign-info">
-                            <span className="dark-color d-inline-block line-height-2">Don't have an account? <Link to="/register">Register</Link></span>
-                            <ul className="iq-social-media">
-                                <li><a href={`${urlAPI}/auth/facebook`} role="button"><i className="ri-facebook-box-line" /></a></li>
-                                <li><a href={`${urlAPI}/auth/google`}><i className="ri-google-line" /></a></li>
-                            </ul>
                         </div>
                     </form>
                 </div>
@@ -106,19 +109,19 @@ const FortgotPassword = ({ auth: { isAuthenticated, user, isConfirmResetPassword
                             </div>
                         </div>
                     </div>
-                    {isConfirmResetPassword ? confirmForgotPassword() : requestEmail()}
+                    {isConfirmResetPassword ? confirmResetPassword() : requestEmail()}
                 </div>
             </div>
         </section>
     );
 };
 
-FortgotPassword.propTypes = {
-    requestForgotPassword: PropTypes.func.isRequired
+ResetPassword.propTypes = {
+    resettPassword: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, { requestForgotPassword })(withRouter(FortgotPassword));
+export default connect(mapStateToProps, { resettPassword })(withRouter(ResetPassword));
