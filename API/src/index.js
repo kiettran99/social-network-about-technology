@@ -10,6 +10,7 @@ const socicalRouter = require('./routers/api/auth-facebook');
 const socicalRouterGG = require('./routers/api/auth-google');
 const notificationRouter = require('./routers/api/notification');
 const friendRouter = require('./routers/api/friend');
+const hardwareRouter = require('./routers/api/hardware');
 
 const notFoundRouter = require('./routers/not-found/not-found');
 
@@ -41,6 +42,8 @@ app.use('/api/profile', profileRouter);
 app.use('/api/friends', friendRouter);
 app.use(socicalRouter);
 app.use(socicalRouterGG);
+app.use('/api/hardwares', hardwareRouter);
+
 //The 404 Route (ALWAYS Keep this as the last route)
 app.use('*', notFoundRouter);
 

@@ -2,6 +2,7 @@ import React, { lazy, Suspense, useEffect, useState } from 'react';
 // import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addPost } from '../../actions/post';
+import BuildParts from './build-parts/BuildParts';
 
 // import BubbleEditor from './editor/BubbleEditor';
 // import SnowEditor from './editor/SnowEditor';
@@ -146,6 +147,8 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                   ))}
                 </ul>
               </div>
+              <hr />
+              <BuildParts />
               <hr />
               <ul className="d-flex flex-wrap align-items-center list-inline m-0 p-0">
                 <li className="col-md-6 mb-3">

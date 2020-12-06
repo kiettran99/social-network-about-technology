@@ -19,7 +19,12 @@ const hardwareSchema = Schema({
     },
     description: {
         type: String
+    },
+    link: {
+        type: String
     }
+}, {
+    timestamps: true
 });
 
 const Hardware = mongoose.model('Hardware', hardwareSchema);

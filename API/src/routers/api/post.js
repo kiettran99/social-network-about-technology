@@ -5,6 +5,7 @@ const auth = require('../../middleware/auth');
 const storage = require('../../firebase/firebase');
 const upload = require('../../utils/upload');
 const { notify } = require('../../utils/notification');
+const createBuildPart = require('../../utils/build-part/build-part');
 
 // @route Get /api/posts/
 // @route-full Get /api/posts?limit=number&skip=number&groupId=id
@@ -195,6 +196,8 @@ router.post('/', auth, upload.array('images'), [
             type: {}
         };
 
+        const buildPart = req.body.buildPart;
+
         // if 'null' bugs.
         if (!!req.body.groupId) {
             newPost.type.group = req.body.groupId;
@@ -208,6 +211,10 @@ router.post('/', auth, upload.array('images'), [
         // Create a instance post and save it.
         const post = new Post(newPost);
         await post.save();
+
+        if (buildPart) {
+            createBuildPart(post._id, buildPart);
+        }
 
         // Check post uploaded image.
         if (req.files) {
