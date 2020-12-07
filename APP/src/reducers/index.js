@@ -7,6 +7,7 @@ import post from './post';
 import profile from './profiile';
 import group from './group';
 import friend from './friend';
+import hardware from './hardware';
 
 export default combineReducers({
     alert,
@@ -16,5 +17,6 @@ export default combineReducers({
     post,
     profile,
     group,
-    friend
+    friend,
+    hardware
 });
