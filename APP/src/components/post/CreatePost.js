@@ -22,6 +22,8 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
     images: []
   });
 
+  const [isShowBuildParts, setIsShowBuildParts] = useState(false);
+
   const [disabledPost, setDisabledPost] = useState(true);
 
   const { text, images } = formData;
@@ -148,7 +150,7 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                 </ul>
               </div>
               <hr />
-              <BuildParts />
+              {isShowBuildParts && <BuildParts />}
               <hr />
               <ul className="d-flex flex-wrap align-items-center list-inline m-0 p-0">
                 <li className="col-md-6 mb-3">
@@ -167,8 +169,9 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                     </div>
                   </div>
                 </li>
-                <li className="col-md-6 mb-3">
-                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/08.png" alt="icon" className="img-fluid" /> Tag Friend</div>
+                <li className="col-md-6 mb-3"
+                  onClick={() => setIsShowBuildParts(!isShowBuildParts)}>
+                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a /><img src="/images/small/08.png" alt="icon" className="img-fluid" /> Build Parts PC</div>
                 </li>
                 <li className="col-md-6 mb-3">
                   <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/09.png" alt="icon" className="img-fluid" /> Feeling/Activity</div>

@@ -5,9 +5,11 @@ import {
 import axios from 'axios';
 import urlAPI from '../utils/urlAPI';
 
-export const getHardwareCPU = () => async dispatch => {
+const queryString = (part) => part ? `&part=${part}`: '';
+
+export const getHardwareCPU = (part) => async dispatch => {
     try {
-        const res = await axios.get(`${urlAPI}/api/hardwares?category=CPU`);
+        const res = await axios.get(`${urlAPI}/api/hardwares?category=CPU${queryString(part)}`);
 
         dispatch({
             type: GET_HARDWARE_CPU,
@@ -24,9 +26,9 @@ export const getHardwareCPU = () => async dispatch => {
     }
 };
 
-export const getHardwareMotherboard = () => async dispatch => {
+export const getHardwareMotherboard = (part) => async dispatch => {
     try {
-        const res = await axios.get(`${urlAPI}/api/hardwares?category=montherboard`);
+        const res = await axios.get(`${urlAPI}/api/hardwares?category=montherboard${queryString(part)}`);
 
         dispatch({
             type: GET_HARDWARE_MOTHERBOARD,
@@ -43,9 +45,9 @@ export const getHardwareMotherboard = () => async dispatch => {
     }
 };
 
-export const getHardwareRam = () => async dispatch => {
+export const getHardwareRam = (part) => async dispatch => {
     try {
-        const res = await axios.get(`${urlAPI}/api/hardwares?category=ram`);
+        const res = await axios.get(`${urlAPI}/api/hardwares?category=ram${queryString(part)}`);
 
         dispatch({
             type: GET_HARDWARE_RAM,
@@ -62,9 +64,9 @@ export const getHardwareRam = () => async dispatch => {
     }
 };
 
-export const getHardwareGraphics = () => async dispatch => {
+export const getHardwareGraphics = (part) => async dispatch => {
     try {
-        const res = await axios.get(`${urlAPI}/api/hardwares?category=graphics`);
+        const res = await axios.get(`${urlAPI}/api/hardwares?category=graphics${queryString(part)}`);
 
         dispatch({
             type: GET_HARDWARE_GRAPHICS,

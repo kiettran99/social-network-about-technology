@@ -13,12 +13,21 @@ router.get('/', async (req, res) => {
         const skip = parseInt(req.query.skip) || 0;
 
         const conditions = req.query;
+
+        // Filter query
         delete conditions.limit;
         delete conditions.skip;
 
+        if (conditions.part) {
+            conditions.part = { '$regex': conditions.part, $options: 'i' };
+        }
+
         const hardwares = await Hardware.find(conditions).limit(limit).skip(skip);
 
-        res.json(hardwares);
+        res.json(hardwares.map((hardware => ({
+            value: hardware.id,
+            label: hardware.part
+        }))));
     }
     catch (e) {
         console.log(e);

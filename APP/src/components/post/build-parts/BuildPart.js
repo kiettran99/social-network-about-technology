@@ -1,29 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import AsyncSelect from 'react-select/async'
+import React, { useEffect } from 'react';
+import Select from 'react-select'
 
 const BuildPart = ({ actionDispatch, category, datum }) => {
-
-    const [options, setOptions] = useState([]);
 
     useEffect(() => {
         actionDispatch();
     }, [actionDispatch]);
 
-    useEffect(() => {
-        if (datum) {
-            setOptions(datum.map(data => {
-                return {
-                    value: data._id,
-                    label: data.part
-                };
-            }))
-        }
-    }, [datum]);
+    const onChange = (input) => {
+        actionDispatch(input);
+    }
 
     return (
         <div className="form-group">
             <label className="col-form-label">{category}</label>
-            <AsyncSelect cacheOptions defaultOptions={options}
+            <Select cacheOptions defaultOptions={datum}
+                options={datum}
+                onInputChange={onChange}
             />
         </div>
     );

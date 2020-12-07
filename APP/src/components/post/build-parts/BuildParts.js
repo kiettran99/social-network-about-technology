@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { connect } from 'react-redux';
-
-import BuildPart from './BuildPart';
 import {
     getHardwareCPU, getHardwareMotherboard,
     getHardwareRam, getHardwareGraphics
 } from '../../../actions/hardware';
+
+const BuildPart = lazy(() => import('./BuildPart'));
 
 const BuildParts = ({
     getHardwareCPU, getHardwareMotherboard,
@@ -14,18 +14,19 @@ const BuildParts = ({
 }) => {
     return (
         <div className="email-form">
-            <BuildPart category="CPU" actionDispatch={getHardwareCPU}
-                datum={cpus}
-            />
-            <BuildPart category="Motherboard" actionDispatch={getHardwareMotherboard}
-                datum={motherboards}
-            />
-            <BuildPart category="Ram" actionDispatch={getHardwareRam}
-                datum={rams}
-            />
-            <BuildPart category="Graphics" actionDispatch={getHardwareGraphics}
-                datum={graphics}
-            />
+            <Suspense fallback={<div>Loading...</div>}>
+                <BuildPart category="CPU" actionDispatch={getHardwareCPU}
+                    datum={cpus}
+                />
+                <BuildPart category="Motherboard" actionDispatch={getHardwareMotherboard}
+                    datum={motherboards}
+                />
+                <BuildPart category="Ram" actionDispatch={getHardwareRam}
+                    datum={rams}
+                />
+                <BuildPart category="Graphics" actionDispatch={getHardwareGraphics}
+                    datum={graphics} />
+            </Suspense>
         </div>
     );
 };
