@@ -60,7 +60,7 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
   const buildPartsProps = {
     buildParts,
     setBuildParts: (data) => {
-      setFormData({ ...formData, buildParts: data})
+      setFormData({ ...formData, buildParts: data })
     }
   };
 
@@ -129,7 +129,6 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                       {type && type.groupId ? <SnowEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} /> :
                         <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />}
                     </Suspense>
-
                   </div>
                 </form>
               </div>

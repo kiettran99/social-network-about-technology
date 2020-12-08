@@ -5,7 +5,7 @@ import {
 
 const initalState = {
     cpus: null,
-    montherboards: null,
+    motherboards: null,
     rams: null,
     graphics: null,
     loading: true,
@@ -25,7 +25,7 @@ export default function (state = initalState, action) {
         case GET_HARDWARE_MOTHERBOARD:
             return {
                 ...state,
-                montherboards: payload,
+                motherboards: payload,
                 loading: false
             };
         case GET_HARDWARE_RAM:
