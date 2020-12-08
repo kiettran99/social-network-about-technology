@@ -19,14 +19,15 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
 
   const [formData, setFormData] = useState({
     text: '',
-    images: []
+    images: [],
+    buildParts: []
   });
 
   const [isShowBuildParts, setIsShowBuildParts] = useState(false);
 
   const [disabledPost, setDisabledPost] = useState(true);
 
-  const { text, images } = formData;
+  const { text, images, buildParts } = formData;
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -55,6 +56,13 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
   // const onChange = (e) => {
   //   setFormData({ ...formData, [e.target.name]: e.target.value });
   // }
+
+  const buildPartsProps = {
+    buildParts,
+    setBuildParts: (data) => {
+      setFormData({ ...formData, buildParts: data})
+    }
+  };
 
   const onHandleSubmitForm = (e) => {
     onSubmit(e);
@@ -149,8 +157,7 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                   ))}
                 </ul>
               </div>
-              <hr />
-              {isShowBuildParts && <BuildParts />}
+              {isShowBuildParts && <BuildParts {...buildPartsProps} />}
               <hr />
               <ul className="d-flex flex-wrap align-items-center list-inline m-0 p-0">
                 <li className="col-md-6 mb-3">
