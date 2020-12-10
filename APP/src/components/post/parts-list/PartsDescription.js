@@ -30,7 +30,7 @@ const PartsDescription = ({ buildParts }) => {
                     hardwares: hardwares.slice(0, hardwares.length / 2)
                 }} />
                 <button ref={modalRef} type="button"
-                    class="btn btn-primary d-none" data-toggle="modal"
+                    className="btn btn-primary d-none" data-toggle="modal"
                     data-target="#parts-modal">Large modal
                 </button>
             </div>

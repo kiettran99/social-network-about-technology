@@ -16,7 +16,25 @@ const buildPartSchema = Schema({
             type: Number,
             default: 1
         }
-    }]
+    }],
+    ratings: [{
+        user: {
+            type: ObjectId,
+            ref: 'User'
+        },
+        overall: {
+            type: Number,
+            default: 0
+        }
+    }],
+    score: {
+        rating: {
+            type: Number
+        },
+        count: {
+            type: Number
+        }
+    }
 });
 
 const BuildPart = mongoose.model('BuildPart', buildPartSchema);

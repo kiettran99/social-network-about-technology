@@ -22,6 +22,12 @@ const hardwareSchema = Schema({
     },
     link: {
         type: String
+    },
+    benchmark: {
+        type: Number
+    },
+    hardwareValue: {
+        type: Number
     }
 }, {
     timestamps: true

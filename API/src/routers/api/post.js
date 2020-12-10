@@ -5,7 +5,7 @@ const auth = require('../../middleware/auth');
 const storage = require('../../firebase/firebase');
 const upload = require('../../utils/upload');
 const { notify } = require('../../utils/notification');
-const createBuildPart = require('../../utils/build-part/build-part');
+const { createBuildPart } = require('../../utils/build-part/build-part');
 
 // @route Get /api/posts/
 // @route-full Get /api/posts?limit=number&skip=number&groupId=id

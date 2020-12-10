@@ -10,9 +10,9 @@ const PartsList = ({ buildParts }) => {
                 <thead>
                     <tr data-toggle="tooltip" data-placement="right"
                         title="Click to view full descriptions.">
-                        <th className style={{ width: '200px' }} scope="col">CATEGORY / VALUE</th>
-                        <th className style={{ width: '400px' }} scope="col">BRAND / PART</th>
-                        <th className scope="col" />
+                        <th style={{ width: '200px' }} scope="col">CATEGORY / VALUE</th>
+                        <th style={{ width: '400px' }} scope="col">BRAND / PART</th>
+                        <th scope="col" />
                     </tr>
                 </thead>
                 <tbody>

@@ -30,4 +30,44 @@ const createBuildPart = async (post, hardware) => {
     }
 };
 
-module.exports = createBuildPart;
+/**
+ * @desc Calculate to Rating.
+ * @example Example: [{ user: 'u1', rating: 5}] ->  {"5": 1} -> { rating: 5, count: 1}
+ * @param ratings array
+ */
+const calulateRating = (ratings) => {
+    const input = countRatingByGroup(ratings);
+
+    let total = 0;
+    let totalOfRatings = 0;
+
+    for (const [key, value] of Object.entries(input)) {
+        total += parseInt(key) * value;
+        totalOfRatings += value;
+    }
+
+    if (totalOfRatings === 0) {
+        return 0;
+    }
+
+    return {
+        rating: (total / totalOfRatings).toFixed(1),
+        count: totalOfRatings
+    };
+}
+
+/**
+ * @desc Mapping array to count by group.
+ * @example Example: [{ user: 'u1', rating: 5}] ->  {"5": 1}
+ * @param ratings array
+ */
+const countRatingByGroup = (ratings) => {
+    const result = ratings.reduce((obj, value) => {
+        obj[value.overall] = (obj[value.overall] || 0) + 1;
+        return obj;
+    }, {});
+
+    return result;
+}
+
+module.exports = { createBuildPart, calulateRating };
