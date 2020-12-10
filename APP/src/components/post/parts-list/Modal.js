@@ -1,6 +1,7 @@
 import React from 'react';
 import PartsList from './PartsLList';
 import Rating from './Rating';
+import Score from './Score';
 
 const Modal = ({ buildParts }) => {
     return (
@@ -12,7 +13,8 @@ const Modal = ({ buildParts }) => {
                         <button type="button" className="btn btn-secondary" data-dismiss="modal"><i className="ri-close-fill" /></button>
                     </div>
                     <div className="modal-body">
-                        <Rating buildPartsId={buildParts._id}/>
+                        <Rating buildPartsId={buildParts._id} />
+                        <Score />
                         <PartsList buildParts={buildParts} />
                     </div>
                 </div>

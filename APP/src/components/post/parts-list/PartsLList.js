@@ -11,8 +11,8 @@ const PartsList = ({ buildParts }) => {
                     <tr data-toggle="tooltip" data-placement="right"
                         title="Click to view full descriptions.">
                         <th style={{ width: '200px' }} scope="col">CATEGORY / VALUE</th>
-                        <th style={{ width: '400px' }} scope="col">BRAND / PART</th>
-                        <th scope="col" />
+                        <th style={{ width: '390px' }} scope="col">BRAND / PART</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>

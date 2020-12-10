@@ -15,7 +15,7 @@ router.get('/:id', async (req, res) => {
             return res.status(400).send('Id is required.');
         }
         
-        const buildPart = await BuildPart.findById(req.params.id);
+        const buildPart = await BuildPart.findById(req.params.id).populate('hardwares.hardware');
 
         res.json(buildPart);
     }

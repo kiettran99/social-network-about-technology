@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
 import Modal from './Modal';
+import { connect } from 'react-redux';
 import PartsList from './PartsLList';
 
-const PartsDescription = ({ buildParts }) => {
+const PartsDescription = ({ buildParts, post: { isInPosts } }) => {
 
     const modalRef = useRef(null);
 
@@ -35,9 +36,13 @@ const PartsDescription = ({ buildParts }) => {
                 </button>
             </div>
 
-            <Modal buildParts={buildParts} />
+            { !isInPosts && <Modal buildParts={buildParts} />}
         </>
     );
 };
 
-export default PartsDescription;
+const mapStateToProps = (state) => ({
+    post: state.post
+})
+
+export default connect(mapStateToProps)(PartsDescription);

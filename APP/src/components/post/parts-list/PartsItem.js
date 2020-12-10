@@ -2,7 +2,7 @@ import React from 'react';
 
 const PartsItem = ({ hardware: {
     hardware: { category, value, brand, part,
-        type, link
+        type, link, benchmark, hardwareValue
     } }
 }) => {
     return (
@@ -15,8 +15,11 @@ const PartsItem = ({ hardware: {
                 <p className="font-weight-bold">{brand} - <a href={link}>{part}</a></p>
                 <p className="font-italic">{type}</p>
             </td>
-            <td ><i className="ri-check-line ri-2x text-success" /></td>
-        </tr>
+            <td >
+                <p className="font-italic">Benchmark: {benchmark}</p>
+                <p className="font-italic">Score: {hardwareValue}</p>
+            </td>
+        </tr >
     );
 };
 
