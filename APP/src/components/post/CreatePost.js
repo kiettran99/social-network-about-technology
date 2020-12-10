@@ -50,6 +50,11 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
       }
     }
 
+    if (buildParts.length > 0) {
+      console.log(buildParts);
+      formData.append('buildParts', JSON.stringify(buildParts));
+    }
+
     addPost(formData);
   };
 

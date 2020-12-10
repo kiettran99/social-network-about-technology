@@ -2,15 +2,16 @@ import React, { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 
 import dayjs from '../../utils/relativeDate';
-import CommentsBar from './user-post-sub/CommentsBar';
-import PostComments from './user-post-sub/PostComments';
-import CommentForm from './user-post-sub/CommentForm';
+import PartsList from './build-parts/PartsLList';
 import Following from './user-post-sub/Following';
-import AttachPost from './AttachPost';
 
+const CommentsBar = lazy(() => import('./user-post-sub/CommentsBar'));
+const PostComments = lazy(() => import('./user-post-sub/PostComments'));
+const CommentForm = lazy(() => import('./user-post-sub/CommentForm'));
+const AttachPost = lazy(() => import('./AttachPost'));
 const BubbleEditor = lazy(() => import('./editor/BubbleEditor'));
 
-const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, comments, createdAt, lengthOfComments, user: userId } }) => {
+const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, comments, createdAt, lengthOfComments, user: userId, buildParts } }) => {
     return (
         <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
             <div className="iq-card-body">
@@ -64,20 +65,26 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                         </div>
                     </div>
                 </div>
-                <div className="mt-3">
-                    <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<div>Loading...</div>}>
+                    <div className="mt-3">
                         <BubbleEditor readOnly={true} text={text} />
-                    </Suspense>
-                </div>
-                <div className="user-post">
-                    <AttachPost imageUrls={imageUrls} />
-                </div>
-                <div className="comment-area mt-3">
-                    <CommentsBar postId={_id} likes={likes} lengthOfComments={lengthOfComments} />
-                    <hr />
-                    <PostComments postId={_id} comments={comments} lengthOfComments={lengthOfComments} />
-                    <CommentForm postId={_id} />
-                </div>
+                    </div>
+                    {buildParts && (
+                        <div className="mt-3">
+                            {/* Component build pc part */}
+                            <PartsList buildParts={buildParts} />
+                        </div>
+                    )}
+                    <div className="user-post">
+                        <AttachPost imageUrls={imageUrls} />
+                    </div>
+                    <div className="comment-area mt-3">
+                        <CommentsBar postId={_id} likes={likes} lengthOfComments={lengthOfComments} />
+                        <hr />
+                        <PostComments postId={_id} comments={comments} lengthOfComments={lengthOfComments} />
+                        <CommentForm postId={_id} />
+                    </div>
+                </Suspense>
             </div>
         </div >
     )
