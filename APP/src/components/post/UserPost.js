@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 
 import dayjs from '../../utils/relativeDate';
-import PartsList from './build-parts/PartsLList';
+import PartsDescription from './parts-list/PartsDescription';
 import Following from './user-post-sub/Following';
 
 const CommentsBar = lazy(() => import('./user-post-sub/CommentsBar'));
@@ -72,7 +72,7 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                     {buildParts && (
                         <div className="mt-3">
                             {/* Component build pc part */}
-                            <PartsList buildParts={buildParts} />
+                            <PartsDescription buildParts={buildParts} />
                         </div>
                     )}
                     <div className="user-post">
