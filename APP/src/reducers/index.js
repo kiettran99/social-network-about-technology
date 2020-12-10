@@ -8,6 +8,7 @@ import profile from './profiile';
 import group from './group';
 import friend from './friend';
 import hardware from './hardware';
+import buildParts from './build-parts';
 
 export default combineReducers({
     alert,
@@ -18,5 +19,6 @@ export default combineReducers({
     profile,
     group,
     friend,
-    hardware
+    hardware,
+    buildParts
 });

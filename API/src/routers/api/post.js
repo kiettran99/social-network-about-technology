@@ -5,7 +5,7 @@ const auth = require('../../middleware/auth');
 const storage = require('../../firebase/firebase');
 const upload = require('../../utils/upload');
 const { notify } = require('../../utils/notification');
-const createBuildPart = require('../../utils/build-part/build-part');
+const { createBuildPart } = require('../../utils/build-part/build-part');
 
 // @route Get /api/posts/
 // @route-full Get /api/posts?limit=number&skip=number&groupId=id
@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
                 conditions['type.group'] = groupId;
             }
             else {
-                conditions['type.user'] =  userId;
+                conditions['type.user'] = userId;
             }
         }
 
@@ -38,7 +38,13 @@ router.get('/', async (req, res) => {
             "comments.replies": {
                 $slice: [0, 1]
             }
-        }).limit(limit).skip(skip).populate('type.group', 'name');
+        }).limit(limit).skip(skip).populate('type.group', 'name')
+            .populate({
+                path: 'buildParts',
+                populate: {
+                    path: 'hardwares.hardware'
+                }
+            });
 
         res.send(posts);
 
@@ -68,7 +74,12 @@ router.get('/:id', async (req, res) => {
             "comments.replies": {
                 $slice: [0, 1]
             }
-        }).populate('type.group', 'name');
+        }).populate('type.group', 'name').populate({
+            path: 'buildParts',
+            populate: {
+                path: 'hardwares.hardware'
+            }
+        });
 
         res.json(post);
     }
@@ -196,7 +207,7 @@ router.post('/', auth, upload.array('images'), [
             type: {}
         };
 
-        const buildPart = req.body.buildPart;
+        const buildParts = req.body.buildParts;
 
         // if 'null' bugs.
         if (!!req.body.groupId) {
@@ -212,8 +223,8 @@ router.post('/', auth, upload.array('images'), [
         const post = new Post(newPost);
         await post.save();
 
-        if (buildPart) {
-            createBuildPart(post._id, buildPart);
+        if (!!buildParts) {
+            await createBuildPart(post, buildParts);
         }
 
         // Check post uploaded image.

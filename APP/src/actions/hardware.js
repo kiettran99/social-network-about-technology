@@ -28,7 +28,7 @@ export const getHardwareCPU = (part) => async dispatch => {
 
 export const getHardwareMotherboard = (part) => async dispatch => {
     try {
-        const res = await axios.get(`${urlAPI}/api/hardwares?category=montherboard${queryString(part)}`);
+        const res = await axios.get(`${urlAPI}/api/hardwares?category=motherboard${queryString(part)}`);
 
         dispatch({
             type: GET_HARDWARE_MOTHERBOARD,

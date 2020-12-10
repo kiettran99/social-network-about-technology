@@ -20,6 +20,10 @@ const postSchema = Schema({
     imageUrls: [{
         type: String
     }],
+    buildParts: {
+        type: ObjectId,
+        ref: 'BuildPart'
+    },
     likes: [{
         user: {
             type: ObjectId,
