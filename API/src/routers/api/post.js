@@ -44,7 +44,7 @@ router.get('/', async (req, res) => {
                 populate: {
                     path: 'hardwares.hardware'
                 }
-            });
+            }).sort({ createdAt: 'desc' });
 
         res.send(posts);
 
