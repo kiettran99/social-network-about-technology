@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState, useRef } from 'react';
 // import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addPost } from '../../actions/post';
@@ -28,6 +28,8 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
   const [disabledPost, setDisabledPost] = useState(true);
 
   const { text, images, buildParts } = formData;
+
+  const photoRef = useRef(null);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -166,7 +168,7 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
               <ul className="d-flex flex-wrap align-items-center list-inline m-0 p-0">
                 <li className="col-md-6 mb-3">
                   <div className="iq-bg-primary rounded p-2 pointer mr-3">
-                    <input className="file-upload" type="file" accept="image/*" multiple={true} onChange={e => {
+                    <input ref={photoRef} className="file-upload" type="file" accept="image/*" multiple={true} onChange={e => {
                       e.preventDefault();
 
                       setFormData({
@@ -174,7 +176,11 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                         images: [...images, ...e.target.files]
                       });
                     }} />
-                    <div className="upload-button" style={{ fontSize: "1em" }}>
+                    <div className="upload-button" style={{ fontSize: "1em" }} onClick={() => {
+                      if (photoRef.current) {
+                        photoRef.current.click();
+                      }
+                    }}>
                       <img src="/images/small/07.png" alt="icon" className="img-fluid upload-button" />
                       <span>Photos</span>
                     </div>
