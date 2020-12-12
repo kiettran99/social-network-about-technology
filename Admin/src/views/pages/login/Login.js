@@ -52,7 +52,7 @@ class Login extends Component {
     )
       .then(res => res.json())
       .then((data) => {
-        localStorage.setItem('token',data.token);
+        localStorage.setItem('Token', data.token);
         this.setState({
           resData: data.token,
           isAuthenticated: true

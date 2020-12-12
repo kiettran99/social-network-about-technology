@@ -3,11 +3,13 @@ import {
     CLEAR_POST, POST_ERROR, GET_MORE_POSTS,
     ADD_COMMENT, REMOVE_COMMENT, UPDATE_LIKES,
     UPDATE_LIKES_COMMENT, ADD_REPLY_COMMENT, REMOVE_REPLY_COMMENT,
-    UPDATE_LIKES_REPLY, GET_MORE_COMMENTS, GET_MORE_REPLIES
+    UPDATE_LIKES_REPLY, GET_MORE_COMMENTS, GET_MORE_REPLIES,
+    GET_LENGTH_POSTS
 } from '../actions/types';
 
 const initialState = {
     posts: [],
+    count: 0,
     post: null,
     loading: true,
     isInPosts: true,
@@ -22,7 +24,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loading: false,
-                posts: [...state.posts, payload]
+                posts: [payload, ...state.posts]
             };
         case GET_POSTS:
             return {
@@ -30,6 +32,11 @@ export default function (state = initialState, action) {
                 loading: false,
                 posts: payload,
                 isInPosts: true
+            };
+        case GET_LENGTH_POSTS:
+            return {
+                ...state,
+                count: payload
             };
         case GET_MORE_POSTS:
             return {
@@ -144,7 +151,7 @@ export default function (state = initialState, action) {
                             return {
                                 ...comment,
                                 replies: comment.replies.filter(reply => reply._id !== payload),
-                                lengthOfReplies:  comment.lengthOfReplies - 1
+                                lengthOfReplies: comment.lengthOfReplies - 1
                             };
                         }
                         return comment;

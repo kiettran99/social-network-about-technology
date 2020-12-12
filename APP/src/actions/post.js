@@ -4,7 +4,8 @@ import {
     REQUEST_LOADING, COMPLETE_LOADING,
     ADD_COMMENT, REMOVE_COMMENT, UPDATE_LIKES,
     UPDATE_LIKES_COMMENT, ADD_REPLY_COMMENT, REMOVE_REPLY_COMMENT,
-    GET_MORE_COMMENTS, UPDATE_LIKES_REPLY, GET_MORE_REPLIES
+    GET_MORE_COMMENTS, UPDATE_LIKES_REPLY, GET_MORE_REPLIES,
+    GET_LENGTH_POSTS
 } from '../actions/types';
 import axios from 'axios';
 import urlAPI from '../utils/urlAPI';
@@ -73,8 +74,15 @@ export const getPosts = (skip = 0, limit = 5, groupId, userId) => async dispatch
             type: REQUEST_LOADING
         });
 
-        const queryString = `${groupId ? "&groupId=" + groupId: ''}${userId ? "&userId=" + userId : ''}`;
-       
+        const countResponse = await axios.get(`${urlAPI}/api/posts/length`);
+
+        dispatch({
+            type: GET_LENGTH_POSTS,
+            payload: countResponse.data
+        });
+
+        const queryString = `${groupId ? "&groupId=" + groupId : ''}${userId ? "&userId=" + userId : ''}`;
+
         const res = await axios.get(`${urlAPI}/api/posts?skip=${skip}&limit=${limit}${queryString}`);
 
         dispatch({
@@ -103,12 +111,12 @@ export const getPosts = (skip = 0, limit = 5, groupId, userId) => async dispatch
     }
 };
 
-export const getMorePosts = (skip = 0, limit = 5, groupId, userId) => async dispatch => {
+export const getMorePosts = (skip = 0, limit = 5, countOfPosts, groupId, userId) => async dispatch => {
     try {
 
-        const queryString = `${groupId ? "&groupId=" + groupId: ''}${userId ? "&userId=" + userId : ''}`;
+        const queryString = `${groupId ? "&groupId=" + groupId : ''}${userId ? "&userId=" + userId : ''}`;
 
-        const res = await axios.get(`${urlAPI}/api/posts?skip=${skip}&limit=${limit}${queryString}`);
+        const res = await axios.get(`${urlAPI}/api/posts?skip=${skip}&limit=${limit}${queryString}&countOfPosts=${countOfPosts}`);
 
         dispatch({
             type: GET_MORE_POSTS,

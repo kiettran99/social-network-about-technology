@@ -18,6 +18,9 @@ router.get('/', async (req, res) => {
         const skip = parseInt(req.query.skip) || 0;
 
         const conditions = {};
+        // offset - difference number when count posts current server
+        // and post app.
+        let offset = 0;
 
         if (req.query.userId || req.query.groupId) {
 
@@ -31,6 +34,14 @@ router.get('/', async (req, res) => {
             }
         }
 
+        // Solve Offset get more posts
+        if (req.query.countOfPosts) {
+            const count = await Post.countDocuments();
+            const clientCount = parseInt(req.query.countOfPosts) || count;
+            // Abs get offset positive        
+            offset = Math.abs(count - clientCount);
+        }
+
         const posts = await Post.find(conditions, {
             comments: {
                 $slice: [0, 2]
@@ -38,16 +49,31 @@ router.get('/', async (req, res) => {
             "comments.replies": {
                 $slice: [0, 1]
             }
-        }).limit(limit).skip(skip).populate('type.group', 'name')
+        }).sort({ createdAt: 'desc' })
+            .limit(limit).skip(skip + offset).populate('type.group', 'name')
             .populate({
                 path: 'buildParts',
                 populate: {
                     path: 'hardwares.hardware'
                 }
-            }).sort({ createdAt: 'desc' });
+            });
 
         res.send(posts);
 
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route Get /api/posts/length
+// @desc Get count of current posts.
+// @access public
+router.get('/length', async (req, res) => {
+    try {
+        const length = await Post.countDocuments();
+        res.json(length);
     }
     catch (e) {
         console.log(e);
@@ -343,7 +369,11 @@ router.delete('/:id', auth, async (req, res) => {
             console.log('Fail', e);
         });
 
-        await post.remove();
+        //await post.remove();
+
+        post.status = 0;    // change deleted status
+
+        await post.save();
 
         res.send({ "result": "remove successfuly", post });
     }

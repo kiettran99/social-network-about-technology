@@ -24,6 +24,15 @@ const postSchema = Schema({
         type: ObjectId,
         ref: 'BuildPart'
     },
+    status: {
+        type: Number,
+        enums: [
+            0,  // deleted
+            1,  // active
+            2   // looked
+        ],
+        default: 1
+    },
     likes: [{
         user: {
             type: ObjectId,
