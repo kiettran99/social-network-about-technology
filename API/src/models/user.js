@@ -38,6 +38,15 @@ const userSchema = mongoose.Schema({
     trim: true,
     default: 'user'
   },
+  status: {
+    type: Number,
+    enums: [
+      0,  // deleted
+      1,  // active
+      2   // looked
+    ],
+    default: 1
+  },
   tokens: [{
     token: {
       type: String,

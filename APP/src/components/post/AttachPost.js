@@ -24,7 +24,7 @@ const AttachPost = ({ imageUrls }) => {
         return (
             <div className="d-flex">
                 <div className="col-md-6">
-                    <a className="cursor-pointer" onClick={() => onClickHandleOpen(1)}>
+                    <a className="cursor-pointer" onClick={() => onClickHandleOpen(0)}>
                         <img src={imageUrls[0]} alt="post-image" className="img-fluid rounded w-100" />
                     </a>
                 </div>

@@ -16,6 +16,15 @@ const groupSchema = Schema({
     avatar: {
         type: String
     },
+    status: {
+        type: Number,
+        enums: [
+            0,  // deleted
+            1,  // active
+            2   // looked
+        ],
+        default: 1
+    },
     members: [{
         user: {
             type: Schema.Types.ObjectId,
