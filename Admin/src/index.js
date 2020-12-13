@@ -18,6 +18,7 @@ if(localStorage.token)
 {
   setAuthToken(localStorage.token);
 }
+setAuthToken(localStorage.Token);
 ReactDOM.render(
   <Provider store={store}>
     <App/>

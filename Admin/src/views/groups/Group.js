@@ -93,15 +93,13 @@ function Group() {
                       <CIcon name="cil-pencil" alt="Edit" />
                       {/* &nbsp;Edit */}
                     </CLink>
+                   
                     <CLink className="c-subheader-nav-link" href="#">
-                      <CIcon
-                        style={{ color: "red" }}
-                        name="cil-trash"
-                        alt="Delete"
-                      />
+                      <CIcon name="cil-pencil" alt="Edit" />
                       {/* &nbsp;Edit */}
                     </CLink>
                   </div>
+                    
                 </td>
               ),
             }}
