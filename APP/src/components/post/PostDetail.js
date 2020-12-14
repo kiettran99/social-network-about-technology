@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { getPost } from '../../actions/post';
 
 import UserPost from './UserPost';
@@ -26,6 +26,7 @@ const PostDetail = ({ match, history, post: { post, loading }, getPost }) => {
             <div className="row">
                 <div className="col-lg-8 row m-0 p-0">
                     {!loading && post && <UserPost post={post} />}
+                    {post && post.status !== 1 && <Redirect to="/notfound" />}
                 </div>
                 <div className="col-lg-4">
                     <Stories />
