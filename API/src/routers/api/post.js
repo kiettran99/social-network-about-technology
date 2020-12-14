@@ -300,12 +300,19 @@ router.put('/:id', auth, upload.array('images'), [
             return res.status(401).json({ msg: 'User is not authorized.' });
         }
 
+        const imageUrls = req.body.imageUrls;
+
+        if (imageUrls) {
+            post.imageUrls = JSON.parse(imageUrls);
+        }
+
         post.text = req.body.text;
 
         await post.save();
 
         // Check image upload
         if (req.files) {
+            /* 
             const prevImageRef = storage.ref(`/posts/${post.id}`);
 
             // Remove previous images and add new image
@@ -317,7 +324,7 @@ router.put('/:id', auth, upload.array('images'), [
                 console.log('Fail', e);
             });
 
-            post.imageUrls = [];
+            post.imageUrls = []; */
 
             await Promise.all(req.files.map(async (file) => {
                 //Create a storage ref

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { getPosts } from '../../actions/post';
 import { connect } from 'react-redux';
@@ -23,7 +23,7 @@ const PostsPage = ({ post: { posts, loading }, getPosts, history, groupId = '', 
     }, [groupId, match]);
 
     return !loading && (
-        posts.map(post => (
+        posts.map(post => post.status === 1 ? (
             <div key={post._id} className="col-sm-12" onClick={(e) => {
                 // Prevent Parent's on click from firing when a child is clicked.
 
@@ -35,7 +35,7 @@ const PostsPage = ({ post: { posts, loading }, getPosts, history, groupId = '', 
             }}>
                 <UserPost post={post} />
             </div>
-        ))
+        ) : <Fragment key={post._id}></Fragment>)
     );
 };
 

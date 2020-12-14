@@ -5,7 +5,7 @@ import {
     ADD_COMMENT, REMOVE_COMMENT, UPDATE_LIKES,
     UPDATE_LIKES_COMMENT, ADD_REPLY_COMMENT, REMOVE_REPLY_COMMENT,
     GET_MORE_COMMENTS, UPDATE_LIKES_REPLY, GET_MORE_REPLIES,
-    GET_LENGTH_POSTS
+    GET_LENGTH_POSTS, EDIT_POST
 } from '../actions/types';
 import axios from 'axios';
 import urlAPI from '../utils/urlAPI';
@@ -199,8 +199,8 @@ export const removePost = (id, history) => async dispatch => {
 
         await axios.delete(`${urlAPI}/api/posts/${id}`);
 
-        dispatch(setAlert('Remove post succesfully !', 'Notification', 'success'));
-
+        dispatch(setAlert('Remove post succesfully !', 'Notification', 'success', 2000));
+       
         history.push('/');
 
         dispatch({
@@ -453,6 +453,24 @@ export const unlikeReplyComment = (postId, commentId, replyId) => async dispatch
             id: postId,
             commentId,
             replyId
+        });
+    }
+    catch (e) {
+        console.log(e);
+        dispatch({
+            type: POST_ERROR,
+            payload: { msg: e.response.data, status: e.response.statusText }
+        });
+    }
+}
+
+export const editPost = (id, formData) => async dispatch => {
+    try {
+        const res = await axios.put(`${urlAPI}/api/posts/${id}`, formData);
+
+        dispatch({
+            type: EDIT_POST,
+            payload: res.data
         });
     }
     catch (e) {

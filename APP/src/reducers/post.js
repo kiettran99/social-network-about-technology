@@ -4,7 +4,7 @@ import {
     ADD_COMMENT, REMOVE_COMMENT, UPDATE_LIKES,
     UPDATE_LIKES_COMMENT, ADD_REPLY_COMMENT, REMOVE_REPLY_COMMENT,
     UPDATE_LIKES_REPLY, GET_MORE_COMMENTS, GET_MORE_REPLIES,
-    GET_LENGTH_POSTS
+    GET_LENGTH_POSTS, EDIT_POST
 } from '../actions/types';
 
 const initialState = {
@@ -202,6 +202,20 @@ export default function (state = initialState, action) {
                     lengthOfComments: state.post.lengthOfComments - 1
                 }
             };
+        case EDIT_POST:
+            return state.isInPosts ? {
+                ...state,
+                loading: false,
+                posts: state.posts.map(post => {
+                    if (post._id === payload._id) {
+                        return post;
+                    }
+                })           
+            } : {
+                ...state,
+                loading: false,
+                post: payload
+            }
         case POST_ERROR:
             return {
                 ...state,
