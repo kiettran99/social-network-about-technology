@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { addPost } from '../../actions/post';
 import BuildParts from './build-parts/BuildParts';
 
-import LoadImages from './load-images/LoadImages';
+const LoadImages = lazy(() => import('./load-images/LoadImages'));
 // import BubbleEditor from './editor/BubbleEditor';
 // import SnowEditor from './editor/SnowEditor';
 const BubbleEditor = lazy(() => import('./editor/BubbleEditor'));
@@ -154,12 +154,14 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
               <hr />
               <div className="d-flex align-items-center">
                 <ul className="profile-img-gallary d-flex flex-wrap p-0 m-0">
-                  <LoadImages images={images} onChangeImages={(index) => {
-                    setFormData({
-                      ...formData,
-                      images: images.filter((image, position) => position !== index)
-                    });
-                  }} />
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <LoadImages images={images} onChangeImages={(index) => {
+                      setFormData({
+                        ...formData,
+                        images: images.filter((image, position) => position !== index)
+                      });
+                    }} />
+                  </Suspense>
                 </ul>
               </div>
               {isShowBuildParts && <BuildParts {...buildPartsProps} />}
