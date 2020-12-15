@@ -194,18 +194,82 @@ router.put('/:id', authByRole('admin'), async (req, res) => {
 });
 
 router.delete('/:id', authByRole('admin'), async (req, res) => {
-  const id = req.params.id;
-  if (!id) {
-    return res.status(400).send("Please provide Id.");
+  try {
+    const id = req.params.id;
+
+    if (!id) {
+      return res.status(400).send('userId is required.');
+    }
+
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).send("User is not exists");
+    }
+
+    user.status = 0;  // delete status
+
+    await user.save();
+
+    res.send({ "result": "remove successfuly", user });
   }
-
-  const user = await User.findById(id);
-
-  if (!user) {
-    return res.status(404).send("User is not exists");
+  catch (e) {
+    console.log(e);
+    res.status(500).send('Server is errors.');
   }
+});
 
-  res.send({ "result": "remove successfuly", user });
+// @route Post api/users/register
+// @desc Look user
+// @access private - admin
+router.put('/look/:user_id', authByRole('admin'), async (req, res) => {
+  try {
+    const id = req.params.user_id;
+
+    if (!id) {
+      return res.status(400).send('userId is required.');
+    }
+
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).send("User is not exists");
+    }
+
+    user.status = 0;  // Change to look user status.
+
+    await user.save();
+
+    res.send(user);
+  }
+  catch (e) {
+    console.log(e);
+    res.status(500).send('Server is errors.');
+  }
+});
+
+// @route Post api/users/register
+// @desc Look user
+// @access private - admin
+router.put('/unlook/:user_id', authByRole('admin'), async (req, res) => {
+  try {
+    const id = req.params.user_id;
+
+    if (!id) {
+      return res.status(400).send('userId is required.');
+    }
+
+    const user = await User.findById(id);
+    user.status = 1;  // Change to unlook user status.
+
+    await user.save();
+
+    res.send(user);
+  }
+  catch (e) {
+    console.log(e);
+    res.status(500).send('Server is errors.');
+  }
 });
 
 module.exports = router;

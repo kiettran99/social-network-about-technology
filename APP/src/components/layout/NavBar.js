@@ -126,7 +126,7 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, 
             </div>
           </li>
           <NotificationBar />
-          <li className="nav-item dropdown">
+          {/* <li className="nav-item dropdown">
             <a href="index.html#" className="search-toggle iq-waves-effect">
               <div id="lottie-mail">
                 <i className="ri-mail-line"></i>
@@ -197,7 +197,7 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, 
                 </div>
               </div>
             </div>
-          </li>
+          </li> */}
         </ul>
         <ul className="navbar-list">
           <li>
@@ -273,8 +273,8 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, 
 
   const guestComponent = (
     <div className="navbar-nav ml-auto navbar-list">
-        <Link className="bg-primary iq-sign-btn my-3" to="/login" role="button">Login</Link>
-        <Link className="bg-primary iq-sign-btn m-3" to="/register" role="button">Join us</Link>
+      <Link className="bg-primary iq-sign-btn my-3" to="/login" role="button">Login</Link>
+      <Link className="bg-primary iq-sign-btn m-3" to="/register" role="button">Join us</Link>
     </div>
   );
 
@@ -285,7 +285,9 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, 
         <div className="iq-navbar-custom">
           <nav className="navbar navbar-expand-lg navbar-light p-0">
             <div className="iq-navbar-logo d-flex justify-content-between">
-              <Link to="/">
+              <Link onClick={() => {
+                 window.scrollTo({ top: 0, behavior: 'smooth' });
+              }} to="/">
                 <img src="/images/logo.png" className="img-fluid" alt="" />
                 <span>SocialV</span>
               </Link>

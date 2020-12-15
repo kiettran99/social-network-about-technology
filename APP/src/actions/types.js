@@ -45,6 +45,7 @@ export const GET_MORE_NOTIFICATION = 'GET_MORE_NOTIFICATION';
 
 export const ADD_POST = 'ADD_POST';
 export const GET_POSTS = 'GET_POSTS';
+export const GET_LENGTH_POSTS = 'GET_LENGTH_POSTS';
 export const GET_MORE_POSTS = 'GET_MORE_POSTS';
 export const GET_POST = 'GET_POST';
 export const EDIT_POST = 'EDIT_POST';

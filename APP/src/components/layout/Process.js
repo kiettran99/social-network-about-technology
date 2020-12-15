@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import useScreenEnter from '../../hooks/useScreenEnter';
 import { getMorePosts } from '../../actions/post';
 
-const Process = ({ post: { posts: { length }, loading }, getMorePosts }) => {
+const Process = ({ post: { posts: { length }, count, loading }, getMorePosts }) => {
 
     const ref = useRef(null);
     const skip = 5;
@@ -25,7 +25,7 @@ const Process = ({ post: { posts: { length }, loading }, getMorePosts }) => {
         }
 
         if (isTrigged) { 
-            getMorePosts(length, skip);
+            getMorePosts(length, skip, count);
             setIsTrigged(false);
         }
     }, [isTrigged, length]);

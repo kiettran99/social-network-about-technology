@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
 
         res.json(hardwares.map((hardware => ({
             value: hardware.id,
-            label: hardware.part
+            label: `${hardware.part} - $${hardware.value} - Score: ${hardware.benchmark}`
         }))));
     }
     catch (e) {

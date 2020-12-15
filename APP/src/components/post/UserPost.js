@@ -2,8 +2,11 @@ import React, { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 
 import dayjs from '../../utils/relativeDate';
-import PartsDescription from './parts-list/PartsDescription';
-import Following from './user-post-sub/Following';
+
+const PartsDescription = lazy(() => import('./parts-list/PartsDescription'));
+const DeletePost = lazy(() => import('./user-post-sub/DeletePost'));
+const EditPost = lazy(() => import('./user-post-sub/EditPost')) ;
+const Following = lazy(() => import('./user-post-sub/Following'));
 
 const CommentsBar = lazy(() => import('./user-post-sub/CommentsBar'));
 const PostComments = lazy(() => import('./user-post-sub/PostComments'));
@@ -32,7 +35,7 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                                     <i className="ri-more-fill" />
                                 </span>
                                 <div className="dropdown-menu m-0 p-0">
-                                    <a className="dropdown-item p-3" href="index.html#">
+                                    {/* <a className="dropdown-item p-3" href="index.html#">
                                         <div className="d-flex align-items-top">
                                             <div className="icon font-size-20"><i className="ri-save-line" /></div>
                                             <div className="data ml-2">
@@ -40,26 +43,28 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                                                 <p className="mb-0">Add this to your saved items</p>
                                             </div>
                                         </div>
-                                    </a>
-                                    <a className="dropdown-item p-3" href="index.html#">
-                                        <div className="d-flex align-items-top">
-                                            <div className="icon font-size-20"><i className="ri-close-circle-line" /></div>
-                                            <div className="data ml-2">
-                                                <h6>Hide Post</h6>
-                                                <p className="mb-0">See fewer posts like this.</p>
+                                    </a> */}
+                                    <Suspense fallback={<div>Loading...</div>}>
+                                        <a className="dropdown-item p-3" href="index.html#">
+                                            <div className="d-flex align-items-top">
+                                                <div className="icon font-size-20"><i className="ri-close-circle-line" /></div>
+                                                <div className="data ml-2">
+                                                    <h6>Hide Post</h6>
+                                                    <p className="mb-0">See fewer posts like this.</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                    <a className="dropdown-item p-3" href="index.html#">
-                                        <div className="d-flex align-items-top">
-                                            <div className="icon font-size-20"><i className="ri-user-unfollow-line" /></div>
-                                            <div className="data ml-2">
-                                                <h6>Unfollow User</h6>
-                                                <p className="mb-0">Stop seeing posts but stay friends.</p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <Following postId={_id} />
+                                        </a>
+                                        <EditPost post={{
+                                            postId: _id,
+                                            text,
+                                            userId,
+                                            imageUrls,
+                                            buildParts,
+                                            type
+                                        }} />
+                                        <Following postId={_id} />
+                                        <DeletePost postId={_id} userId={userId} />
+                                    </Suspense>
                                 </div>
                             </div>
                         </div>

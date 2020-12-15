@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { addPost } from '../../actions/post';
 import BuildParts from './build-parts/BuildParts';
 
+const LoadImages = lazy(() => import('./load-images/LoadImages'));
 // import BubbleEditor from './editor/BubbleEditor';
 // import SnowEditor from './editor/SnowEditor';
 const BubbleEditor = lazy(() => import('./editor/BubbleEditor'));
@@ -30,6 +31,7 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
   const { text, images, buildParts } = formData;
 
   const photoRef = useRef(null);
+  const closeModalRef = useRef(null);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -53,11 +55,21 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
     }
 
     if (buildParts.length > 0) {
-      console.log(buildParts);
       formData.append('buildParts', JSON.stringify(buildParts));
     }
 
     addPost(formData);
+
+    setFormData({
+      text: '',
+      images: [],
+      buildParts: []
+    });
+
+    // Close modal and go down new post.
+    closeModalRef.current.click();
+
+    window.scrollTo({ top: 75, behavior: 'smooth' });
   };
 
   // const onChange = (e) => {
@@ -98,8 +110,8 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
         <hr />
         <ul className="post-opt-block d-flex align-items-center list-inline m-0 p-0">
           <li className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/07.png" alt="icon" className="img-fluid" /> Photo/Video</li>
-          <li className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/08.png" alt="icon" className="img-fluid" /> Tag Friend</li>
-          <li className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/09.png" alt="icon" className="img-fluid" /> Feeling/Activity</li>
+          <li className=" iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/08.png" alt="icon" className="img-fluid" /> Tag Friend</li>
+          {/* <li className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/09.png" alt="icon" className="img-fluid" /> Feeling/Activity</li>
           <li className="iq-bg-primary rounded p-2 pointer">
             <div className="iq-card-header-toolbar d-flex align-items-center">
               <div className="dropdown">
@@ -115,7 +127,7 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                 </div>
               </div>
             </div>
-          </li>
+          </li> */}
         </ul>
       </div>
       <div className="modal fade" id="post-modal" tabIndex={-1} role="dialog" aria-labelledby="post-modalLabel" aria-hidden="true" style={{ display: 'none' }}>
@@ -123,7 +135,7 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="post-modalLabel">Create Post</h5>
-              <button type="button" className="btn btn-secondary" data-dismiss="modal"><i className="ri-close-fill" /></button>
+              <button ref={closeModalRef} type="button" className="btn btn-secondary" data-dismiss="modal"><i className="ri-close-fill" /></button>
             </div>
             <div className="modal-body">
               <div className="d-flex align-items-center">
@@ -142,25 +154,14 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
               <hr />
               <div className="d-flex align-items-center">
                 <ul className="profile-img-gallary d-flex flex-wrap p-0 m-0">
-                  {images && images.length > 0 && images.map((image, index) => (
-                    <li className="col-md-4 col-6 pl-2 pr-0 pb-3" key={index}>
-                      <img className="img-fluid" src={URL.createObjectURL(image)} alt="profile-pic" />
-                      <i className="ri-close-circle-line text-muted" style={{
-                        position: 'absolute',
-                        left: "12px",
-                        top: '2px',
-                        fontSize: '1.4rem',
-                        cursor: 'pointer'
-                      }}
-                        onClick={() => {
-                          setFormData({
-                            ...formData,
-                            images: images.filter((image, position) => position !== index)
-                          });
-                        }}
-                      ></i>
-                    </li>
-                  ))}
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <LoadImages images={images} onChangeImages={(index) => {
+                      setFormData({
+                        ...formData,
+                        images: images.filter((image, position) => position !== index)
+                      });
+                    }} />
+                  </Suspense>
                 </ul>
               </div>
               {isShowBuildParts && <BuildParts {...buildPartsProps} />}
@@ -190,7 +191,7 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                   onClick={() => setIsShowBuildParts(!isShowBuildParts)}>
                   <div className="iq-bg-primary rounded p-2 pointer mr-3"><a /><img src="/images/small/08.png" alt="icon" className="img-fluid" /> Build Parts PC</div>
                 </li>
-                <li className="col-md-6 mb-3">
+                {/* <li className="col-md-6 mb-3">
                   <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/09.png" alt="icon" className="img-fluid" /> Feeling/Activity</div>
                 </li>
                 <li className="col-md-6 mb-3">
@@ -207,7 +208,7 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                 </li>
                 <li className="col-md-6 mb-3">
                   <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/14.png" alt="icon" className="img-fluid" /> Play with Friends</div>
-                </li>
+                </li> */}
               </ul>
               <hr />
               <div className="other-option">
