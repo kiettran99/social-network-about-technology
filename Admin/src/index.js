@@ -15,7 +15,7 @@ React.icons = icons
 
 
 if (localStorage.Token) {
-  setAuthToken(localStorage.token);
+  setAuthToken(localStorage.Token);
 }
 ReactDOM.render(
   <Provider store={store}>
