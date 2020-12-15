@@ -55,17 +55,16 @@ class Login extends Component {
         localStorage.setItem('Token', data.token);
         this.setState({
           resData: data.token,
-          isAuthenticated: true
+          isAuthenticated: !!data.token
         });
-      },
-        (error) => {
-          console.log(error);
-          this.setState({
-            isAuthenticated: false,
+      }).catch((error) => {
+        console.log(error);
+        this.setState({
+          isAuthenticated: false,
 
-          }
-          )
-        });
+        }
+        )
+      });
   }
   render() {
     return (
