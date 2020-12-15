@@ -123,18 +123,18 @@ function Account() {
             itemsPerPage={8}
             pagination
             scopedSlots={{
-              index: (item) => <td>{item.id}</td>,
+              index: (item) => <td>{item._id}</td>,
               status: (item) => (
                 <td>
                   <CBadge color={getBadge(item.status)}>{item.status}</CBadge>
                 </td>
               ),
               action: (item) => (
-                <div class="btn-group" role="group" aria-label="Basic example">
+                <div class="btn-group" style={{padding:'0.75rem'}} role="group" aria-label="Basic example">
                   {item.status === 1 ? <button type="button" class="btn btn-warning"
-                    onClick={() => disableBtn(item._id)}>Khóa</button> :
+                    onClick={() => disableBtn(item._id)}>Lock</button> :
                     <button type="button" class="btn btn-success"
-                      onClick={() => enableBtn(item._id)}>Mở Khóa</button>
+                      onClick={() => enableBtn(item._id)}>Unlock</button>
                   }
                 </div>
               ),

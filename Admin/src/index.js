@@ -14,11 +14,9 @@ import setAuthToken from './setAuthToken'
 React.icons = icons
 
 
-if(localStorage.token)
-{
-  setAuthToken(localStorage.token);
+if (localStorage.Token) {
+  setAuthToken(localStorage.Token);
 }
-setAuthToken(localStorage.Token);
 ReactDOM.render(
   <Provider store={store}>
     <App/>
