@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import LoadingBar from 'react-top-loading-bar';
 import { logout } from '../../actions/auth';
 import NotificationBar from './notification-bar/NotificationBar';
+import Search from './search/Search';
 
 const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, history }) => {
 
@@ -297,12 +298,7 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, 
                 </div>
               </div>
             </div>
-            <div className="iq-search-bar">
-              <form action="index.html#" className="searchbox">
-                <input type="text" className="text search-input" placeholder="Type here to search..." />
-                <a className="search-link" href="index.html#"><i className="ri-search-line" /></a>
-              </form>
-            </div>
+            <Search />
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-label="Toggle navigation">
               <i className="ri-menu-3-line" />
             </button>

@@ -10,6 +10,7 @@ import SideBar from '../components/layout/SideBar';
 
 import Login from '../components/auth/Login';
 import Register from '../components/auth/Register';
+
 // import NotFoundPage from '../components/not-found-page/NotFoundPage';
 
 // import Home from '../components/home/Home'
@@ -35,6 +36,7 @@ const FriendRequest = lazy(() => import('../components/friends/FriendRequest'));
 const FriendsList = lazy(() => import('../components/friends/FriendsList'));
 const Notification = lazy(() => import('../components/notification/Notification'));
 const NotFoundPage = lazy(() => import('../components/not-found-page/NotFoundPage'));
+const SearchPage = lazy(() => import('../components/search/Search'));
 
 const MainComponent = () => {
     return (
@@ -52,6 +54,7 @@ const MainComponent = () => {
                         <Route exact path="/friend-request" component={FriendRequest} />
                         <Route exact path="/friend-list" component={FriendsList} />
                         <Route exact path="/notification" component={Notification} />
+                        <Route exact path="/search" component={SearchPage} />
                         <PrivateRoute exact path="/profile/edit" component={EditProfile} />
                         <Route exact path="/profile/:id" component={Profile} />
                         <Route component={NotFoundPage} />

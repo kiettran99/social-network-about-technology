@@ -57,6 +57,43 @@ router.post('/register', [
   }
 });
 
+// @route Get api/users/search
+// @desc Search user by name
+// @access public
+router.get('/search', async (req, res) => {
+  try {
+    // Limit user with 5 posts and if not skip then default value is 0.
+    const limit = parseInt(req.query.limit) || 5;
+    const skip = parseInt(req.query.skip) || 0;
+
+    // Get name to search
+    const name = req.query.name;
+
+    // if (!name) {
+    //   return res.status(400).json({ msg: 'Name is required.' });
+    // }
+
+    // Create conditions with role active user and case sentive name.
+    const conditions = {
+      role: 'user',
+      status: 1
+    };
+
+    if (name) {
+      conditions.fullname = { '$regex': name, $options: 'i' };
+    }
+
+    const users = await User.find(conditions)
+      .limit(limit).skip(skip);
+
+    res.json(users);
+  }
+  catch (e) {
+    console.log(e);
+    res.status(500).send('Server is errors.');
+  }
+});
+
 // @route GET /api/users/send-mail-welcome
 // @desc Test send mail
 // @access private
@@ -112,10 +149,10 @@ router.put('/changepassword', auth, [
 
 
 //CRUD Users
-// Get - Return the list users
+// Get - Return the list users has role user
 router.get('/', authByRole('admin'), async (req, res) => {
   try {
-    const users = await User.find({});
+    const users = await User.find({ role: 'user' });
     res.send(users);
   }
   catch (e) {
@@ -236,7 +273,7 @@ router.put('/look/:user_id', authByRole('admin'), async (req, res) => {
       return res.status(404).send("User is not exists");
     }
 
-    user.status = 0;  // Change to look user status.
+    user.status = 2;  // Change to look user status.
 
     await user.save();
 

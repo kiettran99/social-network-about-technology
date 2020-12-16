@@ -31,7 +31,8 @@ const getAll = async (userId, limit, skip) => {
             $match: {
                 '_id': {
                     $ne: userId
-                }
+                },
+                'role': 'user'
             }
         },
         {
@@ -86,6 +87,7 @@ const getUserFriends = async (userId, limit, skip) => {
                 '_id': {
                     $ne: userId
                 },
+                'role': 'user',
                 friendsStatus: 3
             }
         },
