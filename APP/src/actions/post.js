@@ -5,7 +5,7 @@ import {
     ADD_COMMENT, REMOVE_COMMENT, UPDATE_LIKES,
     UPDATE_LIKES_COMMENT, ADD_REPLY_COMMENT, REMOVE_REPLY_COMMENT,
     GET_MORE_COMMENTS, UPDATE_LIKES_REPLY, GET_MORE_REPLIES,
-    GET_LENGTH_POSTS, EDIT_POST
+    GET_LENGTH_POSTS, EDIT_POST, HIDE_POST
 } from '../actions/types';
 import axios from 'axios';
 import urlAPI from '../utils/urlAPI';
@@ -481,3 +481,10 @@ export const editPost = (id, formData) => async dispatch => {
         });
     }
 }
+
+export const hidePost = (id) => dispatch => {
+    dispatch({
+        type: HIDE_POST,
+        payload: id
+    })
+};

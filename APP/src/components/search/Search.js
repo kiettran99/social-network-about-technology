@@ -11,6 +11,11 @@ const Search = ({ search: { users }, searchUsers }) => {
         }
     }, [users]);
 
+    // Auto Sroll on Top, when component did mount
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <div id="content-page" className="content-page">
             <div className="container">
@@ -27,11 +32,11 @@ const Search = ({ search: { users }, searchUsers }) => {
                             users.length >= 0 && users.length === 0 ?
                                 (
                                     <>
-                                        <div className='d-flex align-items-center text-muted p-3-4'>
-                                            <h1 className='text-primary'>NO results found</h1>
+                                        <div className='text-center text-muted mt-5'>
+                                            <h1 className=''>NO results found</h1>
                                         </div>
 
-                                        <div className='ma-4'>
+                                        <div className='text-center ma-4'>
                                             <p className='text-muted'>
                                                 Try adjusting your search or filter to find what you're looking for.
                                             </p>
@@ -47,7 +52,7 @@ const Search = ({ search: { users }, searchUsers }) => {
                                                 <li className="d-flex align-items-center">
                                                     <div className="user-img img-fluid"><img src={user.avatar} alt="story-img" className="rounded-circle avatar-40" /></div>
                                                     <div className="media-support-info ml-3">
-                                                        <h6 className="mb-0">{user.fullname}</h6>
+                                                        <h6 className="mb-0 text-primary"><Link to={`/profile/${user._id}`}>{user.fullname}</Link></h6>
                                                         <p className="mb-0">{user.email && `· ${user.email}`}</p>
                                                     </div>
                                                 </li>

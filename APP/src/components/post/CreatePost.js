@@ -87,6 +87,17 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
     onSubmit(e);
   };
 
+  const editor = (type) => {
+
+    // Chose Editor based user or groups.
+
+    if (type && type.groupId) {
+      return <SnowEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />;
+    }
+
+    return <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />;
+  }
+
   return (
     <div id="post-modal-data" className="iq-card iq-card-block iq-card-stretch iq-card-height"  >
       <div className="iq-card-header d-flex justify-content-between">
@@ -109,8 +120,8 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
         </div>
         <hr />
         <ul className="post-opt-block d-flex align-items-center list-inline m-0 p-0">
-          <li className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/07.png" alt="icon" className="img-fluid" /> Photo/Video</li>
-          <li className=" iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/08.png" alt="icon" className="img-fluid" /> Tag Friend</li>
+          <li className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/07.png" alt="icon" className="img-fluid" /> Photos</li>
+          <li className=" iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/14.png" alt="icon" className="img-fluid" /> Build Parts PC</li>
           {/* <li className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/09.png" alt="icon" className="img-fluid" /> Feeling/Activity</li>
           <li className="iq-bg-primary rounded p-2 pointer">
             <div className="iq-card-header-toolbar d-flex align-items-center">
@@ -145,8 +156,7 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                 <form className="post-text ml-3 w-100" onSubmit={e => onSubmit(e)}>
                   <div className="standalone-container">
                     <Suspense fallback={<div>Loading...</div>}>
-                      {type && type.groupId ? <SnowEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} /> :
-                        <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />}
+                      {editor(type)}
                     </Suspense>
                   </div>
                 </form>
@@ -189,7 +199,7 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                 </li>
                 <li className="col-md-6 mb-3"
                   onClick={() => setIsShowBuildParts(!isShowBuildParts)}>
-                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a /><img src="/images/small/08.png" alt="icon" className="img-fluid" /> Build Parts PC</div>
+                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a /><img src="/images/small/14.png" alt="icon" className="img-fluid" /> Build Parts PC</div>
                 </li>
                 {/* <li className="col-md-6 mb-3">
                   <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/09.png" alt="icon" className="img-fluid" /> Feeling/Activity</div>
