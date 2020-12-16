@@ -5,8 +5,9 @@ import dayjs from '../../utils/relativeDate';
 
 const PartsDescription = lazy(() => import('./parts-list/PartsDescription'));
 const DeletePost = lazy(() => import('./user-post-sub/DeletePost'));
-const EditPost = lazy(() => import('./user-post-sub/EditPost')) ;
+const EditPost = lazy(() => import('./user-post-sub/EditPost'));
 const Following = lazy(() => import('./user-post-sub/Following'));
+const HidePost = lazy(() => import('./user-post-sub/HidePost'));
 
 const CommentsBar = lazy(() => import('./user-post-sub/CommentsBar'));
 const PostComments = lazy(() => import('./user-post-sub/PostComments'));
@@ -45,15 +46,7 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                                         </div>
                                     </a> */}
                                     <Suspense fallback={<div>Loading...</div>}>
-                                        <a className="dropdown-item p-3" href="index.html#">
-                                            <div className="d-flex align-items-top">
-                                                <div className="icon font-size-20"><i className="ri-close-circle-line" /></div>
-                                                <div className="data ml-2">
-                                                    <h6>Hide Post</h6>
-                                                    <p className="mb-0">See fewer posts like this.</p>
-                                                </div>
-                                            </div>
-                                        </a>
+                                        <HidePost postId={_id} />
                                         <EditPost post={{
                                             postId: _id,
                                             text,

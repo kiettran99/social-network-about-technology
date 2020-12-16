@@ -4,7 +4,7 @@ import {
     ADD_COMMENT, REMOVE_COMMENT, UPDATE_LIKES,
     UPDATE_LIKES_COMMENT, ADD_REPLY_COMMENT, REMOVE_REPLY_COMMENT,
     UPDATE_LIKES_REPLY, GET_MORE_COMMENTS, GET_MORE_REPLIES,
-    GET_LENGTH_POSTS, EDIT_POST
+    GET_LENGTH_POSTS, EDIT_POST, HIDE_POST
 } from '../actions/types';
 
 const initialState = {
@@ -216,6 +216,11 @@ export default function (state = initialState, action) {
                 loading: false,
                 post: payload
             }
+        case HIDE_POST:
+            return {
+                ...state,
+                posts: state.posts.filter(post => post._id !== payload)
+            };
         case POST_ERROR:
             return {
                 ...state,

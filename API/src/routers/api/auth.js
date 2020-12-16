@@ -37,6 +37,10 @@ router.post('/', [
             return res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
         }
 
+        if (user.status !== 1) {
+            return res.status(401).json({ errors: [{ msg: 'User is unauthorized.' }] });
+        }
+
         const token = await user.generateAuthToken();
 
         res.send({ token });

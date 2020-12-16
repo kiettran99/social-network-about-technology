@@ -167,7 +167,7 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                                                 <div className=" row align-items-center">
                                                     <div className="form-group col-sm-6">
                                                         <label htmlFor="fname">Full Name:</label>
-                                                        <input type="text" className="form-control" id="fname" defaultValue="Bni"
+                                                        <input type="text" className="form-control" id="fname" placeholder="Bni"
                                                             name="fullname"
                                                             value={fullname}
                                                             onChange={(e) => onChange(e)}
@@ -175,7 +175,7 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                                                     </div>
                                                     <div className="form-group col-sm-6">
                                                         <label htmlFor="lname">Email:</label>
-                                                        <input type="text" className="form-control" id="lname" defaultValue="Jhon"
+                                                        <input type="text" className="form-control" id="lname" placeholder="Jhon"
                                                             name="email"
                                                             value={email}
                                                             onChange={(e) => onChange(e)}
@@ -183,14 +183,14 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                                                     </div>
                                                     <div className="form-group col-sm-6">
                                                         <label htmlFor="uname">User Name:</label>
-                                                        <input type="text" className="form-control" id="uname" defaultValue="Bni@01"
+                                                        <input type="text" className="form-control" id="uname" placeholder="Bni@01"
                                                             readOnly={true}
                                                             value={username}
                                                         />
                                                     </div>
                                                     <div className="form-group col-sm-6">
                                                         <label htmlFor="cname">City:</label>
-                                                        <input type="text" className="form-control" id="cname" defaultValue="Atlanta"
+                                                        <input type="text" className="form-control" id="cname" placeholder="Atlanta"
                                                             name="city"
                                                             value={city}
                                                             onChange={(e) => onChange(e)}
@@ -199,7 +199,7 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                                                     <div className="form-group col-sm-6">
                                                         <label className="d-block">Gender:</label>
                                                         <div className="custom-control custom-radio custom-control-inline">
-                                                            <input type="radio" id="customRadio6" name="customRadio1" className="custom-control-input" defaultChecked
+                                                            <input type="radio" id="customRadio6" name="customRadio1" className="custom-control-input" defaultChecked={true}
                                                                 checked={gender === 'm'}
                                                                 name="gender"
                                                                 value="m"
@@ -219,7 +219,7 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                                                     </div>
                                                     <div className="form-group col-sm-6">
                                                         <label htmlFor="dob">Date Of Birth:</label>
-                                                        <input className="form-control" id="dob" defaultValue="1984-01-24"
+                                                        <input className="form-control" id="dob" placeholder="1984-01-24"
                                                             name="dateOfBirth"
                                                             value={dateOfBirth}
                                                             onChange={(e) => onChange(e)}
@@ -260,7 +260,7 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                                                     </div>
                                                     <div className="form-group col-sm-6">
                                                         <label htmlFor="cname">Job:</label>
-                                                        <input type="text" className="form-control" id="cname" defaultValue="Atlanta"
+                                                        <input type="text" className="form-control" id="cname" placeholder="Atlanta"
                                                             name="job"
                                                             value={job}
                                                             onChange={(e) => onChange(e)}
@@ -268,7 +268,7 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                                                     </div>
                                                     <div className="form-group col-sm-12">
                                                         <label>Address:</label>
-                                                        <textarea className="form-control" name="address" rows={5} style={{ lineHeight: '22px' }} defaultValue={"                                             37 Cardinal Lane\n                                             Petersburg, VA 23803\n                                             United States of America\n                                             Zip Code: 85001\n                                             "}
+                                                        <textarea className="form-control" name="address" rows={5} style={{ lineHeight: '22px' }} placeholder={"                                             37 Cardinal Lane\n                                             Petersburg, VA 23803\n                                             United States of America\n                                             Zip Code: 85001\n                                             "}
                                                             name="address"
                                                             value={address}
                                                             onChange={(e) => onChange(e)} />

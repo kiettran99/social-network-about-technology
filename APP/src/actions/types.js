@@ -50,6 +50,7 @@ export const GET_MORE_POSTS = 'GET_MORE_POSTS';
 export const GET_POST = 'GET_POST';
 export const EDIT_POST = 'EDIT_POST';
 export const REMOVE_POST = 'REMOVE_POST';
+export const HIDE_POST = 'HIDE_POST';
 
 // Clear prev loading post
 export const CLEAR_POST = 'CLEAR_POST';
@@ -93,3 +94,8 @@ export const GET_BUILD_PARTS = 'GET_BUILD_PARTS';
 export const RATING_BUILD_PARTS = 'RATING_BUILD_PARTS';
 export const BUILD_PARTS_ERROR = 'BUILD_PARTS_ERROR';
 export const LOADING_BUILD_PARTS = 'LOADING_BUILD_PARTS';
+
+// Search User
+export const SEARCH_USERS = 'SEARCH_USERS';
+export const SEARCH_LOADING = 'SEARCH_LOADING';
+export const ERROR_SEARCH = 'ERROR_SEARCH';

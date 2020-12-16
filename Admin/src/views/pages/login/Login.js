@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
-import axios from 'axios';
-
+import { Redirect } from "react-router-dom";
+import setAuthToken from '../../../setAuthToken';
 import {
   CButton,
   CCard,
@@ -52,7 +51,13 @@ class Login extends Component {
     )
       .then(res => res.json())
       .then((data) => {
+        // Store token into local storage
         localStorage.setItem('Token', data.token);
+
+        // Attach token to axios'header
+        setAuthToken(data.token);
+
+        // Update state
         this.setState({
           resData: data.token,
           isAuthenticated: !!data.token

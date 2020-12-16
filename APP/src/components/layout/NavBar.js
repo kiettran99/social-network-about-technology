@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import LoadingBar from 'react-top-loading-bar';
 import { logout } from '../../actions/auth';
 import NotificationBar from './notification-bar/NotificationBar';
+import Search from './search/Search';
 
 const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, history }) => {
 
@@ -211,7 +212,7 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, 
                     <h5 className="mb-0 text-white line-height">Hello {user.fullname}</h5>
                     <span className="text-white font-size-12">Available</span>
                   </div>
-                  <a href="profile.html" className="iq-sub-card iq-bg-primary-hover">
+                  <Link to={`/profile/${user._id}`} className="iq-sub-card iq-bg-primary-hover">
                     <div className="media align-items-center">
                       <div className="rounded iq-card-icon iq-bg-primary">
                         <i className="ri-file-user-line" />
@@ -221,8 +222,8 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, 
                         <p className="mb-0 font-size-12">View personal profile details.</p>
                       </div>
                     </div>
-                  </a>
-                  <a href="profile-edit.html" className="iq-sub-card iq-bg-warning-hover">
+                  </Link>
+                  <Link to="/profile/edit" className="iq-sub-card iq-bg-warning-hover">
                     <div className="media align-items-center">
                       <div className="rounded iq-card-icon iq-bg-warning">
                         <i className="ri-profile-line" />
@@ -232,8 +233,8 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, 
                         <p className="mb-0 font-size-12">Modify your personal details.</p>
                       </div>
                     </div>
-                  </a>
-                  <a href="account-setting.html" className="iq-sub-card iq-bg-info-hover">
+                  </Link>
+                  {/* <a href="account-setting.html" className="iq-sub-card iq-bg-info-hover">
                     <div className="media align-items-center">
                       <div className="rounded iq-card-icon iq-bg-info">
                         <i className="ri-account-box-line" />
@@ -254,7 +255,7 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, 
                         <p className="mb-0 font-size-12">Control your privacy parameters.</p>
                       </div>
                     </div>
-                  </a>
+                  </a> */}
                   <div className="d-inline-block w-100 text-center p-3">
                     <Link to='' className="bg-primary iq-sign-btn text-light" role="button"
                       onClick={() => {
@@ -286,7 +287,7 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, 
           <nav className="navbar navbar-expand-lg navbar-light p-0">
             <div className="iq-navbar-logo d-flex justify-content-between">
               <Link onClick={() => {
-                 window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
               }} to="/">
                 <img src="/images/logo.png" className="img-fluid" alt="" />
                 <span>SocialV</span>
@@ -297,12 +298,7 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, 
                 </div>
               </div>
             </div>
-            <div className="iq-search-bar">
-              <form action="index.html#" className="searchbox">
-                <input type="text" className="text search-input" placeholder="Type here to search..." />
-                <a className="search-link" href="index.html#"><i className="ri-search-line" /></a>
-              </form>
-            </div>
+            <Search />
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-label="Toggle navigation">
               <i className="ri-menu-3-line" />
             </button>
