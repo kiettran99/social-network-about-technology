@@ -128,7 +128,8 @@ const EditPost = ({ auth: { user, isAuthenticated },
         buildParts,
         setBuildParts: (data) => {
             setFormData({ ...formData, buildParts: data })
-        }
+        },
+        setIsShowBuildParts
     };
 
     const onHandleSubmitForm = (e) => {

@@ -80,7 +80,8 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
     buildParts,
     setBuildParts: (data) => {
       setFormData({ ...formData, buildParts: data })
-    }
+    },
+    setIsShowBuildParts
   };
 
   const onHandleSubmitForm = (e) => {
