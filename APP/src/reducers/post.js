@@ -219,7 +219,15 @@ export default function (state = initialState, action) {
         case HIDE_POST:
             return {
                 ...state,
-                posts: state.posts.filter(post => post._id !== payload)
+                posts: state.posts.map(post => {
+                    if (post._id === payload) {
+                        return {
+                            ...post,
+                            status: 0
+                        };
+                    }
+                    return post;
+                })
             };
         case POST_ERROR:
             return {

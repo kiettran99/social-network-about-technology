@@ -36,12 +36,12 @@ const Home = ({ location, loadUser, history }) => {
             </div>
             <PostsPage />
           </div>
-          <div className="col-lg-4">
+          {/* <div className="col-lg-4">
             <Stories />
             <Events />
             <UpcomingBirthday />
             <SuggestedPages />
-          </div>
+          </div> */}
           <div className="col-sm-12 text-center">
             <Process />
           </div>

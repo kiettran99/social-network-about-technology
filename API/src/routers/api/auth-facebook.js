@@ -11,7 +11,7 @@ const apiUrl = process.env.API_URL || `http://localhost:${process.env.PORT}`;
 passport.use(new FacebookStrategy({
     clientID: process.env.CLIENT_ID_FB,
     clientSecret: process.env.CLIENT_SECRET_FB,
-    profileFields: ['id', 'emails', 'name'],
+    profileFields: ['id', 'emails', 'name', 'displayName'],
     callbackURL: `${apiUrl}/auth/facebook/callback`
 },
     function (accessToken, refreshToken, profile, done) {
@@ -40,7 +40,7 @@ passport.use(new FacebookStrategy({
 
                 //2. Create new user
                 User.create({
-                    fullname: profile.displayName,
+                    fullname: profile.displayName || username,
                     facebookId: profile.id,
                     username,
                     email

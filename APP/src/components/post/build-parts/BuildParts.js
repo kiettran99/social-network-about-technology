@@ -12,7 +12,7 @@ const BuildParts = ({
     getHardwareCPU, getHardwareMotherboard,
     getHardwareRam, getHardwareGraphics,
     hardware: { cpus, motherboards, rams, graphics },
-    buildParts, setBuildParts
+    buildParts, setBuildParts, setIsShowBuildParts
 }) => {
 
     const addBuildParts = (part, priority) => {
@@ -37,8 +37,14 @@ const BuildParts = ({
         }
     };
 
+    const onHandleClearAll = () => {
+        setBuildParts([]);
+        setIsShowBuildParts(false);
+    };
+
     return (
         <div className="email-form">
+            <button className="btn btn-link float-right" onClick={onHandleClearAll}>Clear all</button>
             <Suspense fallback={<div>Loading...</div>}>
                 <BuildPartsContext.Provider value={{ addBuildParts }}>
                     <BuildPart category="CPU" actionDispatch={getHardwareCPU}

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getMeProfile, updateProfile, changePassword, manageContact } from '../../actions/profile';
+import dayjs from '../../utils/relativeDate';
 
 const EditProfile = ({ profile: { profile, loading }, getMeProfile,
     updateProfile, changePassword, manageContact: manageContactAction }) => {
@@ -10,7 +11,7 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
 
     const [formData, setFormData] = useState({
         fullname: '',
-        dateOfBirth: '1984-01-24',
+        dateOfBirth: null,
         city: '',
         age: '19-32',
         maritalStatus: 'Single',
@@ -54,7 +55,8 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
             setFormData({
                 ...formData,
                 ...user,
-                ...rest
+                ...rest,
+                dateOfBirth: dayjs(rest.dateOfBirth).format('YYYY-MM-DD')
             });
 
             setManageContact({
@@ -78,7 +80,7 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
         }
 
         formData.append('fullname', fullname);
-        formData.append('dateOfBirth', dateOfBirth);
+        formData.append('dateOfBirth', dayjs(dateOfBirth).format('YYYY-MM-DD'));
         formData.append('city', city);
         formData.append('age', age);
         formData.append('maritalStatus', maritalStatus);
@@ -219,7 +221,9 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                                                     </div>
                                                     <div className="form-group col-sm-6">
                                                         <label htmlFor="dob">Date Of Birth:</label>
-                                                        <input className="form-control" id="dob" placeholder="1984-01-24"
+                                                        <input className="form-control"
+                                                            type="date"
+                                                            id="dob" placeholder="1984-01-24"
                                                             name="dateOfBirth"
                                                             value={dateOfBirth}
                                                             onChange={(e) => onChange(e)}
