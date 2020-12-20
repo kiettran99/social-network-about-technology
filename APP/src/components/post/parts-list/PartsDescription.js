@@ -7,7 +7,7 @@ const PartsDescription = ({ buildParts, post: { isInPosts } }) => {
 
     const modalRef = useRef(null);
 
-    const hardwares = buildParts.hardwares;
+    const hardwares = buildParts.hardwares || [];
 
     const onShowDescriptions = (e) => {
         const current = modalRef.current;

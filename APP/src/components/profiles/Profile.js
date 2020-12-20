@@ -21,9 +21,9 @@ const Profile = ({ match }) => {
                                     <div className="iq-header-title">
                                         <h4 className="card-title">Photos</h4>
                                     </div>
-                                    <div className="iq-card-header-toolbar d-flex align-items-center">
+                                    {/* <div className="iq-card-header-toolbar d-flex align-items-center">
                                         <p className="m-0"><a href="">Add Photo </a></p>
-                                    </div>
+                                    </div> */}
                                 </div>
                                 <div className="iq-card-body">
                                     <ul className="profile-img-gallary d-flex flex-wrap p-0 m-0">

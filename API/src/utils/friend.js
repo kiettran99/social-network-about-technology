@@ -142,6 +142,7 @@ const getRequestFriends = async (userId, limit, skip) => {
                 '_id': {
                     $ne: userId
                 },
+                'role': 'user',
                 friendsStatus: 1
             }
         },
@@ -196,6 +197,7 @@ const getUsersList = async (userId, limit, skip) => {
                 '_id': {
                     $ne: userId
                 },
+                'role': 'user',
                 $or: [{
                     friendsStatus: 0
                 },
