@@ -6,6 +6,7 @@ import LoadingBar from 'react-top-loading-bar';
 import { logout } from '../../actions/auth';
 import NotificationBar from './notification-bar/NotificationBar';
 import Search from './search/Search';
+import FriendsRequest from './friends-request/FriendsRequest';
 
 const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, history }) => {
 
@@ -43,89 +44,7 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, 
               <i className="ri-home-line" />
             </Link>
           </li>
-          <li className="nav-item d-none d-sm-block">
-            <a className="search-toggle iq-waves-effect" href="index.html#"><i className="ri-group-line" /></a>
-            <div className="iq-sub-dropdown iq-sub-dropdown-large">
-              <div className="iq-card shadow-none m-0">
-                <div className="iq-card-body p-0 ">
-                  <div className="bg-primary p-3">
-                    <h5 className="mb-0 text-white">Friend Request<small className="badge  badge-light float-right pt-1">4</small></h5>
-                  </div>
-                  <div className="iq-friend-request">
-                    <div className="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between">
-                      <div className="d-flex align-items-center">
-                        <div className="">
-                          <img className="avatar-40 rounded" src="/images/user/01.jpg" alt="" />
-                        </div>
-                        <div className="media-body ml-3">
-                          <h6 className="mb-0 ">Jaques Amole</h6>
-                          <p className="mb-0">40  friends</p>
-                        </div>
-                      </div>
-                      <div className="d-flex align-items-center">
-                        <a href="#" className="mr-3 btn btn-primary rounded">Confirm</a>
-                        <a href="#" className="mr-3 btn btn-secondary rounded">Delete Request</a>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="iq-friend-request">
-                    <div className="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between">
-                      <div className="d-flex align-items-center">
-                        <div className="">
-                          <img className="avatar-40 rounded" src="/images/user/02.jpg" alt="" />
-                        </div>
-                        <div className="media-body ml-3">
-                          <h6 className="mb-0 ">Lucy Tania</h6>
-                          <p className="mb-0">12  friends</p>
-                        </div>
-                      </div>
-                      <div className="d-flex align-items-center">
-                        <a href="#" className="mr-3 btn btn-primary rounded">Confirm</a>
-                        <a href="#" className="mr-3 btn btn-secondary rounded">Delete Request</a>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="iq-friend-request">
-                    <div className="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between">
-                      <div className="d-flex align-items-center">
-                        <div className="">
-                          <img className="avatar-40 rounded" src="/images/user/03.jpg" alt="" />
-                        </div>
-                        <div className="media-body ml-3">
-                          <h6 className="mb-0 ">Manny Petty</h6>
-                          <p className="mb-0">3  friends</p>
-                        </div>
-                      </div>
-                      <div className="d-flex align-items-center">
-                        <a href="#" className="mr-3 btn btn-primary rounded">Confirm</a>
-                        <a href="#" className="mr-3 btn btn-secondary rounded">Delete Request</a>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="iq-friend-request">
-                    <div className="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between">
-                      <div className="d-flex align-items-center">
-                        <div className="">
-                          <img className="avatar-40 rounded" src="/images/user/04.jpg" alt="" />
-                        </div>
-                        <div className="media-body ml-3">
-                          <h6 className="mb-0 ">Marsha Mello</h6>
-                          <p className="mb-0">15  friends</p>
-                        </div>
-                      </div>
-                      <div className="d-flex align-items-center">
-                        <a href="#" className="mr-3 btn btn-primary rounded">Confirm</a>
-                        <a href="#" className="mr-3 btn btn-secondary rounded">Delete Request</a>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <a href="index.html#" className="mr-3 btn text-primary">View More Request</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
+          <FriendsRequest />
           <NotificationBar />
           {/* <li className="nav-item dropdown">
             <a href="index.html#" className="search-toggle iq-waves-effect">

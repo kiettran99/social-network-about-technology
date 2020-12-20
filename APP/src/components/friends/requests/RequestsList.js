@@ -7,7 +7,11 @@ import { getRequests } from '../../../actions/friend';
 const RequestsList = ({ friend: { requests, loading }, getRequests }) => {
 
     useEffect(() => {
-        getRequests();
+        getRequests(0, 10);
+
+        return () => {
+            getRequests(0, 3);
+        };
     }, [getRequests]);
 
     return (
