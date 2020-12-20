@@ -271,7 +271,14 @@ router.post('/', auth, upload.array('images'), [
             await post.save();
         }
 
-        res.json(post);
+        const postCreated = await post.populate({
+            path: 'buildParts',
+            populate: {
+                path: 'hardwares.hardware'
+            }
+        }).execPopulate();
+
+        res.json(postCreated);
     }
     catch (e) {
         console.log(e);

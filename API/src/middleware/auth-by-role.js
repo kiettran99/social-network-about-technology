@@ -23,14 +23,15 @@ const authByRole = (roles = []) => {
             const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
     
             if (!user) {
-                throw new Error();
+                return res.status(401).json({ message: 'Unauthorized' });
             }
 
             if (roles.length && !roles.includes(user.role)) {
-                throw new Error();
+                return res.status(401).json({ message: 'Unauthorized' });
             }   
     
             req.user = user;
+            
             next();
         }
         catch (e) {

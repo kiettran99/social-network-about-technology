@@ -50,18 +50,18 @@ const GroupsItem = ({ group: { _id, name, info, wallpaper, avatar, lengthOfMembe
                     </div>
                     <div className="group-details d-inline-block pb-3">
                         <ul className="d-flex align-items-center justify-content-between list-inline m-0 p-0">
-                            <li className="pl-3 pr-3">
+                            {/* <li className="pl-3 pr-3">
                                 <p className="mb-0">Post</p>
                                 <h6>600</h6>
-                            </li>
+                            </li> */}
                             <li className="pl-3 pr-3">
                                 <p className="mb-0">Member</p>
                                 <h6>{members && lengthOfMembers}</h6>
                             </li>
-                            <li className="pl-3 pr-3">
+                            {/* <li className="pl-3 pr-3">
                                 <p className="mb-0">Visit</p>
                                 <h6>1.2k</h6>
-                            </li>
+                            </li> */}
                         </ul>
                     </div>
                     <div className="group-member mb-3">
