@@ -51,6 +51,7 @@ export const GET_POST = 'GET_POST';
 export const EDIT_POST = 'EDIT_POST';
 export const REMOVE_POST = 'REMOVE_POST';
 export const HIDE_POST = 'HIDE_POST';
+export const RESET_POST = 'RESET_POST';
 
 // Clear prev loading post
 export const CLEAR_POST = 'CLEAR_POST';

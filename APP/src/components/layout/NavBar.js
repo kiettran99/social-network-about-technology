@@ -4,11 +4,14 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import LoadingBar from 'react-top-loading-bar';
 import { logout } from '../../actions/auth';
+import { resetPost } from '../../actions/post';
 import NotificationBar from './notification-bar/NotificationBar';
 import Search from './search/Search';
 import FriendsRequest from './friends-request/FriendsRequest';
 
-const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, history }) => {
+const NavBar = ({ auth: { isAuthenticated, user, loading },
+  logout, loadingBar, resetPost, history
+}) => {
 
   const ref = useRef(null);
 
@@ -206,6 +209,7 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, 
           <nav className="navbar navbar-expand-lg navbar-light p-0">
             <div className="iq-navbar-logo d-flex justify-content-between">
               <Link onClick={() => {
+                resetPost();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }} to="/">
                 <img src="/images/logo.png" className="img-fluid" alt="" />
@@ -237,7 +241,8 @@ const NavBar = ({ auth: { isAuthenticated, user, loading }, logout, loadingBar, 
 
 NavBar.propTypes = {
   auth: PropTypes.object.isRequired,
-  logout: PropTypes.func.isRequired
+  logout: PropTypes.func.isRequired,
+  resetPost: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
@@ -245,4 +250,4 @@ const mapStateToProps = (state) => ({
   loadingBar: state.loadingBar
 })
 
-export default connect(mapStateToProps, { logout })(withRouter(NavBar));
+export default connect(mapStateToProps, { logout, resetPost })(withRouter(NavBar));

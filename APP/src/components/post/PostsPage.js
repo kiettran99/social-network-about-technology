@@ -1,26 +1,47 @@
 import React, { useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { getPosts } from '../../actions/post';
+import { getPosts, resetPost } from '../../actions/post';
 import { connect } from 'react-redux';
 import UserPost from './UserPost';
 import { withRouter } from 'react-router-dom';
 
-const PostsPage = ({ post: { posts, loading }, getPosts, history, groupId = '', match }) => {
+const PostsPage = ({ post: { posts, isInPosts, loading }, getPosts, resetPost,
+    history, groupId = '', match
+}) => {
 
     useEffect(() => {
 
-        if (groupId == '') {
-            if (match) {
-                getPosts(0, 5, null, match.params.id);
+        if (isInPosts) {
+            if (groupId == '') {
+                if (match) {
+                    getPosts(0, 5, null, match.params.id);
+                }
+                else {
+                    getPosts();
+                }
             }
             else {
-                getPosts();
+                getPosts(0, 5, groupId);
             }
         }
-        else {
-            getPosts(0, 5, groupId);
+
+        return () => {
+            // Dispose state posts from store
+            // check history.location
+            try {
+                const pathname = history.location.pathname || [];
+
+                const routePath = pathname.split('/');
+
+                if (routePath.length > 1 && routePath[1] !== 'posts') {
+                    resetPost();
+                }
+            }
+            catch (e) {
+                console.log(e);
+            }
         }
-    }, [groupId, match]);
+    }, [groupId, match, isInPosts]);
 
     return !loading && (
         posts.map(post => post.status === 1 ? (
@@ -48,5 +69,5 @@ const mapStateToProps = (state) => ({
     post: state.post
 });
 
-export default connect(mapStateToProps, { getPosts })(withRouter(PostsPage));
+export default connect(mapStateToProps, { getPosts, resetPost })(withRouter(PostsPage));
 
