@@ -75,12 +75,15 @@ export const GET_FRIENDS = 'GET_FRIENDS';
 export const GET_REQUEST_FRIENDS = 'GET_REQUEST_FRIENDS';
 export const GET_USERS_FRIENDS = 'GET_USERS_FRIENDS';
 
-export const CLEAR_FRIEND = 'CLEAR_FRIEND';
 export const FRIEND_ERROR = 'FRIEND_ERROR';
 export const REQUEST_FRIEND = 'REQUEST_FRIEND';
 export const ACCEPT_FRIEND = 'ACCEPT_FRIEND';
 export const UNACCEPT_FRIEND = 'UNACCEPT_FRIEND';
+
 export const GET_MORE_FRIENDS = 'GET_MORE_FRIENDS';
+export const GET_MORE_REQUESTS = 'GET_MORE_REQUESTS';
+export const GET_MORE_USERS = 'GET_MORE_USERS';
+export const RESET_FRIEND = 'RESET_FRIEND';
 
 // Build parts pc - hardwares api
 export const GET_HARDWARE_CPU = 'GET_HARDWARE_CPU';
