@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { resetFriend } from '../../actions/friend';
 import RequestsList from './requests/RequestsList';
 import UsersList from './users/UsersList';
 
-const FriendRequest = () => {
+const FriendRequest = ({ resetFriend }) => {
+
+    useEffect(() => {
+        return () => resetFriend();
+    }, []);
+
     return (
         <div id="content-page" className="content-page">
             <div className="container">
@@ -40,4 +46,4 @@ const mapStateToProps = (state) => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps)(FriendRequest);
+export default connect(mapStateToProps, { resetFriend })(FriendRequest);

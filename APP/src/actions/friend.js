@@ -1,7 +1,7 @@
 import {
     GET_FRIENDS, GET_REQUEST_FRIENDS, GET_USERS_FRIENDS,
     FRIEND_ERROR, REQUEST_FRIEND,
-    ACCEPT_FRIEND, UNACCEPT_FRIEND, CLEAR_FRIEND, GET_MORE_FRIENDS
+    ACCEPT_FRIEND, UNACCEPT_FRIEND, GET_MORE_FRIENDS, GET_MORE_REQUESTS, GET_MORE_USERS, RESET_FRIEND
 } from './types';
 
 import urlAPI from '../utils/urlAPI';
@@ -10,10 +10,6 @@ import axios from 'axios';
 // Get List friends
 export const getFriends = (skip = 0, limit = 5) => async dispatch => {
     try {
-        dispatch({
-            type: CLEAR_FRIEND
-        });
-
         const res = await axios.get(`${urlAPI}/api/friends/get-friends?skip=${skip}&limit=${limit}`);
 
         dispatch({
@@ -34,7 +30,7 @@ export const getFriends = (skip = 0, limit = 5) => async dispatch => {
 export const getMoreFriends = (skip = 0, limit = 5) => async dispatch => {
     try {
         const res = await axios.get(`${urlAPI}/api/friends/get-friends?skip=${skip}&limit=${limit}`);
-        
+
         dispatch({
             type: GET_MORE_FRIENDS,
             payload: res.data
@@ -54,9 +50,6 @@ export const getMoreFriends = (skip = 0, limit = 5) => async dispatch => {
 // Get List friends
 export const getFriendsById = (id, skip = 0, limit = 5) => async dispatch => {
     try {
-        dispatch({
-            type: CLEAR_FRIEND
-        });
 
         const res = await axios.get(`${urlAPI}/api/friends/get-friends/${id}?skip=${skip}&limit=${limit}`);
 
@@ -78,10 +71,6 @@ export const getFriendsById = (id, skip = 0, limit = 5) => async dispatch => {
 // Get List friends
 export const getRequests = (skip = 0, limit = 5) => async dispatch => {
     try {
-        dispatch({
-            type: CLEAR_FRIEND
-        });
-
         const res = await axios.get(`${urlAPI}/api/friends/get-request?skip=${skip}&limit=${limit}`);
 
         dispatch({
@@ -102,9 +91,6 @@ export const getRequests = (skip = 0, limit = 5) => async dispatch => {
 // Get List user not friend and pending.
 export const getUsers = (skip = 0, limit = 5) => async dispatch => {
     try {
-        dispatch({
-            type: CLEAR_FRIEND
-        });
 
         const res = await axios.get(`${urlAPI}/api/friends/get-user?skip=${skip}&limit=${limit}`);
 
@@ -187,3 +173,50 @@ export const unAcceptFriend = (requesterId, reference) => async dispatch => {
         });
     }
 };
+
+// Get More Requests
+export const getMoreRequests = (skip = 0, limit = 5) => async dispatch => {
+    try {
+
+        const res = await axios.get(`${urlAPI}/api/friends/get-request?skip=${skip}&limit=${limit}`);
+
+        dispatch({
+            type: GET_MORE_REQUESTS,
+            payload: res.data
+        });
+    }
+    catch (e) {
+        console.log(e);
+
+        dispatch({
+            type: FRIEND_ERROR,
+            payload: { msg: e.response.data, status: e.response.statusText }
+        });
+    }
+};
+
+export const getMoreUsers = (skip = 0, limit = 5) => async dispatch => {
+    try {
+
+        const res = await axios.get(`${urlAPI}/api/friends/get-user?skip=${skip}&limit=${limit}`);
+
+        dispatch({
+            type: GET_MORE_USERS,
+            payload: res.data
+        });
+    }
+    catch (e) {
+        console.log(e);
+
+        dispatch({
+            type: FRIEND_ERROR,
+            payload: { msg: e.response.data, status: e.response.statusText }
+        });
+    }
+};
+
+export const resetFriend = () => dispatch => {
+    dispatch({
+        type: RESET_FRIEND
+    });
+} ;

@@ -26,7 +26,7 @@ const FriendItem = ({ friend: { _id: userId, fullname, avatar, email, friendsSta
         } else {
             return (
                 <>
-                    <span className="mr-3 text-muted m-auto"><i class="ri-check-line text-success"></i>&nbsp;Friend</span>
+                    <span className="mr-3 text-muted m-auto"><i className="ri-check-line text-success"></i>&nbsp;Friend</span>
                     <button className="mx-3 mr-3 btn btn-secondary rounded text-light"
                         onClick={() => unAcceptFriend(userId, 'friends')}>UnFriend</button>
                 </>

@@ -1,7 +1,7 @@
 import {
     GET_FRIENDS, GET_REQUEST_FRIENDS, GET_USERS_FRIENDS,
     FRIEND_ERROR, REQUEST_FRIEND,
-    ACCEPT_FRIEND, UNACCEPT_FRIEND, CLEAR_FRIEND, GET_MORE_FRIENDS
+    ACCEPT_FRIEND, UNACCEPT_FRIEND, CLEAR_FRIEND, GET_MORE_FRIENDS, GET_MORE_REQUESTS, GET_MORE_USERS, RESET_FRIEND
 } from '../actions/types';
 
 const initialState = {
@@ -40,18 +40,26 @@ export default function (state = initialState, action) {
                 loading: false,
                 friends: [...state.friends, ...payload]
             };
+        case GET_MORE_REQUESTS:
+            return {
+                ...state,
+                loading: false,
+                requests: [...state.requests, ...payload]
+            };
+        case GET_MORE_USERS:
+            return {
+                ...state,
+                loading: false,
+                users: [...state.users, ...payload]
+            };
         case FRIEND_ERROR:
             return {
                 ...state,
                 loading: false,
                 errors: payload
             };
-        case CLEAR_FRIEND:
-            return {
-                ...state,
-                loading: false,
-                friends: []
-            };
+        case RESET_FRIEND:
+            return initialState;
         case REQUEST_FRIEND:
         case ACCEPT_FRIEND:
         case UNACCEPT_FRIEND:
