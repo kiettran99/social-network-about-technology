@@ -58,7 +58,8 @@ const EditPost = ({ auth: { user, isAuthenticated },
             maxHeight: 'calc(100vh - 2rem)',
             boxShadow: '0 0 30px 0 rgba(0, 0, 0, 0.25)',
             overflowY: 'auto',
-            position: 'relative'
+            position: 'relative',
+            padding: '0px'
         }
     };
 
@@ -70,8 +71,6 @@ const EditPost = ({ auth: { user, isAuthenticated },
             ...formData,
             images: [],
         });
-
-        console.log(formData);
     }
 
     const openModal = () => {
@@ -152,7 +151,7 @@ const EditPost = ({ auth: { user, isAuthenticated },
             <Modal isOpen={modalIsOpen}
                 onRequestClose={closeModal}
                 style={customStyles}>
-                <div className="modal-dialog modal-lg" role="document">
+                <div className="modal-dialog modal-lg m-0" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id="post-modalLabel">Edit Post</h5>

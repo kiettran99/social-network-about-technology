@@ -29,10 +29,10 @@ const PostDetail = ({ match, history, post: { post, loading }, getPost }) => {
                     {post && post.status !== 1 && <Redirect to="/notfound" />}
                 </div>
                 <div className="col-lg-4">
-                    <Stories />
+                    {/* <Stories />
                     <Events />
                     <UpcomingBirthday />
-                    <SuggestedPages />
+                    <SuggestedPages /> */}
                 </div>
             </div>
         </div>

@@ -34,7 +34,7 @@ const PersonalProfile = ({ auth: { user, isAuthenticated },
                     <div className="profile-info p-4 d-flex align-items-center justify-content-between position-relative">
                         <div className="social-links">
                             <ul className="social-data-block d-flex align-items-center justify-content-between list-inline p-0 m-0">
-                                <li className="text-center pr-3">
+                                {/* <li className="text-center pr-3">
                                     <a href="profile.html#"><img src="/images/icon/08.png" className="img-fluid rounded" alt="facebook" /></a>
                                 </li>
                                 <li className="text-center pr-3">
@@ -51,7 +51,7 @@ const PersonalProfile = ({ auth: { user, isAuthenticated },
                                 </li>
                                 <li className="text-center pr-3">
                                     <a href="profile.html#"><img src="/images/icon/13.png" className="img-fluid rounded" alt="linkedin" /></a>
-                                </li>
+                                </li> */}
                             </ul>
                         </div>
                         <div className="social-info">
