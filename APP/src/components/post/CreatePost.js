@@ -167,10 +167,10 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                 <ul className="profile-img-gallary d-flex flex-wrap p-0 m-0">
                   <Suspense fallback={<div>Loading...</div>}>
                     <LoadImages images={images} onChangeImages={(index) => {
-                      setFormData({
-                        ...formData,
-                        images: images.filter((image, position) => position !== index)
-                      });
+                      setFormData((state) => ({
+                        ...state,
+                        images: state.images.filter((image, position) => position !== index)
+                      }));
                     }} />
                   </Suspense>
                 </ul>
@@ -183,10 +183,12 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                     <input ref={photoRef} className="file-upload" type="file" accept="image/*" multiple={true} onChange={e => {
                       e.preventDefault();
 
-                      setFormData({
-                        ...formData,
-                        images: [...images, ...e.target.files]
-                      });
+                      if (e.target.files) {
+                        setFormData((state) => ({
+                          ...state,
+                          images: [...state.images, ...e.target.files]
+                        }));
+                      }
                     }} />
                     <div className="upload-button" style={{ fontSize: "1em" }} onClick={() => {
                       if (photoRef.current) {

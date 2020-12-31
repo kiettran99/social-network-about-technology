@@ -73,6 +73,7 @@ const Register = ({ auth: { isAuthenticated }, register, setAlert }) => {
                                     <input type="text" className="form-control mb-0" id="exampleInputEmail1" placeholder="Your Full Name"
                                         name="fullname"
                                         value={fullname}
+                                        required={true}
                                         onChange={(e) => onChange(e)} />
                                 </div>
                                 <div className="form-group">
@@ -80,6 +81,7 @@ const Register = ({ auth: { isAuthenticated }, register, setAlert }) => {
                                     <input type="email" className="form-control mb-0" id="exampleInputEmail2" placeholder="Enter Email"
                                         name="email"
                                         value={email}
+                                        required={true}
                                         onChange={(e) => onChange(e)} />
                                 </div>
                                 <div className="form-group">
@@ -87,6 +89,7 @@ const Register = ({ auth: { isAuthenticated }, register, setAlert }) => {
                                     <input type="text" className="form-control mb-0" id="exampleInputEmail2" placeholder="Username"
                                         name="username"
                                         value={username}
+                                        required={true}
                                         onChange={(e) => onChange(e)} />
                                 </div>
                                 <div className="form-group">
@@ -94,6 +97,7 @@ const Register = ({ auth: { isAuthenticated }, register, setAlert }) => {
                                     <input type="password" className="form-control mb-0" id="exampleInputPassword1" placeholder="Password"
                                         name="password"
                                         value={password}
+                                        required={true}
                                         onChange={(e) => onChange(e)} />
                                 </div>
                                 <div className="d-inline-block w-100">

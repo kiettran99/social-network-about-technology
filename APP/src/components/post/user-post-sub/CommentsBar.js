@@ -12,27 +12,40 @@ const CommentsBar = ({ likePost, unlikePost,
 }) => {
 
     const [isLiked, setIsLiked] = useState(false);
+    const [emoji, setEmoji] = useState(0);
 
     useEffect(() => {
         if (isAuthenticated) {
-            setIsLiked(likes.filter(like => like.user === user._id).length > 0);
+            const userLiked = likes.find(like => like.user === user._id);
+
+            if (userLiked) {
+                setIsLiked(true);
+                setEmoji(userLiked.emoji);
+            }
+
         }
         else {
             setIsLiked(false);
         }
     }, [isAuthenticated, likes]);
 
-    const onLikeHandler = () => {
+    const onLikeHandler = (nextEmoji) => {
         if (!isAuthenticated) {
             history.push('/login');
-        } else if (isLiked) {
+        } else if (isLiked && emoji === nextEmoji) {
             unlikePost(postId);
+            setEmoji(0);
         }
         else {
-            likePost(postId);
+            likePost(postId, nextEmoji);
         }
         setIsLiked(!isLiked);
     };
+
+    const emojiComponent = (number = 0) => (
+        <img src={`/images/icon/0${number + 1}.png`} className="img-fluid" alt=""
+            onClick={() => onLikeHandler(number)} />
+    );
 
     return (
         <div className="d-flex justify-content-between align-items-center">
@@ -41,18 +54,25 @@ const CommentsBar = ({ likePost, unlikePost,
                     <div className="like-data">
                         <div className="dropdown">
                             <span className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                <img src="/images/icon/01.png" className="img-fluid" alt=""
-                                    onClick={() => onLikeHandler()} />
+                                {/* <img src="/images/icon/01.png" className="img-fluid" alt=""
+                                    onClick={() => onLikeHandler()} /> */}
+                                {emojiComponent(emoji)}
                             </span>
                             <div className="dropdown-menu">
                                 <a className="ml-2 mr-2" data-toggle="tooltip" data-placement="top" data-original-title="Like"
-                                    onClick={() => onLikeHandler()} > <img src="/images/icon/01.png" className="img-fluid" alt="" /></a>
-                                <a className="mr-2" href="index.html#" data-toggle="tooltip" data-placement="top" data-original-title="Love"><img src="/images/icon/02.png" className="img-fluid" alt="" /></a>
-                                <a className="mr-2" href="index.html#" data-toggle="tooltip" data-placement="top" data-original-title="Happy"><img src="/images/icon/03.png" className="img-fluid" alt="" /></a>
-                                <a className="mr-2" href="index.html#" data-toggle="tooltip" data-placement="top" data-original-title="HaHa"><img src="/images/icon/04.png" className="img-fluid" alt="" /></a>
-                                <a className="mr-2" href="index.html#" data-toggle="tooltip" data-placement="top" data-original-title="Think"><img src="/images/icon/05.png" className="img-fluid" alt="" /></a>
-                                <a className="mr-2" href="index.html#" data-toggle="tooltip" data-placement="top" data-original-title="Sade"><img src="/images/icon/06.png" className="img-fluid" alt="" /></a>
-                                <a className="mr-2" href="index.html#" data-toggle="tooltip" data-placement="top" data-original-title="Lovely"><img src="/images/icon/07.png" className="img-fluid" alt="" /></a>
+                                    onClick={() => onLikeHandler(0)} > <img src="/images/icon/01.png" className="img-fluid" alt="" /></a>
+                                <a className="mr-2" data-toggle="tooltip" data-placement="top" data-original-title="Love"><img src="/images/icon/02.png" className="img-fluid" alt=""
+                                    onClick={() => onLikeHandler(1)} /></a>
+                                <a className="mr-2" data-toggle="tooltip" data-placement="top" data-original-title="Happy"><img src="/images/icon/03.png" className="img-fluid" alt=""
+                                    onClick={() => onLikeHandler(2)} /></a>
+                                <a className="mr-2" data-toggle="tooltip" data-placement="top" data-original-title="HaHa"><img src="/images/icon/04.png" className="img-fluid" alt=""
+                                    onClick={() => onLikeHandler(3)} /></a>
+                                <a className="mr-2" data-toggle="tooltip" data-placement="top" data-original-title="Think"><img src="/images/icon/05.png" className="img-fluid" alt=""
+                                    onClick={() => onLikeHandler(4)} /></a>
+                                <a className="mr-2" data-toggle="tooltip" data-placement="top" data-original-title="Sade"><img src="/images/icon/06.png" className="img-fluid" alt=""
+                                    onClick={() => onLikeHandler(5)} /></a>
+                                <a className="mr-2" data-toggle="tooltip" data-placement="top" data-original-title="Lovely"><img src="/images/icon/07.png" className="img-fluid" alt=""
+                                    onClick={() => onLikeHandler(6)} /></a>
                             </div>
                         </div>
                     </div>

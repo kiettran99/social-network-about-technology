@@ -410,6 +410,10 @@ router.put('/like/:id', auth, async (req, res) => {
         // Validation params Id
         const id = req.params.id;
 
+        if (!req.query.emoji) {
+            return res.status(400).json({ msg: 'Emoji is required.' });
+        }
+
         if (!id) {
             return res.status(400).json({ msg: 'Post\'\s ID is empty.' });
         }
@@ -418,14 +422,20 @@ router.put('/like/:id', auth, async (req, res) => {
         const post = await Post.findById(id);
 
         // Make sure user is not like post yet.
-        const isLiked = post.likes.filter(like => like.user.toString() === req.user.id).length > 0;
+        const postLiked = post.likes.find(like => like.user.toString() === req.user.id);
 
-        if (isLiked) {
-            return res.status(400).json({ msg: 'Post is liked already.' });
+        // Check if user liked and then reponse already liked, or change emoji.
+        if (postLiked) {
+            if (postLiked.emoji === req.query.emoji) {
+                return res.status(400).json({ msg: 'Post is liked already.' });
+            }
+
+            postLiked.emoji = req.query.emoji;
         }
-
-        // Push User into Likes array.
-        post.likes.unshift({ user: req.user.id, name: req.user.fullname });
+        else {
+            // Push User into Likes array.
+            post.likes.unshift({ user: req.user.id, name: req.user.fullname, emoji: req.query.emoji });
+        }
 
         await post.save();
 
