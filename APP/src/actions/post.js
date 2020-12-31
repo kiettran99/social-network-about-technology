@@ -217,9 +217,9 @@ export const removePost = (id, history) => async dispatch => {
     }
 };
 
-export const likePost = (id) => async dispatch => {
+export const likePost = (id, emoji) => async dispatch => {
     try {
-        const res = await axios.put(`${urlAPI}/api/posts/like/${id}`);
+        const res = await axios.put(`${urlAPI}/api/posts/like/${id}?emoji=${emoji}`);
 
         dispatch({
             type: UPDATE_LIKES,

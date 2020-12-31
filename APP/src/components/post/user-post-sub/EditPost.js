@@ -47,9 +47,10 @@ const EditPost = ({ auth: { user, isAuthenticated },
             height: '100vh',
             background: 'rgba(0, 0, 0, 0.5)',
             display: 'flex', alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
         },
         content: {
+            border: 'none',
             background: 'white',
             right: 'auto',
             inset: '0px',
@@ -175,16 +176,16 @@ const EditPost = ({ auth: { user, isAuthenticated },
                             <div className="d-flex align-items-center">
                                 <ul className="profile-img-gallary d-flex flex-wrap p-0 m-0">
                                     <LoadImages images={imageUrls} by='url' onChangeImages={(index) => {
-                                        setFormData({
-                                            ...formData,
-                                            imageUrls: imageUrls.filter((image, position) => position !== index)
-                                        });
+                                        setFormData((state) => ({
+                                            ...state,
+                                            imageUrls: state.imageUrls.filter((image, position) => position !== index)
+                                        }));
                                     }} />
                                     <LoadImages images={images} onChangeImages={(index) => {
-                                        setFormData({
-                                            ...formData,
-                                            images: images.filter((image, position) => position !== index)
-                                        });
+                                        setFormData((state) => ({
+                                            ...state,
+                                            images: state.images.filter((image, position) => position !== index)
+                                        }));
                                     }} />
                                 </ul>
                             </div>
@@ -195,11 +196,14 @@ const EditPost = ({ auth: { user, isAuthenticated },
                                     <div className="iq-bg-primary rounded p-2 pointer mr-3">
                                         <input ref={photoRef} className="file-upload" type="file" accept="image/*" multiple={true} onChange={e => {
                                             e.preventDefault();
-
-                                            setFormData({
-                                                ...formData,
-                                                images: [...images, ...e.target.files]
-                                            });
+                                            
+                                            if (e.target.files) {
+                                                setFormData((state) => ({
+                                                    ...state,
+                                                    images: [...state.images, ...e.target.files]
+                                                }));
+                                            }
+                                         
                                         }} />
                                         <div className="upload-button" style={{ fontSize: "1em" }} onClick={() => {
                                             if (photoRef.current) {

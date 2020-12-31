@@ -4,6 +4,7 @@ import CreatePost from '../post/CreatePost';
 import PostsPage from '../post/PostsPage';
 import AboutProfile from './about/AboutProfile';
 import FriendProfile from './friends/FriendProfile';
+import Process from './Process';
 
 const Profile = ({ match }) => {
     return (
@@ -41,9 +42,12 @@ const Profile = ({ match }) => {
                         <div className="col-lg-8">
                             <div className="row">
                                 <div className="col-sm-12">
-                                    <CreatePost type={{ userId: match.params.id}}/>
+                                    <CreatePost type={{ userId: match.params.id }} />
                                 </div>
                                 <PostsPage match={match} />
+                                <div className="col-sm-12 text-center">
+                                    <Process userId={match.params.id} />
+                                </div>
                             </div>
                         </div>
                     </div>

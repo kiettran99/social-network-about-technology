@@ -42,7 +42,17 @@ const postSchema = Schema({
             type: String
         },
         emoji: {
-            type: Number
+            type: Number,
+            enums: [
+                0,  // Like
+                1,  // Heart
+                2,  // Happy
+                3,  // HaHa
+                4,  // Thinking
+                5,  // Sad
+                6,  // Love  
+            ],
+            default: 0
         }
     }],
     type: {
