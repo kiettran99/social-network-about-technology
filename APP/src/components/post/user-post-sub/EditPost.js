@@ -195,15 +195,15 @@ const EditPost = ({ auth: { user, isAuthenticated },
                                 <li className="col-md-6 mb-3">
                                     <div className="iq-bg-primary rounded p-2 pointer mr-3">
                                         <input ref={photoRef} className="file-upload" type="file" accept="image/*" multiple={true} onChange={e => {
-                                            e.preventDefault();
-                                            
-                                            if (e.target.files) {
+                                            // currentTarget 
+                                            const curentTarget = e.currentTarget;
+
+                                            if (curentTarget && curentTarget.files) {
                                                 setFormData((state) => ({
                                                     ...state,
-                                                    images: [...state.images, ...e.target.files]
+                                                    images: [...state.images, ...curentTarget.files]
                                                 }));
                                             }
-                                         
                                         }} />
                                         <div className="upload-button" style={{ fontSize: "1em" }} onClick={() => {
                                             if (photoRef.current) {

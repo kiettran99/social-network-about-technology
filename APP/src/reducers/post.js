@@ -84,7 +84,7 @@ export default function (state = initialState, action) {
                 post: null
             };
         case UPDATE_LIKES:
-            return state.isInPosts ? {
+            return {
                 ...state,
                 loading: false,
                 posts: state.posts.map(post => {
@@ -95,15 +95,12 @@ export default function (state = initialState, action) {
                         }
                     }
                     return post;
-                })
-            } : {
-                    ...state,
-                    loading: false,
-                    post: {
-                        ...state.post,
-                        likes: payload
-                    }
-                };
+                }),
+                post: state.post ? {
+                    ...state.post,
+                    likes: payload
+                } : null
+            };
         case UPDATE_LIKES_COMMENT:
             return {
                 ...state,
