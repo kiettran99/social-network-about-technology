@@ -181,12 +181,13 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                 <li className="col-md-6 mb-3">
                   <div className="iq-bg-primary rounded p-2 pointer mr-3">
                     <input ref={photoRef} className="file-upload" type="file" accept="image/*" multiple={true} onChange={e => {
-                      e.preventDefault();
+                      // currentTarget 
+                      const curentTarget = e.currentTarget;
 
-                      if (e.target.files) {
+                      if (curentTarget && curentTarget.files) {
                         setFormData((state) => ({
                           ...state,
-                          images: [...state.images, ...e.target.files]
+                          images: [...state.images, ...curentTarget.files]
                         }));
                       }
                     }} />

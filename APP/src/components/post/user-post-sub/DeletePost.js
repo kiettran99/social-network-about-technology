@@ -17,7 +17,12 @@ const DeletePost = ({ postId, userId, auth: { user, isAuthenticated },
     const history = useHistory();
 
     const deletePost = () => {
-        removePost(postId, history);
+        const isConfirm = window.confirm('Are you sure? This can NOT be undone!');
+
+        if (isConfirm) {
+            removePost(postId, history);
+        }
+
     };
 
     return isCanDelete && (
