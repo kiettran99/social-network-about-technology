@@ -1,32 +1,37 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { addComment } from '../../../actions/post';
 
+import useEditorState from './editor/useEditorState';
+import DraftJSEditor from './editor/DraftJSEditor';
+
 const CommentsForm = ({ actionComment, auth: { isAuthenticated }, addComment, postId, isInPosts }) => {
 
-    const [text, setText] = useState('');
+    const { editorState, setEditorState, getText, reset } = useEditorState();
 
     const onSubmit = (e) => {
         e.preventDefault();
 
         if (postId) {
-            addComment(postId, { text });
+            addComment(postId, { text: getText(), rawText: editorState });
         }
         else {
-            actionComment({ text });
+            actionComment({ text: getText(), rawText: editorState });
         }
-        setText('');
+
+        reset();
     };
 
     return !isInPosts && (
         <form className="comment-text d-flex align-items-center mt-3" onSubmit={e => onSubmit(e)}>
-            <input type="text" className="form-control rounded"
-                name="text" value={text} onChange={(e) => setText(e.target.value)}
+            <DraftJSEditor
                 disabled={!isAuthenticated}
                 placeholder={isAuthenticated ? "Write comment here ...." :
-                    "To leave a comment, you need to login."} />
+                    "To leave a comment, you need to login."}
+                editorState={editorState}
+                setEditorState={setEditorState} />
 
-            <div className="comment-attagement d-flex">
+            <div className="comment-attagement d-flex" style={{ zIndex: 1 }}>
                 {/* <a href=""><i className="ri-link mr-3" /></a>
                 <a href=""><i className="ri-user-smile-line mr-3" /></a>
                 <a href=""><i className="ri-camera-line mr-3" /></a> */}

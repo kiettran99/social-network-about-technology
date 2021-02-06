@@ -46,9 +46,9 @@ router.get('/', async (req, res) => {
             comments: {
                 $slice: [0, 2]
             },
-            "comments.replies": {
-                $slice: [0, 1]
-            }
+            // "comments.replies": {
+            //     $slice: 1
+            // },
         }).sort({ createdAt: 'desc' })
             .limit(limit).skip(skip + offset).populate('type.group', 'name')
             .populate({
@@ -97,9 +97,9 @@ router.get('/:id', async (req, res) => {
             comments: {
                 $slice: [0, 3]
             },
-            "comments.replies": {
-                $slice: [0, 1]
-            }
+            // "comments.replies": {
+            //     $slice: 1
+            // }
         }).populate('type.group', 'name').populate({
             path: 'buildParts',
             populate: {
@@ -140,9 +140,9 @@ router.get('/:id/comments/more', async (req, res) => {
             comments: {
                 $slice: [skip, limit],
             },
-            "comments.replies": {
-                $slice: [0, 1]
-            }
+            // "comments.replies": {
+            //     $slice: [0, 1]
+            // }
         });
 
         if (!post) {
@@ -186,9 +186,9 @@ router.get('/:post_id/comments/:comment_id/replies/more', async (req, res) => {
 
         // Find a post by Id and comments has comment'id
         const post = await Post.findOne({ _id: postId, 'comments._id': commentId }, {
-            "comments.replies": {
-                $slice: [skip, limit]
-            }
+            // "comments.replies": {
+            //     $slice: [skip, limit]
+            // }
         });
 
 
