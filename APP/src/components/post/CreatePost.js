@@ -88,17 +88,6 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
     onSubmit(e);
   };
 
-  const editor = (type) => {
-
-    // Chose Editor based user or groups.
-
-    if (type && type.groupId) {
-      return <SnowEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />;
-    }
-
-    return <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />;
-  }
-
   return (
     <div id="post-modal-data" className="iq-card iq-card-block iq-card-stretch iq-card-height"  >
       <div className="iq-card-header d-flex justify-content-between">
@@ -157,7 +146,7 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                 <form className="post-text ml-3 w-100" onSubmit={e => onSubmit(e)}>
                   <div className="standalone-container">
                     <Suspense fallback={<div>Loading...</div>}>
-                      {editor(type)}
+                      <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />
                     </Suspense>
                   </div>
                 </form>

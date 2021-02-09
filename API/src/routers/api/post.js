@@ -51,6 +51,7 @@ router.get('/', async (req, res) => {
             // },
         }).sort({ createdAt: 'desc' })
             .limit(limit).skip(skip + offset).populate('type.group', 'name')
+            .populate('share.postId', '-share')
             .populate({
                 path: 'buildParts',
                 populate: {
@@ -100,7 +101,7 @@ router.get('/:id', async (req, res) => {
             // "comments.replies": {
             //     $slice: 1
             // }
-        }).populate('type.group', 'name').populate({
+        }).populate('type.group', 'name').populate('share.postId', '-share').populate({
             path: 'buildParts',
             populate: {
                 path: 'hardwares.hardware'
@@ -914,6 +915,52 @@ router.put('/:post_id/comments/:comment_id/reply/unlike/:reply_id', auth, async 
 
         // Response to client
         res.json(reply.likes);
+    }
+    catch (e) {
+        console.log(e);
+
+        if (e.kind === 'ObjectId') {
+            return res.status(404).json({ msg: 'Post is not exists. ' });
+        }
+
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route PUT /api/posts/post_id/share
+// @desc Share a post (share to timeline)
+// @access private
+router.put('/:post_id/share', auth, async (req, res) => {
+    try {
+        // Get Id from routing parameters and find post.
+        const postId = req.params.post_id;
+
+        if (!postId) {
+            return res.status(400).json({ msg: 'Post\'\s ID is empty.' });
+        }
+
+        const post = await Post.findById(postId);
+
+        if (!post) {
+            return res.status(404).json({ msg: 'Post is not exists. ' });
+        }
+
+        // Create new post has user shared.
+
+        const newPost = new Post({
+            text: req.body.text || '<p></p>',
+            user: req.user.id,
+            name: req.user.fullname,
+            avatar: req.user.avatar,
+            type: {},
+            share: { postId }
+        });
+
+        post.share.users.unshift(req.user.id);
+
+        await Promise.all([newPost.save(), post.save()]);
+
+        res.json({ msg: 'The post has shared on timeline.' });
     }
     catch (e) {
         console.log(e);

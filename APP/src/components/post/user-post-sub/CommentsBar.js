@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { likePost, unlikePost } from '../../../actions/post';
 import { withRouter } from 'react-router-dom';
+import ShareModal from './share-post/ShareModal';
 
 const CommentsBar = ({ likePost, unlikePost,
     auth: { user, isAuthenticated },
     history,
-    likes, lengthOfComments,
+    likes, lengthOfComments, share,
     postId
 }) => {
 
@@ -93,7 +94,7 @@ const CommentsBar = ({ likePost, unlikePost,
                         </div>
                     </div>
                 </div>
-                <div className="total-comment-block">
+                <div className="total-comment-block mr-1">
                     <div className="dropdown">
                         <span className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
                             {lengthOfComments || 0} Comment
@@ -109,10 +110,15 @@ const CommentsBar = ({ likePost, unlikePost,
                         </div> */}
                     </div>
                 </div>
+                <div className="total-comment-block">
+                    <div className="dropdown">
+                        <a href="">
+                            <span className="ml-1">{share.users.length} Share</span></a>
+                    </div>
+                </div>
             </div>
             <div className="share-block d-flex align-items-center feather-icon mr-3">
-                {/* <a href=""><i className="ri-share-line" />
-                    <span className="ml-1">99 Share</span></a> */}
+                <ShareModal />
             </div>
         </div>
     );
