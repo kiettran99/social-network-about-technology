@@ -77,12 +77,78 @@ const ShareModal = ({ auth: { user, isAuthenticated },
     const onSubmit = (e) => {
         e.preventDefault();
 
-        sharePostTimeLine(post._id, {
+        const share = post.share;
+
+        const postId = share && share.postId && share.postId.user ? share.postId._id : post._id;
+
+        sharePostTimeLine(postId, {
             text
         }).then(data => console.log(data));
 
         closeModal();
     }
+
+    const previewPost = () => {
+        const share = post.share;
+
+        if (share && share.postId && share.postId.user) {
+            const postShared = share.postId;
+
+            return (
+                <div className="container border-left border-right">
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <div className="user-post w-75 m-auto">
+                            <ImagePost imageUrls={postShared.imageUrls} />
+                        </div>
+                        <hr />
+                        <div className="user-post-data container mt-2">
+                            <div className="d-flex flex-wrap">
+                                <div className="media-support-user-img mr-3">
+                                    <img className="avatar-60 rounded-circle" src={postShared.avatar} alt="" />
+                                </div>
+                                <div className="media-support-info mt-2">
+                                    <h5 className="mb-0 d-inline-block"><Link to={`/profile/${postShared.user}`}>{postShared.name}&nbsp;</Link></h5>
+                                    <p className="mb-0 d-inline-block">Add New Post</p>
+                                    <p className="mb-0 text-primary">{dayjs(postShared.createdAt).fromNow()}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="standalone-container">
+                            <BubbleEditor readOnly={true} text={postShared.text} />
+                        </div>
+                    </Suspense>
+                    <hr />
+                </div>
+            );
+        }
+
+        return (
+            <div className="container border-left border-right">
+                <Suspense fallback={<div>Loading...</div>}>
+                    <div className="user-post w-75 m-auto">
+                        <ImagePost imageUrls={imageUrls} />
+                    </div>
+                    <hr />
+                    <div className="user-post-data container mt-2">
+                        <div className="d-flex flex-wrap">
+                            <div className="media-support-user-img mr-3">
+                                <img className="avatar-60 rounded-circle" src={post.avatar} alt="" />
+                            </div>
+                            <div className="media-support-info mt-2">
+                                <h5 className="mb-0 d-inline-block"><Link to={`/profile/${post.user}`}>{post.name}&nbsp;</Link></h5>
+                                <p className="mb-0 d-inline-block">Add New Post</p>
+                                <p className="mb-0 text-primary">{dayjs(post.createdAt).fromNow()}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="standalone-container">
+                        <BubbleEditor readOnly={true} text={post.text} />
+                    </div>
+                </Suspense>
+                <hr />
+            </div>
+        );
+    };
 
     return (
         <>
@@ -111,32 +177,7 @@ const ShareModal = ({ auth: { user, isAuthenticated },
                                 </form>
                             </div>
                             <hr />
-                            {post &&
-                                <div className="container border-left border-right">
-                                    <Suspense fallback={<div>Loading...</div>}>
-                                        <div className="user-post w-75 m-auto">
-                                            <ImagePost imageUrls={imageUrls} />
-                                        </div>
-                                        <hr />
-                                        <div className="user-post-data container mt-2">
-                                            <div className="d-flex flex-wrap">
-                                                <div className="media-support-user-img mr-3">
-                                                    <img className="avatar-60 rounded-circle" src={post.avatar} alt="" />
-                                                </div>
-                                                <div className="media-support-info mt-2">
-                                                    <h5 className="mb-0 d-inline-block"><Link to={`/profile/${post.user}`}>{post.name}&nbsp;</Link></h5>
-                                                    <p className="mb-0 d-inline-block">Add New Post</p>
-                                                    <p className="mb-0 text-primary">{dayjs(post.createdAt).fromNow()}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="standalone-container">
-                                            <BubbleEditor readOnly={true} text={post.text} />
-                                        </div>
-                                    </Suspense>
-                                    <hr />
-                                </div>
-                            }
+                            {post && previewPost()}
                             <div className="other-option">
                                 <div className="d-flex align-items-center justify-content-between">
                                     <div className="d-flex align-items-center">
