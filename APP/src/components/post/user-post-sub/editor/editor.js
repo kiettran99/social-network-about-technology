@@ -10,8 +10,6 @@ const replaceStringAtIndex = (input, replaceValue, firstIndex, lastIndex) => {
 const getTextFromEditorState = (editorState) => {
     const content = convertToRaw(editorState.getCurrentContent());
 
-    console.log(content);
-
     const comment = Object.keys(content.blocks).reduce((comment, i) => {
         const { entityRanges, text } = content.blocks[i];
 
@@ -47,8 +45,26 @@ const getMentionByName = async (name) => {
     }
 }
 
+const getHashTags = (inputText) => {  
+    var regex = /(?:^|\s)(?:#)([a-zA-Z\d]+)/gm;
+    var matches = [];
+    var match;
+
+    while ((match = regex.exec(inputText))) {
+        matches.push(match[1]);
+    }
+
+    return matches;
+}
+
+const convertHashTagToArray = (editorState) => {
+    const content = editorState.getCurrentContent().getPlainText();
+
+    return getHashTags(content);
+}
+
 const editor = {
-    getTextFromEditorState, getMentionByName
+    getTextFromEditorState, getMentionByName, convertHashTagToArray
 };
 
 export default editor;

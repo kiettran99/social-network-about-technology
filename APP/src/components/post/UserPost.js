@@ -14,9 +14,10 @@ const PostComments = lazy(() => import('./user-post-sub/PostComments'));
 const CommentForm = lazy(() => import('./user-post-sub/CommentForm'));
 const AttachPost = lazy(() => import('./AttachPost'));
 const BubbleEditor = lazy(() => import('./editor/BubbleEditor'));
+const HashTag = lazy(() => import('./user-post-sub/hash-tag/HashTag'));
 
 const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, comments, createdAt, lengthOfComments,
-    user: userId, buildParts, share }
+    user: userId, buildParts, share, hashtag }
 }) => {
 
 
@@ -88,7 +89,8 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                                             userId,
                                             imageUrls,
                                             buildParts,
-                                            type
+                                            type,
+                                            hashtag
                                         }} />
                                         <Following postId={_id} />
                                         <DeletePost postId={_id} userId={userId} />
@@ -108,6 +110,7 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                             <PartsDescription buildParts={buildParts} />
                         </div>
                     )}
+                    {hashtag && <HashTag hashtag={hashtag} />}
                     <div className="user-post">
                         <AttachPost imageUrls={imageUrls} />
                     </div>

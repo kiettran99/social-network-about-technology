@@ -4,9 +4,8 @@
   "private": true,
   "dependencies": {
     "@draft-js-plugins/editor": "^4.1.0",
-    "@draft-js-plugins/focus": "^4.1.0",
+    "@draft-js-plugins/hashtag": "^4.1.0",
     "@draft-js-plugins/mention": "^4.2.0",
-    "@draft-js-plugins/resizeable": "^4.1.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -19,7 +18,6 @@
     "prop-types": "^15.7.2",
     "pusher-js": "^7.0.0",
     "query-string": "^6.13.6",
-    "quill-mention": "^3.0.0",
     "react": "^16.13.1",
     "react-dates": "^21.8.0",
     "react-dom": "^16.13.1",

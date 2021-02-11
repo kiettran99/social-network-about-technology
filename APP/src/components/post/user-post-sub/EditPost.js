@@ -4,9 +4,12 @@ import { connect } from 'react-redux';
 import BuildParts from '../build-parts/BuildParts';
 import { getPost, editPost } from '../../../actions/post';
 import LoadImages from '../load-images/LoadImages';
+import { EditorState } from 'draft-js';
+import { createEditorStateWithText } from '@draft-js-plugins/editor';
+import HashTagEditor from '../editor/hash-tag-editor/HashTagEditor';
+import editor from './editor/editor';
 
 const BubbleEditor = lazy(() => import('../editor/BubbleEditor'));
-const SnowEditor = lazy(() => import('../editor/SnowEditor'));
 
 Modal.setAppElement('#root');
 
@@ -30,8 +33,11 @@ const EditPost = ({ auth: { user, isAuthenticated },
     });
 
     const [isShowBuildParts, setIsShowBuildParts] = useState(false);
+    const [isOpenHashTag, setOpenHashTag] = useState(false);
 
     const [disabledPost, setDisabledPost] = useState(true);
+
+    const [hashTagEditor, setHashTagEditor] = useState(EditorState.createEmpty());
 
     const { text, images, buildParts, imageUrls } = formData;
 
@@ -82,6 +88,11 @@ const EditPost = ({ auth: { user, isAuthenticated },
                 buildParts: post.buildParts || [],
                 imageUrls: post.imageUrls || []
             });
+
+            if (post.hashtag && post.hashtag.tags.length > 0) {
+                setOpenHashTag(true);
+                setHashTagEditor(createEditorStateWithText(post.hashtag.rawText));
+            }
         }
 
         setIsOpen(true);
@@ -113,6 +124,12 @@ const EditPost = ({ auth: { user, isAuthenticated },
         if (buildParts.length > 0) {
             formData.append('buildParts', JSON.stringify(buildParts));
         }
+
+        // Add Hashtag
+        formData.append('hashtag', JSON.stringify({
+            tags: editor.convertHashTagToArray(hashTagEditor),
+            rawText: hashTagEditor.getCurrentContent().getPlainText()
+        }))
 
         editPost(post.postId, formData);
 
@@ -166,8 +183,7 @@ const EditPost = ({ auth: { user, isAuthenticated },
                                 <form className="post-text ml-3 w-100" onSubmit={e => onSubmit(e)}>
                                     <div className="standalone-container">
                                         <Suspense fallback={<div>Loading...</div>}>
-                                            {type && type.groupId ? <SnowEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} /> :
-                                                <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />}
+                                            <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />
                                         </Suspense>
                                     </div>
                                 </form>
@@ -190,6 +206,9 @@ const EditPost = ({ auth: { user, isAuthenticated },
                                 </ul>
                             </div>
                             {isShowBuildParts && <BuildParts {...buildPartsProps} />}
+                            {isOpenHashTag && <HashTagEditor placeholder=""
+                                editorState={hashTagEditor} setEditorState={setHashTagEditor}
+                                disable={disabledPost} />}
                             <hr />
                             <ul className="d-flex flex-wrap align-items-center list-inline m-0 p-0">
                                 <li className="col-md-6 mb-3">
@@ -218,6 +237,10 @@ const EditPost = ({ auth: { user, isAuthenticated },
                                 <li className="col-md-6 mb-3"
                                     onClick={() => setIsShowBuildParts(!isShowBuildParts)}>
                                     <div className="iq-bg-primary rounded p-2 pointer mr-3"><a /><img src="/images/small/08.png" alt="icon" className="img-fluid" /> Build Parts PC</div>
+                                </li>
+                                <li className="col-md-6 mb-3"
+                                    onClick={() => setOpenHashTag(!isOpenHashTag)}>
+                                    <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/09.png" alt="icon" className="img-fluid" /> HashTag</div>
                                 </li>
                             </ul>
                             <hr />

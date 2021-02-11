@@ -9,6 +9,7 @@ import { sharePostTimeLine } from './utils/sharePost';
 
 const BubbleEditor = lazy(() => import('../../editor/BubbleEditor'));
 const ImagePost = lazy(() => import('./ImagePost/ImagePost'));
+const HashTag = lazy(() => import('../hash-tag/HashTag'));
 
 Modal.setAppElement('#root');
 
@@ -116,6 +117,7 @@ const ShareModal = ({ auth: { user, isAuthenticated },
                         <div className="standalone-container">
                             <BubbleEditor readOnly={true} text={postShared.text} />
                         </div>
+                        {postShared.hashtag && <HashTag hashtag={postShared.hashtag} />}
                     </Suspense>
                     <hr />
                 </div>
@@ -144,6 +146,7 @@ const ShareModal = ({ auth: { user, isAuthenticated },
                     <div className="standalone-container">
                         <BubbleEditor readOnly={true} text={post.text} />
                     </div>
+                    {post.hashtag && <HashTag hashtag={post.hashtag} />}
                 </Suspense>
                 <hr />
             </div>

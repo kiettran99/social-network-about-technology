@@ -24,6 +24,14 @@ const postSchema = Schema({
         type: ObjectId,
         ref: 'BuildPart'
     },
+    hashtag: {
+        tags: [{
+            type: String
+        }],
+        rawText: {
+            type: String
+        }
+    },
     share: {
         postId: {
             type: ObjectId,

@@ -8,6 +8,8 @@ import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.bubble.css';
 import 'react-quill/dist/quill.core.css';
 import '@draft-js-plugins/mention/lib/plugin.css';
+import 'draft-js/dist/Draft.css';
+import '@draft-js-plugins/hashtag/lib/plugin.css';
 import './styles/styles.scss';
 
 import AppRoute from './routes/AppRoute';

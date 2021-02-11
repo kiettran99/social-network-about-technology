@@ -5,11 +5,8 @@ import React, {
 } from 'react';
 import './SimpleMentionEditor.css';
 
-import 'draft-js/dist/Draft.css';
 import Editor from '@draft-js-plugins/editor';
 import createMentionPlugin from '@draft-js-plugins/mention';
-import createResizeablePlugin from '@draft-js-plugins/resizeable';
-import createFocusPlugin from '@draft-js-plugins/focus';
 
 import editor from './editor';
 import FileMentionComponent from './FileMentionComponent';
@@ -29,10 +26,7 @@ const mentionPlugin = createMentionPlugin({
 });
 const { MentionSuggestions } = mentionPlugin;
 
-const focusPlugin = createFocusPlugin();
-const resizeablePlugin = createResizeablePlugin();
-
-const plugins = [mentionPlugin, focusPlugin, resizeablePlugin];
+const plugins = [mentionPlugin];
 
 const DraftJSEditor = ({ disabled, placeholder, editorState, setEditorState }) => {
 

@@ -117,9 +117,11 @@ const CommentsBar = ({ likePost, unlikePost,
                     </div>
                 </div>
             </div>
-            <div className="share-block d-flex align-items-center feather-icon mr-3">
-                <ShareModal />
-            </div>
+            {isAuthenticated && (
+                <div className="share-block d-flex align-items-center feather-icon mr-3">
+                    <ShareModal />
+                </div>
+            )}
         </div>
     );
 };
