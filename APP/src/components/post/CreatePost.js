@@ -3,12 +3,12 @@ import React, { lazy, Suspense, useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import { addPost } from '../../actions/post';
 import BuildParts from './build-parts/BuildParts';
+import { EditorState } from 'draft-js';
+import HashTagEditor from './editor/hash-tag-editor/HashTagEditor';
+import editor from './user-post-sub/editor/editor';
 
 const LoadImages = lazy(() => import('./load-images/LoadImages'));
-// import BubbleEditor from './editor/BubbleEditor';
-// import SnowEditor from './editor/SnowEditor';
 const BubbleEditor = lazy(() => import('./editor/BubbleEditor'));
-const SnowEditor = lazy(() => import('./editor/SnowEditor'));
 
 const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
 
@@ -25,8 +25,11 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
   });
 
   const [isShowBuildParts, setIsShowBuildParts] = useState(false);
+  const [isOpenHashTag, setOpenHashTag] = useState(false);
 
   const [disabledPost, setDisabledPost] = useState(true);
+
+  const [hashTagEditor, setHashTagEditor] = useState(EditorState.createEmpty());
 
   const { text, images, buildParts } = formData;
 
@@ -58,6 +61,12 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
       formData.append('buildParts', JSON.stringify(buildParts));
     }
 
+    // Add Hashtag
+    formData.append('hashtag', JSON.stringify({
+      tags: editor.convertHashTagToArray(hashTagEditor),
+      rawText: hashTagEditor.getCurrentContent().getPlainText()
+    }))
+
     addPost(formData);
 
     setFormData({
@@ -88,17 +97,6 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
     onSubmit(e);
   };
 
-  const editor = (type) => {
-
-    // Chose Editor based user or groups.
-
-    if (type && type.groupId) {
-      return <SnowEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />;
-    }
-
-    return <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />;
-  }
-
   return (
     <div id="post-modal-data" className="iq-card iq-card-block iq-card-stretch iq-card-height"  >
       <div className="iq-card-header d-flex justify-content-between">
@@ -123,7 +121,7 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
         <ul className="post-opt-block d-flex align-items-center list-inline m-0 p-0">
           <li className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/07.png" alt="icon" className="img-fluid" /> Photos</li>
           <li className=" iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/14.png" alt="icon" className="img-fluid" /> Build Parts PC</li>
-          {/* <li className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/09.png" alt="icon" className="img-fluid" /> Feeling/Activity</li>
+          <li className=" iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/09.png" alt="icon" className="img-fluid" /> Hashtag</li>
           <li className="iq-bg-primary rounded p-2 pointer">
             <div className="iq-card-header-toolbar d-flex align-items-center">
               <div className="dropdown">
@@ -131,15 +129,15 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                   <i className="ri-more-fill" />
                 </span>
                 <div className="dropdown-menu dropdown-menu-right" aria-labelledby="post-option" style={{}}>
-                  <a className="dropdown-item" href="index.html#">Check in</a>
+                  {/* <a className="dropdown-item" href="index.html#">Check in</a>
                   <a className="dropdown-item" href="index.html#">Live Video</a>
                   <a className="dropdown-item" href="index.html#">Gif</a>
                   <a className="dropdown-item" href="index.html#">Watch Party</a>
-                  <a className="dropdown-item" href="index.html#">Play with Friend</a>
+                  <a className="dropdown-item" href="index.html#">Play with Friend</a> */}
                 </div>
               </div>
             </div>
-          </li> */}
+          </li>
         </ul>
       </div>
       <div className="modal fade" id="post-modal" tabIndex={-1} role="dialog" aria-labelledby="post-modalLabel" aria-hidden="true" style={{ display: 'none' }}>
@@ -157,7 +155,7 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                 <form className="post-text ml-3 w-100" onSubmit={e => onSubmit(e)}>
                   <div className="standalone-container">
                     <Suspense fallback={<div>Loading...</div>}>
-                      {editor(type)}
+                      <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />
                     </Suspense>
                   </div>
                 </form>
@@ -176,6 +174,9 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                 </ul>
               </div>
               {isShowBuildParts && <BuildParts {...buildPartsProps} />}
+              {isOpenHashTag && <HashTagEditor placeholder=""
+                editorState={hashTagEditor} setEditorState={setHashTagEditor}
+                disable={disabledPost} />}
               <hr />
               <ul className="d-flex flex-wrap align-items-center list-inline m-0 p-0">
                 <li className="col-md-6 mb-3">
@@ -204,6 +205,10 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                 <li className="col-md-6 mb-3"
                   onClick={() => setIsShowBuildParts(!isShowBuildParts)}>
                   <div className="iq-bg-primary rounded p-2 pointer mr-3"><a /><img src="/images/small/14.png" alt="icon" className="img-fluid" /> Build Parts PC</div>
+                </li>
+                <li className="col-md-6 mb-3"
+                  onClick={() => setOpenHashTag(!isOpenHashTag)}>
+                  <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/09.png" alt="icon" className="img-fluid" /> HashTag</div>
                 </li>
                 {/* <li className="col-md-6 mb-3">
                   <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/09.png" alt="icon" className="img-fluid" /> Feeling/Activity</div>

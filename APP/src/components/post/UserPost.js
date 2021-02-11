@@ -14,8 +14,44 @@ const PostComments = lazy(() => import('./user-post-sub/PostComments'));
 const CommentForm = lazy(() => import('./user-post-sub/CommentForm'));
 const AttachPost = lazy(() => import('./AttachPost'));
 const BubbleEditor = lazy(() => import('./editor/BubbleEditor'));
+const HashTag = lazy(() => import('./user-post-sub/hash-tag/HashTag'));
 
-const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, comments, createdAt, lengthOfComments, user: userId, buildParts } }) => {
+const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, comments, createdAt, lengthOfComments,
+    user: userId, buildParts, share, hashtag }
+}) => {
+
+
+    const sharedPost = (share) => {
+        if (share.postId && share.postId.user) {
+            return (
+                <div className="container border-left border-right">
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <div className="user-post w-75 m-auto">
+                            <AttachPost imageUrls={share.postId.imageUrls} />
+                        </div>
+                        <hr />
+                        <div className="user-post-data container mt-2">
+                            <div className="d-flex flex-wrap">
+                                <div className="media-support-user-img mr-3">
+                                    <img className="avatar-60 rounded-circle" src={share.postId.avatar} alt="" />
+                                </div>
+                                <div className="media-support-info mt-2">
+                                    <h5 className="mb-0 d-inline-block"><Link to={`/profile/${share.postId.user}`}>{share.postId.name}&nbsp;</Link></h5>
+                                    <p className="mb-0 d-inline-block">Add New Post</p>
+                                    <p className="mb-0 text-primary">{dayjs(share.postId.createdAt).fromNow()}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="standalone-container">
+                            <BubbleEditor readOnly={true} text={share.postId.text} />
+                        </div>
+                    </Suspense>
+                    <hr />
+                </div>
+            )
+        }
+    };
+
     return (
         <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
             <div className="iq-card-body">
@@ -53,7 +89,8 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                                             userId,
                                             imageUrls,
                                             buildParts,
-                                            type
+                                            type,
+                                            hashtag
                                         }} />
                                         <Following postId={_id} />
                                         <DeletePost postId={_id} userId={userId} />
@@ -73,11 +110,15 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                             <PartsDescription buildParts={buildParts} />
                         </div>
                     )}
+                    {hashtag && <HashTag hashtag={hashtag} />}
                     <div className="user-post">
                         <AttachPost imageUrls={imageUrls} />
                     </div>
+                    {sharedPost(share)}
                     <div className="comment-area mt-3">
-                        <CommentsBar postId={_id} likes={likes} lengthOfComments={lengthOfComments} />
+                        <CommentsBar postId={_id} likes={likes}
+                            lengthOfComments={lengthOfComments}
+                            share={share} />
                         <hr />
                         <PostComments postId={_id} comments={comments} lengthOfComments={lengthOfComments} />
                         <CommentForm postId={_id} />

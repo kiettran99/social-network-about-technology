@@ -22,7 +22,7 @@
     "heroku": "^7.44.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.27.0",
-    "mongoose": "^5.9.28",
+    "mongoose": "^5.11.14",
     "multer": "^1.4.2",
     "nodemailer": "^6.4.16",
     "passport": "^0.4.1",

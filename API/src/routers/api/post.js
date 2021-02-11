@@ -46,11 +46,12 @@ router.get('/', async (req, res) => {
             comments: {
                 $slice: [0, 2]
             },
-            "comments.replies": {
-                $slice: [0, 1]
-            }
+            // "comments.replies": {
+            //     $slice: 1
+            // },
         }).sort({ createdAt: 'desc' })
             .limit(limit).skip(skip + offset).populate('type.group', 'name')
+            .populate('share.postId', '-share')
             .populate({
                 path: 'buildParts',
                 populate: {
@@ -97,10 +98,10 @@ router.get('/:id', async (req, res) => {
             comments: {
                 $slice: [0, 3]
             },
-            "comments.replies": {
-                $slice: [0, 1]
-            }
-        }).populate('type.group', 'name').populate({
+            // "comments.replies": {
+            //     $slice: 1
+            // }
+        }).populate('type.group', 'name').populate('share.postId', '-share').populate({
             path: 'buildParts',
             populate: {
                 path: 'hardwares.hardware'
@@ -140,9 +141,9 @@ router.get('/:id/comments/more', async (req, res) => {
             comments: {
                 $slice: [skip, limit],
             },
-            "comments.replies": {
-                $slice: [0, 1]
-            }
+            // "comments.replies": {
+            //     $slice: [0, 1]
+            // }
         });
 
         if (!post) {
@@ -186,9 +187,9 @@ router.get('/:post_id/comments/:comment_id/replies/more', async (req, res) => {
 
         // Find a post by Id and comments has comment'id
         const post = await Post.findOne({ _id: postId, 'comments._id': commentId }, {
-            "comments.replies": {
-                $slice: [skip, limit]
-            }
+            // "comments.replies": {
+            //     $slice: [skip, limit]
+            // }
         });
 
 
@@ -243,6 +244,14 @@ router.post('/', auth, upload.array('images'), [
             newPost.type.user = req.body.recipient;
         } else {
             newPost.type.user = req.user.id;
+        }
+
+        if (req.body.hashtag) {
+            const hashtag = JSON.parse(req.body.hashtag);
+            newPost.hashtag = {
+                tags: hashtag.tags,
+                rawText: hashtag.rawText
+            };
         }
 
         // Create a instance post and save it.
@@ -311,6 +320,15 @@ router.put('/:id', auth, upload.array('images'), [
 
         if (imageUrls) {
             post.imageUrls = JSON.parse(imageUrls);
+        }
+
+        if (req.body.hashtag) {
+            const hashtag = JSON.parse(req.body.hashtag);
+            
+            post.hashtag = {
+                tags: hashtag.tags,
+                rawText: hashtag.rawText
+            };
         }
 
         post.text = req.body.text;
@@ -914,6 +932,52 @@ router.put('/:post_id/comments/:comment_id/reply/unlike/:reply_id', auth, async 
 
         // Response to client
         res.json(reply.likes);
+    }
+    catch (e) {
+        console.log(e);
+
+        if (e.kind === 'ObjectId') {
+            return res.status(404).json({ msg: 'Post is not exists. ' });
+        }
+
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route PUT /api/posts/post_id/share
+// @desc Share a post (share to timeline)
+// @access private
+router.put('/:post_id/share', auth, async (req, res) => {
+    try {
+        // Get Id from routing parameters and find post.
+        const postId = req.params.post_id;
+
+        if (!postId) {
+            return res.status(400).json({ msg: 'Post\'\s ID is empty.' });
+        }
+
+        const post = await Post.findById(postId);
+
+        if (!post) {
+            return res.status(404).json({ msg: 'Post is not exists. ' });
+        }
+
+        // Create new post has user shared.
+
+        const newPost = new Post({
+            text: req.body.text || '<p></p>',
+            user: req.user.id,
+            name: req.user.fullname,
+            avatar: req.user.avatar,
+            type: {},
+            share: { postId }
+        });
+
+        post.share.users.unshift(req.user.id);
+
+        await Promise.all([newPost.save(), post.save()]);
+
+        res.json({ msg: 'The post has shared on timeline.' });
     }
     catch (e) {
         console.log(e);

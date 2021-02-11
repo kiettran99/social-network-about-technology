@@ -2,3 +2,13 @@
     font-family: inherit !important;
     font-size: inherit !important;
 }
+
+.quill a {
+    color: #343a40;
+    text-decoration: none !important;
+    font-weight: bolder;
+}
+
+.quill a:hover {
+    text-decoration: underline !important;
+}

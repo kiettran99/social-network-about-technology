@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import dayjs from '../../../utils/relativeDate';
 import { removeReplyComment, likeReplyComment, unlikeReplyComment } from '../../../actions/post';
+
+const BubbleEditor = lazy(() => import('../editor/BubbleEditor'));
 
 const ReplyItem = ({ reply: { _id, name, text, avatar, date, user: userComment, likes }, postId,
     commentId,
@@ -56,7 +58,11 @@ const ReplyItem = ({ reply: { _id, name, text, avatar, date, user: userComment, 
                 </div>
                 <div className="comment-data-block ml-3">
                     <h6>{name}</h6>
-                    <p className="mb-0">{text}</p>
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <div className="editor-text">
+                            <BubbleEditor readOnly={true} text={text} />
+                        </div>
+                    </Suspense>
                     <div className="d-flex flex-wrap align-items-center comment-activity">
                         <a className={`${isLiked ? 'text-primary' : 'text-muted'}`}
                             style={{ cursor: "pointer" }}
