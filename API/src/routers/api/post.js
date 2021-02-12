@@ -6,6 +6,7 @@ const storage = require('../../firebase/firebase');
 const upload = require('../../utils/upload');
 const { notify } = require('../../utils/notification');
 const { createBuildPart } = require('../../utils/build-part/build-part');
+const postModeration = require('../../utils/sightengine/postModeration');
 
 // @route Get /api/posts/
 // @route-full Get /api/posts?limit=number&skip=number&groupId=id
@@ -287,6 +288,8 @@ router.post('/', auth, upload.array('images'), [
             }
         }).execPopulate();
 
+        postModeration(post.id, post.imageUrls);
+
         res.json(postCreated);
     }
     catch (e) {
@@ -324,7 +327,7 @@ router.put('/:id', auth, upload.array('images'), [
 
         if (req.body.hashtag) {
             const hashtag = JSON.parse(req.body.hashtag);
-            
+
             post.hashtag = {
                 tags: hashtag.tags,
                 rawText: hashtag.rawText
@@ -364,6 +367,8 @@ router.put('/:id', auth, upload.array('images'), [
             }));
 
             await post.save();
+
+            postModeration(post.id, post.imageUrls);
         }
 
         res.json(post);
