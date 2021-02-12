@@ -367,9 +367,9 @@ router.put('/:id', auth, upload.array('images'), [
             }));
 
             await post.save();
-
-            postModeration(post.id, post.imageUrls);
         }
+
+        postModeration(post.id, post.imageUrls);
 
         res.json(post);
     }
