@@ -9,17 +9,15 @@ const postModeration = async (postId, images) => {
     }
 
     try {
-        const detections = await images.reduce(async (moderation, image) => {
+        const moderations = [];
 
-            // Call API to Analysis image.
+        for (const image of images) {
             const result = await nudityModeration(image);
-            moderation.push(nudityDetect(result));
-
-            return moderation;
-        }, []);
+            moderations.push(nudityDetect(result));
+        }
 
         // Check true if array of boolean all true.
-        const checker = detections.every(Boolean);
+        const checker = hasTrueInArray(moderations);
 
         // if true pass, fasle looked this post.
         if (checker) {
@@ -32,6 +30,13 @@ const postModeration = async (postId, images) => {
         console.log(e);
     }
 };
+
+const hasTrueInArray = (arr) => {
+    for (const element of arr) {
+        if (element) return true;
+    }
+    return false;
+}
 
 const nudityDetect = (result) => {
     if (result) {
