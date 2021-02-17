@@ -12,6 +12,7 @@ const notificationRouter = require('./routers/api/notification');
 const friendRouter = require('./routers/api/friend');
 const hardwareRouter = require('./routers/api/hardware');
 const buildPartRouter = require('./routers/api/build-part');
+const photosRouter = require('./routers/api/photos');
 
 const notFoundRouter = require('./routers/not-found/not-found');
 
@@ -45,6 +46,7 @@ app.use(socicalRouter);
 app.use(socicalRouterGG);
 app.use('/api/hardwares', hardwareRouter);
 app.use('/api/build-parts', buildPartRouter);
+app.use('/api/photos', photosRouter);
 
 //The 404 Route (ALWAYS Keep this as the last route)
 app.use('*', notFoundRouter);
