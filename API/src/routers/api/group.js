@@ -56,7 +56,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// @route POST /api/groups/:id
+// @route POST /api/groups
 // @desc Create a group.
 // @access private Admin
 router.post('/', authByRole('admin'), upload.single('avatar'), [

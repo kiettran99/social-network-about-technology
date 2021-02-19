@@ -1,6 +1,6 @@
 import {
     GET_GROUPS, GET_GROUP, GROUP_ERROR, CLEAR_GROUP,
-    GET_MORE_GROUPS, JOIN_GROUP, UNJOIN_GROUP
+    GET_MORE_GROUPS, JOIN_GROUP, UNJOIN_GROUP, ADD_GROUP
 } from '../actions/types';
 
 const initState = {
@@ -68,6 +68,12 @@ export default function (state = initState, action) {
                     return group;
                 })
             };
+        case ADD_GROUP:
+            return {
+                ...state,
+                loading: false,
+                groups: [payload, ...state.groups]
+            }
         case GROUP_ERROR:
             return {
                 ...state,

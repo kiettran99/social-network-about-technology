@@ -11,7 +11,7 @@ const GroupList = ({ group: { groups, loading }, getGroups }) => {
     }, []);
 
     return (
-        <div className="row">
+        <div className="row" id="groupList">
             {!loading && groups.map(group => (
                <GroupsItem group={group} key={group._id} /> 
             ))}
