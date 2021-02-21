@@ -12,7 +12,7 @@ const Footer = () => {
                 </ul>
               </div>
               <div className="col-lg-6 text-right">
-                Copyright 2020 <a href="index.html#">SocialV</a> All Rights Reserved.
+                Copyright 2021 <a href="index.html#">SocialV</a> All Rights Reserved.
               </div>
             </div>
           </div>

@@ -22,9 +22,9 @@ const SideBar = () => {
                         <li>
                             <Link to="/groups" className="iq-waves-effect"><i className="las la-users" /><span>Group</span></Link>
                         </li>
-                        {/* <li>
-                            <a href="profile-images.html" className="iq-waves-effect"><i className="las la-image" /><span>Profile Image</span></a>
-                        </li> */}
+                        <li>
+                            <Link to="/photos" className="iq-waves-effect"><i className="las la-image" /><span>Photos</span></Link>
+                        </li>
                         {/* <li>
                             <a href="profile-video.html" className="iq-waves-effect"><i className="las la-video" /><span>Profile Video</span></a>
                         </li>

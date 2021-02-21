@@ -8,7 +8,7 @@ const auth = require('../../middleware/auth');
 const { registerGroupNotification, unregisterGroupNotification } = require('../../utils/notification');
 
 // @route GET /api/groups
-// @rotue full GET /api/groups?limt=number&skip=number
+// @rotue full GET /api/groups?limt=number&skip=number&name=string
 // @desc Get All groups
 // @access public
 router.get('/', async (req, res) => {
@@ -16,7 +16,17 @@ router.get('/', async (req, res) => {
         const limit = parseInt(req.query.limit) || 5;
         const skip = parseInt(req.query.skip) || 0;
 
-        const groups = await Group.find({}, {
+        
+        // Get name to search
+        const name = req.query.name;
+
+        const conditions = {};
+
+        if (name) {
+            conditions.name = { '$regex': name, $options: 'i' };
+        }
+
+        const groups = await Group.find(conditions, {
             members: {
                 $slice: [0, 6]
             }
@@ -56,7 +66,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// @route POST /api/groups/:id
+// @route POST /api/groups
 // @desc Create a group.
 // @access private Admin
 router.post('/', authByRole('admin'), upload.single('avatar'), [

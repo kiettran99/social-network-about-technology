@@ -23,7 +23,7 @@ const GroupProfile = ({ group: { _id, name, avatar, lengthOfMembers, members = [
                             </Link>
                         ))}
                     </div>
-                    {/* <button type="submit" className="btn btn-primary mb-2"><i className="ri-add-line" />Invite</button> */}
+                    <button type="submit" className="btn btn-primary mb-2"><i className="ri-add-line" />Invite</button>
                 </div>
             </div>
         </div>

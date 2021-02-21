@@ -1,6 +1,7 @@
 import React from 'react';
 import GroupList from './GroupList';
 import HeaderBackground from './header/HeaderBackground';
+import CreateGroup from './create-group/CreateGroup';
 
 const Groups = () => {
     return (
@@ -9,6 +10,7 @@ const Groups = () => {
             {/* Page Content  */}
             <div id="content-page" className="content-page">
                 <div className="container">
+                    <CreateGroup />
                     <GroupList />
                 </div>
             </div>

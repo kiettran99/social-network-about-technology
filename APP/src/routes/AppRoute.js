@@ -37,6 +37,7 @@ const FriendsList = lazy(() => import('../components/friends/FriendsList'));
 const Notification = lazy(() => import('../components/notification/Notification'));
 const NotFoundPage = lazy(() => import('../components/not-found-page/NotFoundPage'));
 const SearchPage = lazy(() => import('../components/search/Search'));
+const Photos = lazy(() => import('../components/photos/Photos'));
 
 const MainComponent = () => {
     return (
@@ -55,6 +56,7 @@ const MainComponent = () => {
                         <Route exact path="/friend-list" component={FriendsList} />
                         <Route exact path="/notification" component={Notification} />
                         <Route exact path="/search" component={SearchPage} />
+                        <Route exact path="/photos" component={Photos} />
                         <PrivateRoute exact path="/profile/edit" component={EditProfile} />
                         <Route exact path="/profile/:id" component={Profile} />
                         <Route component={NotFoundPage} />
