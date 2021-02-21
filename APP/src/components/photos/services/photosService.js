@@ -11,3 +11,14 @@ export const getPhotos = async () => {
         console.log(e);
     }
 };
+
+export const getPhotosByUserId = async (userId) => {
+    try {
+        const res = await axios.get(`${urlAPI}/api/photos/${userId}`);
+
+        return res.data;
+    }
+    catch (e) {
+        console.log(e);
+    }
+};

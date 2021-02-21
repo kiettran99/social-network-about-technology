@@ -1,10 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { connect, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import DialogBox from '../../shared/DialogBox';
 import Core from './core/Core';
+import { getGroups } from '../../../actions/group';
 
-const CreateGroup = () => {
+const CreateGroup = ({ getGroups }) => {
 
     const [modalIsOpen, setIsOpen] = useState(false);
+
+    const auth = useSelector((state) => ({
+        isAuthenticated: state.auth.isAuthenticated
+    }));
+
+    const group = useSelector((state) => ({
+        name: state.group.name
+    }));
+
+    const nameRef = useRef();
 
     const closeModal = () => {
         setIsOpen(false);
@@ -13,6 +27,13 @@ const CreateGroup = () => {
     const openModal = () => {
         setIsOpen(true);
     }
+
+    // Handle submit form to search group
+    const onSubmit = (e) => {
+        e.preventDefault();
+
+        getGroups(0, 5, nameRef.current.value);
+    };
 
     return (
         <>
@@ -28,9 +49,10 @@ const CreateGroup = () => {
                             <ul className="list-inline p-0 m-0">
                                 <li className="mb-3 pb-3 border-bottom">
                                     <div className="iq-search-bar members-search p-0">
-                                        <form action="group-detail.html#" className="searchbox w-auto">
-                                            <input type="text" className="text search-input bg-grey" placeholder="Type here to search..." />
-                                            <a className="search-link" href="group-detail.html#"><i className="ri-search-line" /></a>
+                                        <form onSubmit={onSubmit} className="searchbox w-auto">
+                                            <input type="text" className="text search-input bg-grey" placeholder="Type here to search..."
+                                                ref={nameRef} value={group.name} />
+                                            <a className="search-link" type="submit"><i className="ri-search-line" /></a>
                                         </form>
                                     </div>
                                 </li>
@@ -42,12 +64,14 @@ const CreateGroup = () => {
                                     <div className="avatar-40 rounded-circle bg-grey text-center mr-3"><i className="ri-compass-3-line font-size-20" /></div>
                                     <h6 className="mb-0">Discover</h6>
                                 </li>
-                                <li>
-                                    <button className="btn btn-primary d-block w-100"
-                                        onClick={() => openModal()}>
-                                        <i className="ri-add-line pr-2" />Create New Group
-                                    </button>
-                                </li>
+                                {auth.isAuthenticated && (
+                                    <li>
+                                        <button className="btn btn-primary d-block w-100"
+                                            onClick={() => openModal()}>
+                                            <i className="ri-add-line pr-2" />Create New Group
+                                        </button>
+                                    </li>
+                                )}
                             </ul>
                         </div>
                     </div>
@@ -82,4 +106,4 @@ const CreateGroup = () => {
     );
 };
 
-export default CreateGroup;
+export default connect(null, { getGroups })(CreateGroup);

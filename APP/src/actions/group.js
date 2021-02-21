@@ -1,14 +1,18 @@
-import { GET_GROUPS, GET_GROUP, GROUP_ERROR, CLEAR_GROUP, JOIN_GROUP, UNJOIN_GROUP, ADD_GROUP } from './types';
+import {
+    GET_GROUPS, GET_GROUP, GROUP_ERROR, CLEAR_GROUP, JOIN_GROUP, UNJOIN_GROUP,
+    ADD_GROUP, RESET_GROUP
+} from './types';
 import axios from 'axios';
 import urlAPI from '../utils/urlAPI';
 
-export const getGroups = (skip = 0, limit = 5) => async dispatch => {
+export const getGroups = (skip = 0, limit = 5, name = '') => async dispatch => {
     try {
-        const res = await axios.get(`${urlAPI}/api/groups?skip=${skip}&limit=${limit}`);
+        const res = await axios.get(`${urlAPI}/api/groups?skip=${skip}&limit=${limit}&name=${name}`);
 
         dispatch({
             type: GET_GROUPS,
-            payload: res.data
+            payload: res.data,
+            name
         });
     }
     catch (e) {
@@ -19,6 +23,12 @@ export const getGroups = (skip = 0, limit = 5) => async dispatch => {
             payload: { msg: e.response.data, status: e.response.statusText }
         })
     }
+};
+
+export const resetGroups = () => dispatch => {
+    dispatch({
+        type: RESET_GROUP
+    });
 };
 
 export const getGroup = (id, history) => async dispatch => {

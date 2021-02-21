@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getFriendsById } from '../../../actions/friend';
 
@@ -8,9 +8,19 @@ const FriendProfile = ({ match, getFriendsById,
     friend: { friends }
 }) => {
 
+    const auth = useSelector((state) => ({
+        isAuthenticated: state.auth.isAuthenticated,
+        user: state.auth.user
+    }));
+
     useEffect(() => {
         getFriendsById(match.params.id);
     }, [match, getFriendsById]);
+
+    const editFriends = useMemo(() => {
+        return match && auth && auth.user && auth.isAuthenticated
+            && auth.user._id === match.params.id;
+    }, [match, auth]);
 
     return (
         <div className="iq-card">
@@ -18,9 +28,13 @@ const FriendProfile = ({ match, getFriendsById,
                 <div className="iq-header-title">
                     <h4 className="card-title">Friends</h4>
                 </div>
-                <div className="iq-card-header-toolbar d-flex align-items-center">
-                    {/* <p className="m-0"><a href="javacsript:void();">Add New </a></p> */}
-                </div>
+                {editFriends && (
+                    <div className="iq-card-header-toolbar d-flex align-items-center">
+                        <Link to='/friend-list' data-toggle="tooltip" title="Edit Photos">
+                            <i className="ri-edit-2-fill" />
+                        </Link>
+                    </div>
+                )}
             </div>
             <div className="iq-card-body">
                 <ul className="profile-img-gallary d-flex flex-wrap p-0 m-0">

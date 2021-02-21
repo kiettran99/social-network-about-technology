@@ -1,13 +1,14 @@
 import {
     GET_GROUPS, GET_GROUP, GROUP_ERROR, CLEAR_GROUP,
-    GET_MORE_GROUPS, JOIN_GROUP, UNJOIN_GROUP, ADD_GROUP
+    GET_MORE_GROUPS, JOIN_GROUP, UNJOIN_GROUP, ADD_GROUP, RESET_GROUP
 } from '../actions/types';
 
 const initState = {
     groups: [],
     group: null,
     loading: false,
-    errors: {}
+    errors: {},
+    search: ''
 };
 
 export default function (state = initState, action) {
@@ -18,7 +19,8 @@ export default function (state = initState, action) {
             return {
                 ...state,
                 groups: payload,
-                loading: false
+                loading: false,
+                search: action.name
             };
         case GET_MORE_GROUPS:
             return {
@@ -80,6 +82,8 @@ export default function (state = initState, action) {
                 loading: false,
                 errors: payload
             };
+        case RESET_GROUP:
+            return initState;
         default:
             return state;
     }

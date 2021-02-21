@@ -1,13 +1,18 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getGroups } from '../../actions/group';
+import { getGroups, resetGroups  } from '../../actions/group';
 import GroupsItem from './GroupsItem';
 
-const GroupList = ({ group: { groups, loading }, getGroups }) => {
+const GroupList = ({ group: { groups, loading }, getGroups, resetGroups }) => {
 
     useEffect(() => {
         getGroups();
+
+        // Clean up reducers
+        return () => {
+            resetGroups();
+        }
     }, []);
 
     return (
@@ -28,4 +33,4 @@ const mapStateToProps = (state) => ({
     group: state.group
 });
 
-export default connect(mapStateToProps, { getGroups })(GroupList);
+export default connect(mapStateToProps, { getGroups, resetGroups })(GroupList);
