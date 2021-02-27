@@ -36,7 +36,7 @@ const Review = ({ review: { _id, wallpaper, post, createdAt, descriptions } }) =
                                             <img className="img-fluid rounded-circle" src="images/icon/07.png" alt="" />
                                         </a>
                                     </div>
-                                    <div className="comment"><i className="ri-chat-3-line mr-2" />7 comments</div>
+                                    <div className="comment"><i className="ri-chat-3-line mr-2" />{post && post.lengthOfComments} comments</div>
                                 </div>
                             </div>
                         </div>
