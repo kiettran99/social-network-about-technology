@@ -30,7 +30,7 @@ const FriendProfile = ({ match, getFriendsById,
                 </div>
                 {editFriends && (
                     <div className="iq-card-header-toolbar d-flex align-items-center">
-                        <Link to='/friend-list' data-toggle="tooltip" title="Edit Photos">
+                        <Link to='/friend-list' data-toggle="tooltip" title="Edit Friends">
                             <i className="ri-edit-2-fill" />
                         </Link>
                     </div>

@@ -15,7 +15,6 @@ router.get('/', async (req, res) => {
     try {
         const limit = parseInt(req.query.limit) || 5;
         const skip = parseInt(req.query.skip) || 0;
-
         
         // Get name to search
         const name = req.query.name;

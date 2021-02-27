@@ -44,7 +44,7 @@ const DraftJSEditor = ({ disabled, placeholder, editorState, setEditorState }) =
     }, []);
 
     return (
-        <div className="form-control rounded editor p-0 pl-2"
+        <div className="editor rounded w-100 p-0 pl-2"
             onClick={() => ref.current.focus()}>
             <Editor
                 editorState={editorState}

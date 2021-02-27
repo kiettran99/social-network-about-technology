@@ -11,17 +11,6 @@ import SideBar from '../components/layout/SideBar';
 import Login from '../components/auth/Login';
 import Register from '../components/auth/Register';
 
-// import NotFoundPage from '../components/not-found-page/NotFoundPage';
-
-// import Home from '../components/home/Home'
-// import Groups from '../components/groups/Groups';
-// import GroupPage from '../components/groups/GroupPage';
-// import Profile from '../components/profiles/Profile';
-// import EditProfile from '../components/profiles/EditProfile';
-// import PostDetail from '../components/post/PostDetail';
-// import FriendRequest from '../components/friends/FriendRequest';
-// import FriendsList from '../components/friends/FriendsList';
-// import Notification from '../components/notification/Notification';
 import ForgotPassword from '../components/auth/ForgotPassword';
 import ResetPassword from '../components/auth/ResetPassword';
 import Loading from '../components/layout/Loading';
@@ -38,6 +27,8 @@ const Notification = lazy(() => import('../components/notification/Notification'
 const NotFoundPage = lazy(() => import('../components/not-found-page/NotFoundPage'));
 const SearchPage = lazy(() => import('../components/search/Search'));
 const Photos = lazy(() => import('../components/photos/Photos'));
+const Reviews = lazy(() => import('../components/reviews/Reivews'));
+const ReviewDetail = lazy(() =>  import('../components/reviews/ReviewDetail'));
 
 const MainComponent = () => {
     return (
@@ -57,6 +48,8 @@ const MainComponent = () => {
                         <Route exact path="/notification" component={Notification} />
                         <Route exact path="/search" component={SearchPage} />
                         <Route exact path="/photos" component={Photos} />
+                        <Route exact path="/reviews" component={Reviews} />
+                        <Route exact path="/reviews/:id" component={ReviewDetail} />
                         <PrivateRoute exact path="/profile/edit" component={EditProfile} />
                         <Route exact path="/profile/:id" component={Profile} />
                         <Route component={NotFoundPage} />

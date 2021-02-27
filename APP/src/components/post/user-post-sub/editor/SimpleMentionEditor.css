@@ -1,24 +1,2 @@
-.editor {
-    /* box-sizing: border-box;
-    border: 1px solid #ddd;
-    cursor: text;
-    padding: 16px;
-    border-radius: 2px;
-    margin-bottom: 2em;
-    box-shadow: inset 0px 1px 8px -3px #ABABAB;
-    background: #fefefe; */
-    overflow: hidden;
-  }
-
-  .editor:hover {
-    overflow: auto;
-    width: 100%;
-  }
-  
-  .editor :global(.public-DraftEditor-content) {
-    min-height: 140px;
-  }
-
-  .editor-text .ql-editor {
-    padding-left: 0px !important;
-  }
+.editor {line-height: 45px;background: transparent;border: 1px solid var(--iq-border-light);font-size: 14px;color: var(--iq-secondary);border-radius: 10px;}
+.editor:focus { color: var(--iq-dark); border-color: var(--iq-primary); box-shadow: none; }
