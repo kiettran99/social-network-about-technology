@@ -82,6 +82,10 @@ const postSchema = Schema({
             type: ObjectId,
             ref: 'User'
         },
+        review: {
+            type: ObjectId,
+            ref: 'Review'
+        },
         default: {}
     },
     comments: [{

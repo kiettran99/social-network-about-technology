@@ -204,7 +204,7 @@ const NavBar = ({ auth: { isAuthenticated, user, loading },
   return (
     <>
       <LoadingBar color='#07689f' ref={ref} />
-      <div className="iq-top-navbar" style={{ zIndex: '2' }}>
+      <div className="iq-top-navbar" style={{ zIndex: '10' }}>
         <div className="iq-navbar-custom">
           <nav className="navbar navbar-expand-lg navbar-light p-0">
             <div className="iq-navbar-logo d-flex justify-content-between">

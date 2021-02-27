@@ -23,15 +23,6 @@ const ReplyItem = ({ reply: { _id, name, text, avatar, date, user: userComment, 
         }
     }, [isAuthenticated, likes]);
 
-    useEffect(() => {
-        if (isAuthenticated) {
-            setIsLiked(likes.filter(like => like.user === user._id).length > 0);
-        }
-        else {
-            setIsLiked(false);
-        }
-    }, [isAuthenticated, likes]);
-
     const onRemoveComment = () => {
         if (window.confirm('Are you sure? This can NOT be undone !')) {
             removeReplyComment(postId, commentId, _id);

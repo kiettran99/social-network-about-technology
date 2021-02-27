@@ -105,3 +105,10 @@ export const LOADING_BUILD_PARTS = 'LOADING_BUILD_PARTS';
 export const SEARCH_USERS = 'SEARCH_USERS';
 export const SEARCH_LOADING = 'SEARCH_LOADING';
 export const ERROR_SEARCH = 'ERROR_SEARCH';
+
+// Reviews
+export const GET_REVIEWS = 'GET_REVIEWS';
+export const GET_REVIEW = 'GET_REVIEW';
+export const REVIEW_ERROR = 'REVIEW_ERROR';
+export const ADD_REVIEW = 'ADD_REVIEW';
+export const RESET_REVIEW = 'RESET_REVIEW';

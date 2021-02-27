@@ -10,6 +10,7 @@ import friend from './friend';
 import hardware from './hardware';
 import buildParts from './build-parts';
 import search from './search';
+import review from './review';
 
 export default combineReducers({
     alert,
@@ -22,5 +23,6 @@ export default combineReducers({
     friend,
     hardware,
     buildParts,
-    search
+    search,
+    review
 });
