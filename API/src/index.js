@@ -14,6 +14,7 @@ const hardwareRouter = require('./routers/api/hardware');
 const buildPartRouter = require('./routers/api/build-part');
 const photosRouter = require('./routers/api/photos');
 const reviewsRouter = require('./routers/api/reviews');
+const faqRouter = require('./routers/api/faq');
 
 const notFoundRouter = require('./routers/not-found/not-found');
 

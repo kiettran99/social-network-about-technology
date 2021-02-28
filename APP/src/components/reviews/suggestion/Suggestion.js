@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-const Suggestion = () => {
-    return (
+import dayjs from '../../../utils/relativeDate';
+import { getReviews } from '../../../actions/review';
+
+const Suggestion = ({ review: { reviews, loading }, getReviews }) => {
+
+    useEffect(() => {
+        getReviews();
+    }, []);
+
+    return !loading && (
         <div className="col-lg-4">
             <div className="iq-card iq-card-block iq-card-stretch iq-card-height blog-post">
                 <div className="iq-card-header d-flex justify-content-between">
@@ -11,96 +21,27 @@ const Suggestion = () => {
                 </div>
                 <div className="iq-card-body">
                     <ul className="list-inline p-0 mb-0 mt-2">
-                        <li className="mb-3">
-                            <div className="d-flex align-items-top pb-3 border-bottom">
-                                <div className="col-md-5">
-                                    <div className="image-block">
-                                        <img src="images/blog/03.jpg" className="img-fluid rounded w-100" alt="blog-img" />
+                        {reviews && reviews.length > 0 &&
+                            reviews.map(review => (
+                                <li key={review._id} className="mb-3">
+                                    <div className="d-flex align-items-top pb-3 border-bottom">
+                                        <div className="col-md-5">
+                                            <div className="image-block">
+                                                <img src={review.wallpaper} className="img-fluid rounded w-100" alt="blog-img" />
+                                            </div>
+                                        </div>
+                                        <div className="col-md-7">
+                                            <div className="blog-description pl-2">
+                                                <div className="date mb-1"><span className="text-primary" tabIndex={-1}>{dayjs(review.createdAt).fromNow()}</span></div>
+                                                <h6 className="mb-2">{review.post.text}</h6>
+                                                <Link to={`/reviews/${review._id}`} className="mb-2">
+                                                    View detail <i className="ri-arrow-right-s-line" />
+                                                </Link>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="col-md-7">
-                                    <div className="blog-description pl-2">
-                                        <div className="date mb-1"><a href="blog-detail.html#" tabIndex={-1}>4 Weeks ago</a></div>
-                                        <h6 className="mb-2">All the Lorem Ipsum generators</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li className="mb-3">
-                            <div className="d-flex align-items-top pb-3 border-bottom">
-                                <div className="col-md-5">
-                                    <div className="image-block">
-                                        <img src="images/blog/04.jpg" className="img-fluid rounded w-100" alt="blog-img" />
-                                    </div>
-                                </div>
-                                <div className="col-md-7">
-                                    <div className="blog-description pl-2">
-                                        <div className="date mb-1"><a href="blog-detail.html#" tabIndex={-1}>3 Weeks ago</a></div>
-                                        <h6 className="mb-2">All the Lorem Ipsum generators</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li className="mb-3">
-                            <div className="d-flex align-items-top pb-3 border-bottom">
-                                <div className="col-md-5">
-                                    <div className="image-block">
-                                        <img src="images/blog/05.jpg" className="img-fluid rounded w-100" alt="blog-img" />
-                                    </div>
-                                </div>
-                                <div className="col-md-7">
-                                    <div className="blog-description pl-2">
-                                        <div className="date mb-1"><a href="blog-detail.html#" tabIndex={-1}>2 Weeks ago</a></div>
-                                        <h6 className="mb-2">All the Lorem Ipsum generators</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li className="mb-3">
-                            <div className="d-flex align-items-top pb-3 border-bottom">
-                                <div className="col-md-5">
-                                    <div className="image-block">
-                                        <img src="images/blog/06.jpg" className="img-fluid rounded w-100" alt="blog-img" />
-                                    </div>
-                                </div>
-                                <div className="col-md-7">
-                                    <div className="blog-description pl-2">
-                                        <div className="date mb-1"><a href="blog-detail.html#" tabIndex={-1}>1 Week ago</a></div>
-                                        <h6 className="mb-2">All the Lorem Ipsum generators</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li className="mb-3">
-                            <div className="d-flex align-items-top pb-3 border-bottom">
-                                <div className="col-md-5">
-                                    <div className="image-block">
-                                        <img src="images/blog/07.jpg" className="img-fluid rounded w-100" alt="blog-img" />
-                                    </div>
-                                </div>
-                                <div className="col-md-7">
-                                    <div className="blog-description pl-2">
-                                        <div className="date mb-1"><a href="blog-detail.html#" tabIndex={-1}>3 days ago</a></div>
-                                        <h6 className="mb-2">All the Lorem Ipsum generators</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div className="d-flex align-items-top">
-                                <div className="col-md-5">
-                                    <div className="image-block">
-                                        <img src="images/blog/08.jpg" className="img-fluid rounded w-100" alt="blog-img" />
-                                    </div>
-                                </div>
-                                <div className="col-md-7">
-                                    <div className="blog-description pl-2">
-                                        <div className="date mb-1"><a href="blog-detail.html#" tabIndex={-1}>2 Days ago</a></div>
-                                        <h6 className="mb-2">All the Lorem Ipsum generators</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
+                                </li>
+                            ))}
                     </ul>
                 </div>
             </div>
@@ -108,4 +49,8 @@ const Suggestion = () => {
     );
 };
 
-export default Suggestion;
+const mapStateToProps = (state) => ({
+    review: state.review
+});
+
+export default connect(mapStateToProps, { getReviews })(Suggestion);
