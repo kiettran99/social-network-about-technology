@@ -37,6 +37,9 @@ const SideBar = () => {
                         <li>
                             <Link to="/reviews" className="iq-waves-effect"><i className="lab la-blogger"></i><span>Reviews</span></Link>
                         </li>
+                        <li>
+                            <Link to="/faq" className="iq-waves-effect"><i className="las la-question-circle"></i><span>FAQ</span></Link>
+                        </li>
                         {/* <li>
                             <a href="file.html" className="iq-waves-effect"><i className="las la-file" /><span>Files</span></a>
                         </li>

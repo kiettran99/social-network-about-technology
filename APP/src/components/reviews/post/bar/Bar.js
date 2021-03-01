@@ -85,7 +85,7 @@ const Bar = ({ createdAt, postId, likePost, unlikePost }) => {
             <div className="iq-card-post-toolbar">
                 <div className="dropdown">
                     <span className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                        <i class="ri-more-fill"></i>
+                        <i className="ri-more-fill"></i>
                     </span>
                     <div className="dropdown-menu m-0 p-0">
                         <a className="dropdown-item p-3" href="group-detail.html#">

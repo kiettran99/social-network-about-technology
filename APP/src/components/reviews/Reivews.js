@@ -41,7 +41,7 @@ const Reviews = ({ getReviews, resetReview }) => {
                             <div className="iq-card position-relative inner-page-bg bg-primary" style={{ height: "150px" }}>
                                 <div className="inner-page-title">
                                     <h3 className="text-white">Review Pages</h3>
-                                    <p className="text-white">Share your thoughts with other customers by submitting a customer review. You can submit product feedback by selecting a star rating.
+                                    <p className="text-white">Share your thoughts with everyone by submitting a review.
                                  You can always add text, photos or videos to your review at any time.</p>
                                 </div>
                             </div>

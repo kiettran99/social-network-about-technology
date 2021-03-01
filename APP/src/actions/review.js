@@ -29,9 +29,9 @@ export const addReview = (formData, callback) => async dispatch => {
     }
 };
 
-export const getReviews = () => async dispatch => {
+export const getReviews = (skip = 0, limit = 5) => async dispatch => {
     try {
-        const res = await axios.get(`${urlAPI}/api/reviews`);
+        const res = await axios.get(`${urlAPI}/api/reviews?limit=${limit}&skip=${skip}`);
 
         dispatch({
             type: GET_REVIEWS,

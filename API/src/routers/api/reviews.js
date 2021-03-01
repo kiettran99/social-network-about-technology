@@ -15,7 +15,8 @@ router.get('/', async (req, res) => {
         const limit = parseInt(req.query.limit) || 5;
         const skip = parseInt(req.query.skip) || 0;
 
-        const reviews = await Review.find({}).limit(limit).skip(skip).populate('post');
+        const reviews = await Review.find({}).limit(limit).skip(skip)
+            .sort({ createdAt: 'desc' }).populate('post');
 
         res.json(reviews);
     }
