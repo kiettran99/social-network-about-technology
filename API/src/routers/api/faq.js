@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { body, validationResult } = require('express-validator');
 const authByRole = require('../../middleware/auth-by-role');
-const Faq = require('../../models/Faq');
+const Faq = require('../../models/faq');
 
 // @route Get api/faq
 // @desc Get list faq
