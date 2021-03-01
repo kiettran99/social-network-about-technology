@@ -156,7 +156,8 @@ const ShareModal = ({ auth: { user, isAuthenticated },
     return (
         <>
             <a onClick={() => openModal()}><i className="ri-share-line" />
-                <span className="ml-1">Share this post</span></a>
+                <span className="ml-1">Share this post</span>
+            </a>
             <Modal style={customStyles}
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}>

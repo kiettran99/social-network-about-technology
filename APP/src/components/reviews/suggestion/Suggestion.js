@@ -16,7 +16,7 @@ const Suggestion = ({ review: { reviews, loading }, getReviews }) => {
             <div className="iq-card iq-card-block iq-card-stretch iq-card-height blog-post">
                 <div className="iq-card-header d-flex justify-content-between">
                     <div className="header-title">
-                        <h4 className="iq-card-title">New Post</h4>
+                        <h4 className="iq-card-title">Other Reviews</h4>
                     </div>
                 </div>
                 <div className="iq-card-body">

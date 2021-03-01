@@ -50,6 +50,7 @@ app.use('/api/hardwares', hardwareRouter);
 app.use('/api/build-parts', buildPartRouter);
 app.use('/api/photos', photosRouter);
 app.use('/api/reviews', reviewsRouter);
+app.use('/api/faq', faqRouter);
 
 //The 404 Route (ALWAYS Keep this as the last route)
 app.use('*', notFoundRouter);

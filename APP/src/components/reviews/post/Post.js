@@ -14,12 +14,16 @@ const Post = ({ review }) => {
                         <img src={review.wallpaper} className="img-fluid rounded w-100" alt="blog-img" />
                     </div>
                     <div className="blog-description mt-3">
-                        <h5 className="mb-3 pb-3 border-bottom">{review.post.text}</h5>
+                        <h4 className="mb-3 pb-3 border-bottom">{review.post.text}</h4>
                         <Bar createdAt={dayjs(review.createdAt).fromNow()} postId={review.post._id} />
+
+                        <h5 className="font-italic pb-3">General information</h5>
                         <p>{review.descriptions.general}</p>
                         {isShowMore ? (
                             <>
+                                <h5 className="font-italic pb-3">Favorite information</h5>
                                 <p>{review.descriptions.favorite}</p>
+                                <h5 className="font-italic pb-3">What don't like ?</h5>
                                 <p>{review.descriptions.restrict}</p>
                                 <a className="text-primary button"
                                     onClick={() => setShowMore(false)}
