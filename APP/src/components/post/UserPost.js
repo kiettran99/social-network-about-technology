@@ -8,6 +8,7 @@ const DeletePost = lazy(() => import('./user-post-sub/DeletePost'));
 const EditPost = lazy(() => import('./user-post-sub/EditPost'));
 const Following = lazy(() => import('./user-post-sub/Following'));
 const HidePost = lazy(() => import('./user-post-sub/HidePost'));
+const ReportPost = lazy(() => import('./user-post-sub/ReportPost'));
 
 const CommentsBar = lazy(() => import('./user-post-sub/CommentsBar'));
 const PostComments = lazy(() => import('./user-post-sub/PostComments'));
@@ -17,10 +18,8 @@ const BubbleEditor = lazy(() => import('./editor/BubbleEditor'));
 const HashTag = lazy(() => import('./user-post-sub/hash-tag/HashTag'));
 
 const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, comments, createdAt, lengthOfComments,
-    user: userId, buildParts, share, hashtag }
+    user: userId, buildParts, share, hashtag, tags }
 }) => {
-
-
     const sharedPost = (share) => {
         if (share.postId && share.postId.user) {
             return (
@@ -90,9 +89,11 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                                             imageUrls,
                                             buildParts,
                                             type,
-                                            hashtag
+                                            hashtag,
+                                            tags
                                         }} />
                                         <Following postId={_id} />
+                                        <ReportPost postId={_id} userId={userId} />
                                         <DeletePost postId={_id} userId={userId} />
                                     </Suspense>
                                 </div>
