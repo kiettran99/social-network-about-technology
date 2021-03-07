@@ -9,6 +9,8 @@ import { createEditorStateWithText } from '@draft-js-plugins/editor';
 import HashTagEditor from '../editor/hash-tag-editor/HashTagEditor';
 import editor from './editor/editor';
 
+import InviteUser from '../../shared/InviteUser';
+
 const BubbleEditor = lazy(() => import('../editor/BubbleEditor'));
 
 Modal.setAppElement('#root');
@@ -38,6 +40,8 @@ const EditPost = ({ auth: { user, isAuthenticated },
     const [disabledPost, setDisabledPost] = useState(true);
 
     const [hashTagEditor, setHashTagEditor] = useState(EditorState.createEmpty());
+
+    const [tags, setTags] = useState([]);
 
     const { text, images, buildParts, imageUrls } = formData;
 
@@ -89,6 +93,10 @@ const EditPost = ({ auth: { user, isAuthenticated },
                 imageUrls: post.imageUrls || []
             });
 
+            if (post.tags) {
+                setTags(post.tags);
+            }
+
             if (post.hashtag && post.hashtag.tags.length > 0) {
                 setOpenHashTag(true);
                 setHashTagEditor(createEditorStateWithText(post.hashtag.rawText));
@@ -131,6 +139,11 @@ const EditPost = ({ auth: { user, isAuthenticated },
             rawText: hashTagEditor.getCurrentContent().getPlainText()
         }))
 
+        // Add Tags Friends
+        if (tags.length > 0) {
+            formData.append('tags', JSON.stringify(tags));
+        }
+
         editPost(post.postId, formData);
 
         setFormData({
@@ -153,6 +166,9 @@ const EditPost = ({ auth: { user, isAuthenticated },
         onSubmit(e);
     };
 
+    // Tag Friends
+    const [tagFriendsIsOpen, setOpenTagFriends] = useState(false);
+
     return (
         <>
             {!disabledPost && (
@@ -169,142 +185,163 @@ const EditPost = ({ auth: { user, isAuthenticated },
             <Modal isOpen={modalIsOpen}
                 onRequestClose={closeModal}
                 style={customStyles}>
-                <div className="modal-dialog modal-lg m-0" role="document">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="post-modalLabel">Edit Post</h5>
-                            <button onClick={() => closeModal()} type="button" className="btn btn-secondary" data-dismiss="modal"><i className="ri-close-fill" /></button>
-                        </div>
-                        <div className="modal-body">
-                            <div className="d-flex align-items-center">
-                                <div className="user-img">
-                                    {user && user.avatar && <img src={user.avatar} alt="userimg" className="avatar-60 rounded-circle img-fluid" />}
+                {tagFriendsIsOpen ?
+                    <InviteUser closeModal={() => {
+                        setOpenTagFriends(false);
+                    }} configs={{
+                        title: 'Add Friends to Tags',
+                        tags,
+                        action: (selectedUsers) => {
+                            setTags(selectedUsers.map(selectedUser => ({
+                                user: selectedUser._id,
+                                fullname: selectedUser.fullname,
+                                avatar: selectedUser.avatar
+                            })));
+                            setOpenTagFriends(false);
+                        }
+                    }} /> :
+                    (
+                        <div className="modal-dialog modal-lg m-0" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title" id="post-modalLabel">Edit Post</h5>
+                                    <button onClick={() => closeModal()} type="button" className="btn btn-secondary" data-dismiss="modal"><i className="ri-close-fill m-0" /></button>
                                 </div>
-                                <form className="post-text ml-3 w-100" onSubmit={e => onSubmit(e)}>
-                                    <div className="standalone-container">
-                                        <Suspense fallback={<div>Loading...</div>}>
-                                            <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />
-                                        </Suspense>
-                                    </div>
-                                </form>
-                            </div>
-                            <hr />
-                            <div className="d-flex align-items-center">
-                                <ul className="profile-img-gallary d-flex flex-wrap p-0 m-0">
-                                    <LoadImages images={imageUrls} by='url' onChangeImages={(index) => {
-                                        setFormData((state) => ({
-                                            ...state,
-                                            imageUrls: state.imageUrls.filter((image, position) => position !== index)
-                                        }));
-                                    }} />
-                                    <LoadImages images={images} onChangeImages={(index) => {
-                                        setFormData((state) => ({
-                                            ...state,
-                                            images: state.images.filter((image, position) => position !== index)
-                                        }));
-                                    }} />
-                                </ul>
-                            </div>
-                            {isShowBuildParts && <BuildParts {...buildPartsProps} />}
-                            {isOpenHashTag && <HashTagEditor placeholder=""
-                                editorState={hashTagEditor} setEditorState={setHashTagEditor}
-                                disable={disabledPost} />}
-                            <hr />
-                            <ul className="d-flex flex-wrap align-items-center list-inline m-0 p-0">
-                                <li className="col-md-6 mb-3">
-                                    <div className="iq-bg-primary rounded p-2 pointer mr-3">
-                                        <input ref={photoRef} className="file-upload" type="file" accept="image/*" multiple={true} onChange={e => {
-                                            // currentTarget 
-                                            const curentTarget = e.currentTarget;
-
-                                            if (curentTarget && curentTarget.files) {
-                                                setFormData((state) => ({
-                                                    ...state,
-                                                    images: [...state.images, ...curentTarget.files]
-                                                }));
-                                            }
-                                        }} />
-                                        <div className="upload-button" style={{ fontSize: "1em" }} onClick={() => {
-                                            if (photoRef.current) {
-                                                photoRef.current.click();
-                                            }
-                                        }}>
-                                            <img src="/images/small/07.png" alt="icon" className="img-fluid upload-button" />
-                                            <span>Photos</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className="col-md-6 mb-3"
-                                    onClick={() => setIsShowBuildParts(!isShowBuildParts)}>
-                                    <div className="iq-bg-primary rounded p-2 pointer mr-3"><a /><img src="/images/small/08.png" alt="icon" className="img-fluid" /> Build Parts PC</div>
-                                </li>
-                                <li className="col-md-6 mb-3"
-                                    onClick={() => setOpenHashTag(!isOpenHashTag)}>
-                                    <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/09.png" alt="icon" className="img-fluid" /> HashTag</div>
-                                </li>
-                            </ul>
-                            <hr />
-                            <div className="other-option">
-                                <div className="d-flex align-items-center justify-content-between">
+                                <div className="modal-body">
                                     <div className="d-flex align-items-center">
-                                        <div className="user-img mr-3">
+                                        <div className="user-img">
                                             {user && user.avatar && <img src={user.avatar} alt="userimg" className="avatar-60 rounded-circle img-fluid" />}
                                         </div>
-                                        <h6>Your Story</h6>
+                                        <form className="post-text ml-3 w-100" onSubmit={e => onSubmit(e)}>
+                                            <div className="standalone-container">
+                                                <Suspense fallback={<div>Loading...</div>}>
+                                                    <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />
+                                                </Suspense>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div className="iq-card-post-toolbar">
-                                        <div className="dropdown">
-                                            <span className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                                <span className="btn btn-primary">Friend</span>
-                                            </span>
-                                            <div className="dropdown-menu m-0 p-0">
-                                                <a className="dropdown-item p-3" href="index.html#">
-                                                    <div className="d-flex align-items-top">
-                                                        <div className="icon font-size-20"><i className="ri-save-line" /></div>
-                                                        <div className="data ml-2">
-                                                            <h6>Public</h6>
-                                                            <p className="mb-0">Anyone on or off Facebook</p>
-                                                        </div>
+                                    <hr />
+                                    <div className="d-flex align-items-center">
+                                        <ul className="profile-img-gallary d-flex flex-wrap p-0 m-0">
+                                            <LoadImages images={imageUrls} by='url' onChangeImages={(index) => {
+                                                setFormData((state) => ({
+                                                    ...state,
+                                                    imageUrls: state.imageUrls.filter((image, position) => position !== index)
+                                                }));
+                                            }} />
+                                            <LoadImages images={images} onChangeImages={(index) => {
+                                                setFormData((state) => ({
+                                                    ...state,
+                                                    images: state.images.filter((image, position) => position !== index)
+                                                }));
+                                            }} />
+                                        </ul>
+                                    </div>
+                                    {isShowBuildParts && <BuildParts {...buildPartsProps} />}
+                                    {isOpenHashTag && <HashTagEditor placeholder=""
+                                        editorState={hashTagEditor} setEditorState={setHashTagEditor}
+                                        disable={disabledPost} />}
+                                    <hr />
+                                    <ul className="d-flex flex-wrap align-items-center list-inline m-0 p-0">
+                                        <li className="col-md-6 mb-3">
+                                            <div className="iq-bg-primary rounded p-2 pointer mr-3">
+                                                <input ref={photoRef} className="file-upload" type="file" accept="image/*" multiple={true} onChange={e => {
+                                                    // currentTarget 
+                                                    const curentTarget = e.currentTarget;
+
+                                                    if (curentTarget && curentTarget.files) {
+                                                        setFormData((state) => ({
+                                                            ...state,
+                                                            images: [...state.images, ...curentTarget.files]
+                                                        }));
+                                                    }
+                                                }} />
+                                                <div className="upload-button" style={{ fontSize: "1em" }} onClick={() => {
+                                                    if (photoRef.current) {
+                                                        photoRef.current.click();
+                                                    }
+                                                }}>
+                                                    <img src="/images/small/07.png" alt="icon" className="img-fluid upload-button" />
+                                                    <span>Photos</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li className="col-md-6 mb-3"
+                                            onClick={() => setOpenTagFriends(true)}>
+                                            <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/08.png" alt="icon" className="img-fluid" /> Tag Friends {tags.length > 0 && `(${tags.length})`}</div>
+                                        </li>
+                                        <li className="col-md-6 mb-3"
+                                            onClick={() => setIsShowBuildParts(!isShowBuildParts)}>
+                                            <div className="iq-bg-primary rounded p-2 pointer mr-3"><a /><img src="/images/small/14.png" alt="icon" className="img-fluid" /> Build Parts PC</div>
+                                        </li>
+                                        <li className="col-md-6 mb-3"
+                                            onClick={() => setOpenHashTag(!isOpenHashTag)}>
+                                            <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/09.png" alt="icon" className="img-fluid" /> HashTag</div>
+                                        </li>
+                                    </ul>
+                                    <hr />
+                                    <div className="other-option">
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <div className="d-flex align-items-center">
+                                                <div className="user-img mr-3">
+                                                    {user && user.avatar && <img src={user.avatar} alt="userimg" className="avatar-60 rounded-circle img-fluid" />}
+                                                </div>
+                                                <h6>Your Story</h6>
+                                            </div>
+                                            <div className="iq-card-post-toolbar">
+                                                <div className="dropdown">
+                                                    <span className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                                                        <span className="btn btn-primary">Friend</span>
+                                                    </span>
+                                                    <div className="dropdown-menu m-0 p-0">
+                                                        <a className="dropdown-item p-3" href="index.html#">
+                                                            <div className="d-flex align-items-top">
+                                                                <div className="icon font-size-20"><i className="ri-save-line" /></div>
+                                                                <div className="data ml-2">
+                                                                    <h6>Public</h6>
+                                                                    <p className="mb-0">Anyone on or off Facebook</p>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        <a className="dropdown-item p-3" href="index.html#">
+                                                            <div className="d-flex align-items-top">
+                                                                <div className="icon font-size-20"><i className="ri-close-circle-line" /></div>
+                                                                <div className="data ml-2">
+                                                                    <h6>Friends</h6>
+                                                                    <p className="mb-0">Your Friend on facebook</p>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        <a className="dropdown-item p-3" href="index.html#">
+                                                            <div className="d-flex align-items-top">
+                                                                <div className="icon font-size-20"><i className="ri-user-unfollow-line" /></div>
+                                                                <div className="data ml-2">
+                                                                    <h6>Friends except</h6>
+                                                                    <p className="mb-0">Don't show to some friends</p>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        <a className="dropdown-item p-3" href="index.html#">
+                                                            <div className="d-flex align-items-top">
+                                                                <div className="icon font-size-20"><i className="ri-notification-line" /></div>
+                                                                <div className="data ml-2">
+                                                                    <h6>Only Me</h6>
+                                                                    <p className="mb-0">Only me</p>
+                                                                </div>
+                                                            </div>
+                                                        </a>
                                                     </div>
-                                                </a>
-                                                <a className="dropdown-item p-3" href="index.html#">
-                                                    <div className="d-flex align-items-top">
-                                                        <div className="icon font-size-20"><i className="ri-close-circle-line" /></div>
-                                                        <div className="data ml-2">
-                                                            <h6>Friends</h6>
-                                                            <p className="mb-0">Your Friend on facebook</p>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                                <a className="dropdown-item p-3" href="index.html#">
-                                                    <div className="d-flex align-items-top">
-                                                        <div className="icon font-size-20"><i className="ri-user-unfollow-line" /></div>
-                                                        <div className="data ml-2">
-                                                            <h6>Friends except</h6>
-                                                            <p className="mb-0">Don't show to some friends</p>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                                <a className="dropdown-item p-3" href="index.html#">
-                                                    <div className="d-flex align-items-top">
-                                                        <div className="icon font-size-20"><i className="ri-notification-line" /></div>
-                                                        <div className="data ml-2">
-                                                            <h6>Only Me</h6>
-                                                            <p className="mb-0">Only me</p>
-                                                        </div>
-                                                    </div>
-                                                </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <button type="button" className="btn btn-primary d-block w-100 mt-3"
+                                        disabled={disabledPost}
+                                        onClick={onHandleSubmitForm}>Post</button>
                                 </div>
                             </div>
-                            <button type="button" className="btn btn-primary d-block w-100 mt-3"
-                                disabled={disabledPost}
-                                onClick={onHandleSubmitForm}>Post</button>
                         </div>
-                    </div>
-                </div>
+                    )}
             </Modal>
         </>
     );

@@ -1,6 +1,6 @@
 import {
     GET_GROUPS, GET_GROUP, GROUP_ERROR, CLEAR_GROUP, JOIN_GROUP, UNJOIN_GROUP,
-    ADD_GROUP, RESET_GROUP
+    ADD_GROUP, RESET_GROUP, INVITE_GROUP
 } from './types';
 import axios from 'axios';
 import urlAPI from '../utils/urlAPI';
@@ -111,6 +111,32 @@ export const addGroup = (formData, handleAddGroup) => async dispatch => {
         console.log(e);
 
         handleAddGroup('Failed create a group.', false);
+
+        dispatch({
+            type: GROUP_ERROR,
+            payload: { msg: e.response.data, status: e.response.statusText }
+        })
+    }
+}
+
+export const inviteGroup = (groupId, formData, handleAddGroup) => async dispatch => {
+    try {
+
+        const res = await axios.put(`${urlAPI}/api/groups/${groupId}/invite`, {
+            users: formData
+        });
+
+        dispatch({
+            type: INVITE_GROUP,
+            payload: res.data,
+        });
+
+        handleAddGroup('Successfully invite a group.', true);
+    }
+    catch (e) {
+        console.log(e);
+
+        handleAddGroup('Failed invite a group.', false);
 
         dispatch({
             type: GROUP_ERROR,

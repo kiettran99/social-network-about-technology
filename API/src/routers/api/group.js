@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
     try {
         const limit = parseInt(req.query.limit) || 5;
         const skip = parseInt(req.query.skip) || 0;
-        
+
         // Get name to search
         const name = req.query.name;
 
@@ -334,6 +334,62 @@ router.delete('/:id', authByRole('admin'), async (req, res) => {
         await group.remove();
 
         res.json(group);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route PUT /api/groups/:id/invite
+// @desc invate friends into a group.
+// @access private
+router.put('/:id/invite', auth, async (req, res) => {
+    try {
+
+        const id = req.params.id;
+
+        // Check id is not empty
+        if (!id) {
+            return res.status(400).send('Group id is empty.');
+        }
+
+        const group = await Group.findById(id);
+
+        if (!group) {
+            return res.status(404).send('Group is not exists.');
+        }
+
+        const users = req.body.users;
+
+        if (users && users.length <= 0) {
+            return res.status(400).send('Least one user to invite group.');
+        }
+
+        // Make sure user has joined post yet.
+
+        // Convert array to string has _id
+        const usersId = users.map(user => user._id.toString());
+
+        const isJoinedGroup = group.members.map(member => member.user.toString())
+                                .some((userId) => usersId.includes(userId));
+
+        if (isJoinedGroup) {
+            return res.status(400).json({ msg: 'Group is joined already.' });
+        }
+
+        users.forEach(user => {
+            group.members.push({ user: user._id });
+            group.lengthOfMembers += 1;
+        });
+
+        const [updatedGroup] = await Promise.all([group.populate('members.user', 'avatar').execPopulate(), group.save()])
+
+        if (updatedGroup) {
+            registerGroupNotification(req.user, updatedGroup);
+        }
+
+        res.json(updatedGroup.members.reverse().slice(0, users.length));
     }
     catch (e) {
         console.log(e);

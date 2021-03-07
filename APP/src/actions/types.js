@@ -72,6 +72,7 @@ export const RESET_GROUP = 'RESET_GROUP';
 
 export const JOIN_GROUP = 'JOIN_GROUP';
 export const UNJOIN_GROUP = 'UNJOIN_GROUP';
+export const INVITE_GROUP = 'INVITE_GROUP';
 
 export const GET_FRIENDS = 'GET_FRIENDS';
 export const GET_REQUEST_FRIENDS = 'GET_REQUEST_FRIENDS';

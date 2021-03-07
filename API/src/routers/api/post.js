@@ -255,6 +255,11 @@ router.post('/', auth, upload.array('images'), [
             };
         }
 
+        if (req.body.tags) {
+            const tags = req.body.tags;
+            newPost.tags = JSON.parse(tags);
+        }
+
         // Create a instance post and save it.
         const post = new Post(newPost);
         await post.save();
@@ -332,6 +337,11 @@ router.put('/:id', auth, upload.array('images'), [
                 tags: hashtag.tags,
                 rawText: hashtag.rawText
             };
+        }
+
+        if (req.body.tags) {
+            const tags = req.body.tags;
+            post.tags = JSON.parse(tags);
         }
 
         post.text = req.body.text;

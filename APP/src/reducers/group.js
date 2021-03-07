@@ -1,6 +1,7 @@
 import {
     GET_GROUPS, GET_GROUP, GROUP_ERROR, CLEAR_GROUP,
-    GET_MORE_GROUPS, JOIN_GROUP, UNJOIN_GROUP, ADD_GROUP, RESET_GROUP
+    GET_MORE_GROUPS, JOIN_GROUP, UNJOIN_GROUP, ADD_GROUP, RESET_GROUP,
+    INVITE_GROUP
 } from '../actions/types';
 
 const initState = {
@@ -84,6 +85,16 @@ export default function (state = initState, action) {
             };
         case RESET_GROUP:
             return initState;
+        case INVITE_GROUP:
+            return {
+                ...state,
+                group: {
+                    ...state.group,
+                    members: [...state.group.members, ...payload],
+                    lengthOfMembers: state.group.lengthOfMembers + payload.length
+                },
+                loading: false
+            };
         default:
             return state;
     }
