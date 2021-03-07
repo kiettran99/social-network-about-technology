@@ -272,7 +272,7 @@ const EditPost = ({ auth: { user, isAuthenticated },
                                         </li>
                                         <li className="col-md-6 mb-3"
                                             onClick={() => setIsShowBuildParts(!isShowBuildParts)}>
-                                            <div className="iq-bg-primary rounded p-2 pointer mr-3"><a /><img src="/images/small/08.png" alt="icon" className="img-fluid" /> Build Parts PC</div>
+                                            <div className="iq-bg-primary rounded p-2 pointer mr-3"><a /><img src="/images/small/14.png" alt="icon" className="img-fluid" /> Build Parts PC</div>
                                         </li>
                                         <li className="col-md-6 mb-3"
                                             onClick={() => setOpenHashTag(!isOpenHashTag)}>
