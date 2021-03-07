@@ -32,6 +32,18 @@ const postSchema = Schema({
             type: String
         }
     },
+    tags: [{
+        user: {
+            type: ObjectId,
+            ref: 'User'
+        },
+        fullname: {
+            type: String
+        },
+        avatar: {
+            type: String
+        }
+    }],
     share: {
         postId: {
             type: ObjectId,
