@@ -5,7 +5,8 @@ const storage = require('../../firebase/firebase');
 const Group = require('../../models/group');
 const authByRole = require('../../middleware/auth-by-role');
 const auth = require('../../middleware/auth');
-const { registerGroupNotification, unregisterGroupNotification } = require('../../utils/notification');
+const { registerNotification, unregisterNotification,
+    registerNotifications } = require('../../utils/notification');
 
 // @route GET /api/groups
 // @rotue full GET /api/groups?limt=number&skip=number&name=string
@@ -164,7 +165,7 @@ router.put('/:id/join', auth, async (req, res) => {
         const [updatedGroup] = await Promise.all([group.populate('members.user', 'avatar').execPopulate(), group.save()])
 
         if (updatedGroup) {
-            registerGroupNotification(req.user, updatedGroup);
+            registerNotification(req.user, updatedGroup, 'GROUP');
         }
 
         res.json(updatedGroup.members.slice(0, 5));
@@ -212,7 +213,7 @@ router.put('/:id/unjoin', auth, async (req, res) => {
         const [updatedGroup] = await Promise.all([group.populate('members.user', 'avatar').execPopulate(), group.save()])
 
         if (updatedGroup) {
-            unregisterGroupNotification(req.user, updatedGroup);
+            unregisterNotification(req.user, updatedGroup, 'GROUP');
         }
 
         res.json(updatedGroup.members.slice(0, 5));
@@ -372,7 +373,7 @@ router.put('/:id/invite', auth, async (req, res) => {
         const usersId = users.map(user => user._id.toString());
 
         const isJoinedGroup = group.members.map(member => member.user.toString())
-                                .some((userId) => usersId.includes(userId));
+            .some((userId) => usersId.includes(userId));
 
         if (isJoinedGroup) {
             return res.status(400).json({ msg: 'Group is joined already.' });
@@ -386,7 +387,7 @@ router.put('/:id/invite', auth, async (req, res) => {
         const [updatedGroup] = await Promise.all([group.populate('members.user', 'avatar').execPopulate(), group.save()])
 
         if (updatedGroup) {
-            registerGroupNotification(req.user, updatedGroup);
+            registerNotifications(req.user, updatedGroup, 'GROUP');
         }
 
         res.json(updatedGroup.members.reverse().slice(0, users.length));

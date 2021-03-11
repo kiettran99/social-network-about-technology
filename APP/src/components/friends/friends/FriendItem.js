@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { requestFriend, acceptFriend, unAcceptFriend } from '../../../actions/friend';
+import Following from '../following/Following';
 
 const FriendItem = ({ friend: { _id: userId, fullname, avatar, email, friendsStatus },
     acceptFriend, unAcceptFriend, requestFriend
@@ -28,7 +29,8 @@ const FriendItem = ({ friend: { _id: userId, fullname, avatar, email, friendsSta
                 <>
                     <span className="mr-3 text-muted m-auto"><i className="ri-check-line text-success"></i>&nbsp;Friend</span>
                     <button className="mx-3 mr-3 btn btn-secondary rounded text-light"
-                        onClick={() => unAcceptFriend(userId, 'friends')}>UnFriend</button>
+                        onClick={() => unAcceptFriend(userId, 'friends')}>Unfriend</button>
+                    <Following userId={userId} />
                 </>
             )
         }
@@ -58,8 +60,7 @@ const FriendItem = ({ friend: { _id: userId, fullname, avatar, email, friendsSta
 
                                     <div>
                                         {getStatus()}
-                                        <button type="submit" className="btn btn-primary">Following</button>
-                                    </div>                           
+                                    </div>
                                 </div>
                             </div>
                         </div>

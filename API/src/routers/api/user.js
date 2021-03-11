@@ -4,7 +4,7 @@ const { body, validationResult } = require('express-validator');
 const isEmptyObject = require('../../utils/isEmptyObject');
 const authByRole = require('../../middleware/auth-by-role');
 const auth = require('../../middleware/auth');
-const { createNotification } = require('../../utils/notification');
+const { createNotification, registerNotification, unregisterNotification } = require('../../utils/notification');
 const createProfile = require('../../utils/profile');
 const { sendEmail } = require('../../utils/email');
 
@@ -285,7 +285,7 @@ router.put('/look/:user_id', authByRole('admin'), async (req, res) => {
   }
 });
 
-// @route Post api/users/register
+// @route Post api/users/unlook
 // @desc Look user
 // @access private - admin
 router.put('/unlook/:user_id', authByRole('admin'), async (req, res) => {
@@ -300,6 +300,52 @@ router.put('/unlook/:user_id', authByRole('admin'), async (req, res) => {
     user.status = 1;  // Change to unlook user status.
 
     await user.save();
+
+    res.send(user);
+  }
+  catch (e) {
+    console.log(e);
+    res.status(500).send('Server is errors.');
+  }
+});
+
+// @route PUT api/users/following/:user_id
+// @desc Following User.
+// @access private
+router.put('/following/:user_id', auth, async (req, res) => {
+  try {
+    const id = req.params.user_id;
+
+    if (!id) {
+      return res.status(400).send('userId is required.');
+    }
+
+    const user = await User.findById(id);
+
+    await registerNotification(req.user, user, 'FRIEND');
+
+    res.send(user);
+  }
+  catch (e) {
+    console.log(e);
+    res.status(500).send('Server is errors.');
+  }
+});
+
+// @route PUT api/users/unfollowing/:user_id
+// @desc Following User.
+// @access private
+router.put('/unfollowing/:user_id', auth, async (req, res) => {
+  try {
+    const id = req.params.user_id;
+
+    if (!id) {
+      return res.status(400).send('userId is required.');
+    }
+
+    const user = await User.findById(id);
+
+    await unregisterNotification(req.user, user, 'FRIEND');
 
     res.send(user);
   }

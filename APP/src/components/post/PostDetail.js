@@ -5,10 +5,10 @@ import { withRouter, Redirect } from 'react-router-dom';
 import { getPost } from '../../actions/post';
 
 import UserPost from './UserPost';
-import Stories from '../home/Stories';
-import Events from '../home/Events';
-import UpcomingBirthday from '../home/UpcomingBirthday';
-import SuggestedPages from '../home/SuggestedPages';
+// import Stories from '../home/Stories';
+// import Events from '../home/Events';
+// import UpcomingBirthday from '../home/UpcomingBirthday';
+// import SuggestedPages from '../home/SuggestedPages';
 
 const PostDetail = ({ match, history, post: { post, loading }, getPost }) => {
 

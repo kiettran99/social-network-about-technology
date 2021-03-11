@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import CreatePost from '../post/CreatePost';
-import Stories from './Stories';
-import Events from './Events';
-import UpcomingBirthday from './UpcomingBirthday';
-import SuggestedPages from './SuggestedPages';
+// import Stories from './Stories';
+// import Events from './Events';
+// import UpcomingBirthday from './UpcomingBirthday';
+// import SuggestedPages from './SuggestedPages';
 import Process from '../layout/Process';
 import PostsPage from '../post/PostsPage';
 

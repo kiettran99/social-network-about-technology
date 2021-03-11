@@ -1,7 +1,7 @@
 import {
     NOTIFICATION_LOADED, NOTIFICATION_ERROR, FOLLOWING_NOTIFICATION,
     UNFOLLOWING_NOTIFICATION, MAKE_AS_READ_NOTIFICATION, GET_MORE_NOTIFICATION,
-    CLEAR_NOTIFICATION
+    CLEAR_NOTIFICATION, FOLLOWING_FRIEND, UNFOLLOWING_FRIEND
 } from '../actions/types';
 
 import urlAPI from '../utils/urlAPI';
@@ -108,3 +108,43 @@ export const unfollowingNotification = (id) => async dispatch => {
 export const clearNotification = () => ({
     type: CLEAR_NOTIFICATION
 })
+
+export const followingFriend = (friendId) => async dispatch => {
+    try {
+
+       await axios.put(`${urlAPI}/api/users/following/${friendId}`);
+
+        dispatch({
+            type: FOLLOWING_FRIEND,
+            payload: friendId
+        });
+    }
+    catch (e) {
+        console.log(e);
+
+        dispatch({
+            type: NOTIFICATION_ERROR,
+            payload: { msg: e.response.data, status: e.response.statusText }
+        });
+    }
+};
+
+export const unFollowingFriend = (friendId) => async dispatch => {
+    try {
+
+       await axios.put(`${urlAPI}/api/users/unfollowing/${friendId}`);
+
+        dispatch({
+            type: UNFOLLOWING_FRIEND,
+            payload: friendId
+        });
+    }
+    catch (e) {
+        console.log(e);
+
+        dispatch({
+            type: NOTIFICATION_ERROR,
+            payload: { msg: e.response.data, status: e.response.statusText }
+        });
+    }
+};
