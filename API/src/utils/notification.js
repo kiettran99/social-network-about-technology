@@ -67,40 +67,79 @@ const createNotification = async (user) => {
     }
 }
 
-const registerGroupNotification = async (user, group) => {
-    try {
-        const notification = await Notification.findOne({
-            user: user._id,
-            'followingGroups': { $nin: group._id }
-        });
+/**
+ * @desc Register following from model (posts, groups, ...)
+ * @param model Document type of model
+ * @param type Type of Following ('GROUP', 'FRIEND', 'POST')
+ * @example
+ * registerNotification(req.user, updatedGroup, 'GROUP');
+ */
+const registerNotification = async (user, model, type) => {
+    const typeModel = typeOfModel(type);
 
-        if (notification) {
-            notification.followingGroups.push(group._id);
-        }
+    const notification = await Notification.findOne({
+        user: user._id,
+        [typeModel]: { $nin: model._id }
+    });
 
+    if (notification) {
+        notification[typeModel].push(model._id);
         await notification.save();
-    }
-    catch (e) {
-        console.log(e);
     }
 }
 
-const unregisterGroupNotification = async (user, group) => {
-    try {
-        const notification = await Notification.findOne({
-            user: user._id,
-            'followingGroups': group._id
-        });
+/**
+ * @desc Unregister following from model (posts, groups, ...)
+ * @param model Document type of model
+ * @param type Type of Following ('GROUP', 'FRIEND', 'POST')
+ * @example
+ * unregisterNotification(req.user, updatedGroup, 'GROUP');
+ */
+const unregisterNotification = async (user, model, type) => {
+    const typeModel = typeOfModel(type);
 
-        if (notification) {
-            notification.followingGroups.pull(group._id);
-        }
+    const notification = await Notification.findOne({
+        user: user._id,
+        [typeModel]: model._id
+    });
 
+    if (notification) {
+        notification[typeModel].pull(model._id);
         await notification.save();
-    }
-    catch (e) {
-        console.log(e);
     }
 }
 
-module.exports = { notify, createNotification, registerGroupNotification, unregisterGroupNotification };
+const registerNotifications = async (user, models, type) => {
+    const modelsId = models.map(model => model._id);
+    const typeModel = typeOfModel(type);
+
+    const notification = await Notification.findOne({
+        user: user._id,
+        [typeModel]: { $nin: modelsId }
+    });
+
+    if (notification) {
+        notification[typeModel].push(modelsId);
+        await notification.save();
+    }
+}
+
+const typeOfModel = (type) => {
+    switch (type) {
+        case 'GROUP':
+            return 'followingGroups';
+        case 'FRIEND':
+            return 'followingFriends';
+        case 'POST':
+        default:
+            return 'followingPosts';
+    }
+}
+
+
+module.exports = {
+    notify,
+    createNotification,
+    registerNotification, unregisterNotification,
+    registerNotifications,
+};

@@ -219,4 +219,4 @@ export const resetFriend = () => dispatch => {
     dispatch({
         type: RESET_FRIEND
     });
-} ;
+};

@@ -6,10 +6,12 @@ import { Link } from 'react-router-dom';
 import dayjs from '../../../../utils/relativeDate';
 
 import { sharePostTimeLine } from './utils/sharePost';
+import Status from '../previews/Status';
 
 const BubbleEditor = lazy(() => import('../../editor/BubbleEditor'));
 const ImagePost = lazy(() => import('./ImagePost/ImagePost'));
 const HashTag = lazy(() => import('../hash-tag/HashTag'));
+const Review = lazy(() => import('../previews/Review'));
 
 Modal.setAppElement('#root');
 
@@ -95,6 +97,7 @@ const ShareModal = ({ auth: { user, isAuthenticated },
         if (share && share.postId && share.postId.user) {
             const postShared = share.postId;
 
+            // Return if user forward share.
             return (
                 <div className="container border-left border-right">
                     <Suspense fallback={<div>Loading...</div>}>
@@ -109,13 +112,19 @@ const ShareModal = ({ auth: { user, isAuthenticated },
                                 </div>
                                 <div className="media-support-info mt-2">
                                     <h5 className="mb-0 d-inline-block"><Link to={`/profile/${postShared.user}`}>{postShared.name}&nbsp;</Link></h5>
-                                    <p className="mb-0 d-inline-block">Add New Post</p>
+                                    <Status type={postShared.type} tags={postShared.tags} share={postShared.share} />
                                     <p className="mb-0 text-primary">{dayjs(postShared.createdAt).fromNow()}</p>
                                 </div>
                             </div>
                         </div>
                         <div className="standalone-container">
-                            <BubbleEditor readOnly={true} text={postShared.text} />
+                            {postShared.type && postShared.type.review ?
+                                <Review text={postShared.text} Component={BubbleEditor}
+                                    reviewId={postShared.type.review} /> : (
+                                    <div className="mt-3">
+                                        <BubbleEditor readOnly={true} text={postShared.text} />
+                                    </div>
+                                )}
                         </div>
                         {postShared.hashtag && <HashTag hashtag={postShared.hashtag} />}
                     </Suspense>
@@ -138,13 +147,19 @@ const ShareModal = ({ auth: { user, isAuthenticated },
                             </div>
                             <div className="media-support-info mt-2">
                                 <h5 className="mb-0 d-inline-block"><Link to={`/profile/${post.user}`}>{post.name}&nbsp;</Link></h5>
-                                <p className="mb-0 d-inline-block">Add New Post</p>
+                                <Status type={post.type} tags={post.tags} share={post.share} />
                                 <p className="mb-0 text-primary">{dayjs(post.createdAt).fromNow()}</p>
                             </div>
                         </div>
                     </div>
                     <div className="standalone-container">
-                        <BubbleEditor readOnly={true} text={post.text} />
+                        {post.type && post.type.review ?
+                            <Review text={post.text} Component={BubbleEditor}
+                                reviewId={post.type.review} /> : (
+                                <div className="mt-3">
+                                    <BubbleEditor readOnly={true} text={post.text} />
+                                </div>
+                            )}
                     </div>
                     {post.hashtag && <HashTag hashtag={post.hashtag} />}
                 </Suspense>
@@ -238,6 +253,7 @@ const ShareModal = ({ auth: { user, isAuthenticated },
                                 </div>
                             </div>
                             <button type="button" className="btn btn-primary d-block w-100 mt-3"
+                                disabled={!isAuthenticated}
                                 onClick={(e) => onSubmit(e)}>Share</button>
                         </div>
                     </div>

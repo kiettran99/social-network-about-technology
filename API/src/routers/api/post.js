@@ -1,7 +1,9 @@
 const router = require('express').Router();
 const { body, validationResult } = require('express-validator');
 const Post = require('../../models/post');
+const Notification = require('../../models/notification');
 const auth = require('../../middleware/auth');
+const getUserByToken = require('../../middleware/getUserByToken');
 const storage = require('../../firebase/firebase');
 const upload = require('../../utils/upload');
 const { notify } = require('../../utils/notification');
@@ -12,7 +14,7 @@ const postModeration = require('../../utils/sightengine/postModeration');
 // @route-full Get /api/posts?limit=number&skip=number&groupId=id
 // @desc Feed a post
 // @access public
-router.get('/', async (req, res) => {
+router.get('/', getUserByToken, async (req, res) => {
     try {
         // Limit post with 5 posts and if not skip then default value is 0.
         const limit = parseInt(req.query.limit) || 5;
@@ -30,8 +32,22 @@ router.get('/', async (req, res) => {
             if (groupId) {
                 conditions['type.group'] = groupId;
             }
-            else {
+            else if (userId) {
                 conditions['type.user'] = userId;
+            }
+        }
+        else if (req.user) {
+            const notification = await Notification.findOne({ user: req.user._id });
+
+            if (notification) {
+
+                conditions['$or'] = [
+                    { 'type.group': { $exists: false } },
+                    { 'type.group': { $exists: true, $in: notification.followingGroups } }
+                ];
+
+                // conditions.user = { $in: notification.followingFriends }
+                conditions.user = { $in: [...notification.followingFriends, req.user._id] }
             }
         }
 

@@ -28,4 +28,4 @@ const BubbleEditor = ({ text, setText, readOnly = false }) => {
     return <Editor {...props} />
 };
 
-export default BubbleEditor;
+export default React.memo(BubbleEditor);

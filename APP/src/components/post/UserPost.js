@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 
 import dayjs from '../../utils/relativeDate';
+import Status from './user-post-sub/previews/Status';
 
 const PartsDescription = lazy(() => import('./parts-list/PartsDescription'));
 const DeletePost = lazy(() => import('./user-post-sub/DeletePost'));
@@ -16,6 +17,7 @@ const CommentForm = lazy(() => import('./user-post-sub/CommentForm'));
 const AttachPost = lazy(() => import('./AttachPost'));
 const BubbleEditor = lazy(() => import('./editor/BubbleEditor'));
 const HashTag = lazy(() => import('./user-post-sub/hash-tag/HashTag'));
+const Review = lazy(() => import('./user-post-sub/previews/Review'));
 
 const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, comments, createdAt, lengthOfComments,
     user: userId, buildParts, share, hashtag, tags }
@@ -36,13 +38,19 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                                 </div>
                                 <div className="media-support-info mt-2">
                                     <h5 className="mb-0 d-inline-block"><Link to={`/profile/${share.postId.user}`}>{share.postId.name}&nbsp;</Link></h5>
-                                    <p className="mb-0 d-inline-block">Add New Post</p>
+                                    <Status type={share.postId.type} tags={share.postId.tags} share={share.postId.share} />
                                     <p className="mb-0 text-primary">{dayjs(share.postId.createdAt).fromNow()}</p>
                                 </div>
                             </div>
                         </div>
                         <div className="standalone-container">
-                            <BubbleEditor readOnly={true} text={share.postId.text} />
+                            {share.postId.type && share.postId.type.review ?
+                                <Review text={share.postId.text} Component={BubbleEditor}
+                                    reviewId={share.postId.type.review} /> : (
+                                    <div className="">
+                                        <BubbleEditor readOnly={true} text={share.postId.text} />
+                                    </div>
+                                )}
                         </div>
                     </Suspense>
                     <hr />
@@ -61,8 +69,7 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                         </div>
                         <div className="media-support-info mt-2">
                             <h5 className="mb-0 d-inline-block"><Link to={`/profile/${userId}`}>{name}&nbsp;</Link></h5>
-                            {type && type.group ? <p className="mb-0 d-inline-block"> <i className="fas fa-caret-right">&nbsp;</i><Link className='text-dark' to={`/groups/${type.group._id}`}>&nbsp;{type.group.name}</Link></p>
-                                : <p className="mb-0 d-inline-block">Add New Post</p>}
+                            <Status type={type} tags={tags} share={share} />
                             <p className="mb-0 text-primary">{dayjs(createdAt).fromNow()}</p>
                         </div>
                         <div className="iq-card-post-toolbar">
@@ -102,9 +109,13 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                     </div>
                 </div>
                 <Suspense fallback={<div>Loading...</div>}>
-                    <div className="mt-3">
-                        <BubbleEditor readOnly={true} text={text} />
-                    </div>
+                    {type && type.review ?
+                        <Review text={text} Component={BubbleEditor}
+                            reviewId={type.review} /> : (
+                            <div className="mt-3">
+                                <BubbleEditor readOnly={true} text={text} />
+                            </div>
+                        )}
                     {buildParts && (
                         <div className="mt-3">
                             {/* Component build pc part */}

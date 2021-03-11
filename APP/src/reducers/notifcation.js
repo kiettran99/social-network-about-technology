@@ -1,7 +1,7 @@
 import {
     NOTIFICATION_LOADED, NOTIFICATION_ERROR, FOLLOWING_NOTIFICATION,
     UNFOLLOWING_NOTIFICATION, MAKE_AS_READ_NOTIFICATION, CLEAR_NOTIFICATION,
-    GET_MORE_NOTIFICATION
+    GET_MORE_NOTIFICATION, FOLLOWING_FRIEND, UNFOLLOWING_FRIEND
 } from '../actions/types';
 
 const initState = {
@@ -44,6 +44,24 @@ export default function (state = initState, action) {
                 ...state,
                 loading: false,
                 errors: payload
+            };
+        case FOLLOWING_FRIEND:
+            return {
+                ...state,
+                loading: false,
+                notification: {
+                    ...state.notification,
+                    followingFriends: [...state.notification.followingFriends, payload]
+                }
+            };
+        case UNFOLLOWING_FRIEND:
+            return {
+                ...state,
+                loading: false,
+                notification: {
+                    ...state.notification,
+                    followingFriends: state.notification.followingFriends.filter(friend => friend !== payload)
+                }
             };
         default:
             return state;
