@@ -33,22 +33,50 @@ router.get('/', getUserByToken, async (req, res) => {
                 conditions['type.group'] = groupId;
             }
             else if (userId) {
+                // User goes profile pages
                 conditions['type.user'] = userId;
+
+                if (req.user) {
+                    const notification = await Notification.findOne({ user: req.user._id });
+
+                    conditions['$or'] = [
+                        {
+                            $and: [
+                                { 'privacy': 2 },
+                                { 'user': { $in: [...notification.followingFriends, req.user._id] } }
+                            ],
+                        },
+                        {
+                            $and: [
+                                { 'privacy': 0 },
+                                { 'user': req.user._id }
+                            ]
+                        },
+                        {
+                            'privacy': 1
+                        }];
+                }
+                else {
+                    conditions.privacy = 1;
+                }
             }
         }
         else if (req.user) {
+            // Newfeeds pages
             const notification = await Notification.findOne({ user: req.user._id });
 
             if (notification) {
 
-                conditions['$or'] = [
-                    { 'type.group': { $exists: false } },
-                    { 'type.group': { $exists: true, $in: notification.followingGroups } }
-                ];
+                conditions['$or'] = [{ 'type.group': { $exists: false } },
+                { 'type.group': { $exists: true, $in: notification.followingGroups } }];
 
                 // conditions.user = { $in: notification.followingFriends }
                 conditions.user = { $in: [...notification.followingFriends, req.user._id] }
+
+                conditions.privacy = { $ne: 0 };
             }
+        } else {
+            conditions.privacy = 1;
         }
 
         // Solve Offset get more posts
@@ -66,8 +94,9 @@ router.get('/', getUserByToken, async (req, res) => {
             // "comments.replies": {
             //     $slice: 1
             // },
-        }).sort({ createdAt: 'desc' })
-            .limit(limit).skip(skip + offset).populate('type.group', 'name')
+        }).limit(limit).skip(skip + offset)
+            .sort({ createdAt: 'desc' })
+            .populate('type.group', 'name')
             .populate('share.postId', '-share')
             .populate({
                 path: 'buildParts',
@@ -248,6 +277,7 @@ router.post('/', auth, upload.array('images'), [
             user: req.user.id,
             name: req.user.fullname,
             avatar: req.user.avatar,
+            privacy: req.body.privacy,
             type: {}
         };
 
@@ -361,6 +391,8 @@ router.put('/:id', auth, upload.array('images'), [
         }
 
         post.text = req.body.text;
+
+        post.privacy = req.body.privacy;
 
         await post.save();
 

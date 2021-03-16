@@ -10,6 +10,7 @@ import HashTagEditor from '../editor/hash-tag-editor/HashTagEditor';
 import editor from './editor/editor';
 
 import InviteUser from '../../shared/InviteUser';
+import Toolbar from '../toolbar/ToolBar';
 
 const BubbleEditor = lazy(() => import('../editor/BubbleEditor'));
 
@@ -101,6 +102,8 @@ const EditPost = ({ auth: { user, isAuthenticated },
                 setOpenHashTag(true);
                 setHashTagEditor(createEditorStateWithText(post.hashtag.rawText));
             }
+
+            privacyRef.current = post.privacy;
         }
 
         setIsOpen(true);
@@ -144,6 +147,9 @@ const EditPost = ({ auth: { user, isAuthenticated },
             formData.append('tags', JSON.stringify(tags));
         }
 
+        // Add Privacy
+        formData.append('privacy', privacyRef.current);
+
         editPost(post.postId, formData);
 
         setFormData({
@@ -168,6 +174,9 @@ const EditPost = ({ auth: { user, isAuthenticated },
 
     // Tag Friends
     const [tagFriendsIsOpen, setOpenTagFriends] = useState(false);
+
+    // Privacy post (public, friends, private)
+    const privacyRef = useRef(1);
 
     return (
         <>
@@ -288,51 +297,7 @@ const EditPost = ({ auth: { user, isAuthenticated },
                                                 </div>
                                                 <h6>Your Story</h6>
                                             </div>
-                                            <div className="iq-card-post-toolbar">
-                                                <div className="dropdown">
-                                                    <span className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                                        <span className="btn btn-primary">Friend</span>
-                                                    </span>
-                                                    <div className="dropdown-menu m-0 p-0">
-                                                        <a className="dropdown-item p-3" href="index.html#">
-                                                            <div className="d-flex align-items-top">
-                                                                <div className="icon font-size-20"><i className="ri-save-line" /></div>
-                                                                <div className="data ml-2">
-                                                                    <h6>Public</h6>
-                                                                    <p className="mb-0">Anyone on or off Facebook</p>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                        <a className="dropdown-item p-3" href="index.html#">
-                                                            <div className="d-flex align-items-top">
-                                                                <div className="icon font-size-20"><i className="ri-close-circle-line" /></div>
-                                                                <div className="data ml-2">
-                                                                    <h6>Friends</h6>
-                                                                    <p className="mb-0">Your Friend on facebook</p>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                        <a className="dropdown-item p-3" href="index.html#">
-                                                            <div className="d-flex align-items-top">
-                                                                <div className="icon font-size-20"><i className="ri-user-unfollow-line" /></div>
-                                                                <div className="data ml-2">
-                                                                    <h6>Friends except</h6>
-                                                                    <p className="mb-0">Don't show to some friends</p>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                        <a className="dropdown-item p-3" href="index.html#">
-                                                            <div className="d-flex align-items-top">
-                                                                <div className="icon font-size-20"><i className="ri-notification-line" /></div>
-                                                                <div className="data ml-2">
-                                                                    <h6>Only Me</h6>
-                                                                    <p className="mb-0">Only me</p>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <Toolbar privacy={privacyRef} type={type} edit={true} />
                                         </div>
                                     </div>
                                     <button type="button" className="btn btn-primary d-block w-100 mt-3"

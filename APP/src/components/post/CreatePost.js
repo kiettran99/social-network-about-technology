@@ -8,6 +8,7 @@ import HashTagEditor from './editor/hash-tag-editor/HashTagEditor';
 import editor from './user-post-sub/editor/editor';
 
 import InviteUser from '../shared/InviteUser';
+import Toolbar from './toolbar/ToolBar';
 
 const LoadImages = lazy(() => import('./load-images/LoadImages'));
 const BubbleEditor = lazy(() => import('./editor/BubbleEditor'));
@@ -77,6 +78,8 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
       formData.append('tags', JSON.stringify(tags));
     }
 
+    formData.append('privacy', privacyRef.current);
+
     addPost(formData);
 
     setFormData({
@@ -109,6 +112,9 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
 
   // Modals with tag friends
   const [tagFriendsIsOpen, setOpenTagFriends] = useState(false);
+
+  // Privacy post (public, friends, private)
+  const privacyRef = useRef(1);
 
   return (
     <div id="post-modal-data" className="iq-card iq-card-block iq-card-stretch iq-card-height"  >
@@ -249,51 +255,7 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                       </div>
                       <h6>Your Story</h6>
                     </div>
-                    <div className="iq-card-post-toolbar">
-                      <div className="dropdown">
-                        <span className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                          <span className="btn btn-primary">Friend</span>
-                        </span>
-                        <div className="dropdown-menu m-0 p-0">
-                          <a className="dropdown-item p-3" href="index.html#">
-                            <div className="d-flex align-items-top">
-                              <div className="icon font-size-20"><i className="ri-save-line" /></div>
-                              <div className="data ml-2">
-                                <h6>Public</h6>
-                                <p className="mb-0">Anyone on or off Facebook</p>
-                              </div>
-                            </div>
-                          </a>
-                          <a className="dropdown-item p-3" href="index.html#">
-                            <div className="d-flex align-items-top">
-                              <div className="icon font-size-20"><i className="ri-close-circle-line" /></div>
-                              <div className="data ml-2">
-                                <h6>Friends</h6>
-                                <p className="mb-0">Your Friend on facebook</p>
-                              </div>
-                            </div>
-                          </a>
-                          <a className="dropdown-item p-3" href="index.html#">
-                            <div className="d-flex align-items-top">
-                              <div className="icon font-size-20"><i className="ri-user-unfollow-line" /></div>
-                              <div className="data ml-2">
-                                <h6>Friends except</h6>
-                                <p className="mb-0">Don't show to some friends</p>
-                              </div>
-                            </div>
-                          </a>
-                          <a className="dropdown-item p-3" href="index.html#">
-                            <div className="d-flex align-items-top">
-                              <div className="icon font-size-20"><i className="ri-notification-line" /></div>
-                              <div className="data ml-2">
-                                <h6>Only Me</h6>
-                                <p className="mb-0">Only me</p>
-                              </div>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
+                    <Toolbar privacy={privacyRef} type={type} />
                   </div>
                 </div>
                 <button type="button" className="btn btn-primary d-block w-100 mt-3"

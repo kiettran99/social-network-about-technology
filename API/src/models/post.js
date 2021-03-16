@@ -63,6 +63,15 @@ const postSchema = Schema({
         ],
         default: 1
     },
+    privacy: {
+        type: Number,
+        enums: [
+            0,  // private
+            1,  // public
+            2   // friend
+        ],
+        default: 1
+    },
     likes: [{
         user: {
             type: ObjectId,
