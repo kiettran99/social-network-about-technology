@@ -1033,7 +1033,8 @@ router.put('/:post_id/share', auth, async (req, res) => {
             name: req.user.fullname,
             avatar: req.user.avatar,
             type: {},
-            share: { postId }
+            share: { postId },
+            privacy: req.body.privacy
         });
 
         post.share.users.unshift(req.user.id);
