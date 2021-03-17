@@ -1,13 +1,15 @@
-import React, { useRef, useEffect } from 'react';
+import React, { lazy, Suspense, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import LoadingBar from 'react-top-loading-bar';
 import { logout } from '../../actions/auth';
 import { resetPost } from '../../actions/post';
-import NotificationBar from './notification-bar/NotificationBar';
+
 import Search from './search/Search';
-import FriendsRequest from './friends-request/FriendsRequest';
+
+const NotificationBar = lazy(() => import('./notification-bar/NotificationBar'));
+const FriendsRequest = lazy(() => import('./friends-request/FriendsRequest'));
 
 const NavBar = ({ auth: { isAuthenticated, user, loading },
   logout, loadingBar, resetPost, history
@@ -47,8 +49,10 @@ const NavBar = ({ auth: { isAuthenticated, user, loading },
               <i className="ri-home-line" />
             </Link>
           </li>
-          <FriendsRequest />
-          <NotificationBar />
+          <Suspense fallback={<div></div>}>
+            <FriendsRequest />
+            <NotificationBar />
+          </Suspense>
           {/* <li className="nav-item dropdown">
             <a href="index.html#" className="search-toggle iq-waves-effect">
               <div id="lottie-mail">
