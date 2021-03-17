@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { lazy, Suspense, useState, useRef } from 'react';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -7,6 +7,8 @@ import dayjs from '../../../../utils/relativeDate';
 
 import { sharePostTimeLine } from './utils/sharePost';
 import Status from '../previews/Status';
+import DisplayPrivacy from '../../toolbar/DisplayPrivacy';
+import Toolbar from '../../toolbar/ToolBar';
 
 const BubbleEditor = lazy(() => import('../../editor/BubbleEditor'));
 const ImagePost = lazy(() => import('./ImagePost/ImagePost'));
@@ -53,6 +55,9 @@ const ShareModal = ({ auth: { user, isAuthenticated },
         imageUrls: []
     });
 
+    // Privacy post (public, friends, private)
+    const privacyRef = useRef(1);
+
     const { text, imageUrls } = formData;
 
     const closeModal = () => {
@@ -85,7 +90,8 @@ const ShareModal = ({ auth: { user, isAuthenticated },
         const postId = share && share.postId && share.postId.user ? share.postId._id : post._id;
 
         sharePostTimeLine(postId, {
-            text
+            text,
+            privacy: privacyRef.current
         }).then(data => console.log(data));
 
         closeModal();
@@ -113,7 +119,11 @@ const ShareModal = ({ auth: { user, isAuthenticated },
                                 <div className="media-support-info mt-2">
                                     <h5 className="mb-0 d-inline-block"><Link to={`/profile/${postShared.user}`}>{postShared.name}&nbsp;</Link></h5>
                                     <Status type={postShared.type} tags={postShared.tags} share={postShared.share} />
-                                    <p className="mb-0 text-primary">{dayjs(postShared.createdAt).fromNow()}</p>
+                                    <div className="mb-0">
+                                        <span className=" text-primary">{dayjs(postShared.createdAt).fromNow()}</span>
+                                        <span> · </span>
+                                        <DisplayPrivacy privacy={postShared.privacy} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -148,7 +158,11 @@ const ShareModal = ({ auth: { user, isAuthenticated },
                             <div className="media-support-info mt-2">
                                 <h5 className="mb-0 d-inline-block"><Link to={`/profile/${post.user}`}>{post.name}&nbsp;</Link></h5>
                                 <Status type={post.type} tags={post.tags} share={post.share} />
-                                <p className="mb-0 text-primary">{dayjs(post.createdAt).fromNow()}</p>
+                                <div className="mb-0">
+                                    <span className="text-primary">{dayjs(post.createdAt).fromNow()}</span>
+                                    <span> · </span>
+                                    <DisplayPrivacy privacy={post.privacy} />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -205,51 +219,7 @@ const ShareModal = ({ auth: { user, isAuthenticated },
                                         </div> */}
                                         <h6>Your Story</h6>
                                     </div>
-                                    <div className="iq-card-post-toolbar">
-                                        <div className="dropdown">
-                                            <span className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                                <span className="btn btn-primary">Friend</span>
-                                            </span>
-                                            <div className="dropdown-menu m-0 p-0">
-                                                <a className="dropdown-item p-3" href="index.html#">
-                                                    <div className="d-flex align-items-top">
-                                                        <div className="icon font-size-20"><i className="ri-save-line" /></div>
-                                                        <div className="data ml-2">
-                                                            <h6>Public</h6>
-                                                            <p className="mb-0">Anyone on or off Facebook</p>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                                <a className="dropdown-item p-3" href="index.html#">
-                                                    <div className="d-flex align-items-top">
-                                                        <div className="icon font-size-20"><i className="ri-close-circle-line" /></div>
-                                                        <div className="data ml-2">
-                                                            <h6>Friends</h6>
-                                                            <p className="mb-0">Your Friend on facebook</p>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                                <a className="dropdown-item p-3" href="index.html#">
-                                                    <div className="d-flex align-items-top">
-                                                        <div className="icon font-size-20"><i className="ri-user-unfollow-line" /></div>
-                                                        <div className="data ml-2">
-                                                            <h6>Friends except</h6>
-                                                            <p className="mb-0">Don't show to some friends</p>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                                <a className="dropdown-item p-3" href="index.html#">
-                                                    <div className="d-flex align-items-top">
-                                                        <div className="icon font-size-20"><i className="ri-notification-line" /></div>
-                                                        <div className="data ml-2">
-                                                            <h6>Only Me</h6>
-                                                            <p className="mb-0">Only me</p>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <Toolbar privacy={privacyRef} />
                                 </div>
                             </div>
                             <button type="button" className="btn btn-primary d-block w-100 mt-3"

@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 
 import dayjs from '../../utils/relativeDate';
+import DisplayPrivacy from './toolbar/DisplayPrivacy';
 import Status from './user-post-sub/previews/Status';
 
 const PartsDescription = lazy(() => import('./parts-list/PartsDescription'));
@@ -20,7 +21,7 @@ const HashTag = lazy(() => import('./user-post-sub/hash-tag/HashTag'));
 const Review = lazy(() => import('./user-post-sub/previews/Review'));
 
 const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, comments, createdAt, lengthOfComments,
-    user: userId, buildParts, share, hashtag, tags }
+    user: userId, buildParts, share, hashtag, tags, privacy }
 }) => {
     const sharedPost = (share) => {
         if (share.postId && share.postId.user) {
@@ -39,7 +40,11 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                                 <div className="media-support-info mt-2">
                                     <h5 className="mb-0 d-inline-block"><Link to={`/profile/${share.postId.user}`}>{share.postId.name}&nbsp;</Link></h5>
                                     <Status type={share.postId.type} tags={share.postId.tags} share={share.postId.share} />
-                                    <p className="mb-0 text-primary">{dayjs(share.postId.createdAt).fromNow()}</p>
+                                    <div className="mb-0">
+                                        <span className="text-primary">{dayjs(share.postId.createdAt).fromNow()}</span>
+                                        <span> · </span>
+                                        <DisplayPrivacy privacy={share.postId.privacy} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -70,7 +75,11 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                         <div className="media-support-info mt-2">
                             <h5 className="mb-0 d-inline-block"><Link to={`/profile/${userId}`}>{name}&nbsp;</Link></h5>
                             <Status type={type} tags={tags} share={share} />
-                            <p className="mb-0 text-primary">{dayjs(createdAt).fromNow()}</p>
+                            <div className="mb-0">
+                                <span className="text-primary">{dayjs(createdAt).fromNow()}</span>
+                                <span> · </span>
+                                <DisplayPrivacy privacy={privacy} />
+                            </div>
                         </div>
                         <div className="iq-card-post-toolbar">
                             <div className="dropdown">
@@ -97,7 +106,8 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                                             buildParts,
                                             type,
                                             hashtag,
-                                            tags
+                                            tags,
+                                            privacy
                                         }} />
                                         <Following postId={_id} />
                                         <ReportPost postId={_id} userId={userId} />
