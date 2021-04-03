@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('./db/mongoose');
+
 const userRouter = require('./routers/api/user');
 const authRouter = require('./routers/api/auth');
 const postRouter = require('./routers/api/post');
@@ -56,9 +57,11 @@ app.use('/api/faq', faqRouter);
 app.use('*', notFoundRouter);
 
 //Start nodejs server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log('Server is running on port', PORT);
 });
+
+require('./chat')(server);
 
 process.on('uncaughtException', function (err) {
   console.error(err.stack); // either logs on console or send to other server via api call.

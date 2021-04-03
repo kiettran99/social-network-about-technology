@@ -38,6 +38,10 @@ const userSchema = mongoose.Schema({
     trim: true,
     default: 'user'
   },
+  available: {
+    type: Boolean,
+    default: false
+  },
   status: {
     type: Number,
     enums: [

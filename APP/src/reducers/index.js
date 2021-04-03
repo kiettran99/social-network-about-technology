@@ -11,6 +11,7 @@ import hardware from './hardware';
 import buildParts from './build-parts';
 import search from './search';
 import review from './review';
+import chat from './chat';
 
 export default combineReducers({
     alert,
@@ -24,5 +25,6 @@ export default combineReducers({
     hardware,
     buildParts,
     search,
-    review
+    review,
+    chat
 });

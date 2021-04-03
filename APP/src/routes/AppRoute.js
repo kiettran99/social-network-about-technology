@@ -30,6 +30,7 @@ const Photos = lazy(() => import('../components/photos/Photos'));
 const Reviews = lazy(() => import('../components/reviews/Reivews'));
 const ReviewDetail = lazy(() =>  import('../components/reviews/ReviewDetail'));
 const Faq = lazy(() => import('../components/faq/Faq'));
+const Chat = lazy(() => import('../components/chat/Chat'));
 
 const MainComponent = () => {
     return (
@@ -44,6 +45,7 @@ const MainComponent = () => {
                         <Route exact path="/posts/:id" component={PostDetail} />
                         <Route exact path="/groups" component={Groups} />
                         <Route exact path="/groups/:id" component={GroupPage} />
+                        <Route exact path="/messages/:id" component={Chat} />
                         <Route exact path="/friend-request" component={FriendRequest} />
                         <Route exact path="/friend-list" component={FriendsList} />
                         <Route exact path="/notification" component={Notification} />

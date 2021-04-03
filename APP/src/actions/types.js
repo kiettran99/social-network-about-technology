@@ -116,3 +116,7 @@ export const GET_REVIEW = 'GET_REVIEW';
 export const REVIEW_ERROR = 'REVIEW_ERROR';
 export const ADD_REVIEW = 'ADD_REVIEW';
 export const RESET_REVIEW = 'RESET_REVIEW';
+
+export const GET_PREVIEW_MESSAGE_BOX = 'GET_PREVIEW_MESSAGE_BOX';
+export const GET_USER_PROFILE = 'GET_USER_PROFILE';
+export const CHAT_ERROR = 'CHAT_ERROR';

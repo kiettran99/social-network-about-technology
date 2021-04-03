@@ -10,6 +10,9 @@ const SideBar = () => {
                         <li className="active">
                             <Link to="/" className="iq-waves-effect"><i className="las la-newspaper" /><span>Newsfeed</span></Link>
                         </li>
+                        <li>
+                            <Link to="/reviews" className="iq-waves-effect"><i className="lar la-star"></i><span>Products Review</span></Link>
+                        </li>
                         {/* <li>
                             <a href="profile.html" className="iq-waves-effect"><i className="las la-user" /><span>Profile</span></a>
                         </li> */}
@@ -18,6 +21,9 @@ const SideBar = () => {
                         </li>
                         <li>
                             <Link to="/friend-request" className="iq-waves-effect"><i className="las la-user-plus" /><span>Friend Request</span></Link>
+                        </li>
+                        <li>
+                            <Link to="/messages/5fbc8a4879b19c0015dca73a" className="iq-waves-effect"><i className="lab la-rocketchat" /><span>Messages</span></Link>
                         </li>
                         <li>
                             <Link to="/groups" className="iq-waves-effect"><i className="las la-users" /><span>Group</span></Link>
@@ -35,16 +41,10 @@ const SideBar = () => {
                             <Link to="/notification" className="iq-waves-effect"><i className="las la-bell" /><span>Notification</span></Link>
                         </li>
                         <li>
-                            <Link to="/reviews" className="iq-waves-effect"><i className="lab la-blogger"></i><span>Reviews</span></Link>
-                        </li>
-                        <li>
                             <Link to="/faq" className="iq-waves-effect"><i className="las la-comments"></i><span>FAQ</span></Link>
                         </li>
                         {/* <li>
                             <a href="file.html" className="iq-waves-effect"><i className="las la-file" /><span>Files</span></a>
-                        </li>
-                        <li>
-                            <a href="chat.html" className="iq-waves-effect"><i className="lab la-rocketchat" /><span>Chat</span></a>
                         </li>
                         <li>
                             <a href="todo.html" className="iq-waves-effect"><i className="las la-check-circle" /><span>Todo</span></a>
