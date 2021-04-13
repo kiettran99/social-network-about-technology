@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import dayjs from '../../utils/relativeDate';
+
+const DotDotDot = lazy(() => import('react-dotdotdot'));
 
 const Review = ({ review: { _id, wallpaper, post, createdAt, descriptions } }) => {
     return (
@@ -22,8 +24,12 @@ const Review = ({ review: { _id, wallpaper, post, createdAt, descriptions } }) =
                                     </div>
                                 </div>
                                 <h5 className="mb-2">{post.text}</h5>
-                                <p>{descriptions.general}</p> <Link to={`/reviews/${_id}`} tabIndex={-1}>Read More <i className="ri-arrow-right-s-line" /></Link>
-
+                                <Suspense fallback={<div></div>}>
+                                    <DotDotDot clamp={4}>
+                                        <p>{descriptions.general}</p>
+                                    </DotDotDot>
+                                </Suspense>
+                                <Link to={`/reviews/${_id}`} tabIndex={-1}>Read More <i className="ri-arrow-right-s-line" /></Link>
                                 <div className="group-smile mt-4 d-flex flex-wrap align-items-center justify-content-between">
                                     <div className="d-flex flex-wrap mb-2 float-right">
                                         <div className="mr-2">

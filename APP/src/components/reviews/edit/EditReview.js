@@ -1,11 +1,11 @@
-import React, { useState, useRef, lazy, Suspense } from 'react';
+import React, { useEffect, useState, useRef, lazy, Suspense } from 'react';
 
-import { connect } from 'react-redux';
-import { addReview } from '../../../actions/review';
+import { connect, useSelector } from 'react-redux';
+import { editReview } from '../../../actions/review';
 
 const ImageUploader = lazy(() => import('react-images-upload'));
 
-const CreateReview = ({ addReview, closeModal }) => {
+const EditReview = ({ editReview, closeModal }) => {
 
     const [message, setMessage] = useState(null);
 
@@ -14,12 +14,31 @@ const CreateReview = ({ addReview, closeModal }) => {
     const [wallpaper, setWallpaper] = useState(null);
     const [pictures, setPictures] = useState([]);
 
+    // Get state from redux store
+    const { review, post } = useSelector((state) => {
+        return {
+            review: state.review.review,
+            post: state.post.post
+        };
+    });
+
     const titleRef = useRef();
     const priceRef = useRef();
     const generalRef = useRef();
     const favoriteRef = useRef();
     const restrictRef = useRef();
     const linkRef = useRef();
+
+    useEffect(() => {
+        if (review && post) {
+            titleRef.current.value = post.text;
+            priceRef.current.value = review.price;
+            generalRef.current.value = review.descriptions.general;
+            favoriteRef.current.value = review.descriptions.favorite;
+            restrictRef.current.value = review.descriptions.restrict;
+            linkRef.current.value = review.link || '';
+        }
+    }, [review, post]);
 
     const onDropWallpaper = (pictureFiles) => {
         setWallpaper(pictureFiles);
@@ -65,7 +84,7 @@ const CreateReview = ({ addReview, closeModal }) => {
 
         setWating(true);
 
-        addReview(formData, (message, type) => {
+        editReview(review._id, formData, (message, type) => {
             setMessage(message);
             setWating(false);
 
@@ -180,4 +199,4 @@ const CreateReview = ({ addReview, closeModal }) => {
     );
 };
 
-export default connect(null, { addReview })(CreateReview);
+export default connect(null, { editReview })(EditReview);

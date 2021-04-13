@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
-
-import { likePost, unlikePost } from '../../../../actions/post';
 import { useHistory } from 'react-router-dom';
 
-const Bar = ({ createdAt, postId, likePost, unlikePost }) => {
+import DialogBox from '../../../shared/DialogBox';
+import EditReview from '../../edit/EditReview';
+
+import { likePost, unlikePost } from '../../../../actions/post';
+import { removeReview } from '../../../../actions/review';
+
+const Bar = ({ createdAt, postId, likePost, unlikePost, removeReview }) => {
 
     const [isLiked, setIsLiked] = useState(false);
     const [emoji, setEmoji] = useState(0);
+    const [modalIsOpen, setIsOpen] = useState(false);
 
-    const { auth: { user, isAuthenticated }, post } = useSelector((state) => ({
+    const { auth: { user, isAuthenticated }, post, reviewId } = useSelector((state) => ({
         auth: state.auth,
-        post: state.post.post
+        post: state.post.post,
+        reviewId: state.review.review?._id
     }));
 
     const history = useHistory();
@@ -44,6 +50,22 @@ const Bar = ({ createdAt, postId, likePost, unlikePost }) => {
         }
         setIsLiked(!isLiked);
     };
+
+    const closeModal = () => {
+        setIsOpen(false);
+    }
+
+    const openModal = () => {
+        setIsOpen(true);
+    }
+
+    const onRemoveReview = () => {
+        const confirm = window.confirm('Are you sure removing this review ?');
+
+        if (confirm) {
+            removeReview(reviewId, history);
+        }
+    }
 
     const emojiComponent = (number = 0) => (
         <img src={`/images/icon/0${number + 1}.png`} className="img-fluid" alt=""
@@ -88,7 +110,8 @@ const Bar = ({ createdAt, postId, likePost, unlikePost }) => {
                         <i className="ri-more-fill"></i>
                     </span>
                     <div className="dropdown-menu m-0 p-0">
-                        <a className="dropdown-item p-3" href="group-detail.html#">
+                        <a className="dropdown-item p-3"
+                            onClick={() => openModal()}>
                             <div className="d-flex align-items-top">
                                 <div className="icon font-size-20"><i className="ri-edit-line" /></div>
                                 <div className="data ml-2">
@@ -97,7 +120,8 @@ const Bar = ({ createdAt, postId, likePost, unlikePost }) => {
                                 </div>
                             </div>
                         </a>
-                        <a className="dropdown-item p-3" href="group-detail.html#">
+                        <a className="dropdown-item p-3"
+                            onClick={() => onRemoveReview()}>
                             <div className="d-flex align-items-top">
                                 <div className="icon font-size-20"><i className="ri-save-line" /></div>
                                 <div className="data ml-2">
@@ -109,8 +133,9 @@ const Bar = ({ createdAt, postId, likePost, unlikePost }) => {
                     </div>
                 </div>
             </div>
+            <DialogBox props={{ modalIsOpen, closeModal, openModal }} Component={EditReview} />
         </div>
     );
 };
 
-export default connect(null, { likePost, unlikePost })(Bar);
+export default connect(null, { likePost, unlikePost, removeReview })(Bar);
