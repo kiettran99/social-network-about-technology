@@ -78,7 +78,7 @@ const CreateReview = ({ addReview, closeModal }) => {
     };
 
     return (
-        <div className="modal-dialog modal-lg m-0" role="document">
+        <div className="modal-lg m-0" role="document">
             <div className="modal-content">
                 <div className="modal-header">
                     <h4 className="modal-title">Create Review</h4>

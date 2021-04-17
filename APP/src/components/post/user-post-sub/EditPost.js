@@ -210,7 +210,7 @@ const EditPost = ({ auth: { user, isAuthenticated },
                         }
                     }} /> :
                     (
-                        <div className="modal-dialog modal-lg m-0" role="document">
+                        <div className="modal-lg m-0" role="document">
                             <div className="modal-content">
                                 <div className="modal-header">
                                     <h5 className="modal-title" id="post-modalLabel">Edit Post</h5>

@@ -17,7 +17,7 @@ const customStyles = {
     },
     content: {
         border: 'none',
-        background: 'white',
+        background: 'rgba(0, 0, 0, 0.5)',
         right: 'auto',
         inset: '0px',
         width: '50rem',
@@ -35,7 +35,8 @@ const DialogBox = ({ props: { modalIsOpen, openModal, closeModal, ...rest }, Com
     return (
         <Modal style={customStyles}
             isOpen={modalIsOpen}
-            onRequestClose={closeModal}>
+            onRequestClose={closeModal}
+            shouldCloseOnOverlayClick={false}>
             <Component {...rest} closeModal={closeModal} />
         </Modal>
     );

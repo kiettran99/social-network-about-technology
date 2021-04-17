@@ -48,7 +48,7 @@ const Core = ({ closeModal, addGroup }) => {
     }
 
     return (
-        <div className="modal-dialog modal-lg m-0" role="document">
+        <div className="modal-lg m-0" role="document">
             <div className="modal-content">
                 <div className="modal-header">
                     <h4 className="modal-title">Create Group</h4>

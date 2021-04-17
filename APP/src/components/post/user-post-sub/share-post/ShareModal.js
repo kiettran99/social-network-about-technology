@@ -190,7 +190,7 @@ const ShareModal = ({ auth: { user, isAuthenticated },
             <Modal style={customStyles}
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}>
-                <div className="modal-dialog modal-lg m-0" role="document">
+                <div className="modal-lg m-0" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id="post-modalLabel">Share this post</h5>

@@ -31,6 +31,8 @@ const Reviews = lazy(() => import('../components/reviews/Reivews'));
 const ReviewDetail = lazy(() =>  import('../components/reviews/ReviewDetail'));
 const Faq = lazy(() => import('../components/faq/Faq'));
 const Chat = lazy(() => import('../components/chat/Chat'));
+const Ads = lazy(() => import('../components/advertisement/Ads'));
+const CreateAds  = lazy(() => import('../components/advertisement/create-ads/CreateAds'));
 
 const MainComponent = () => {
     return (
@@ -54,6 +56,8 @@ const MainComponent = () => {
                         <Route exact path="/reviews" component={Reviews} />
                         <Route exact path="/reviews/:id" component={ReviewDetail} />
                         <Route exact path="/faq" component={Faq} />
+                        <Route exact path="/ads" component={Ads} />
+                        <Route exact path="/ads/create" component={CreateAds} />
                         <PrivateRoute exact path="/profile/edit" component={EditProfile} />
                         <Route exact path="/profile/:id" component={Profile} />
                         <Route component={NotFoundPage} />

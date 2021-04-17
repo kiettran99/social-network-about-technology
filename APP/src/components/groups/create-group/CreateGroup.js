@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { connect, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import DialogBox from '../../shared/DialogBox';
 import Core from './core/Core';
@@ -38,7 +37,7 @@ const CreateGroup = ({ getGroups }) => {
     return (
         <>
             <div className="row">
-                <div className="col-8">
+                <div className="col-lg-8 col-12">
                     <div className="iq-card">
                         <div className="iq-card-header d-flex justify-content-between">
                             <div className="header-title">
@@ -76,7 +75,7 @@ const CreateGroup = ({ getGroups }) => {
                         </div>
                     </div>
                 </div>
-                <div className="col-4">
+                <div className="col-lg-4 col-12">
                     <div className="iq-card">
                         <div className="iq-card-header d-flex justify-content-between">
                             <div className="header-title">
