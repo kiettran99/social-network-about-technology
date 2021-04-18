@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import dayjs from 'dayjs';
 
+import useLocalStorage from '../../../../hooks/useLocalStorage';
 import { getPosts } from '../../services/adsServices';
 
 const Posts = ({ closeModal, post, setPost }) => {
@@ -9,18 +10,37 @@ const Posts = ({ closeModal, post, setPost }) => {
     const [posts, setPosts] = useState([]);
     const [isLoading, setLoading] = useState(false);
 
+    // Hook reference html element
+    const nameRef = useRef();
+
+    const [searchHistory, setSearchHistory] = useLocalStorage('ads-search-history', null);
+
     // Hook effect
     useEffect(() => {
         setLoading(true);
 
-        getPosts().then((data) => {
+        // Check if users searched then re-search
+        if (searchHistory) {
+            nameRef.current.value = searchHistory;
+
+            getAndSetState(searchHistory);
+        }
+        else {
+            getAndSetState();
+        }
+
+    }, []);
+
+    // Call Service to get data
+    const getAndSetState = (headline) => {
+
+        getPosts(headline).then((data) => {
             setLoading(false);
             setPosts(data);
         }).catch(() => {
             setLoading(false);
         });
-
-    }, []);
+    };
 
     // Event handler with html elements
     const onRowClick = (currentPost) => {
@@ -38,7 +58,15 @@ const Posts = ({ closeModal, post, setPost }) => {
         }
 
         return '';
-    }
+    };
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+
+        getAndSetState(nameRef.current?.value);
+
+        setSearchHistory(nameRef.current?.value);
+    };
 
     return (
         <div className="modal-lg m-0" role="document">
@@ -49,6 +77,16 @@ const Posts = ({ closeModal, post, setPost }) => {
                 </div>
 
                 <div className="modal-body">
+                    <div className="form-group">
+                        <div className="iq-search-bar members-search p-0">
+                            <form onSubmit={onSubmit} className="searchbox w-auto">
+                                <input type="text" className="text search-input bg-grey" placeholder="Type here to search..."
+                                    ref={nameRef} />
+                                <a className="search-link" type="submit"><i className="ri-search-line" /></a>
+                            </form>
+                        </div>
+                    </div>
+
                     <table className="table table-striped table-hover">
                         <thead>
                             <tr>

@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
 import 'rc-steps/assets/index.css';
 import Steps, { Step } from 'rc-steps';
+
 import DialogBox from '../../shared/DialogBox';
 import Posts from './posts/Posts';
+import PreviewPost from './preview-post/PreviewPost';
+
+import { checkNameExisted, createAds } from '../services/adsServices';
 
 const CreateAds = (props) => {
 
+    // State
     const [step, setStep] = useState(0);
     const [post, setPost] = useState(null);
 
+    const [nameCompaign, setNameCompaign] = useState('');
+    const [message, setMessage] = useState('');
+    const [isPassed, setPassed] = useState(false);
+
+    // State and Config Modal
     const [modalIsOpen, setIsOpen] = useState(false);
 
     const closeModal = () => {
@@ -31,6 +41,39 @@ const CreateAds = (props) => {
         }
     }
 
+    // Handler
+    const onFocusOutAdCompaign = () => {
+        setPassed(false);
+
+        checkNameExisted(nameCompaign).then(data => {
+            if (data.exists) {
+                setPassed(false);
+                return setMessage('The Ad Compaign is existed. Please try other name.');
+            }
+
+            if (nameCompaign === '') {
+                return setPassed(false);
+            }
+
+            setMessage('');
+            setPassed(true);
+        }).catch(() => {
+            setMessage('');
+        })
+    };
+
+    const onCreateAds = async () => {
+        const ads = {
+            name: nameCompaign,
+            post: post._id
+        };
+
+        await createAds(ads);
+
+        // Done
+        setStep(4);
+    };
+
     const displayByStep = (step) => {
         switch (step) {
             case 0:
@@ -39,8 +82,13 @@ const CreateAds = (props) => {
                         <label>Create name campaign</label>
                         <div className="form-group">
                             <input className="form-control"
+                                autoFocus={true}
+                                value={nameCompaign}
+                                onChange={(e) => setNameCompaign(e.target.value)}
+                                onBlur={onFocusOutAdCompaign}
                                 placeholder="E.x. The Ad Compaign" />
                         </div>
+                        {message && <p className="text-danger">{message}</p>}
                     </div>
                 );
             case 1:
@@ -56,10 +104,13 @@ const CreateAds = (props) => {
                                     onClick={() => openModal()}>Choose a post</button>
                                 <button type="button" className="btn btn-light"
                                     onClick={() => openModal()}><i className="ri-add-fill"></i></button>
+
+                                <button type="button" className="btn btn-primary"
+                                    onClick={() => onCreateAds()}>Create</button>
                             </div>
 
                             <div className="col-lg-7 col-12">
-                                {/* <UserPost /> */}
+                                <PreviewPost post={post} />
                             </div>
                         </div>
                     </div>
@@ -112,6 +163,7 @@ const CreateAds = (props) => {
                                 {step < 4 && (
                                     <button className="btn btn-primary"
                                         type="button"
+                                        disabled={!isPassed}
                                         onClick={() => onNextStep()}>Next</button>
                                 )}
                             </div>

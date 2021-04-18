@@ -21,8 +21,8 @@ const Home = ({ location, loadUser, history }) => {
 
     if (query.token) {
       setAuthToken(query.token);
-      history.push('/');
       loadUser();
+      history.push('/');
     }
   }, []);
 
