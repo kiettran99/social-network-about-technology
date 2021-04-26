@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
         const limit = parseInt(req.query.limit) || 5;
         const skip = parseInt(req.query.skip) || 0;
 
-        const reviews = await Review.find({}).limit(limit).skip(skip)
+        const reviews = await Review.find({ status: 1 }).limit(limit).skip(skip)
             .sort({ createdAt: 'desc' }).populate('post');
 
         res.json(reviews);
@@ -35,7 +35,7 @@ router.get('/:id', async (req, res) => {
 
         // Check id is not empty
         if (!id) {
-            return res.status(400).send('Group id is empty.');
+            return res.status(400).send('Review id is empty.');
         }
 
         // Limit post with 5 reviews and if not skip then default value is 0.
@@ -126,6 +126,84 @@ router.post('/', auth,
 
         post.type.review = review.id;
         await post.save();
+
+        res.json(review);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route PUT /api/reviews/:id
+// @desc Edit a new review.
+// @access private
+router.put('/:id', auth,
+    upload.fields([{ name: 'wallpaper', maxCount: 1 }, { name: 'pictures' }]), [
+    body('title', 'title is required.').not().isEmpty()
+], async (req, res) => {
+    try {
+        // Find a review
+        const id = req.params.id;
+
+        // Check id is not empty
+        if (!id) {
+            return res.status(400).send('Review id is empty.');
+        }
+
+        const errors = validationResult(req);
+
+        // Check errors is exists
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const review = await Review.findById(id);
+
+        review.price = req.body.price;
+        review.descriptions = JSON.parse(req.body.descriptions);
+        review.link = req.body.link;
+
+        await review.save();
+
+        // Find and update title when user has changed it
+        const post = await Post.findByIdAndUpdate(review.post?._id, { text: req.body.title }, { new: true });
+
+        // Check post uploaded image.
+        if (req.files && req.files.pictures) {
+
+            await Promise.all(req.files.pictures.map(async (file) => {
+                //Create a storage ref
+                const storageRef = storage.ref(`/posts/${post.id}/${file.originalname}`);
+
+                //Upload image
+                await storageRef.put(file.buffer);
+
+                const fileUrl = await storageRef.getDownloadURL();
+
+                post.imageUrls.push(fileUrl);
+            }));
+
+            await post.save();
+        }
+
+        if (req.files && req.files.wallpaper) {
+            const file = req.files.wallpaper[0];
+
+            //Create a storage ref
+            const storageRef = storage.ref(`/reviews/${review.id}/${file.originalname}`);
+
+            //Upload image
+            await storageRef.put(file.buffer);
+
+            const wallpaper = await storageRef.getDownloadURL();
+
+            review.wallpaper = wallpaper;
+
+            await review.save();
+        }
+
+        review.post = post;
 
         res.json(review);
     }

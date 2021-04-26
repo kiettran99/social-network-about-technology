@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;
 
-const reviewSchema = Schema({
+const reviewSchema = new Schema({
     post: {
         type: ObjectId,
         ref: 'Post'
