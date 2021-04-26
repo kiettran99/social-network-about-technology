@@ -19,32 +19,65 @@ const PreviewPost = (props) => {
         return state.auth.user
     });
 
+    const renderUserOrPost = (post) => {
+        if (post && post.user) {
+            return (
+                <div className="d-flex flex-wrap">
+                    <div className="media-support-user-img mr-3">
+                        <img className="avatar-60 rounded-circle" src={post.avatar} alt="" />
+                    </div>
+                    <div className="media-support-info mt-2">
+                        <h5 className="mb-0 d-inline-block"><Link to={`/profile/${post.user}`}>{post.name}&nbsp;</Link></h5>
+                        <div className="mb-0">
+                            <span className="text-muted">Sponsored</span>
+                            <span> · </span>
+                            <DisplayPrivacy privacy={post ? post.privacy : sample.privacy} />
+                        </div>
+                    </div>
+                    <div className="iq-card-post-toolbar">
+                        <div className="dropdown">
+                            <span className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                                <i className="ri-more-fill" />
+                            </span>
+                            <div className="dropdown-menu m-0 p-0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        return (
+            <div className="d-flex flex-wrap">
+                <div className="media-support-user-img mr-3">
+                    <img className="avatar-60 rounded-circle" src={user && user.avatar} alt="" />
+                </div>
+                <div className="media-support-info mt-2">
+                    {user && <h5 className="mb-0 d-inline-block"><Link to={`/profile/${user._id}`}>{user.fullname}&nbsp;</Link></h5>}
+                    <div className="mb-0">
+                        <span className="text-muted">Sponsored</span>
+                        <span> · </span>
+                        <DisplayPrivacy privacy={post ? post.privacy : sample.privacy} />
+                    </div>
+                </div>
+                <div className="iq-card-post-toolbar">
+                    <div className="dropdown">
+                        <span className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
+                            <i className="ri-more-fill" />
+                        </span>
+                        <div className="dropdown-menu m-0 p-0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
             <div className="iq-card-body">
                 <div className="user-post-data">
-                    <div className="d-flex flex-wrap">
-                        <div className="media-support-user-img mr-3">
-                            <img className="avatar-60 rounded-circle" src={user && user.avatar} alt="" />
-                        </div>
-                        <div className="media-support-info mt-2">
-                            {user && <h5 className="mb-0 d-inline-block"><Link to={`/profile/${user._id}`}>{user.fullname}&nbsp;</Link></h5>}
-                            <div className="mb-0">
-                                <span className="text-muted">Sponsored</span>
-                                <span> · </span>
-                                <DisplayPrivacy privacy={post ? post.privacy : sample.privacy} />
-                            </div>
-                        </div>
-                        <div className="iq-card-post-toolbar">
-                            <div className="dropdown">
-                                <span className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                                    <i className="ri-more-fill" />
-                                </span>
-                                <div className="dropdown-menu m-0 p-0">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {renderUserOrPost(post)}
                 </div>
                 <Suspense fallback={<div>Loading...</div>}>
                     <div className="mt-3">

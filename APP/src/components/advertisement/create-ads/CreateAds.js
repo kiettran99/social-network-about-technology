@@ -7,6 +7,7 @@ import Posts from './posts/Posts';
 import PreviewPost from './preview-post/PreviewPost';
 
 import { checkNameExisted, createAds } from '../services/adsServices';
+import Audience from './audience/Audience';
 
 const CreateAds = (props) => {
 
@@ -20,6 +21,13 @@ const CreateAds = (props) => {
 
     // State and Config Modal
     const [modalIsOpen, setIsOpen] = useState(false);
+
+    // Audience
+    const [fromAge, setFromAge] = useState(18);
+    const [toAge, setToAge] = useState(32);
+
+    const [gender, setGender] = useState('all');
+    const [messageAge, setMessageAge] = useState(null);
 
     const closeModal = () => {
         setIsOpen(false);
@@ -65,7 +73,14 @@ const CreateAds = (props) => {
     const onCreateAds = async () => {
         const ads = {
             name: nameCompaign,
-            post: post._id
+            post: post._id,
+            audience: {
+                gender,
+                age: {
+                    from: fromAge,
+                    to: toAge
+                }
+            }
         };
 
         await createAds(ads);
@@ -116,13 +131,14 @@ const CreateAds = (props) => {
                     </div>
                 );
             case 2:
-                return (
-                    <div className="ad-compaign-3">
-                        <label>Audience</label>
-                        <input className="form-control" />
-                        <br />
-                    </div>
-                );
+                const props = {
+                    setPassed,
+                    fromAge, setFromAge,
+                    toAge, setToAge,
+                    gender, setGender,
+                    message: messageAge, setMessage: setMessageAge
+                }
+                return <Audience {...props} />
         }
     }
 
