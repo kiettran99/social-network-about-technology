@@ -12,12 +12,18 @@ const CommentsBar = lazy(() => import('../../../post/user-post-sub/CommentsBar')
 const PreviewPost = (props) => {
 
     //  Get properties from props
-    const { post } = props;
+    const { post, handleClick } = props;
 
     // Get User in redux store
     const user = useSelector((state) => {
         return state.auth.user
     });
+
+    const handleClickHeadlineInfo = (e) => {
+        if (handleClick) {
+            handleClick(e);
+        }
+    };
 
     const renderUserOrPost = (post) => {
         if (post && post.user) {
@@ -76,11 +82,13 @@ const PreviewPost = (props) => {
     return (
         <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
             <div className="iq-card-body">
-                <div className="user-post-data">
+                <div className="user-post-data"
+                    onClick={handleClickHeadlineInfo}>
                     {renderUserOrPost(post)}
                 </div>
                 <Suspense fallback={<div>Loading...</div>}>
-                    <div className="mt-3">
+                    <div className="mt-3"
+                        onClick={handleClickHeadlineInfo}>
                         <BubbleEditor readOnly={true} text={post ? post.text : sample.text} />
                     </div>
                     <div className="user-post">

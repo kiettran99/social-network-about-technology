@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Ads = () => {
-
     return (
         <div id="content-page" className="content-page bg-white">
             <div className="container">

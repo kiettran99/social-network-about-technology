@@ -21,8 +21,10 @@ const HashTag = lazy(() => import('./user-post-sub/hash-tag/HashTag'));
 const Review = lazy(() => import('./user-post-sub/previews/Review'));
 
 const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, comments, createdAt, lengthOfComments,
-    user: userId, buildParts, share, hashtag, tags, privacy }
+    user: userId, buildParts, share, hashtag, tags, privacy },
+    handleClick
 }) => {
+
     const sharedPost = (share) => {
         if (share.postId && share.postId.user) {
             return (
@@ -64,10 +66,17 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
         }
     };
 
+    const handleClickHeadlineInfo = (e) => {
+        if (handleClick) {
+            handleClick(e, _id);
+        }
+    };
+
     return (
         <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
             <div className="iq-card-body">
-                <div className="user-post-data">
+                <div className="user-post-data"
+                    onClick={handleClickHeadlineInfo}>
                     <div className="d-flex flex-wrap">
                         <div className="media-support-user-img mr-3">
                             <img className="avatar-60 rounded-circle" src={avatar} alt="" />
@@ -122,7 +131,8 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                     {type && type.review ?
                         <Review text={text} Component={BubbleEditor}
                             reviewId={type.review} /> : (
-                            <div className="mt-3">
+                            <div className="mt-3"
+                                onClick={handleClickHeadlineInfo}>
                                 <BubbleEditor readOnly={true} text={text} />
                             </div>
                         )}

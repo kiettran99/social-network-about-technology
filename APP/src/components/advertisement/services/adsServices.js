@@ -25,3 +25,56 @@ export const createAds = async (data) => {
         console.log({ e });
     }
 };
+
+export const hasUserCreatedAds = async () => {
+    try {
+        const res = await axios.get(`${urlAPI}/api/ads/create/status`);
+
+        return res.data;
+    }
+    catch (e) {
+        console.log({ e });
+
+        return false;
+    }
+};
+
+export const getListAds = async ({ skip, limit, selectedPage }) => {
+    try {
+
+        const options = { skip, limit, page: selectedPage };
+
+        let query = '?';
+
+        if (options) {
+            for (const [key, value] of Object.entries(options)) {
+                console.log(key, value);
+                if (value) {
+                    query += `${key}=${value}&`;
+                }
+            }
+
+            query = query.slice(0, -1);
+        }
+
+        const res = await axios.get(`${urlAPI}/api/ads/list` + query);
+
+        return res.data;
+    }
+    catch (e) {
+        console.log({ e });
+
+        return [];
+    }
+};
+
+export const handleClickAds = async (id) => {
+    try {
+        const res = await axios.put(`${urlAPI}/api/ads/${id}/click`);
+
+        console.log(res);
+    }
+    catch (e) {
+        console.log({ e });
+    }
+};

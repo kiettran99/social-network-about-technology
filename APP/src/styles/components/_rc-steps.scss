@@ -1,0 +1,13 @@
+.rc-steps {
+    font-size: 0;
+    width: 100%;
+    line-height: 1.5;
+    display: block !important;
+}
+
+@media (min-width: 767.98px) {
+    .rc-steps {
+        line-height: 1.75;
+        display: flex !important;
+    }
+}

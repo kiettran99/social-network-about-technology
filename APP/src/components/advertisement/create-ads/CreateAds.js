@@ -131,6 +131,7 @@ const CreateAds = (props) => {
                     </div>
                 );
             case 2:
+            default:
                 const props = {
                     setPassed,
                     fromAge, setFromAge,
@@ -152,9 +153,9 @@ const CreateAds = (props) => {
                         </div>
                     </div>
                     <div className="iq-card-body">
-                        <div className="container">
-                            <div className="iq-card-header text-center">
-                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                        <div className="container-fluid-sm">
+                            <div className="mb-4 text-center">
+                                <p>When you create a campaign, select a goal that corresponds to the main thing you want your campaign to achieve for your business.</p>
                             </div>
 
                             <div className="form-group">
