@@ -2,7 +2,6 @@ import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import NavBar from '../components/layout/NavBar';
-import Alert from '../components/layout/Alert';
 
 import PrivateRoute from '../components/routing/PrivateRoute';
 import Footer from '../components/layout/Footer';
@@ -15,6 +14,7 @@ import ForgotPassword from '../components/auth/ForgotPassword';
 import ResetPassword from '../components/auth/ResetPassword';
 import Loading from '../components/layout/Loading';
 
+const Alert = lazy(() => import('../components/layout/Alert'));
 const Home = lazy(() => import('../components/home/Home'));
 const PostDetail = lazy(() => import('../components/post/PostDetail'));
 const Groups = lazy(() => import('../components/groups/Groups'));
@@ -28,11 +28,11 @@ const NotFoundPage = lazy(() => import('../components/not-found-page/NotFoundPag
 const SearchPage = lazy(() => import('../components/search/Search'));
 const Photos = lazy(() => import('../components/photos/Photos'));
 const Reviews = lazy(() => import('../components/reviews/Reivews'));
-const ReviewDetail = lazy(() =>  import('../components/reviews/ReviewDetail'));
+const ReviewDetail = lazy(() => import('../components/reviews/ReviewDetail'));
 const Faq = lazy(() => import('../components/faq/Faq'));
 const Chat = lazy(() => import('../components/chat/Chat'));
 const AdsRouter = lazy(() => import('../components/advertisement/AdsRouter'));
-const CreateAds  = lazy(() => import('../components/advertisement/create-ads/CreateAds'));
+const CreateAds = lazy(() => import('../components/advertisement/create-ads/CreateAds'));
 
 const MainComponent = () => {
     return (
@@ -40,8 +40,8 @@ const MainComponent = () => {
             <SideBar />
             <NavBar />
             <section className=''>
-                <Alert />
                 <Suspense fallback={<Loading />}>
+                    <Alert />
                     <Switch>
                         <Route exact path="/" component={Home} />
                         <Route exact path="/posts/:id" component={PostDetail} />
@@ -71,22 +71,18 @@ const MainComponent = () => {
 
 const AppRoute = () => (
     <BrowserRouter>
-        <>
-            <div id="loading">
-                <div id="loading-center">
-                </div>
+        <div id="loading">
+            <div id="loading-center">
             </div>
+        </div>
 
-            <Alert />
-
-            <Switch>
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/register" component={Register} />
-                <Route exact path="/forgot-password" component={ForgotPassword} />
-                <Route exact path="/reset-password/:token" component={ResetPassword} />
-                <Route component={MainComponent} />
-            </Switch>
-        </>
+        <Switch>
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/forgot-password" component={ForgotPassword} />
+            <Route exact path="/reset-password/:token" component={ResetPassword} />
+            <Route component={MainComponent} />
+        </Switch>
     </BrowserRouter>
 );
 

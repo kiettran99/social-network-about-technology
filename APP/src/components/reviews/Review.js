@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import dayjs from '../../utils/relativeDate';
 
 const DotDotDot = lazy(() => import('react-dotdotdot'));
+const LazyLoadingImage = lazy(() => import('../post/lazy-loading-image/LazyLoadingImage'));
 
 const Review = ({ review: { _id, wallpaper, post, createdAt, descriptions } }) => {
     return (
@@ -12,7 +13,7 @@ const Review = ({ review: { _id, wallpaper, post, createdAt, descriptions } }) =
                     <div className="row align-items-center">
                         <div className="col-md-6">
                             <div className="image-block">
-                                <img src={wallpaper} className="img-fluid rounded w-100" alt="blog-img" />
+                                <LazyLoadingImage src={wallpaper} className="img-fluid rounded w-100" alt="blog-img" />
                             </div>
                         </div>
                         <div className="col-md-6">

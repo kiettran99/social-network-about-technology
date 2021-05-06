@@ -9,7 +9,7 @@ const CommentsBar = ({ likePost, unlikePost,
     auth: { user, isAuthenticated },
     history,
     likes, lengthOfComments, share,
-    postId
+    postId, isMobileScreen = false
 }) => {
 
     const [isLiked, setIsLiked] = useState(false);
@@ -119,7 +119,7 @@ const CommentsBar = ({ likePost, unlikePost,
             </div>
             {isAuthenticated && (
                 <div className="share-block d-flex align-items-center feather-icon mr-3">
-                    <ShareModal />
+                    <ShareModal isMobileScreen={isMobileScreen} />
                 </div>
             )}
         </div>

@@ -14,4 +14,4 @@ const LazyLoadingImage = (props) => {
     />
 };
 
-export default LazyLoadingImage;
+export default React.memo(LazyLoadingImage);

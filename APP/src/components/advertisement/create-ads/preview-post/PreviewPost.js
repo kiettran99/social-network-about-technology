@@ -98,11 +98,11 @@ const PreviewPost = (props) => {
                         {post ? (
                             <CommentsBar postId={post._id} likes={post.likes}
                                 lengthOfComments={post.lengthOfComments}
-                                share={post.share} />
+                                share={post.share} isMobileScreen={true} />
                         ) : (
                             <CommentsBar postId={sample._id} likes={sample.likes}
                                 lengthOfComments={sample.lengthOfComments}
-                                share={sample.share} />
+                                share={sample.share} isMobileScreen={true} />
                         )}
                         <hr />
                     </div>
