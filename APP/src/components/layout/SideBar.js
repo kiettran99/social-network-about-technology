@@ -20,7 +20,7 @@ const SideBar = () => {
                             <Link to="/friend-request" className="iq-waves-effect"><i className="las la-user-plus" /><span>Friend Request</span></Link>
                         </li>
                         <li>
-                            <Link to="/messages/5fbc8a4879b19c0015dca73a" className="iq-waves-effect"><i className="lab la-rocketchat" /><span>Messages</span></Link>
+                            <Link to="/messages" className="iq-waves-effect"><i className="lab la-rocketchat" /><span>Messages</span></Link>
                         </li>
                         <li>
                             <Link to="/groups" className="iq-waves-effect"><i className="las la-users" /><span>Group</span></Link>

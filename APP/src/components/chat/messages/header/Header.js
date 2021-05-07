@@ -40,21 +40,21 @@ const Header = () => {
                 </div>
                 <UserDetail userProfile={userProfile} />
                 <div className="chat-header-icons d-flex">
-                    <a href="javascript:void();" className="chat-icon-phone iq-bg-primary">
+                    <a href="#!" className="chat-icon-phone iq-bg-primary">
                         <i className="ri-phone-line" />
                     </a>
-                    <a href="javascript:void();" className="chat-icon-video iq-bg-primary">
+                    <a href="#!" className="chat-icon-video iq-bg-primary">
                         <i className="ri-vidicon-line" />
                     </a>
-                    <a href="javascript:void();" className="chat-icon-delete iq-bg-primary">
+                    <a href="#!" className="chat-icon-delete iq-bg-primary">
                         <i className="ri-delete-bin-line" />
                     </a>
                     <span className="dropdown iq-bg-primary">
                         <i className="ri-more-2-line cursor-pointer dropdown-toggle nav-hide-arrow cursor-pointer pr-0" id="dropdownMenuButton02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu" />
                         <span className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton02">
-                            <a className="dropdown-item" href="JavaScript:void(0);"><i className="fa fa-thumb-tack" aria-hidden="true" /> Pin to top</a>
-                            <a className="dropdown-item" href="JavaScript:void(0);"><i className="fa fa-trash-o" aria-hidden="true" /> Delete chat</a>
-                            <a className="dropdown-item" href="JavaScript:void(0);"><i className="fa fa-ban" aria-hidden="true" /> Block</a>
+                            <a className="dropdown-item" href="#!"><i className="fa fa-thumb-tack" aria-hidden="true" /> Pin to top</a>
+                            <a className="dropdown-item" href="#!"><i className="fa fa-trash-o" aria-hidden="true" /> Delete chat</a>
+                            <a className="dropdown-item" href="#!"><i className="fa fa-ban" aria-hidden="true" /> Block</a>
                         </span>
                     </span>
                 </div>

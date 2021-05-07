@@ -1,6 +1,7 @@
 import React, { useEffect, lazy, Suspense } from 'react';
 import useSocketIO from './useSocketIO';
 import urlAPI from '../../utils/urlAPI';
+import StartChat from './StartChat';
 
 const Messages = lazy(() => import('./messages/Messages'));
 const SideBar = lazy(() => import('./sidebar/SideBar'));
@@ -39,7 +40,7 @@ const Chat = ({ match }) => {
                                     <div className="row">
                                         <Suspense fallback={<div></div>}>
                                             <SideBar socket={socket} />
-                                            <Messages socket={socket} match={match} />
+                                            {match && match.params.id ? <Messages socket={socket} match={match} />: <StartChat />}
                                         </Suspense>
                                     </div>
                                 </div>

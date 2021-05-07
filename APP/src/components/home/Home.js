@@ -18,7 +18,11 @@ const Home = ({ location, loadUser, history }) => {
     const query = queryString.parse(location.search);
 
     if (query.token) {
+      // Save user token into Local Storage
+      localStorage.setItem('token', query.token);
       setAuthToken(query.token);
+
+      // Update User and clear params url
       loadUser();
       history.push('/');
     }
