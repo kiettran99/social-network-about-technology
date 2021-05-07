@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { joinGroup, unjoinGroup } from '../../actions/group';
 import { connect } from 'react-redux';
+
+const DotDotDot = lazy(() => import('react-dotdotdot'));
 
 const GroupsItem = ({ group: { _id, name, info, wallpaper, avatar, lengthOfMembers, members = [] },
     auth: { user, loading, isAuthenticated }, joinGroup, unjoinGroup, history
@@ -46,7 +48,11 @@ const GroupsItem = ({ group: { _id, name, info, wallpaper, avatar, lengthOfMembe
                     </div>
                     <div className="group-info pt-3 pb-3">
                         <h4 className="text-primary"><Link to={`/groups/${_id}`}>{name}</Link></h4>
-                        <p>{info}</p>
+                        <Suspense fallback={<div></div>}>
+                            <DotDotDot clamp={2}>
+                                <p>{info}</p>
+                            </DotDotDot>
+                        </Suspense>
                     </div>
                     <div className="group-details d-inline-block pb-3">
                         <ul className="d-flex align-items-center justify-content-between list-inline m-0 p-0">

@@ -24,11 +24,13 @@ export const loadUser = () => async dispatch => {
         });
     }
     catch (e) {
-        // console.log(e);
+         console.log(e);
 
-        dispatch({
-            type: AUTH_ERROR
-        })
+        if (e.response?.status === 401) {
+            dispatch({
+                type: AUTH_ERROR
+            })
+        } 
     }
 };
 

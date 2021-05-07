@@ -1,22 +1,20 @@
 import React from 'react';
 import PartsList from './PartsLList';
-import Rating from './Rating';
-import Score from './Score';
+// import Rating from './Rating';
+// import Score from './Score';
 
-const Modal = ({ buildParts }) => {
+const Modal = ({ closeModal, buildParts }) => {
     return (
-        <div className="modal fade" id="parts-modal" tabIndex={-1} role="dialog" aria-labelledby="post-modalLabel" aria-hidden="true" style={{ display: 'none' }}>
-            <div className="modal-dialog modal-lg" role="document">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title" id="post-modalLabel">Hardwares</h5>
-                        <button type="button" className="btn btn-secondary" data-dismiss="modal"><i className="ri-close-fill" /></button>
-                    </div>
-                    <div className="modal-body">
-                        <Rating buildPartsId={buildParts._id} />
-                        <Score />
-                        <PartsList buildParts={buildParts} />
-                    </div>
+        <div className="modal-lg m-0" role="document">
+            <div className="modal-content">
+                <div className="modal-header">
+                    <h4 className="modal-title">PC Specifications</h4>
+                    <button onClick={() => closeModal()} type="button" className="btn btn-secondary" data-dismiss="modal"><i className="ri-close-fill" /></button>
+                </div>
+                <div className="modal-body">
+                    {/* <Rating buildPartsId={buildParts._id} /> */}
+                    {/* <Score /> */}
+                    <PartsList buildParts={buildParts} />
                 </div>
             </div>
         </div>

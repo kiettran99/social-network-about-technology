@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import dayjs from '../../utils/relativeDate';
+
+const DotDotDot = lazy(() => import('react-dotdotdot'));
+const LazyLoadingImage = lazy(() => import('../post/lazy-loading-image/LazyLoadingImage'));
 
 const Review = ({ review: { _id, wallpaper, post, createdAt, descriptions } }) => {
     return (
@@ -10,7 +13,7 @@ const Review = ({ review: { _id, wallpaper, post, createdAt, descriptions } }) =
                     <div className="row align-items-center">
                         <div className="col-md-6">
                             <div className="image-block">
-                                <img src={wallpaper} className="img-fluid rounded w-100" alt="blog-img" />
+                                <LazyLoadingImage src={wallpaper} className="img-fluid rounded w-100" alt="blog-img" />
                             </div>
                         </div>
                         <div className="col-md-6">
@@ -22,8 +25,12 @@ const Review = ({ review: { _id, wallpaper, post, createdAt, descriptions } }) =
                                     </div>
                                 </div>
                                 <h5 className="mb-2">{post.text}</h5>
-                                <p>{descriptions.general}</p> <Link to={`/reviews/${_id}`} tabIndex={-1}>Read More <i className="ri-arrow-right-s-line" /></Link>
-
+                                <Suspense fallback={<div></div>}>
+                                    <DotDotDot clamp={4}>
+                                        <p>{descriptions.general}</p>
+                                    </DotDotDot>
+                                </Suspense>
+                                <Link to={`/reviews/${_id}`} tabIndex={-1}>Read More <i className="ri-arrow-right-s-line" /></Link>
                                 <div className="group-smile mt-4 d-flex flex-wrap align-items-center justify-content-between">
                                     <div className="d-flex flex-wrap mb-2 float-right">
                                         <div className="mr-2">

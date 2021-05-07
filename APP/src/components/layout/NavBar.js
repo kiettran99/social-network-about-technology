@@ -8,6 +8,8 @@ import { resetPost } from '../../actions/post';
 
 import Search from './search/Search';
 
+import useAppearAdsManageer from '../../hooks/useAppearAdsManageer';
+
 const NotificationBar = lazy(() => import('./notification-bar/NotificationBar'));
 const FriendsRequest = lazy(() => import('./friends-request/FriendsRequest'));
 
@@ -16,6 +18,7 @@ const NavBar = ({ auth: { isAuthenticated, user, loading },
 }) => {
 
   const ref = useRef(null);
+  useAppearAdsManageer();
 
   useEffect(() => {
     if (ref.current) {

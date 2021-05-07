@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
+
+const LazyLoadingImage = lazy(() => import('../post/lazy-loading-image/LazyLoadingImage'));
 
 const Photo = ({ photo: { _id, imageUrl, type = 'posts' } }) => {
     return (
         <div className="col-md-6 col-lg-4 mb-3">
             <div className="user-images position-relative overflow-hidden">
                 <Link to={`/${type}/${_id}`}>
-                    <img src={imageUrl} className="img-fluid rounded" alt="Responsive image" />
+                    <Suspense fallback={<div></div>}>
+                        <LazyLoadingImage src={imageUrl} className="img-fluid rounded" alt="Responsive image" />
+                    </Suspense>
                 </Link>
                 <div className="image-hover-data">
                     <div className="product-elements-icon">

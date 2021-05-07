@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import dayjs from '../../utils/relativeDate';
 import DisplayPrivacy from './toolbar/DisplayPrivacy';
 import Status from './user-post-sub/previews/Status';
+import Addons from './addons/Addons';
+import Shop from './addons/shop/Shop';
 
-const PartsDescription = lazy(() => import('./parts-list/PartsDescription'));
 const DeletePost = lazy(() => import('./user-post-sub/DeletePost'));
 const EditPost = lazy(() => import('./user-post-sub/EditPost'));
 const Following = lazy(() => import('./user-post-sub/Following'));
@@ -21,8 +22,10 @@ const HashTag = lazy(() => import('./user-post-sub/hash-tag/HashTag'));
 const Review = lazy(() => import('./user-post-sub/previews/Review'));
 
 const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, comments, createdAt, lengthOfComments,
-    user: userId, buildParts, share, hashtag, tags, privacy }
+    user: userId, buildParts, share, hashtag, tags, privacy, shop },
+    handleClick
 }) => {
+
     const sharedPost = (share) => {
         if (share.postId && share.postId.user) {
             return (
@@ -64,15 +67,23 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
         }
     };
 
+    const handleClickHeadlineInfo = (e) => {
+        if (handleClick) {
+            handleClick(e, _id);
+        }
+    };
+
     return (
         <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
             <div className="iq-card-body">
                 <div className="user-post-data">
                     <div className="d-flex flex-wrap">
-                        <div className="media-support-user-img mr-3">
+                        <div className="media-support-user-img mr-3"
+                            onClick={handleClickHeadlineInfo}>
                             <img className="avatar-60 rounded-circle" src={avatar} alt="" />
                         </div>
-                        <div className="media-support-info mt-2">
+                        <div className="media-support-info mt-2"
+                            onClick={handleClickHeadlineInfo}>
                             <h5 className="mb-0 d-inline-block"><Link to={`/profile/${userId}`}>{name}&nbsp;</Link></h5>
                             <Status type={type} tags={tags} share={share} />
                             <div className="mb-0">
@@ -107,7 +118,8 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                                             type,
                                             hashtag,
                                             tags,
-                                            privacy
+                                            privacy,
+                                            shop
                                         }} />
                                         <Following postId={_id} />
                                         <ReportPost postId={_id} userId={userId} />
@@ -126,13 +138,9 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                                 <BubbleEditor readOnly={true} text={text} />
                             </div>
                         )}
-                    {buildParts && (
-                        <div className="mt-3">
-                            {/* Component build pc part */}
-                            <PartsDescription buildParts={buildParts} />
-                        </div>
-                    )}
+                    <Addons buildParts={buildParts} />
                     {hashtag && <HashTag hashtag={hashtag} />}
+                    {shop && <Shop userId={userId} shop={shop} />}
                     <div className="user-post">
                         <AttachPost imageUrls={imageUrls} />
                     </div>

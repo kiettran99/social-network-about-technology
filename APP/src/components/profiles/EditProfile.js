@@ -230,17 +230,6 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                                                         />
                                                     </div>
                                                     <div className="form-group col-sm-6">
-                                                        <label>Marital Status:</label>
-                                                        <select className="form-control" id="exampleFormControlSelect1"
-                                                            name="maritalStatus" value={maritalStatus} onChange={e => onChange(e)}>
-                                                            <option selected>Single</option>
-                                                            <option>Married</option>
-                                                            <option>Widowed</option>
-                                                            <option>Divorced</option>
-                                                            <option>Separated </option>
-                                                        </select>
-                                                    </div>
-                                                    <div className="form-group col-sm-6">
                                                         <label>Age:</label>
                                                         <select className="form-control" id="exampleFormControlSelect2"
                                                             name="age" value={age} onChange={e => onChange(e)}>
@@ -249,17 +238,6 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                                                             <option>33-45</option>
                                                             <option>46-62</option>
                                                             <option>63 &gt; </option>
-                                                        </select>
-                                                    </div>
-                                                    <div className="form-group col-sm-6">
-                                                        <label>Country:</label>
-                                                        <select className="form-control" id="exampleFormControlSelect3"
-                                                            name="country" value={country} onChange={e => onChange(e)}>
-                                                            <option>Caneda</option>
-                                                            <option>Noida</option>
-                                                            <option selected>VN</option>
-                                                            <option>India</option>
-                                                            <option>USA</option>
                                                         </select>
                                                     </div>
                                                     <div className="form-group col-sm-6">
@@ -272,7 +250,7 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                                                     </div>
                                                     <div className="form-group col-sm-12">
                                                         <label>Address:</label>
-                                                        <textarea className="form-control" name="address" rows={5} style={{ lineHeight: '22px' }} placeholder={"                                             37 Cardinal Lane\n                                             Petersburg, VA 23803\n                                             United States of America\n                                             Zip Code: 85001\n                                             "}
+                                                        <textarea className="form-control" name="address" rows={5} style={{ lineHeight: '22px' }}
                                                             name="address"
                                                             value={address}
                                                             onChange={(e) => onChange(e)} />

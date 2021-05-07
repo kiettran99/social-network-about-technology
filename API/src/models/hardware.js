@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const hardwareSchema = Schema({
+const hardwareSchema = new Schema({
     category: {
         type: String
     },

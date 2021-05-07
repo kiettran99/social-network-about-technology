@@ -10,7 +10,6 @@ const PostsPage = ({ post: { posts, isInPosts, loading }, getPosts, resetPost,
 }) => {
 
     useEffect(() => {
-
         if (isInPosts) {
             if (groupId == '') {
                 if (match) {
@@ -43,18 +42,19 @@ const PostsPage = ({ post: { posts, isInPosts, loading }, getPosts, resetPost,
         }
     }, [groupId, match, isInPosts]);
 
+    const handleClick = (e, id) => {
+        // Prevent Parent's on click from firing when a child is clicked.
+        const senderElementName = e.target.tagName.toLowerCase();
+
+        if (senderElementName === 'div') {
+            history.push(`/posts/${id}`);
+        }
+    }
+
     return !loading && (
         posts.map(post => post.status === 1 ? (
-            <div key={post._id} className="col-sm-12" onClick={(e) => {
-                // Prevent Parent's on click from firing when a child is clicked.
-
-                const senderElementName = e.target.tagName.toLowerCase();
-
-                if (senderElementName === 'div') {
-                    history.push(`/posts/${post._id}`)
-                }
-            }}>
-                <UserPost post={post} />
+            <div key={post._id} className="col-sm-12">
+                <UserPost post={post} handleClick={handleClick} />
             </div>
         ) : <Fragment key={post._id}></Fragment>)
     );

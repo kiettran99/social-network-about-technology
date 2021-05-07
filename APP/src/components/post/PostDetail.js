@@ -5,10 +5,7 @@ import { withRouter, Redirect } from 'react-router-dom';
 import { getPost } from '../../actions/post';
 
 import UserPost from './UserPost';
-// import Stories from '../home/Stories';
-// import Events from '../home/Events';
-// import UpcomingBirthday from '../home/UpcomingBirthday';
-// import SuggestedPages from '../home/SuggestedPages';
+import Ads from '../home/ads/Ads';
 
 const PostDetail = ({ match, history, post: { post, loading }, getPost }) => {
 
@@ -28,12 +25,7 @@ const PostDetail = ({ match, history, post: { post, loading }, getPost }) => {
                     {!loading && post && <UserPost post={post} />}
                     {post && post.status !== 1 && <Redirect to="/notfound" />}
                 </div>
-                <div className="col-lg-4">
-                    {/* <Stories />
-                    <Events />
-                    <UpcomingBirthday />
-                    <SuggestedPages /> */}
-                </div>
+                <Ads />
             </div>
         </div>
     </div >

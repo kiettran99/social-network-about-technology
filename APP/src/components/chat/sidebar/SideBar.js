@@ -23,6 +23,9 @@ const SideBar = ({ socket, getPreviewMessageBox }) => {
     useEffect(() => {
         socket.emit('chat-rooms');
 
+        socket.off('reload-messages');
+        socket.off('get-chat-list');
+
         socket.on('reload-messages', () => {
             socket.emit('chat-rooms');
         });

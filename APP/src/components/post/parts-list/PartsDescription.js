@@ -1,48 +1,38 @@
-import React, { useRef } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import Modal from './Modal';
-import { connect } from 'react-redux';
-import PartsList from './PartsLList';
 
-const PartsDescription = ({ buildParts, post: { isInPosts } }) => {
+const DialogBox = lazy(() => import('../../shared/DialogBox'));
 
-    const modalRef = useRef(null);
+const PartsDescription = ({ buildParts }) => {
 
-    const hardwares = buildParts.hardwares || [];
+    const [modalIsOpen, setIsOpen] = useState(false);
 
-    const onShowDescriptions = (e) => {
-        const current = modalRef.current;
+    const closeModal = () => {
+        setIsOpen(false);
+    }
 
-        if (current) {
-            const senderElementName = e.target.tagName.toLowerCase();
+    const openModal = () => {
+        setIsOpen(true);
+    }
 
-            if (senderElementName === 'th') {
-                current.click();
-            }
-        }
-    };
-
-
-    // Display a half parts and then click to show modal full description.
+    // Display boxing and then click to show modal full description.
     return (
-        <>
-            <div onClick={onShowDescriptions}>
-                <PartsList modalRef={modalRef} buildParts={{
-                    ...buildParts,
-                    hardwares: hardwares.slice(0, hardwares.length / 2)
-                }} />
-                <button ref={modalRef} type="button"
-                    className="btn btn-primary d-none" data-toggle="modal"
-                    data-target="#parts-modal">Large modal
-                </button>
-            </div>
-
-            { !isInPosts && <Modal buildParts={buildParts} />}
-        </>
+        <div className="bg-light p-1 mt-3 rounded">
+            <Suspense fallback={<div></div>}>
+                <div className="d-flex justify-content-between">
+                    <div className="ml-3 mt-2">
+                        <h4>PC Specifications</h4>
+                        <p>Click button to see full descriptions PC.</p>
+                    </div>
+                    <div className="my-auto mr-2">
+                        <button type="button" className="btn btn-primary"
+                            onClick={() => openModal()}>View More</button>
+                    </div>
+                </div>
+                <DialogBox props={{ modalIsOpen, closeModal, openModal, buildParts }} Component={Modal} />
+            </Suspense>
+        </div>
     );
 };
 
-const mapStateToProps = (state) => ({
-    post: state.post
-})
-
-export default connect(mapStateToProps)(PartsDescription);
+export default React.memo(PartsDescription);

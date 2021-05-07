@@ -45,7 +45,7 @@ const customStyles = {
 };
 
 const ShareModal = ({ auth: { user, isAuthenticated },
-    post: { post }
+    post: { post }, isMobileScreen
 }) => {
 
     const [modalIsOpen, setIsOpen] = useState(false);
@@ -185,12 +185,12 @@ const ShareModal = ({ auth: { user, isAuthenticated },
     return (
         <>
             <a onClick={() => openModal()}><i className="ri-share-line" />
-                <span className="ml-1">Share this post</span>
+                <span className={`ml-1 ${isMobileScreen ? 'd-none': ''}`} id="share-post-line">Share this post</span>
             </a>
             <Modal style={customStyles}
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}>
-                <div className="modal-dialog modal-lg m-0" role="document">
+                <div className="modal-lg m-0" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id="post-modalLabel">Share this post</h5>

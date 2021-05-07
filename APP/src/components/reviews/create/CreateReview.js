@@ -3,7 +3,7 @@ import React, { useState, useRef, lazy, Suspense } from 'react';
 import { connect } from 'react-redux';
 import { addReview } from '../../../actions/review';
 
-const LoadImages = lazy(() => import('../../post/load-images/LoadImages'));
+const ImageUploader = lazy(() => import('react-images-upload'));
 
 const CreateReview = ({ addReview, closeModal }) => {
 
@@ -20,6 +20,14 @@ const CreateReview = ({ addReview, closeModal }) => {
     const favoriteRef = useRef();
     const restrictRef = useRef();
     const linkRef = useRef();
+
+    const onDropWallpaper = (pictureFiles) => {
+        setWallpaper(pictureFiles);
+    };
+
+    const onDropPictures = (pictureFiles) => {
+        setPictures(pictureFiles);
+    };
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -42,8 +50,11 @@ const CreateReview = ({ addReview, closeModal }) => {
         formData.append('descriptions', JSON.stringify(data.descriptions));
         formData.append('link', data.link);
 
-        if (wallpaper) {
-            formData.append('wallpaper', wallpaper);
+
+        if (wallpaper && wallpaper.length > 0) {
+            wallpaper.forEach((picture) => {
+                formData.append('wallpaper', picture);
+            })
         }
 
         if (pictures && pictures.length > 0) {
@@ -67,7 +78,7 @@ const CreateReview = ({ addReview, closeModal }) => {
     };
 
     return (
-        <div className="modal-dialog modal-lg m-0" role="document">
+        <div className="modal-lg m-0" role="document">
             <div className="modal-content">
                 <div className="modal-header">
                     <h4 className="modal-title">Create Review</h4>
@@ -91,51 +102,52 @@ const CreateReview = ({ addReview, closeModal }) => {
                         <div className="form-group">
                             <label htmlFor="cprice">Wallpaper</label>
                             <br />
-                            <input className="" type="file" accept="image/*" onChange={e => {
-                                e.preventDefault();
-                                const image = e.target.files[0];
-
-                                setWallpaper(image);
-                            }} />
-                            {wallpaper && <img className="profile-pic" src={URL.createObjectURL(wallpaper)} alt="profile-pic" />}
+                            <Suspense fallback={<div>Loading upload wallpaper....</div>}>
+                                <ImageUploader
+                                    withIcon={true}
+                                    singleImage={true}
+                                    buttonText='Choose image'
+                                    onChange={onDropWallpaper}
+                                    imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                                    maxFileSize={5242880}
+                                    withPreview={true}
+                                />
+                            </Suspense>
                         </div>
 
                         <div className="form-group">
                             <label htmlFor="cprice">Pictures</label>
                             <br />
-                            <input className="" type="file" accept="image/*" multiple={true} onChange={e => {
-                                // currentTarget 
-                                const curentTarget = e.currentTarget;
-
-                                if (curentTarget && curentTarget.files) {
-                                    setPictures(state => [...state, ...curentTarget.files]);
-                                }
-                            }} />
-                        </div>
-
-                        <ul className="profile-img-gallary d-flex flex-wrap p-0 m-0 w-50">
-                            <Suspense fallback={<div>Loading...</div>}>
-                                <LoadImages images={pictures} onChangeImages={(index) => {
-                                    setPictures(state => state.filter((image, position) => position !== index));
-                                }} />
+                            <Suspense fallback={<div>Loading upload pictures....</div>}>
+                                <ImageUploader
+                                    withIcon={true}
+                                    buttonText='Choose images'
+                                    onChange={onDropPictures}
+                                    imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                                    maxFileSize={5242880}
+                                    withPreview={true}
+                                />
                             </Suspense>
-                        </ul>
+                        </div>
 
                         <div className="form-group">
                             <label htmlFor="cgeneral">General information about the product</label>
                             <textarea type="text" className="form-control" id="cgeneral" placeholder="Reviewing product technology about smartphones and new pcs."
+                                rows={5} style={{ lineHeight: '22px' }}
                                 ref={generalRef} />
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="cfavorite">What are your favorite spots? (*)</label>
+                            <label htmlFor="cfavorite">What do you like about this device?</label>
                             <textarea type="text" className="form-control" id="cfavorite" placeholder="Reviewing product technology about smartphones and new pcs."
+                                rows={5} style={{ lineHeight: '22px' }}
                                 ref={favoriteRef} />
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="crestrict">What are you not satisfied with, don't like?</label>
+                            <label htmlFor="crestrict">What don't you like about it?</label>
                             <textarea type="text" className="form-control" id="crestrict" placeholder="Reviewing product technology about smartphones and new pcs."
+                                rows={5} style={{ lineHeight: '22px' }}
                                 ref={restrictRef} />
                         </div>
 
@@ -156,8 +168,8 @@ const CreateReview = ({ addReview, closeModal }) => {
                              Loading...
                             </button>
                         ) : (
-                                <button type="submit" className="btn btn-primary mr-2">Submit</button>
-                            )}
+                            <button type="submit" className="btn btn-primary mr-2">Submit</button>
+                        )}
                         <button type="reset" className="btn iq-bg-danger">Clear</button>
                     </form>
                 </div>

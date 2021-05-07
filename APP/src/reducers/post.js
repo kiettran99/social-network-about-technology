@@ -4,7 +4,7 @@ import {
     ADD_COMMENT, REMOVE_COMMENT, UPDATE_LIKES,
     UPDATE_LIKES_COMMENT, ADD_REPLY_COMMENT, REMOVE_REPLY_COMMENT,
     UPDATE_LIKES_REPLY, GET_MORE_COMMENTS, GET_MORE_REPLIES,
-    GET_LENGTH_POSTS, EDIT_POST, HIDE_POST, RESET_POST
+    GET_LENGTH_POSTS, EDIT_POST, HIDE_POST, RESET_POST, EDIT_TITLE_REVIEW
 } from '../actions/types';
 
 const initialState = {
@@ -239,6 +239,14 @@ export default function (state = initialState, action) {
                 loading: true,
                 isInPosts: true,
                 errors: {}
+            };
+        case EDIT_TITLE_REVIEW:
+            return {
+                ...state,
+                post: {
+                    ...state.post,
+                    text: payload
+                }
             };
         default:
             return state;

@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const ObjectId = mongoose.Types.ObjectId;
 
-const groupSchema = Schema({
+const groupSchema = new Schema({
+    owner: {
+        type: ObjectId,
+        ref: 'User'
+    },
     name: {
         type: String,
         unique: true,
@@ -27,7 +32,7 @@ const groupSchema = Schema({
     },
     members: [{
         user: {
-            type: Schema.Types.ObjectId,
+            type: ObjectId,
             ref: 'User'
         },
         status: {
@@ -39,6 +44,8 @@ const groupSchema = Schema({
         type: Number,
         default: 0
     }
+}, {
+    timestamps: true
 });
 
 const Group = mongoose.model('Group', groupSchema);

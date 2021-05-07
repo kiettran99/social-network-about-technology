@@ -3,7 +3,6 @@ const { body, validationResult } = require('express-validator');
 const upload = require('../../utils/upload');
 const storage = require('../../firebase/firebase');
 const Group = require('../../models/group');
-const authByRole = require('../../middleware/auth-by-role');
 const auth = require('../../middleware/auth');
 const { registerNotification, unregisterNotification,
     registerNotifications } = require('../../utils/notification');
@@ -68,8 +67,10 @@ router.get('/:id', async (req, res) => {
 
 // @route POST /api/groups
 // @desc Create a group.
-// @access private Admin
-router.post('/', authByRole('admin'), upload.single('avatar'), [
+// @access private
+router.post('/', upload.fields([
+    { name: 'avatar', maxCount: 1 }, { name: 'wallpaper', maxCount: 1 }
+]), [
     body('name', 'Name is required.').not().isEmpty(),
     body('info', 'Info is required.').not().isEmpty()
 ], async (req, res) => {
@@ -82,19 +83,35 @@ router.post('/', authByRole('admin'), upload.single('avatar'), [
         }
 
         // Create a new instance and save into database
-        const group = new Group(req.body);
+        const group = await Group.create({
+            ...req.body,
+            owner: req.user._id
+        });
 
-        await group.save();
-
-        if (req.file) {
+        if (req.files && req.files.avatar) {
+            const file = req.files.avatar[0];
 
             // Create a storage ref
-            const storageRef = storage.ref(`/groups/${group.id}/avatar/${req.file.originalname}`);
+            const storageRef = storage.ref(`/groups/${group.id}/avatar/${file.originalname}`);
 
             // Upload Image
             await storageRef.put(req.file.buffer);
 
             group.avatar = await storageRef.getDownloadURL();
+
+            await group.save();
+        }
+
+        // Check image is uploaded
+        if (req.files && req.files.avatar.wallpaper) {
+            const file = req.files.wallpaper[0];
+
+            const storageRef = storage.ref(`/groups/${group.id}/wallpaper/${file.originalname}`);
+
+            //Upload image
+            await storageRef.put(req.file.buffer);
+
+            group.wallpaper = await storageRef.getDownloadURL();
 
             await group.save();
         }
@@ -109,8 +126,8 @@ router.post('/', authByRole('admin'), upload.single('avatar'), [
 
 // @route PUT /api/groups/:id
 // @desc update profile a group.
-// @access private Admin
-router.put('/:id', authByRole('admin'), async (req, res) => {
+// @access private
+router.put('/:id', async (req, res) => {
     try {
 
         const id = req.params.id;
@@ -136,7 +153,7 @@ router.put('/:id', authByRole('admin'), async (req, res) => {
 
 // @route PUT /api/groups/:id/join
 // @desc join a group.
-// @access private Admin
+// @access private
 router.put('/:id/join', auth, async (req, res) => {
     try {
         const id = req.params.id;
@@ -178,7 +195,7 @@ router.put('/:id/join', auth, async (req, res) => {
 
 // @route PUT /api/groups/:id/unjoin
 // @desc unjoin a group.
-// @access private Admin
+// @access private
 router.put('/:id/unjoin', auth, async (req, res) => {
     try {
 
@@ -226,8 +243,8 @@ router.put('/:id/unjoin', auth, async (req, res) => {
 
 // @route PUT /api/groups/:id/avatar
 // @desc upload avatar
-// @access private Admin
-router.put('/:id/avatar', [authByRole('admin'), upload.single('avatar')
+// @access private
+router.put('/:id/avatar', [auth, upload.single('avatar')
 ], async (req, res) => {
     try {
 
@@ -238,6 +255,10 @@ router.put('/:id/avatar', [authByRole('admin'), upload.single('avatar')
         }
 
         const group = await Group.findById(id);
+
+        if (group.owner && group.owner !== req.user.id) {
+            return res.status(400).send('User not ,,,')
+        }
 
         // Check image is uploaded
         if (req.file) {
@@ -274,7 +295,7 @@ router.put('/:id/avatar', [authByRole('admin'), upload.single('avatar')
 // @route PUT /api/groups/:id/wallpaper
 // @desc Edit wallpaper group
 // @access private Admin
-router.put('/:id/wallpaper', [authByRole('admin'), upload.single('wallpaper')
+router.put('/:id/wallpaper', [auth, upload.single('wallpaper')
 ], async (req, res) => {
     try {
 
@@ -320,8 +341,8 @@ router.put('/:id/wallpaper', [authByRole('admin'), upload.single('wallpaper')
 
 // @route POST /api/groups/:id
 // @desc Delete a group.
-// @access private Admin
-router.delete('/:id', authByRole('admin'), async (req, res) => {
+// @access private
+router.delete('/:id', auth, async (req, res) => {
     try {
         const id = req.params.id;
 

@@ -2,13 +2,14 @@ import React, { lazy, Suspense, useEffect, useState, useRef } from 'react';
 // import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addPost } from '../../actions/post';
-import BuildParts from './build-parts/BuildParts';
+
 import { EditorState } from 'draft-js';
 import HashTagEditor from './editor/hash-tag-editor/HashTagEditor';
 import editor from './user-post-sub/editor/editor';
 
 import InviteUser from '../shared/InviteUser';
 import Toolbar from './toolbar/ToolBar';
+import CreateAddons from './addons/CreateAddons';
 
 const LoadImages = lazy(() => import('./load-images/LoadImages'));
 const BubbleEditor = lazy(() => import('./editor/BubbleEditor'));
@@ -30,12 +31,18 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
 
   const [isShowBuildParts, setIsShowBuildParts] = useState(false);
   const [isOpenHashTag, setOpenHashTag] = useState(false);
+  const [isShowShop, setOpenShop] = useState(false);
 
   const [disabledPost, setDisabledPost] = useState(true);
 
   const [hashTagEditor, setHashTagEditor] = useState(EditorState.createEmpty());
 
   const [tags, setTags] = useState([]);
+
+  const [shop, setShop] = useState({
+    price: 0,
+    link: ''
+  });
 
   const { text, images, buildParts } = formData;
 
@@ -76,6 +83,10 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
     // Add Tags Friends
     if (tags.length > 0) {
       formData.append('tags', JSON.stringify(tags));
+    }
+
+    if (isShowShop) {
+      formData.append('shop', JSON.stringify(shop));
     }
 
     formData.append('privacy', privacyRef.current);
@@ -204,7 +215,13 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                     </Suspense>
                   </ul>
                 </div>
-                {isShowBuildParts && <BuildParts {...buildPartsProps} />}
+                <CreateAddons props={{
+                  isShowBuildParts,
+                  buildPartsProps,
+                  isShowShop,
+                  shop,
+                  setShop
+                }} />
                 {isOpenHashTag && <HashTagEditor placeholder=""
                   editorState={hashTagEditor} setEditorState={setHashTagEditor}
                   disable={disabledPost} />}
@@ -239,11 +256,15 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                   </li>
                   <li className="col-md-6 mb-3"
                     onClick={() => setIsShowBuildParts(!isShowBuildParts)}>
-                    <div className="iq-bg-primary rounded p-2 pointer mr-3"><a /><img src="/images/small/14.png" alt="icon" className="img-fluid" /> Build Parts PC</div>
+                    <div className="iq-bg-primary rounded pl-2 pointer mr-3"><a /><i className="ri-computer-line" style={{ fontSize: '1.5rem' }}></i> Build Parts PC</div>
                   </li>
                   <li className="col-md-6 mb-3"
                     onClick={() => setOpenHashTag(!isOpenHashTag)}>
                     <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/09.png" alt="icon" className="img-fluid" /> HashTag</div>
+                  </li>
+                  <li className="col-md-6 mb-3"
+                    onClick={() => setOpenShop(!isShowShop)}>
+                    <div className="iq-bg-primary rounded pl-2 pointer mr-3"><a href="index.html#" /><i className="ri-store-fill" style={{ fontSize: '1.5rem' }}></i> Shop</div>
                   </li>
                 </ul>
                 <hr />

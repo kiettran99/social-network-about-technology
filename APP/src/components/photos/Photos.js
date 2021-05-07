@@ -17,6 +17,11 @@ const Photos = () => {
     }, []);
 
     const mapDataToPhotos = (data) => {
+
+        if (!data) {
+            return [];
+        }
+
         return data.reduce((result, datum) => {
 
             if (datum.imageUrls.length > 0) {

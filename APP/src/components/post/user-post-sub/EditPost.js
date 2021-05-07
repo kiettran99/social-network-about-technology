@@ -1,13 +1,15 @@
 import React, { lazy, Suspense, useEffect, useState, useRef } from 'react';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
-import BuildParts from '../build-parts/BuildParts';
-import { getPost, editPost } from '../../../actions/post';
-import LoadImages from '../load-images/LoadImages';
 import { EditorState } from 'draft-js';
 import { createEditorStateWithText } from '@draft-js-plugins/editor';
+
+import { getPost, editPost } from '../../../actions/post';
+import LoadImages from '../load-images/LoadImages';
+
 import HashTagEditor from '../editor/hash-tag-editor/HashTagEditor';
 import editor from './editor/editor';
+import CreateAddons from '../addons/CreateAddons';
 
 import InviteUser from '../../shared/InviteUser';
 import Toolbar from '../toolbar/ToolBar';
@@ -37,12 +39,18 @@ const EditPost = ({ auth: { user, isAuthenticated },
 
     const [isShowBuildParts, setIsShowBuildParts] = useState(false);
     const [isOpenHashTag, setOpenHashTag] = useState(false);
+    const [isShowShop, setOpenShop] = useState(false);
 
     const [disabledPost, setDisabledPost] = useState(true);
 
     const [hashTagEditor, setHashTagEditor] = useState(EditorState.createEmpty());
 
     const [tags, setTags] = useState([]);
+
+    const [shop, setShop] = useState({
+        price: 0,
+        link: ''
+    });
 
     const { text, images, buildParts, imageUrls } = formData;
 
@@ -103,6 +111,11 @@ const EditPost = ({ auth: { user, isAuthenticated },
                 setHashTagEditor(createEditorStateWithText(post.hashtag.rawText));
             }
 
+            if (post.shop) {
+                setOpenShop(true);
+                setShop(post.shop);
+            }
+
             privacyRef.current = post.privacy;
         }
 
@@ -145,6 +158,10 @@ const EditPost = ({ auth: { user, isAuthenticated },
         // Add Tags Friends
         if (tags.length > 0) {
             formData.append('tags', JSON.stringify(tags));
+        }
+
+        if (isShowShop) {
+            formData.append('shop', JSON.stringify(shop));
         }
 
         // Add Privacy
@@ -210,7 +227,7 @@ const EditPost = ({ auth: { user, isAuthenticated },
                         }
                     }} /> :
                     (
-                        <div className="modal-dialog modal-lg m-0" role="document">
+                        <div className="modal-lg m-0" role="document">
                             <div className="modal-content">
                                 <div className="modal-header">
                                     <h5 className="modal-title" id="post-modalLabel">Edit Post</h5>
@@ -246,7 +263,13 @@ const EditPost = ({ auth: { user, isAuthenticated },
                                             }} />
                                         </ul>
                                     </div>
-                                    {isShowBuildParts && <BuildParts {...buildPartsProps} />}
+                                    <CreateAddons props={{
+                                        isShowBuildParts,
+                                        buildPartsProps,
+                                        isShowShop,
+                                        shop,
+                                        setShop
+                                    }} />
                                     {isOpenHashTag && <HashTagEditor placeholder=""
                                         editorState={hashTagEditor} setEditorState={setHashTagEditor}
                                         disable={disabledPost} />}
@@ -281,11 +304,15 @@ const EditPost = ({ auth: { user, isAuthenticated },
                                         </li>
                                         <li className="col-md-6 mb-3"
                                             onClick={() => setIsShowBuildParts(!isShowBuildParts)}>
-                                            <div className="iq-bg-primary rounded p-2 pointer mr-3"><a /><img src="/images/small/14.png" alt="icon" className="img-fluid" /> Build Parts PC</div>
+                                            <div className="iq-bg-primary rounded pl-2 pointer mr-3"><a /><i className="ri-computer-line" style={{ fontSize: '1.5rem' }}></i> Build Parts PC</div>
                                         </li>
                                         <li className="col-md-6 mb-3"
                                             onClick={() => setOpenHashTag(!isOpenHashTag)}>
                                             <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/09.png" alt="icon" className="img-fluid" /> HashTag</div>
+                                        </li>
+                                        <li className="col-md-6 mb-3"
+                                            onClick={() => setOpenShop(!isShowShop)}>
+                                            <div className="iq-bg-primary rounded pl-2 pointer mr-3"><a href="index.html#" /><i className="ri-store-fill" style={{ fontSize: '1.5rem' }}></i> Shop</div>
                                         </li>
                                     </ul>
                                     <hr />

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
-const friendSchema = Schema({
+const friendSchema = new Schema({
     requester: {
         type: ObjectId,
         ref: 'User'

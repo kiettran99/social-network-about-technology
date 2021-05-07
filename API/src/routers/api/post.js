@@ -95,7 +95,7 @@ router.get('/', getUserByToken, async (req, res) => {
             //     $slice: 1
             // },
         }).limit(limit).skip(skip + offset)
-            .sort({ createdAt: 'desc' })
+            .sort({ _id : 'desc' })
             .populate('type.group', 'name')
             .populate('share.postId', '-share')
             .populate({
@@ -306,6 +306,11 @@ router.post('/', auth, upload.array('images'), [
             newPost.tags = JSON.parse(tags);
         }
 
+        if (req.body.shop) {{
+            const shop = req.body.shop;
+            newPost.shop = JSON.parse(shop);
+        }}
+
         // Create a instance post and save it.
         const post = new Post(newPost);
         await post.save();
@@ -389,6 +394,11 @@ router.put('/:id', auth, upload.array('images'), [
             const tags = req.body.tags;
             post.tags = JSON.parse(tags);
         }
+
+        if (req.body.shop) {{
+            const shop = req.body.shop;
+            post.shop = JSON.parse(shop);
+        }}
 
         post.text = req.body.text;
 

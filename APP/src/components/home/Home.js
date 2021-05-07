@@ -4,10 +4,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import CreatePost from '../post/CreatePost';
-// import Stories from './Stories';
-// import Events from './Events';
-// import UpcomingBirthday from './UpcomingBirthday';
-// import SuggestedPages from './SuggestedPages';
+import Ads from './ads/Ads';
+
 import Process from '../layout/Process';
 import PostsPage from '../post/PostsPage';
 
@@ -20,9 +18,13 @@ const Home = ({ location, loadUser, history }) => {
     const query = queryString.parse(location.search);
 
     if (query.token) {
+      // Save user token into Local Storage
+      localStorage.setItem('token', query.token);
       setAuthToken(query.token);
-      history.push('/');
+
+      // Update User and clear params url
       loadUser();
+      history.push('/');
     }
   }, []);
 
@@ -36,12 +38,7 @@ const Home = ({ location, loadUser, history }) => {
             </div>
             <PostsPage />
           </div>
-          {/* <div className="col-lg-4">
-            <Stories />
-            <Events />
-            <UpcomingBirthday />
-            <SuggestedPages />
-          </div> */}
+          <Ads />
           <div className="col-sm-12 text-center">
             <Process />
           </div>

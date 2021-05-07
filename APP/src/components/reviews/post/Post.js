@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import dayjs from '../../../utils/relativeDate';
 import Bar from './bar/Bar';
+
+const AttachPost = lazy(() => import('../../post/AttachPost'));
 
 const Post = ({ review }) => {
 
@@ -17,23 +19,34 @@ const Post = ({ review }) => {
                         <h4 className="mb-3 pb-3 border-bottom">{review.post.text}</h4>
                         <Bar createdAt={dayjs(review.createdAt).fromNow()} postId={review.post._id} />
 
-                        <h5 className="font-italic pb-3">General information</h5>
-                        <p>{review.descriptions.general}</p>
+                        <h5 className="font-italic pb-3">General description</h5>
+                        <p style={{ whiteSpace: 'pre-wrap' }}>{review.descriptions.general}</p>
                         {isShowMore ? (
                             <>
-                                <h5 className="font-italic pb-3">Favorite information</h5>
-                                <p>{review.descriptions.favorite}</p>
-                                <h5 className="font-italic pb-3">What don't like ?</h5>
-                                <p>{review.descriptions.restrict}</p>
+                                <div className="my-4">
+                                    <Suspense fallback={<div></div>}>
+                                        <AttachPost imageUrls={review.post.imageUrls} />
+                                    </Suspense>
+                                </div>
+                                <h5 className="font-italic pb-3">Things I like</h5>
+                                <p style={{ whiteSpace: 'pre-wrap' }}>{review.descriptions.favorite}</p>
+
+                                <h5 className="font-italic pb-3">Things I don't like</h5>
+                                <p style={{ whiteSpace: 'pre-wrap' }}>{review.descriptions.restrict}</p>
+
+                                <h5 className="font-italic pb-3">Link</h5>
+                                <p><a href={review.link} target="_blank">{review.link}</a></p>
+
+
                                 <a className="text-primary button"
                                     onClick={() => setShowMore(false)}
                                     tabIndex={-1}>Hide <i className="ri-arrow-up-s-line" /></a>
                             </>
                         ) : (
-                                <a className="text-primary button"
-                                    onClick={() => setShowMore(true)}
-                                    tabIndex={-1}>Read More <i className="ri-arrow-right-s-line" /></a>
-                            )}
+                            <a className="text-primary button"
+                                onClick={() => setShowMore(true)}
+                                tabIndex={-1}>Read More <i className="ri-arrow-right-s-line" /></a>
+                        )}
                     </div>
                 </div>
             </div>
