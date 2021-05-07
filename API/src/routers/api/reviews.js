@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
         const skip = parseInt(req.query.skip) || 0;
 
         const reviews = await Review.find({ status: 1 }).limit(limit).skip(skip)
-            .sort({ createdAt: 'desc' }).populate('post');
+            .sort({ _id: 'desc' }).populate('post');
 
         res.json(reviews);
     }

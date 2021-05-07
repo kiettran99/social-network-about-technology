@@ -94,6 +94,8 @@ const createServer = (server) => {
                     available: true
                 }, {}, () => {
                     io.to(messageBox.id).emit('update-user-profile');
+
+                    io.to(socket.decoded._id).to(recipient).emit('reload-messages');
                 });
 
                 MessageBox.findByIdAndUpdate(chat.messageBox, {
@@ -176,7 +178,13 @@ const createServer = (server) => {
             // Update User to offline
             User.findByIdAndUpdate(socket.decoded._id, {
                 available: false
-            }).exec();
+            }).exec((error) => {
+                if (error) {
+                    return console.log(error);
+                }
+
+                io.emit('reload-messages');
+            });
         });
     });
 }

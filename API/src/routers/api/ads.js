@@ -223,7 +223,61 @@ router.put('/:id/click', getUserByToken, async (req, res) => {
             await ads.save();
         }
 
-        res.json(ads);
+        res.json('Ok');
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route GET /api/ads/create/status
+// @desc Check user has created ad yet.
+// @access private
+router.get('/create/status', auth, async (req, res) => {
+    try {
+        // Get length of Ads that user created.
+        const count = await Ads.countDocuments();
+
+        // Check true if user has created before.
+        const body = count > 0;
+
+        res.json(body);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route GET /api/ads/list?skip=0&limit=5
+// @desc Check user has created ad yet.
+// @access private
+router.get('/list', auth, async (req, res) => {
+    try {
+        // Get Query
+        // Limit post and pages
+        const limit = parseInt(req.query.limit) || 2;
+        const page = parseInt(req.query.page) || 1;
+
+        // Server decides page size
+        const skip = (page - 1) * limit;
+
+        // Count Ads user has create before that.
+        const totalAds = await Ads.find({ owner: req.user._id }).countDocuments() || 0;
+
+        const ads = await Ads.find({ owner: req.user._id })
+            .sort({ _id: -1 })
+            .skip(skip)
+            .limit(limit)
+            .populate('post', '-comments');
+        
+        // Reponse client about data and pagination info
+        res.json({
+            ads,
+            currentPage: page,
+            pages: Math.ceil(totalAds / limit)
+        });
     }
     catch (e) {
         console.log(e);

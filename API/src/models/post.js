@@ -54,6 +54,14 @@ const postSchema = new Schema({
             ref: 'User'
         }]
     },
+    shop: {
+        price: {
+            type: Number
+        },
+        link: {
+            type: String
+        },
+    },
     status: {
         type: Number,
         enums: [
