@@ -2,10 +2,14 @@ const router = require('express').Router();
 const { body, validationResult } = require('express-validator');
 const moment = require('moment');
 
+const API_URL = 'https://radiun42-tlcn-mang-xa-hoi-may-tinh-dien-thoai-gv4q-3001.githubpreview.dev' || process.env.API_URL;
+const APP_URL = 'https://radiun42-tlcn-mang-xa-hoi-may-tinh-dien-thoai-gv4q-3000.githubpreview.dev';
+
 const auth = require('../../middleware/auth');
 const getUserByToken = require('../../middleware/getUserByToken');
 const isEmptyObject = require('../../utils/isEmptyObject');
 const { canAddActivity } = require('../../utils/ads/ads');
+const paypal = require('../../utils/paypal/paypal');
 
 const Ads = require('../../models/ads');
 const Post = require('../../models/post');
@@ -271,13 +275,162 @@ router.get('/list', auth, async (req, res) => {
             .skip(skip)
             .limit(limit)
             .populate('post', '-comments');
-        
+
         // Reponse client about data and pagination info
         res.json({
             ads,
             currentPage: page,
             pages: Math.ceil(totalAds / limit)
         });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route POST /api/ads/:id/purchase
+// @desc User purchases advertisement compaign to active
+// @access private
+router.post('/:id/purchase', async (req, res) => {
+    try {
+        const adsId = req.params.id;
+
+        if (!adsId) {
+            return res.status(400).send('Ads Id is required.');
+        }
+
+        var create_payment_json = {
+            "intent": "sale",
+            "payer": {
+                "payment_method": "paypal"
+            },
+            "redirect_urls": {
+                "return_url": `${API_URL}/api/ads/purchase/success?adsId=${adsId}`,
+                "cancel_url": `${API_URL}/api/ads/purchase/cancel`
+            },
+            "transactions": [{
+                "item_list": {
+                    "items": [{
+                        "name": "Advertisement Compaign",
+                        "sku": "item",
+                        "price": "5.00",
+                        "currency": "USD",
+                        "quantity": 1
+                    }]
+                },
+                "amount": {
+                    "currency": "USD",
+                    "total": "5.00"
+                },
+                "description": "Please purchase advertisement compaign to active."
+            }]
+        };
+
+        paypal.payment.create(create_payment_json, function (error, payment) {
+            if (error) {
+                throw error;
+            } else {
+
+                if (payment && payment.links) {
+                    // Link redirect client to login paypal account to pay
+                    const approval_url = payment.links.find(link => link.rel === 'approval_url');
+
+                    if (!approval_url) {
+                        return res.status(500).send('Server is errors.');
+                    }
+
+                    res.json(approval_url.href);
+                }
+            }
+        });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route GET /api/ads/purchase/success
+// @desc User logins paypal account and checkout
+// @access public
+router.get('/purchase/success', (req, res) => {
+    try {
+        const payerId = req.query.PayerID;
+        const paymentId = req.query.paymentId;
+        const adsId = req.query.adsId;
+
+        var execute_payment_json = {
+            "payer_id": payerId,
+            "transactions": [{
+                "amount": {
+                    "currency": "USD",
+                    "total": "5.00"
+                }
+            }]
+        };
+
+        paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+            if (error) {
+                console.log(error.response);
+                res.status(500).send('Server is errors.');
+            } else {
+                //console.log(JSON.stringify(payment));
+                // Active AD User has purchased ad compagin.
+                Ads.findByIdAndUpdate(adsId, { status: 1 }).exec((error) => {
+                    if (error) {
+                        console.log(error.response);
+                        res.redirect(`${APP_URL}/ads/create?status=fail&adsId=${adsId}`);
+                    }
+
+                    res.redirect(`${APP_URL}/ads/create?status=successed&adsId=${adsId}`);
+                });
+            }
+        });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route GET /api/ads/purchase/cancel
+// @desc User logins paypal account but cancel.
+// @access public
+router.get('/purchase/cancel', async (req, res) => {
+    try {
+        res.redirect(`${APP_URL}/ads/create?status=canceled`);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route PATCH /api/ads/purchase/cancel
+// @desc Active or Paused advertising compaign
+// @access private
+router.patch('/:id/status', auth, async (req, res) => {
+    try {
+
+        const adsId = req.params.id;
+
+        if (!!!adsId) {
+            return res.status(400).send('Ads Id is required.');
+        }
+
+        const ad = await Ads.findById(adsId);
+
+        if (ad.owner !== req.user.id) {
+            return res.status(400).json({ msg: 'Advertising is not yours.' });
+        }
+
+        // Toggle Status
+        ad.status = ad.status === 1 ? 0 : 1;
+
+        await ad.save();
+
+        res.json(ad);
     }
     catch (e) {
         console.log(e);

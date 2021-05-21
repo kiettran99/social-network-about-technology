@@ -303,16 +303,16 @@ const EditPost = ({ auth: { user, isAuthenticated },
                                             <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/08.png" alt="icon" className="img-fluid" /> Tag Friends {tags.length > 0 && `(${tags.length})`}</div>
                                         </li>
                                         <li className="col-md-6 mb-3"
-                                            onClick={() => setIsShowBuildParts(!isShowBuildParts)}>
-                                            <div className="iq-bg-primary rounded pl-2 pointer mr-3"><a /><i className="ri-computer-line" style={{ fontSize: '1.5rem' }}></i> Build Parts PC</div>
-                                        </li>
-                                        <li className="col-md-6 mb-3"
                                             onClick={() => setOpenHashTag(!isOpenHashTag)}>
-                                            <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/09.png" alt="icon" className="img-fluid" /> HashTag</div>
+                                            <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/hashtag.png" alt="icon" className="img-fluid" /> HashTag</div>
                                         </li>
                                         <li className="col-md-6 mb-3"
                                             onClick={() => setOpenShop(!isShowShop)}>
-                                            <div className="iq-bg-primary rounded pl-2 pointer mr-3"><a href="index.html#" /><i className="ri-store-fill" style={{ fontSize: '1.5rem' }}></i> Shop</div>
+                                            <div className="iq-bg-primary rounded p-2 pointer mr-3"><a href="index.html#" /><img src="/images/small/buy.png" alt="icon" className="img-fluid" /> Shop</div>
+                                        </li>
+                                        <li className="col-md-6 mb-3"
+                                            onClick={() => setIsShowBuildParts(!isShowBuildParts)}>
+                                            <div className="iq-bg-primary rounded p-2 pointer mr-3"><a /><img src="/images/small/pc.png" alt="icon" className="img-fluid" /> PC Specifications</div>
                                         </li>
                                     </ul>
                                     <hr />

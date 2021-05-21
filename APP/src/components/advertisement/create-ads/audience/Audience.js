@@ -6,7 +6,7 @@ const Audience = (props) => {
         fromAge, setFromAge,
         toAge, setToAge,
         gender, setGender,
-        message, setMessage } = props;
+        message, setMessage, changeCurrentAds } = props;
 
     // Event handler
     const onChangeFromAge = (e) => {
@@ -14,6 +14,10 @@ const Audience = (props) => {
 
         if (newFromAge > toAge) {
             setPassed(false);
+            changeCurrentAds({
+                isPassed: false,
+                messageAge: 'Age has from less than to.'
+            });
             return setMessage('Age has from less than to.');
         }
 
@@ -21,6 +25,12 @@ const Audience = (props) => {
         setMessage(null);
         setPassed(true);
         setFromAge(newFromAge);
+
+        changeCurrentAds({
+            isPassed: true,
+            messageAge: null,
+            fromAge: parseInt(newFromAge)
+        });
     };
 
     const onChangeToAge = (e) => {
@@ -28,6 +38,10 @@ const Audience = (props) => {
 
         if (fromAge > newToAge) {
             setPassed(false);
+            changeCurrentAds({
+                isPassed: false,
+                messageAge: 'Age has from less than to.'
+            });
             return setMessage('Age has from less than to.');
         }
 
@@ -35,10 +49,19 @@ const Audience = (props) => {
         setMessage(null);
         setPassed(true);
         setToAge(newToAge);
+
+        changeCurrentAds({
+            isPassed: true,
+            messageAge: null,
+            toAge: parseInt(newToAge)
+        });
     };
 
     const onChangeGender = (option) => {
         setGender(option);
+        changeCurrentAds({
+            gender: option
+        });
     };
 
     return (
@@ -54,7 +77,8 @@ const Audience = (props) => {
                 <div className="form-inline">
                     <select className="form-control"
                         name="age"
-                        onChange={(e) => onChangeFromAge(e)}>
+                        onChange={(e) => onChangeFromAge(e)}
+                        defaultValue={fromAge}>
                         <option value={12}>12</option>
                         <option value={17}>17</option>
                         <option value={19} selected>19</option>
@@ -67,7 +91,8 @@ const Audience = (props) => {
 
                     <select className="form-control"
                         name="age"
-                        onChange={(e) => onChangeToAge(e)}>
+                        onChange={(e) => onChangeToAge(e)}
+                        defaultValue={toAge}>
                         <option value={18}>18</option>
                         <option value={32} selected>32</option>
                         <option value={45}>45</option>
