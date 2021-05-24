@@ -9,14 +9,14 @@ import DialogBox from '../../shared/DialogBox';
 import Posts from './posts/Posts';
 import PreviewPost from './preview-post/PreviewPost';
 
-import { checkNameExisted, createAds } from '../services/adsServices';
+import { checkNameExisted, createAds, editAds } from '../services/adsServices';
 import Audience from './audience/Audience';
 import Payment from './payment/Payment';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { setRequest, setComplete } from '../../../actions/loading-bar';
 import Finish from './finish/Finish';
 
-const CreateAds = ({ location }) => {
+const CreateAds = ({ location, currentCampaign, setAd, edit = false }) => {
 
     // State
     const [step, setStep] = useState(0);
@@ -75,13 +75,29 @@ const CreateAds = ({ location }) => {
     }, []);
 
     useEffect(() => {
-        const query = queryString.parse(location.search);
+        if (location) {
+            const query = queryString.parse(location?.search);
 
-        if (query.status) {
-            setStep(4);
-            changeCurrentAds({ step: 4 });
+            if (query.status) {
+                setStep(4);
+                changeCurrentAds({ step: 4 });
+            }
         }
     }, [location]);
+
+    useEffect(() => {
+        if (currentCampaign) {
+            // Edit campaign
+            setPost(currentCampaign.post);
+            setNameCompaign(currentCampaign.name);
+
+            setPassed(true);
+            setFromAge(currentCampaign.audience?.fromAge);
+            setToAge(currentCampaign.audience?.toAge);
+
+            setGender(currentCampaign.audience?.gender);
+        }
+    }, [currentCampaign]);
 
     const changeCurrentAds = (change) => {
         setCurrentAds(state => ({
@@ -114,6 +130,10 @@ const CreateAds = ({ location }) => {
 
     // Handler
     const onFocusOutAdCompaign = () => {
+        if (edit && currentCampaign && nameCompaign === currentCampaign.name) {
+            return;
+        }
+
         setPassed(false);
 
         checkNameExisted(nameCompaign).then(data => {
@@ -140,7 +160,7 @@ const CreateAds = ({ location }) => {
         }).catch(() => {
             setMessage('');
             changeCurrentAds({ message: '' });
-        })
+        });
     };
 
     const onCreateAds = async () => {
@@ -158,7 +178,11 @@ const CreateAds = ({ location }) => {
 
         dispatch(setRequest());
 
-        const ads = await createAds(adsData);
+        const ads = await createOrEditAds(adsData, edit);
+
+        if (edit) {
+            setAd(ads);
+        }
 
         dispatch(setComplete());
         // Done
@@ -166,12 +190,16 @@ const CreateAds = ({ location }) => {
         changeCurrentAds({ ads: ads._id, step: 3 });
     };
 
+    const createOrEditAds = async (adsData, edit) => {
+        return edit ? editAds(currentCampaign._id, adsData): createAds(adsData);
+    }
+
     const displayByStep = (step) => {
         switch (step) {
             case 0:
                 return (
                     <div className="ad-compaign-2 mx-2 mt-3">
-                        <label>Create name campaign</label>
+                        <label>{edit ? 'Edit' : 'Create'} name campaign</label>
                         <div className="form-group">
                             <input className="form-control"
                                 autoFocus={true}
@@ -215,7 +243,7 @@ const CreateAds = ({ location }) => {
                 }
                 return <Audience {...props} />
             case 3:
-                return <Payment currentAds={currentAds} />
+                return <Payment currentAds={currentAds} edit={edit} currentCampaign={currentCampaign} />
             case 4:
             default:
                 return <Finish location={location} />
@@ -239,8 +267,8 @@ const CreateAds = ({ location }) => {
 
                             <div className="form-group">
                                 <Steps current={step} labelPlacement="vertical">
-                                    <Step title="Create ad compaign" />
-                                    <Step title="Create Post" />
+                                    <Step title={`${edit ? 'Edit' : 'Create'} ad compaign`} />
+                                    <Step title={`${edit ? 'Edit' : 'Create'} Post`} />
                                     <Step title="Audience" />
                                     <Step title="Payment" />
                                     <Step title="Finish" />
@@ -258,7 +286,7 @@ const CreateAds = ({ location }) => {
                                 )}
                                 {step == 2 && (
                                     <button type="button" className="btn btn-primary"
-                                        onClick={() => onCreateAds()}>Create</button>
+                                        onClick={() => onCreateAds()}>{edit ? 'Edit' : 'Create'}</button>
                                 )}
                                 {step !== 2 && step < 4 && (
                                     <button className="btn btn-primary"

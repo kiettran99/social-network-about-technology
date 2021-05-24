@@ -33,6 +33,7 @@ const Faq = lazy(() => import('../components/faq/Faq'));
 const Chat = lazy(() => import('../components/chat/Chat'));
 const AdsRouter = lazy(() => import('../components/advertisement/AdsRouter'));
 const CreateAds = lazy(() => import('../components/advertisement/create-ads/CreateAds'));
+const EditAds = lazy(() => import('../components/advertisement/edit/Edit'));
 
 const MainComponent = () => {
     return (
@@ -58,6 +59,7 @@ const MainComponent = () => {
                         <Route exact path="/faq" component={Faq} />
                         <Route exact path="/ads" component={AdsRouter} />
                         <Route exact path="/ads/create" component={CreateAds} />
+                        <Route exact path="/ads/:id/edit" component={EditAds} />
                         <PrivateRoute exact path="/profile/edit" component={EditProfile} />
                         <Route exact path="/profile/:id" component={Profile} />
                         <Route component={NotFoundPage} />

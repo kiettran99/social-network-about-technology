@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Pagination from './pagination/Pagination';
 
-import { getListAds } from './services/adsServices';
+import { getListAds, toggleStatusCompaign } from './services/adsServices';
 
 const AdsManager = () => {
 
@@ -60,10 +60,27 @@ const AdsManager = () => {
 
     const onToggleAds = (e, id) => {
         // Call API to active or deactive
+        toggleStatusCompaign(id).then(() => {
+            // If success and then update state from client
+            setAds(state => state.map(ad => {
+                if (ad._id === id) {
+                    return {
+                        ...ad,
+                        status: ad.status === 1 ? 0 : 1
+                    };
+                }
+
+                return ad;
+            }));
+        });
     };
 
-    const onEditAds = (id) => {
-        // Edit ads by ID
+    const onEditAds = (ad) => {
+        // Edit ads from state
+        history.push({
+            pathname: `/ads/${ad._id}/edit`,
+            state: { ad }
+        });
     }
 
     const onPageChange = (selectedPage) => {
@@ -90,8 +107,8 @@ const AdsManager = () => {
                         </div>
 
                         <table className="table table-striped table-hover">
-                            {!isLoading && ads.length > 0 && (
-                                <caption>Display result: {currentPage} - {currentPage + 1 < pages ? currentPage + 1 : pages} of {pages}</caption>
+                            {!isLoading && ads && ads.length > 0 && (
+                                <caption>Display result: {((currentPage - 1) * 4 ) + 1} - {currentPage * 4} of {pages * 4}</caption>
                             )}
                             <thead>
                                 <tr>
@@ -132,7 +149,8 @@ const AdsManager = () => {
                                             <td>{ad.post.lengthOfComments}</td>
                                             <td>{ad.post.share.users.length}</td>
                                             <td>
-                                                <i className="ri-edit-2-line button"></i>
+                                                <i className="ri-edit-2-line button"
+                                                    onClick={() => onEditAds(ad)}></i>
                                             </td>
                                         </tr>
                                     ))}

@@ -1,9 +1,12 @@
 import axios from 'axios';
 import urlAPI from '../.../../../../../../utils/urlAPI';
 
-export const purchaseAds = async (adsId) => {
+export const purchaseAds = async (adsId, edit) => {
     try {
-        const res = await axios.post(`${urlAPI}/api/ads/${adsId}/purchase`);
+
+        const query = edit ? '?edit=true': '';
+
+        const res = await axios.post(`${urlAPI}/api/ads/${adsId}/purchase` + query);
 
         window.location = res.data;
     }
