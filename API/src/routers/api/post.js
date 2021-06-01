@@ -6,7 +6,7 @@ const auth = require('../../middleware/auth');
 const getUserByToken = require('../../middleware/getUserByToken');
 const storage = require('../../firebase/firebase');
 const upload = require('../../utils/upload');
-const { notify } = require('../../utils/notification');
+const { notify, pushNotificationMentions } = require('../../utils/notification');
 const { createBuildPart } = require('../../utils/build-part/build-part');
 const postModeration = require('../../utils/sightengine/postModeration');
 
@@ -609,7 +609,8 @@ router.put('/comment/:id', [auth,
             text: req.body.text,
             name: req.user.fullname,
             user: req.user.id,
-            avatar: req.user.avatar
+            avatar: req.user.avatar,
+            rawText: req.body?.rawText
         };
 
         //Newest first page.
@@ -618,6 +619,7 @@ router.put('/comment/:id', [auth,
 
         await post.save();
 
+        // Notification
         const message = `${req.user.fullname} have just commented on post.`;
 
         notify(message, {
@@ -627,6 +629,10 @@ router.put('/comment/:id', [auth,
             following: 'followingPosts'
         });
 
+        // Notification when user has mentioned.
+        pushNotificationMentions(req.user, post, req.body?.usersFromMention);
+        
+        // Response to client
         res.json(post.comments.find(e => true));
     }
     catch (e) {
@@ -819,7 +825,8 @@ router.put('/:post_id/comments/reply/:comment_id', [auth,
             text: req.body.text,
             name: req.user.fullname,
             user: req.user.id,
-            avatar: req.user.avatar
+            avatar: req.user.avatar,
+            rawText: req.body?.rawText
         };
 
         //Newest first page.
@@ -827,6 +834,9 @@ router.put('/:post_id/comments/reply/:comment_id', [auth,
         comment.lengthOfReplies += 1;
 
         await post.save();
+
+        // Notification when user has mentioned.
+        pushNotificationMentions(req.user, post, req.body?.usersFromMention);
 
         res.json(comment.replies.find(e => true));
     }

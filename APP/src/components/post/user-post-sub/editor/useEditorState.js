@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { EditorState } from 'draft-js';
+import { convertToRaw, EditorState } from 'draft-js';
 import editor from './editor';
 
 const useEditorState = () => {
@@ -14,7 +14,20 @@ const useEditorState = () => {
         setEditorState(EditorState.createEmpty());
     }
 
-    return { editorState, setEditorState, getText, reset };
+    const getUsersFromMention = () => {
+        const rawEditorContent = convertToRaw(editorState.getCurrentContent());
+        const entityMap = rawEditorContent.entityMap;
+
+        return Object.values(entityMap).reduce((enities, entity) => {
+            if (entity.data?.mention) {
+                enities.push(entity.data?.mention);
+            }
+
+            return enities;
+        }, []);
+    }
+
+    return { editorState, setEditorState, getText, reset, getUsersFromMention };
 };
 
 export default useEditorState;

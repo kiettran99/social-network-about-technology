@@ -7,16 +7,17 @@ import DraftJSEditor from './editor/DraftJSEditor';
 
 const CommentsForm = ({ actionComment, auth: { isAuthenticated }, addComment, postId, isInPosts }) => {
 
-    const { editorState, setEditorState, getText, reset } = useEditorState();
+    const { editorState, setEditorState, getText, reset, getUsersFromMention } = useEditorState();
 
     const onSubmit = (e) => {
+
         e.preventDefault();
 
         if (postId) {
-            addComment(postId, { text: getText(), rawText: editorState });
+            addComment(postId, { text: getText(), rawText: editorState.getCurrentContent(), usersFromMention: getUsersFromMention() });
         }
         else {
-            actionComment({ text: getText(), rawText: editorState });
+            actionComment({ text: getText(), rawText: editorState.getCurrentContent(), usersFromMention: getUsersFromMention() });
         }
 
         reset();
