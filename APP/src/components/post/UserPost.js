@@ -139,8 +139,8 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                             </div>
                         )}
                     <Addons buildParts={buildParts} />
-                    {hashtag && <HashTag hashtag={hashtag} />}
                     {shop && <Shop userId={userId} shop={shop} />}
+                    {hashtag && <HashTag hashtag={hashtag} />}
                     <div className="user-post">
                         <AttachPost imageUrls={imageUrls} />
                     </div>

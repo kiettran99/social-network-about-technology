@@ -207,7 +207,7 @@ router.get('/posts', auth, async (req, res) => {
         }
         // 2. Find posts
         const posts = await Post.find(conditions)
-            .sort({ createdAt: -1 })
+            .sort({ _id: -1 })
             .skip(skip)
             .limit(limit);
 

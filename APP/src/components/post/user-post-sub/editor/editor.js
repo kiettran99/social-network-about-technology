@@ -58,6 +58,11 @@ const getHashTags = (inputText) => {
 }
 
 const convertHashTagToArray = (editorState) => {
+
+    if (typeof (editorState) === 'string') {
+        return getHashTags(editorState);
+    }
+
     const content = editorState.getCurrentContent().getPlainText();
 
     return getHashTags(content);

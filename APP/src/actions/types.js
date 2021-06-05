@@ -53,6 +53,9 @@ export const REMOVE_POST = 'REMOVE_POST';
 export const HIDE_POST = 'HIDE_POST';
 export const RESET_POST = 'RESET_POST';
 
+export const ASSIGN_POST = 'ASSIGN_POST';
+export const UPDATE_POSTS_ID = 'UPDATE_POSTS_ID';
+
 // Clear prev loading post
 export const CLEAR_POST = 'CLEAR_POST';
 export const POST_ERROR = 'POST_ERROR';
@@ -109,6 +112,8 @@ export const LOADING_BUILD_PARTS = 'LOADING_BUILD_PARTS';
 export const SEARCH_USERS = 'SEARCH_USERS';
 export const SEARCH_LOADING = 'SEARCH_LOADING';
 export const ERROR_SEARCH = 'ERROR_SEARCH';
+export const SEARCH_POSTS = 'SEARCH_POSTS';
+export const RESET_SEARCH = 'RESET_SEARCH';
 
 // Reviews
 export const GET_REVIEWS = 'GET_REVIEWS';

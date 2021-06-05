@@ -95,7 +95,7 @@ router.get('/', getUserByToken, async (req, res) => {
             //     $slice: 1
             // },
         }).limit(limit).skip(skip + offset)
-            .sort({ _id : 'desc' })
+            .sort({ _id: 'desc' })
             .populate('type.group', 'name')
             .populate('share.postId', '-share')
             .populate({
@@ -306,10 +306,12 @@ router.post('/', auth, upload.array('images'), [
             newPost.tags = JSON.parse(tags);
         }
 
-        if (req.body.shop) {{
-            const shop = req.body.shop;
-            newPost.shop = JSON.parse(shop);
-        }}
+        if (req.body.shop) {
+            {
+                const shop = req.body.shop;
+                newPost.shop = JSON.parse(shop);
+            }
+        }
 
         // Create a instance post and save it.
         const post = new Post(newPost);
@@ -395,10 +397,12 @@ router.put('/:id', auth, upload.array('images'), [
             post.tags = JSON.parse(tags);
         }
 
-        if (req.body.shop) {{
-            const shop = req.body.shop;
-            post.shop = JSON.parse(shop);
-        }}
+        if (req.body.shop) {
+            {
+                const shop = req.body.shop;
+                post.shop = JSON.parse(shop);
+            }
+        }
 
         post.text = req.body.text;
 
@@ -631,7 +635,7 @@ router.put('/comment/:id', [auth,
 
         // Notification when user has mentioned.
         pushNotificationMentions(req.user, post, req.body?.usersFromMention);
-        
+
         // Response to client
         res.json(post.comments.find(e => true));
     }
@@ -1070,6 +1074,54 @@ router.put('/:post_id/share', auth, async (req, res) => {
             return res.status(404).json({ msg: 'Post is not exists. ' });
         }
 
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route POST /api/posts/search
+// @desc Search post by headline or hashtags
+// @access public
+router.post('/search', [
+    body('headline', 'Headline is String.').optional().isString(),
+    body('hashtags', 'Hashtags is array of type String').optional().isArray()
+], async (req, res) => {
+    try {
+        // 0. Validation from req.body (headline or hashtags)
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ msg: errors.array() });
+        }
+
+        const { headline, hashtags } = req.body;
+
+        // 1. Create filters to find
+        const limit = parseInt(req.query.limit) || 4;
+        const skip = parseInt(req.query.skip) || 0;
+
+        const conditions = {};
+
+        if (headline) {
+            conditions.text = { '$regex': headline, $options: 'i' };
+        }
+
+        if (hashtags && hashtags.length > 0) {
+            conditions['hashtag.tags'] = {
+                $in: hashtags
+            }
+        }
+
+        // 2. Find posts
+        const posts = await Post.find(conditions)
+            .sort({ _id: -1 })
+            .skip(skip)
+            .limit(limit);
+
+        // 3. Response to client
+        res.json(posts);
+    }
+    catch (e) {
+        console.log(e);
         res.status(500).send('Server is errors.');
     }
 });

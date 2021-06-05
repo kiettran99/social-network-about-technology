@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { getMoreComments } from '../../../actions/post';
 
-const PostComments = ({ postId, comments, getMoreComments, lengthOfComments, isInPosts }) => {
+const PostComments = ({ postId, comments, getMoreComments, lengthOfComments, isInPosts = false }) => {
 
     const handleGetMoreComments = () => {
         getMoreComments(postId, comments.length);
@@ -28,8 +28,8 @@ const PostComments = ({ postId, comments, getMoreComments, lengthOfComments, isI
     )
 };
 
-const mapStateToProps = (state) => ({
-    isInPosts: state.post.isInPosts
-});
+// const mapStateToProps = (state) => ({
+//     isInPosts: state.post.isInPosts
+// });
 
-export default connect(mapStateToProps, { getMoreComments })(PostComments);
+export default connect(null, { getMoreComments })(PostComments);

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import sample from './sample';
+import dayjs from '../../../../utils/relativeDate';
 
 const BubbleEditor = lazy(() => import('../../../post/editor/BubbleEditor'));
 const DisplayPrivacy = lazy(() => import('../../../post/toolbar/DisplayPrivacy'));
@@ -12,7 +13,7 @@ const CommentsBar = lazy(() => import('../../../post/user-post-sub/CommentsBar')
 const PreviewPost = (props) => {
 
     //  Get properties from props
-    const { post, handleClick } = props;
+    const { post, handleClick, isDisplayTime = false } = props;
 
     // Get User in redux store
     const user = useSelector((state) => {
@@ -35,7 +36,8 @@ const PreviewPost = (props) => {
                     <div className="media-support-info mt-2">
                         <h5 className="mb-0 d-inline-block"><Link to={`/profile/${post.user}`}>{post.name}&nbsp;</Link></h5>
                         <div className="mb-0">
-                            <span className="text-muted">Sponsored</span>
+                            {isDisplayTime ? <span className="text-primary">{dayjs(post.createdAt).fromNow()}</span> :
+                                <span className="text-muted">Sponsored</span>}
                             <span> · </span>
                             <DisplayPrivacy privacy={post ? post.privacy : sample.privacy} />
                         </div>
@@ -61,7 +63,8 @@ const PreviewPost = (props) => {
                 <div className="media-support-info mt-2">
                     {user && <h5 className="mb-0 d-inline-block"><Link to={`/profile/${user._id}`}>{user.fullname}&nbsp;</Link></h5>}
                     <div className="mb-0">
-                        <span className="text-muted">Sponsored</span>
+                        {isDisplayTime ? <span className="text-primary">{dayjs(post.createdAt).fromNow()}</span> :
+                            <span className="text-muted">Sponsored</span>}
                         <span> · </span>
                         <DisplayPrivacy privacy={post ? post.privacy : sample.privacy} />
                     </div>

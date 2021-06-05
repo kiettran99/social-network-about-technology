@@ -1,10 +1,12 @@
 import {
-    SEARCH_LOADING, SEARCH_USERS, ERROR_SEARCH
+    SEARCH_LOADING, SEARCH_USERS, ERROR_SEARCH, SEARCH_POSTS, RESET_SEARCH
 } from '../actions/types';
 
 const initialState = {
     users: null,
-    loading: true,
+    posts: null,
+    search: '',
+    loading: false,
     errors: {}
 };
 
@@ -21,6 +23,13 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 users: payload,
+                search: action.search,
+                loading: false
+            };
+        case SEARCH_POSTS:
+            return {
+                ...state,
+                posts: payload,
                 loading: false
             };
         case ERROR_SEARCH:
@@ -29,6 +38,8 @@ export default function(state = initialState, action) {
                 loading: false,
                 errors: payload
             };
+        case RESET_SEARCH:
+            return initialState;
         default:
             return state;
     }

@@ -19,11 +19,10 @@ const CommentsForm = ({ actionComment, auth: { isAuthenticated }, addComment, po
         else {
             actionComment({ text: getText(), rawText: editorState.getCurrentContent(), usersFromMention: getUsersFromMention() });
         }
-
         reset();
     };
 
-    return !isInPosts && (
+    return /* !isInPosts &&  */(
         <form className="comment-text d-flex align-items-center mt-3" onSubmit={e => onSubmit(e)}>
             <DraftJSEditor
                 disabled={!isAuthenticated}
