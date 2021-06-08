@@ -21,7 +21,7 @@ const Photo = ({ photo: { _id, imageUrl, type = 'posts' } }) => {
                         </ul>
                     </div>
                 </div>
-                <a href="profile-images.html#" className="image-edit-btn" data-toggle="tooltip" data-placement="top" title data-original-title="Edit or Remove"><i className="ri-edit-2-fill" /></a>
+                <a href="profile-images.html#" className="image-edit-btn" data-toggle="tooltip" data-placement="top" data-original-title="Edit or Remove"><i className="ri-edit-2-fill" /></a>
             </div>
         </div>
     );

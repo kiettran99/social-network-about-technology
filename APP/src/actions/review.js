@@ -1,6 +1,7 @@
 import {
     ADD_REVIEW, GET_REVIEWS, GET_REVIEW, REVIEW_ERROR, RESET_REVIEW,
-    GET_POST, EDIT_REVIEW, REMOVE_REVIEW, EDIT_POST, REMOVE_POST, EDIT_TITLE_REVIEW
+    GET_POST, EDIT_REVIEW, REMOVE_REVIEW, EDIT_POST, REMOVE_POST, EDIT_TITLE_REVIEW,
+    GET_MORE_REVIEWS
 } from './types';
 import axios from 'axios';
 import urlAPI from '../utils/urlAPI';
@@ -134,3 +135,23 @@ export const resetReview = () => dispatch => {
         type: RESET_REVIEW
     });
 };
+
+export const getMoreReviews = (skip = 0, limit = 5, callback) => async dispatch => {
+    try {
+        const res = await axios.get(`${urlAPI}/api/reviews?limit=${limit}&skip=${skip}`);
+        console.log(res)
+        dispatch({
+            type: GET_MORE_REVIEWS,
+            payload: res.data,
+        });
+
+        callback();
+    }
+    catch (e) {
+
+        dispatch({
+            type: REVIEW_ERROR,
+            payload: { msg: e.response?.data, status: e.response?.statusText }
+        });
+    }
+}

@@ -1,7 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const SearchUsers = ({ users, search }) => {
+import LoadMore from '../../shared/LoadMore';
+import { getMoreUsers } from '../../../actions/search';
+
+const SearchUsers = ({ users, search, getMoreUsers }) => {
+
+    const getMore = (callback) => {
+        getMoreUsers(search, 3, users.length || 0, callback);
+    };
+
     return (
         <div className="iq-card">
             <div className="iq-card-header d-flex justify-content-between">
@@ -47,13 +56,15 @@ const SearchUsers = ({ users, search }) => {
                                 ))
                         )}
                     </div>
-                    <div className="col-sm-12 text-center">
-                        {/* {notification && <NotificationProcess />} */}
-                    </div>
+                    {users && users.length > 0 && (
+                        <div className="col-sm-12 text-center">
+                            <LoadMore action={getMore} />
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
     );
 };
 
-export default React.memo(SearchUsers);
+export default connect(null, { getMoreUsers })(React.memo(SearchUsers));

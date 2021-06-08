@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import data from './service/data';
+import { createReport } from './service/report';
 
-const Report = ({ closeModal }) => {
+const Report = ({ closeModal, postId }) => {
 
     const [issues, setIssues] = useState(data);
 
@@ -14,6 +15,32 @@ const Report = ({ closeModal }) => {
             status: issueId === issue._id
         })))
     };
+
+    const onReportPost = () => {
+        const body = {
+            target: postId,
+            type: 'Post',
+            description: issues.find(issue => issue.status)?.description,
+        };
+
+        setWating(true);
+
+        createReport(body).then((report) => {
+            if (report) {
+                setWating(false);
+                setMessage({ description: 'Report successfully. Thanks you your reporting.', status: 'success' });
+
+                // Automatically close modal 2s
+                setTimeout(() => {
+                    closeModal();
+                }, 2000);
+            }
+      
+        }).catch(() => {
+            setWating(false);
+            setMessage({ description: 'Report not Successfully. Please try again later.', status: 'danger' });
+        });
+    }
 
     return (
         <div className="modal-dialog modal-lg m-0" role="document">
@@ -39,7 +66,7 @@ const Report = ({ closeModal }) => {
                 <div className="modal-footer">
                     {message && (
                         <div className="form-group">
-                            <span className="text-primary">{message}</span>
+                            <span className={`text-${message.status}`}>{message.description}</span>
                         </div>
                     )}
                     {isWaiting ? (
@@ -49,6 +76,7 @@ const Report = ({ closeModal }) => {
                         </button>
                     ) : (
                         <button type="button" className="btn btn-primary"
+                            onClick={onReportPost}
                         >Report</button>
                     )}
                 </div>

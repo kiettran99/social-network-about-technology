@@ -1,7 +1,16 @@
 import React from 'react';
-import SearchPreviewPost from './preview/SearchPreviewPost';
+import { connect } from 'react-redux';
 
-const SearchPosts = ({ posts, search }) => {
+import LoadMore from '../../shared/LoadMore';
+import SearchPreviewPost from './preview/SearchPreviewPost';
+import { getMorePosts } from '../../../actions/search';
+
+const SearchPosts = ({ posts, search, getMorePosts }) => {
+
+    const getMore = (callback) => {
+        getMorePosts(search, 4, posts.length, callback);
+    }
+
     return (
         <div className="iq-card">
             <div className="iq-card-header d-flex justify-content-between">
@@ -17,12 +26,15 @@ const SearchPosts = ({ posts, search }) => {
                             <SearchPreviewPost post={post} />
                         </div>
                     ))}
-
+                    {posts && posts.length > 0 && (
+                        <div className="col-sm-12 text-center">
+                            <LoadMore action={getMore} />
+                        </div>
+                    )}
                 </div>
-
             </div>
         </div>
     );
 };
 
-export default SearchPosts;
+export default connect(null, { getMorePosts })(React.memo(SearchPosts));

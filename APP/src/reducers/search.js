@@ -1,5 +1,6 @@
 import {
-    SEARCH_LOADING, SEARCH_USERS, ERROR_SEARCH, SEARCH_POSTS, RESET_SEARCH
+    SEARCH_LOADING, SEARCH_USERS, ERROR_SEARCH, SEARCH_POSTS, RESET_SEARCH,
+    GET_MORE_SEARCH_POSTS, GET_MORE_SEARCH_USERS
 } from '../actions/types';
 
 const initialState = {
@@ -10,7 +11,7 @@ const initialState = {
     errors: {}
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
     const { type, payload } = action;
 
     switch (type) {
@@ -31,6 +32,16 @@ export default function(state = initialState, action) {
                 ...state,
                 posts: payload,
                 loading: false
+            };
+        case GET_MORE_SEARCH_USERS:
+            return {
+                ...state,
+                users: [...state.users, ...payload]
+            };
+        case GET_MORE_SEARCH_POSTS:
+            return {
+                ...state,
+                posts: [...state.posts, ...payload]
             };
         case ERROR_SEARCH:
             return {

@@ -2,7 +2,7 @@ export default [
     {
         _id: 1,
         description: "Spam",
-        status: false
+        status: true
     },
     {
         _id: 2,

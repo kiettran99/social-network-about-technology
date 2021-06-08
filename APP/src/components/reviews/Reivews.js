@@ -4,10 +4,11 @@ import { connect, useSelector } from 'react-redux';
 import Review from './Review';
 import DialogBox from '../shared/DialogBox';
 import CreateReview from './create/CreateReview';
+import LoadMore from '../shared/LoadMore';
 
-import { getReviews, resetReview } from '../../actions/review';
+import { getReviews, resetReview, getMoreReviews } from '../../actions/review';
 
-const Reviews = ({ getReviews, resetReview }) => {
+const Reviews = ({ getReviews, resetReview, getMoreReviews }) => {
 
     const [modalIsOpen, setIsOpen] = useState(false);
 
@@ -30,6 +31,10 @@ const Reviews = ({ getReviews, resetReview }) => {
 
     const openModal = () => {
         setIsOpen(true);
+    }
+
+    const getMore = (callback) => {
+        getMoreReviews(reviews.length, 5, callback);
     }
 
     return (
@@ -57,6 +62,12 @@ const Reviews = ({ getReviews, resetReview }) => {
                         {reviews && reviews.length > 0 && reviews.map(review => (
                             <Review key={review._id} review={review} />
                         ))}
+
+                        <div className="col-sm-12 form-group text-center">
+                            {reviews && reviews.length > 0 && (
+                                <LoadMore action={getMore} />
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -65,4 +76,6 @@ const Reviews = ({ getReviews, resetReview }) => {
     );
 };
 
-export default connect(null, { getReviews, resetReview })(Reviews);
+export default connect(null, {
+    getReviews, resetReview, getMoreReviews
+})(Reviews);
