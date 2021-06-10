@@ -2,10 +2,14 @@ const router = require('express').Router();
 const { body, validationResult } = require('express-validator');
 const moment = require('moment');
 
+const APP_URL = process.env.APP_URL || 'http://localhost:3000';
+const API_URL = process.env.API_URL || 'http://localhost:3001';
+
 const auth = require('../../middleware/auth');
 const getUserByToken = require('../../middleware/getUserByToken');
 const isEmptyObject = require('../../utils/isEmptyObject');
 const { canAddActivity } = require('../../utils/ads/ads');
+const paypal = require('../../utils/paypal/paypal');
 
 const Ads = require('../../models/ads');
 const Post = require('../../models/post');
@@ -138,6 +142,53 @@ router.post('/', auth, [
     }
 });
 
+// @route PUT /api/ads/:id
+// @desc Edit a ads.
+// @access private
+router.put('/:id', auth, [
+    body('name', 'Name is required').not().isEmpty(),
+    body('post', 'Post ID is required').not().isEmpty(),
+    body('audience', 'Audience is required').not().isEmpty()
+], async (req, res) => {
+    try {
+        // 0. Find Ad by Id and onwner
+        const { id } = req.params;
+
+        if (!id) {
+            return res.status(400).send('Ads Id is required.');
+        }
+
+        // 1. Validation
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        // Find post if owner is current user
+        const post = await Post.findOne({ _id: req.body.post, user: req.user._id });
+
+        if (!post) {
+            return res.status(400).send('Post is not yours. Please try other posts.');
+        }
+
+        // 2. Find and update then Save
+        const ad = await Ads.findOneAndUpdate({ _id: id, owner: req.user._id }, {
+            name: req.body.name,
+            post: post._id,
+            owner: req.user._id,
+            audience: req.body.audience
+        });
+
+        // 3. Response to client
+        res.json(ad);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
 // @route GET /api/ads/posts
 // @desc Find owner post of current user.
 // @access private
@@ -156,7 +207,7 @@ router.get('/posts', auth, async (req, res) => {
         }
         // 2. Find posts
         const posts = await Post.find(conditions)
-            .sort({ createdAt: -1 })
+            .sort({ _id: -1 })
             .skip(skip)
             .limit(limit);
 
@@ -257,7 +308,7 @@ router.get('/list', auth, async (req, res) => {
     try {
         // Get Query
         // Limit post and pages
-        const limit = parseInt(req.query.limit) || 2;
+        const limit = parseInt(req.query.limit) || 4;
         const page = parseInt(req.query.page) || 1;
 
         // Server decides page size
@@ -271,13 +322,203 @@ router.get('/list', auth, async (req, res) => {
             .skip(skip)
             .limit(limit)
             .populate('post', '-comments');
-        
+
         // Reponse client about data and pagination info
         res.json({
             ads,
             currentPage: page,
             pages: Math.ceil(totalAds / limit)
         });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route POST /api/ads/:id/purchase
+// @desc User purchases advertisement compaign to active
+// @access private
+router.post('/:id/purchase', async (req, res) => {
+    try {
+        const adsId = req.params.id;
+        const edit = req.query.edit;
+
+        if (!adsId) {
+            return res.status(400).send('Ads Id is required.');
+        }
+
+        const return_url = () => {
+            if (edit) {
+                return `${API_URL}/api/ads/purchase/success?adsId=${adsId}&edit=true`;
+            }
+
+            return `${API_URL}/api/ads/purchase/success?adsId=${adsId}`;
+        }
+
+        var create_payment_json = {
+            "intent": "sale",
+            "payer": {
+                "payment_method": "paypal"
+            },
+            "redirect_urls": {
+                "return_url": return_url(),
+                "cancel_url": `${API_URL}/api/ads/purchase/cancel`
+            },
+            "transactions": [{
+                "item_list": {
+                    "items": [{
+                        "name": "Advertisement Compaign",
+                        "sku": "item",
+                        "price": "5.00",
+                        "currency": "USD",
+                        "quantity": 1
+                    }]
+                },
+                "amount": {
+                    "currency": "USD",
+                    "total": "5.00"
+                },
+                "description": "Please purchase advertisement compaign to active."
+            }]
+        };
+
+        paypal.payment.create(create_payment_json, function (error, payment) {
+            if (error) {
+                throw error;
+            } else {
+
+                if (payment && payment.links) {
+                    // Link redirect client to login paypal account to pay
+                    const approval_url = payment.links.find(link => link.rel === 'approval_url');
+
+                    if (!approval_url) {
+                        return res.status(500).send('Server is errors.');
+                    }
+
+                    res.json(approval_url.href);
+                }
+            }
+        });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route GET /api/ads/purchase/success
+// @desc User logins paypal account and checkout
+// @access public
+router.get('/purchase/success', (req, res) => {
+    try {
+        const payerId = req.query.PayerID;
+        const paymentId = req.query.paymentId;
+        const adsId = req.query.adsId;
+        const edit = req.query.edit;
+
+        var execute_payment_json = {
+            "payer_id": payerId,
+            "transactions": [{
+                "amount": {
+                    "currency": "USD",
+                    "total": "5.00"
+                }
+            }]
+        };
+
+        paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+            if (error) {
+                console.log(error.response);
+                res.status(500).send('Server is errors.');
+            } else {
+                //console.log(JSON.stringify(payment));
+                // Active AD User has purchased ad compagin.
+                Ads.findByIdAndUpdate(adsId, { status: 1 }).exec((error) => {
+                    if (error) {
+                        console.log(error.response);
+
+                        if (edit) {
+                            res.redirect(`${APP_URL}/ads/${adsId}/edit?status=fail&adsId=${adsId}`);
+                        }
+                        else {
+                            res.redirect(`${APP_URL}/ads/create?status=fail&adsId=${adsId}`);
+                        }
+                    }
+
+                    if (edit) {
+                        return res.redirect(`${APP_URL}/ads/${adsId}/edit?status=successed&adsId=${adsId}`);
+                    }
+
+                    res.redirect(`${APP_URL}/ads/create?status=successed&adsId=${adsId}`);
+                });
+            }
+        });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route GET /api/ads/purchase/cancel
+// @desc User logins paypal account but cancel.
+// @access public
+router.get('/purchase/cancel', async (req, res) => {
+    try {
+        res.redirect(`${APP_URL}/ads/create?status=canceled`);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route PATCH /api/ads/purchase/cancel
+// @desc Active or Paused advertising compaign
+// @access private
+router.patch('/:id/status', auth, async (req, res) => {
+    try {
+
+        const adsId = req.params.id;
+
+        if (!!!adsId) {
+            return res.status(400).send('Ads Id is required.');
+        }
+
+        const ad = await Ads.findById(adsId);
+
+        if (ad.owner.toString() !== req.user.id) {
+            return res.status(400).json({ msg: 'Advertising is not yours.' });
+        }
+
+        // Toggle Status
+        ad.status = ad.status === 1 ? 0 : 1;
+
+        await ad.save();
+
+        res.json(ad);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route GET /api/ads/:id
+// @desc Get your campaign by Id
+// @access private
+router.get('/:id', auth, async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!id) {
+            return res.status(400).send('Ads Id is required.');
+        }
+
+        const ad = await Ads.findOne({ _id: id, owner: req.user._id });
+
+        res.json(ad);
     }
     catch (e) {
         console.log(e);

@@ -10,4 +10,4 @@ export const setRequest = () => ({
 
 export const setComplete = () => ({
     type: COMPLETE_LOADING
-});k
+});

@@ -1,8 +1,11 @@
 const router = require('express').Router();
 const { body, validationResult } = require('express-validator');
+
+const Group = require('../../models/group');
+const Notification = require('../../models/notification');
+
 const upload = require('../../utils/upload');
 const storage = require('../../firebase/firebase');
-const Group = require('../../models/group');
 const auth = require('../../middleware/auth');
 const { registerNotification, unregisterNotification,
     registerNotifications } = require('../../utils/notification');
@@ -20,6 +23,65 @@ router.get('/', async (req, res) => {
         const name = req.query.name;
 
         const conditions = {};
+
+        if (name) {
+            conditions.name = { '$regex': name, $options: 'i' };
+        }
+
+        const groups = await Group.find(conditions, {
+            members: {
+                $slice: [0, 6]
+            }
+        }).limit(limit).skip(skip).populate('members.user', 'avatar');
+
+        res.json(groups);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route GET /api/groups/me
+// @rotue full GET /api/groups/me?limt=number&skip=number&name=string&group=string
+// @desc Get a list group by filter tab
+// @access private
+router.get('/me', auth, async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit) || 5;
+        const skip = parseInt(req.query.skip) || 0;
+
+        // Get name to search
+        const name = req.query.name;
+        const group = req.query.group;  // Filter group
+
+        const groupsAdmin = ['5f82ab8dd98386195097a92d',
+            '5f95024e0d4f742610d18062',
+            '5fd0caf7e9e81e0015cb5adb'];
+
+        const conditions = {};
+
+        switch (group) {
+            case 'joined':
+                conditions['members.user'] = req.user._id;
+                break;
+            case 'discovery':
+                conditions['$and'] = [{
+                    'members.user': {
+                        $nin: [req.user._id]
+                    }
+                }, {
+                    '_id': {
+                        $nin: groupsAdmin
+                    }
+                }];
+                break;
+            default:
+                conditions['_id'] = {
+                    $in: groupsAdmin
+                };
+                break;
+        }
 
         if (name) {
             conditions.name = { '$regex': name, $options: 'i' };
@@ -68,7 +130,7 @@ router.get('/:id', async (req, res) => {
 // @route POST /api/groups
 // @desc Create a group.
 // @access private
-router.post('/', upload.fields([
+router.post('/', auth, upload.fields([
     { name: 'avatar', maxCount: 1 }, { name: 'wallpaper', maxCount: 1 }
 ]), [
     body('name', 'Name is required.').not().isEmpty(),
@@ -85,6 +147,8 @@ router.post('/', upload.fields([
         // Create a new instance and save into database
         const group = await Group.create({
             ...req.body,
+            wallpaper: '/images/page-img/profile-bg8.jpg',
+            avatar: '/images/page-img/profile-bg8.jpg',
             owner: req.user._id
         });
 

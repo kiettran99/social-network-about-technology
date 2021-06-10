@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
+
 import HeaderBackground from '../groups/header/HeaderBackground';
-import { getPhotos } from './services/photosService';
 import Photo from './Photo';
+import LoadMore from '../shared/LoadMore';
+
+import { getPhotos } from './services/photosService';
 
 const Photos = () => {
 
@@ -37,6 +40,17 @@ const Photos = () => {
         }, []);
     }
 
+    const getMore = (callback) => {
+        getPhotos(photos.length, 6).then(data => {
+
+            const newPhotos = mapDataToPhotos(data);
+
+            setPhotos(state => [...state, ...newPhotos]);
+
+            callback();
+        });
+    }
+
     return (
         <>
             <HeaderBackground title={'Your Photos'} imageUrl={"/images/page-img/profile-bg5.jpg"} />
@@ -46,6 +60,11 @@ const Photos = () => {
                         {photos.length > 0 && photos.map((photo, index) => (
                             <Photo key={index} photo={photo} />
                         ))}
+                        <div className="col-sm-12 form-group text-center">
+                            {photos && photos.length > 0 && (
+                                <LoadMore action={getMore} />
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

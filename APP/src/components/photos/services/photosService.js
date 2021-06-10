@@ -1,9 +1,9 @@
 import axios from 'axios';
 import urlAPI from '../../../utils/urlAPI';
 
-export const getPhotos = async () => {
+export const getPhotos = async (skip = 0, limit = 6) => {
     try {
-        const res = await axios.get(`${urlAPI}/api/photos`);
+        const res = await axios.get(`${urlAPI}/api/photos?skip=${skip}&limit=${limit}`);
 
         return res.data;
     }

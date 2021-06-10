@@ -13,7 +13,7 @@ const Header = () => {
 
     return (
         <div className="chat-head">
-            <header className="d-flex justify-content-between align-items-center bg-white pt-3 pr-3 pb-3">
+            <header className="d-flex justify-content-between align-items-center bg-white py-3 px-0 px-sm-3">
                 <div className="d-flex align-items-center">
                     <div className="sidebar-toggle">
                         <i className="ri-menu-3-line" />

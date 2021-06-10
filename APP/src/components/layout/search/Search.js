@@ -1,9 +1,10 @@
 import React, { useRef } from 'react';
 import { connect } from 'react-redux';
-import { searchUsers } from '../../../actions/search';
 import { useHistory } from 'react-router-dom';
 
-const Search = ({ searchUsers }) => {
+import { searchUsers, searchPosts } from '../../../actions/search';
+
+const Search = ({ searchUsers, searchPosts }) => {
 
     const searchRef = useRef();
     const history = useHistory();
@@ -13,7 +14,8 @@ const Search = ({ searchUsers }) => {
             e.preventDefault();
         }
 
-        searchUsers(searchRef.current.value);
+        searchUsers(searchRef.current.value, searchRef.current.value);
+        searchPosts(searchRef.current.value);
 
         history.push('/search');
     };
@@ -29,4 +31,4 @@ const Search = ({ searchUsers }) => {
     );
 };
 
-export default connect(null, { searchUsers })(Search);
+export default connect(null, { searchUsers, searchPosts })(Search);

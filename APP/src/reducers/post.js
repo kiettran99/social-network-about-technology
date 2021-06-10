@@ -4,7 +4,8 @@ import {
     ADD_COMMENT, REMOVE_COMMENT, UPDATE_LIKES,
     UPDATE_LIKES_COMMENT, ADD_REPLY_COMMENT, REMOVE_REPLY_COMMENT,
     UPDATE_LIKES_REPLY, GET_MORE_COMMENTS, GET_MORE_REPLIES,
-    GET_LENGTH_POSTS, EDIT_POST, HIDE_POST, RESET_POST, EDIT_TITLE_REVIEW
+    GET_LENGTH_POSTS, EDIT_POST, HIDE_POST, RESET_POST, EDIT_TITLE_REVIEW,
+    ASSIGN_POST, UPDATE_POSTS_ID
 } from '../actions/types';
 
 const initialState = {
@@ -208,10 +209,10 @@ export default function (state = initialState, action) {
                     }
                 })
             } : {
-                    ...state,
-                    loading: false,
-                    post: payload
-                }
+                ...state,
+                loading: false,
+                post: payload
+            }
         case HIDE_POST:
             return {
                 ...state,
@@ -248,6 +249,22 @@ export default function (state = initialState, action) {
                     text: payload
                 }
             };
+        case ASSIGN_POST:
+            return {
+                ...state,
+                post: state.posts.find(post => post._id === payload)
+            };
+        case UPDATE_POSTS_ID:
+            return {
+                ...state,
+                posts: state.posts.map(post => {
+                    if (state.post && post._id === payload) {
+                        return state.post;
+                    }
+
+                    return post;
+                })
+            }
         default:
             return state;
     }

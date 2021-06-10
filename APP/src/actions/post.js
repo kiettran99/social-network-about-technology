@@ -5,7 +5,8 @@ import {
     ADD_COMMENT, REMOVE_COMMENT, UPDATE_LIKES,
     UPDATE_LIKES_COMMENT, ADD_REPLY_COMMENT, REMOVE_REPLY_COMMENT,
     GET_MORE_COMMENTS, UPDATE_LIKES_REPLY, GET_MORE_REPLIES,
-    GET_LENGTH_POSTS, EDIT_POST, HIDE_POST, RESET_POST
+    GET_LENGTH_POSTS, EDIT_POST, HIDE_POST, RESET_POST,
+    ASSIGN_POST, UPDATE_POSTS_ID
 } from '../actions/types';
 import axios from 'axios';
 import urlAPI from '../utils/urlAPI';
@@ -494,3 +495,17 @@ export const resetPost = () => dispatch => {
         type: RESET_POST
     });
 }
+
+export const assignPost = (id) => dispatch => {
+    dispatch({
+        type: ASSIGN_POST,
+        payload: id
+    });
+};
+
+export const updatePostsById = (id) => dispatch => {
+    dispatch({
+        type: UPDATE_POSTS_ID,
+        payload: id
+    });
+};

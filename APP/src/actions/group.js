@@ -25,6 +25,43 @@ export const getGroups = (skip = 0, limit = 5, name = '') => async dispatch => {
     }
 };
 
+const queryStringByTab = (tab) => {
+    switch (tab) {
+        case 0:
+            return '&group=home';
+        case 1:
+            return '&group=joined';
+        case 2:
+        default:
+            return '&group=discovery';
+    }
+}
+
+export const getGroupsByTab = (skip = 0, limit = 5, name = '', tab = 0, callback) => async dispatch => {
+    try {
+
+        const res = await axios.get(`${urlAPI}/api/groups/me?skip=${skip}&limit=${limit}&name=${name}` + queryStringByTab(tab));
+
+        console.log(res);
+        dispatch({
+            type: GET_GROUPS,
+            payload: res.data,
+            name
+        });
+    }
+    catch (e) {
+        console.log(e);
+
+        dispatch({
+            type: GROUP_ERROR,
+            payload: { msg: e.response.data, status: e.response.statusText }
+        })
+    }
+    finally {
+        callback();
+    }
+};
+
 export const resetGroups = () => dispatch => {
     dispatch({
         type: RESET_GROUP

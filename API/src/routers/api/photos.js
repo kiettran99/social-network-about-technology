@@ -14,18 +14,22 @@ router.get('/', auth, async (req, res) => {
 
         const posts = await Post.aggregate([
             {
-                $skip: skip
-            },
-            {
-                $limit: limit
-            },
-            {
-                $match: { user: req.user._id, status: 1 }
+                $match: { 
+                    user: req.user._id,
+                    status: 1,
+                    'imageUrls.0': { $exists: true }
+                }
             },
             {
                 $project: {
                     imageUrls: 1
                 }
+            },
+            {
+                $skip: skip
+            },
+            {
+                $limit: limit
             }
         ]);
 

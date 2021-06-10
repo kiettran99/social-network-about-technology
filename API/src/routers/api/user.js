@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const User = require('../../models/user');
-const { body, validationResult } = require('express-validator');
+const { body, param, validationResult } = require('express-validator');
 const isEmptyObject = require('../../utils/isEmptyObject');
 const authByRole = require('../../middleware/auth-by-role');
 const auth = require('../../middleware/auth');
@@ -348,6 +348,80 @@ router.put('/unfollowing/:user_id', auth, async (req, res) => {
     await unregisterNotification(req.user, user, 'FRIEND');
 
     res.send(user);
+  }
+  catch (e) {
+    console.log(e);
+    res.status(500).send('Server is errors.');
+  }
+});
+
+// @route GET api/users/admin/collaborators
+// @desc GET role' user is collaborator
+// @access private - admin
+router.get('/admin/collaborators', authByRole('admin'), async (req, res) => {
+  try {
+    const users = await User.find({ role: 'collaborator' });
+
+    res.json(users);
+  }
+  catch (e) {
+    console.log(e);
+    res.status(500).send('Server is errors.');
+  }
+});
+
+// @route PATCH api/users/collaborator
+// @desc Add users to become collaborator
+// @access private - admin
+router.patch('/admin/collaborators', authByRole('admin'), [
+  body('users', 'User list has required.').isArray()
+], async (req, res) => {
+  try {
+    // 1. Validation req.body
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ msg: errors.array() });
+    }
+
+    // 2. Update User to collaborator role
+    const users = await User.updateMany({
+      _id: { $in: req.body.users }
+    }, {
+      role: 'collaborator'
+    });
+
+    //3. Response client
+    res.json(users);
+  }
+  catch (e) {
+    console.log(e);
+    res.status(500).send('Server is errors.');
+  }
+});
+
+// @route PATCH api/users/:id/collaborator/remove
+// @desc Remove collaborator to become user.
+// @access private - admin
+router.patch('/:id/admin/collaborators/remove', authByRole('admin'), [
+  param('id', 'User Id has required.').not().isEmpty()
+], async (req, res) => {
+  try {
+
+    const id = req.params.id;
+
+    // 1. Validation req.body
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ msg: errors.array() });
+    }
+
+    // 2. Update User to collaborator role
+    const user = await User.findByIdAndUpdate(id, { role: 'user' });
+
+    //3. Response client
+    res.json(user);
   }
   catch (e) {
     console.log(e);

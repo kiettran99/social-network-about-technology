@@ -16,6 +16,10 @@ const useAppearAdsManageer = () => {
     const [isAppear, setAppear] = useLocalStorage('ads-manager', false);
 
     useEffect(() => {
+        if (!user) {
+            setAppear(false);
+        }
+        
         if (!isAppear) {
             hasUserCreatedAds().then((data) => {
                 if (typeof data !== 'boolean') {

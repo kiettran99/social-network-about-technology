@@ -1,5 +1,6 @@
 import {
-    ADD_REVIEW, GET_REVIEWS, GET_REVIEW, REVIEW_ERROR, RESET_REVIEW, EDIT_REVIEW
+    ADD_REVIEW, GET_REVIEWS, GET_REVIEW, REVIEW_ERROR, RESET_REVIEW, EDIT_REVIEW,
+    GET_MORE_REVIEWS
 } from '../actions/types';
 
 const initialState = {
@@ -32,6 +33,11 @@ export default function (state = initialState, action) {
                 loading: false,
                 review: payload
             };
+        case GET_MORE_REVIEWS:
+            return {
+                ...state,
+                reviews: [...state.reviews, ...payload]
+            }
         case REVIEW_ERROR:
             return {
                 ...state,

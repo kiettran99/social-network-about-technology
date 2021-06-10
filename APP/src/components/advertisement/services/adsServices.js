@@ -48,7 +48,6 @@ export const getListAds = async ({ skip, limit, selectedPage }) => {
 
         if (options) {
             for (const [key, value] of Object.entries(options)) {
-                console.log(key, value);
                 if (value) {
                     query += `${key}=${value}&`;
                 }
@@ -72,7 +71,40 @@ export const handleClickAds = async (id) => {
     try {
         const res = await axios.put(`${urlAPI}/api/ads/${id}/click`);
 
-        console.log(res);
+        return res.data;
+    }
+    catch (e) {
+        console.log({ e });
+    }
+};
+
+export const toggleStatusCompaign = async (id) => {
+    try {
+        const res = await axios.patch(`${urlAPI}/api/ads/${id}/status`);
+
+        return res.data;
+    }
+    catch (e) {
+        console.log({ e });
+    }
+};
+
+export const getAdById = async (id) => {
+    try {
+        const res = await axios.get(`${urlAPI}/api/ads/${id}`);
+
+        return res.data;
+    }
+    catch (e) {
+        console.log({ e });
+    }
+};
+
+export const editAds = async (id, data) => {
+    try {
+        const res = await axios.put(`${urlAPI}/api/ads/${id}`, data);
+
+        return res.data;
     }
     catch (e) {
         console.log({ e });

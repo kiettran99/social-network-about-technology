@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import queryString from 'query-string';
+
 import 'rc-steps/assets/index.css';
 import Steps, { Step } from 'rc-steps';
 
@@ -6,10 +9,14 @@ import DialogBox from '../../shared/DialogBox';
 import Posts from './posts/Posts';
 import PreviewPost from './preview-post/PreviewPost';
 
-import { checkNameExisted, createAds } from '../services/adsServices';
+import { checkNameExisted, createAds, editAds } from '../services/adsServices';
 import Audience from './audience/Audience';
+import Payment from './payment/Payment';
+import useLocalStorage from '../../../hooks/useLocalStorage';
+import { setRequest, setComplete } from '../../../actions/loading-bar';
+import Finish from './finish/Finish';
 
-const CreateAds = (props) => {
+const CreateAds = ({ location, currentCampaign, setAd, edit = false }) => {
 
     // State
     const [step, setStep] = useState(0);
@@ -23,11 +30,81 @@ const CreateAds = (props) => {
     const [modalIsOpen, setIsOpen] = useState(false);
 
     // Audience
-    const [fromAge, setFromAge] = useState(18);
+    const [fromAge, setFromAge] = useState(17);
     const [toAge, setToAge] = useState(32);
 
     const [gender, setGender] = useState('all');
     const [messageAge, setMessageAge] = useState(null);
+
+    // Saved settings into local storage
+    const [currentAds, setCurrentAds] = useLocalStorage('current-ads', {
+        step,
+        post,
+        nameCompaign,
+        isPassed,
+        fromAge,
+        toAge,
+        messageAge,
+        message,
+        gender,
+        inprogress: false,
+        ads: null
+    });
+
+    // Dispatch redux
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        // Retore point user is creating ads.
+        if (currentAds && currentAds.inprogress) {
+            setStep(currentAds.step);
+            setPost(currentAds.post);
+            setNameCompaign(currentAds.nameCompaign);
+            setPassed(currentAds.isPassed);
+            setFromAge(currentAds.fromAge);
+            setToAge(currentAds.toAge);
+            setMessageAge(currentAds.messageAge);
+            setGender(currentAds.gender);
+        }
+
+        return () => {
+            if (currentAds && currentAds.inprogress) {
+                localStorage.removeItem('current-ads');
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        if (location) {
+            const query = queryString.parse(location?.search);
+
+            if (query.status) {
+                setStep(4);
+                changeCurrentAds({ step: 4 });
+            }
+        }
+    }, [location]);
+
+    useEffect(() => {
+        if (currentCampaign) {
+            // Edit campaign
+            setPost(currentCampaign.post);
+            setNameCompaign(currentCampaign.name);
+
+            setPassed(true);
+            setFromAge(currentCampaign.audience?.fromAge);
+            setToAge(currentCampaign.audience?.toAge);
+
+            setGender(currentCampaign.audience?.gender);
+        }
+    }, [currentCampaign]);
+
+    const changeCurrentAds = (change) => {
+        setCurrentAds(state => ({
+            ...state,
+            ...change
+        }));
+    };
 
     const closeModal = () => {
         setIsOpen(false);
@@ -40,38 +117,54 @@ const CreateAds = (props) => {
     const onNextStep = () => {
         if (step >= 0 && step < 5) {
             setStep(step + 1);
+            changeCurrentAds({ step: step + 1 });
         }
     }
 
     const onPreviousStep = () => {
         if (step > 0) {
             setStep(step - 1);
+            changeCurrentAds({ step: step - 1 });
         }
     }
 
     // Handler
     const onFocusOutAdCompaign = () => {
+        if (edit && currentCampaign && nameCompaign === currentCampaign.name) {
+            return;
+        }
+
         setPassed(false);
 
         checkNameExisted(nameCompaign).then(data => {
             if (data.exists) {
                 setPassed(false);
+                changeCurrentAds({ isPassed: false });
                 return setMessage('The Ad Compaign is existed. Please try other name.');
             }
 
             if (nameCompaign === '') {
+                changeCurrentAds({ isPassed: false });
                 return setPassed(false);
             }
 
             setMessage('');
             setPassed(true);
+
+            changeCurrentAds({
+                inprogress: true,
+                message: '',
+                isPassed: true,
+                nameCompaign
+            });
         }).catch(() => {
             setMessage('');
-        })
+            changeCurrentAds({ message: '' });
+        });
     };
 
     const onCreateAds = async () => {
-        const ads = {
+        const adsData = {
             name: nameCompaign,
             post: post._id,
             audience: {
@@ -83,18 +176,30 @@ const CreateAds = (props) => {
             }
         };
 
-        await createAds(ads);
+        dispatch(setRequest());
 
+        const ads = await createOrEditAds(adsData, edit);
+
+        if (edit) {
+            setAd(ads);
+        }
+
+        dispatch(setComplete());
         // Done
-        setStep(4);
+        setStep(3);
+        changeCurrentAds({ ads: ads._id, step: 3 });
     };
+
+    const createOrEditAds = async (adsData, edit) => {
+        return edit ? editAds(currentCampaign._id, adsData): createAds(adsData);
+    }
 
     const displayByStep = (step) => {
         switch (step) {
             case 0:
                 return (
                     <div className="ad-compaign-2 mx-2 mt-3">
-                        <label>Create name campaign</label>
+                        <label>{edit ? 'Edit' : 'Create'} name campaign</label>
                         <div className="form-group">
                             <input className="form-control"
                                 autoFocus={true}
@@ -119,9 +224,6 @@ const CreateAds = (props) => {
                                     onClick={() => openModal()}>Choose a post</button>
                                 <button type="button" className="btn btn-light"
                                     onClick={() => openModal()}><i className="ri-add-fill"></i></button>
-
-                                <button type="button" className="btn btn-primary"
-                                    onClick={() => onCreateAds()}>Create</button>
                             </div>
 
                             <div className="col-lg-7 col-12">
@@ -131,15 +233,20 @@ const CreateAds = (props) => {
                     </div>
                 );
             case 2:
-            default:
                 const props = {
                     setPassed,
                     fromAge, setFromAge,
                     toAge, setToAge,
                     gender, setGender,
-                    message: messageAge, setMessage: setMessageAge
+                    message: messageAge, setMessage: setMessageAge,
+                    changeCurrentAds
                 }
                 return <Audience {...props} />
+            case 3:
+                return <Payment currentAds={currentAds} edit={edit} currentCampaign={currentCampaign} />
+            case 4:
+            default:
+                return <Finish location={location} />
         }
     }
 
@@ -160,8 +267,8 @@ const CreateAds = (props) => {
 
                             <div className="form-group">
                                 <Steps current={step} labelPlacement="vertical">
-                                    <Step title="Create ad compaign" />
-                                    <Step title="Create Post" />
+                                    <Step title={`${edit ? 'Edit' : 'Create'} ad compaign`} />
+                                    <Step title={`${edit ? 'Edit' : 'Create'} Post`} />
                                     <Step title="Audience" />
                                     <Step title="Payment" />
                                     <Step title="Finish" />
@@ -177,7 +284,11 @@ const CreateAds = (props) => {
                                         type="button"
                                         onClick={() => onPreviousStep()}>Previous</button>
                                 )}
-                                {step < 4 && (
+                                {step == 2 && (
+                                    <button type="button" className="btn btn-primary"
+                                        onClick={() => onCreateAds()}>{edit ? 'Edit' : 'Create'}</button>
+                                )}
+                                {step !== 2 && step < 4 && (
                                     <button className="btn btn-primary"
                                         type="button"
                                         disabled={!isPassed}
@@ -188,7 +299,7 @@ const CreateAds = (props) => {
                     </div>
                 </div>
             </div>
-            <DialogBox props={{ modalIsOpen, closeModal, openModal, post, setPost }} Component={Posts} />
+            <DialogBox props={{ modalIsOpen, closeModal, openModal, post, setPost, changeCurrentAds }} Component={Posts} />
         </div >
     );
 };

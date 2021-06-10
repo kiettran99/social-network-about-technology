@@ -125,6 +125,9 @@ const postSchema = new Schema({
         text: {
             type: String
         },
+        rawText: {
+            type: Object
+        },
         name: {
             type: String
         },
@@ -158,6 +161,9 @@ const postSchema = new Schema({
             },
             text: {
                 type: String
+            },
+            rawText: {
+                type: Object
             },
             name: {
                 type: String

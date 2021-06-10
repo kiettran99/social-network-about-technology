@@ -17,6 +17,7 @@ const photosRouter = require('./routers/api/photos');
 const reviewsRouter = require('./routers/api/reviews');
 const faqRouter = require('./routers/api/faq');
 const adsRouter = require('./routers/api/ads');
+const reportRouter = require('./routers/api/report');
 
 const notFoundRouter = require('./routers/not-found/not-found');
 
@@ -54,6 +55,7 @@ app.use('/api/photos', photosRouter);
 app.use('/api/reviews', reviewsRouter);
 app.use('/api/faq', faqRouter);
 app.use('/api/ads', adsRouter);
+app.use('/api/reports', reportRouter);
 
 //The 404 Route (ALWAYS Keep this as the last route)
 app.use('*', notFoundRouter);

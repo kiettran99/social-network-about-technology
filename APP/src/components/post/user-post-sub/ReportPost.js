@@ -38,7 +38,7 @@ const RepostPost = ({ postId, userId }) => {
                     </div>
                 </div>
             </a>
-            <DialogBox props={{ modalIsOpen, closeModal, openModal }} Component={Report} />
+            <DialogBox props={{ modalIsOpen, closeModal, openModal, postId }} Component={Report} />
         </>
     );
 };

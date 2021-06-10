@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import useLocalStorage from '../../../../hooks/useLocalStorage';
 import { getPosts } from '../../services/adsServices';
 
-const Posts = ({ closeModal, post, setPost }) => {
+const Posts = ({ closeModal, post, setPost, changeCurrentAds }) => {
 
     // State
     const [posts, setPosts] = useState([]);
@@ -46,9 +46,11 @@ const Posts = ({ closeModal, post, setPost }) => {
     const onRowClick = (currentPost) => {
         if (!post) {
             setPost(currentPost);
+            changeCurrentAds({ post: currentPost });
         }
         else if (post._id !== currentPost._id) {
             setPost(currentPost);
+            changeCurrentAds({ post: currentPost });
         }
     };
 

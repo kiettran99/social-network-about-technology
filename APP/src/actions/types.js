@@ -53,6 +53,9 @@ export const REMOVE_POST = 'REMOVE_POST';
 export const HIDE_POST = 'HIDE_POST';
 export const RESET_POST = 'RESET_POST';
 
+export const ASSIGN_POST = 'ASSIGN_POST';
+export const UPDATE_POSTS_ID = 'UPDATE_POSTS_ID';
+
 // Clear prev loading post
 export const CLEAR_POST = 'CLEAR_POST';
 export const POST_ERROR = 'POST_ERROR';
@@ -109,6 +112,11 @@ export const LOADING_BUILD_PARTS = 'LOADING_BUILD_PARTS';
 export const SEARCH_USERS = 'SEARCH_USERS';
 export const SEARCH_LOADING = 'SEARCH_LOADING';
 export const ERROR_SEARCH = 'ERROR_SEARCH';
+export const SEARCH_POSTS = 'SEARCH_POSTS';
+export const RESET_SEARCH = 'RESET_SEARCH';
+
+export const GET_MORE_SEARCH_USERS = 'GET_MORE_SEARCH_USERS';
+export const GET_MORE_SEARCH_POSTS = 'GET_MORE_SEARCH_POSTS';
 
 // Reviews
 export const GET_REVIEWS = 'GET_REVIEWS';
@@ -119,7 +127,9 @@ export const EDIT_REVIEW = 'EDIT_REVIEW';
 export const REMOVE_REVIEW = 'REMOVE_REVIEW';
 export const RESET_REVIEW = 'RESET_REVIEW';
 export const EDIT_TITLE_REVIEW = 'EDIT_TITLE_REVIEW';
+export const GET_MORE_REVIEWS = 'GET_MORE_REVIEWS';
 
+// Chat
 export const GET_PREVIEW_MESSAGE_BOX = 'GET_PREVIEW_MESSAGE_BOX';
 export const GET_USER_PROFILE = 'GET_USER_PROFILE';
 export const CHAT_ERROR = 'CHAT_ERROR';
