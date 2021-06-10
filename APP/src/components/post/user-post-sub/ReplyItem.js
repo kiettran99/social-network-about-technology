@@ -47,7 +47,7 @@ const ReplyItem = ({ reply: { _id, name, text, avatar, date, user: userComment, 
                 <div className="user-img">
                     <img src={avatar} alt="userimg" className="avatar-35 rounded-circle img-fluid m-sm-0 m-2" />
                 </div>
-                <div className="comment-data-block ml-3">
+                <div className="comment-data-block ml-sm-3">
                     <h6>{name}</h6>
                     <Suspense fallback={<div>Loading...</div>}>
                         <div className="editor-text">

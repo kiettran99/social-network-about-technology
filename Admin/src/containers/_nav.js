@@ -56,7 +56,18 @@ export default [
 
    ]
   },
-  
+  {
+    _tag: "CSidebarNavItem",
+    name: "Collaborators",
+    to: "/collaborators",
+    icon: "cib-superuser",
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Reports",
+    to: "/reports",
+    icon: "cil-report",
+  },
   // {
   //   _tag: 'CSidebarNavDropdown',
   //   name: 'Base',
