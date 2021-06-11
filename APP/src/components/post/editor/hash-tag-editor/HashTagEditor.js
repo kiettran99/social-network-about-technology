@@ -1,5 +1,6 @@
 import React from 'react';
-import HashTagDraft from './hash-tag-draft/HashTagDraft';
+
+const HashTagDraft = React.lazy(() => import('./hash-tag-draft/HashTagDraft'));
 
 const HashTagEditor = ({ placeholder, disable,
     editorState, setEditorState
@@ -11,11 +12,13 @@ const HashTagEditor = ({ placeholder, disable,
                 <div className="input-group-prepend">
                     <span className="input-group-text">#</span>
                 </div>
-                <HashTagDraft editorState={editorState}
-                    setEditorState={setEditorState}
-                    placeholder={placeholder}
-                    disable={disable}
-                />
+                <React.Suspense fallback={<div></div>}>
+                    <HashTagDraft editorState={editorState}
+                        setEditorState={setEditorState}
+                        placeholder={placeholder}
+                        disable={disable}
+                    />
+                </React.Suspense>
             </div>
         </div >
     );

@@ -69,7 +69,8 @@ const convertHashTagToArray = (editorState) => {
 }
 
 const editor = {
-    getTextFromEditorState, getMentionByName, convertHashTagToArray
+    getTextFromEditorState, getMentionByName, convertHashTagToArray,
+    convertToRaw
 };
 
 export default editor;

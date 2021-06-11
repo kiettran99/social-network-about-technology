@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { convertToRaw, EditorState } from 'draft-js';
+import { EditorState } from 'draft-js';
 import editor from './editor';
 
 const useEditorState = () => {
@@ -15,7 +15,7 @@ const useEditorState = () => {
     }
 
     const getUsersFromMention = () => {
-        const rawEditorContent = convertToRaw(editorState.getCurrentContent());
+        const rawEditorContent = editor.convertToRaw(editorState.getCurrentContent());
         const entityMap = rawEditorContent.entityMap;
 
         return Object.values(entityMap).reduce((enities, entity) => {

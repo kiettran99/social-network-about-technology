@@ -17,7 +17,7 @@ import "./style.css";
 import { getReports } from "src/services/report";
 import CIcon from "@coreui/icons-react";
 
-import ReportDetail from './ReportDefail';
+const ReportDetail = lazy(() => import('./ReportDefail'));
 
 const DialogBox = lazy(() => import('../../reusable/DialogBox'));
 
@@ -82,7 +82,7 @@ const Report = () => {
             <CCard>
                 <CCardHeader className=" CCardHeader-title">
                     Reports
-            </CCardHeader>
+                </CCardHeader>
                 <CCardBody>
                     <CDataTable
                         items={reports}
