@@ -1,5 +1,8 @@
 const Friend = require('../models/friend');
 const User = require('../models/user');
+const Notification = require('../models/notification');
+const { Document } = require('mongoose');
+const { registerNotification } = require('./notification');
 
 // Get All User
 const getAll = async (userId, limit, skip) => {
@@ -225,4 +228,34 @@ const getUsersList = async (userId, limit, skip) => {
     return users;
 };
 
-module.exports = { getAll, getUserFriends, getRequestFriends, getUsersList };
+/**
+ * @desc Following both of together when user accept friend.
+ * @param {Document} user 
+ * @param {String} friendId 
+ */
+const followingFriends = async (user, friendId) => {
+    try {
+        // 1. User has found, so countinuely finds friend.
+        const friend = await User.findById(friendId);
+
+        if (!friend) {
+            console.log('friend is not found !');
+            return;
+        }
+
+        // 2. Promise all to following together.
+        await Promise.all([
+            registerNotification(user, friend, 'FRIEND'),
+            registerNotification(friend, user, 'FRIEND')
+        ]);
+    }
+    catch (e) {
+        console.log(e);
+    }
+}
+
+module.exports = {
+    getAll, getUserFriends,
+    getRequestFriends, getUsersList,
+    followingFriends
+};

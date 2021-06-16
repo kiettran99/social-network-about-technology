@@ -1,13 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import truncate from 'truncate-html';
 
-const RenderHtml = ({ text, Component, ...rest }) => {
+const RenderHtml = ({ text, Component, length = 150, isEllipsis = true, ...rest }) => {
 
     const [isTruncated, setTruncated] = useState(false);
 
     const textTruncated = useMemo(() => {
         if (!isTruncated) {
-            const truncated = truncate(text, 150, { byWords: true });
+            const truncated = truncate(text, length, { byWords: true });
             setTruncated(truncated.length === text.length);
             return truncated;
         }
@@ -21,7 +21,7 @@ const RenderHtml = ({ text, Component, ...rest }) => {
     return (
         <div>
             <Component {...rest} value={textTruncated} />
-            {!isTruncated && (<p className="pointer text-primary ml-3" onClick={toggleLines}>Read More</p>)}
+            {isEllipsis && !isTruncated && (<p className="pointer text-primary ml-3" onClick={toggleLines}>Read More</p>)}
         </div>
     );
 };

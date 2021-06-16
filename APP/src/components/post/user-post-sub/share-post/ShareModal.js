@@ -184,7 +184,7 @@ const ShareModal = ({ auth: { user, isAuthenticated },
 
     return (
         <>
-            <a onClick={() => openModal()}><i className="ri-share-line" />
+            <a className="pointer" onClick={() => openModal()}><i className="ri-share-line" />
                 <span className={`ml-1 ${isMobileScreen ? 'd-none' : ''}`} id="share-post-line">Share this post</span>
             </a>
             <Modal style={customStyles}

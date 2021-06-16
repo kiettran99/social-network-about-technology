@@ -2,7 +2,7 @@ const router = require('express').Router();
 const Friend = require('../../models/friend');
 const User = require('../../models/user');
 const auth = require('../../middleware/auth');
-const { getUserFriends, getRequestFriends, getUsersList, getAll
+const { getUserFriends, getRequestFriends, getUsersList, getAll, followingFriends
 } = require('../../utils/friend');
 
 // @route get /api/friends
@@ -197,6 +197,8 @@ router.put('/accept/:user_id', auth, async (req, res) => {
         }, { $set: { status: 3 } });
 
         await Promise.all([friendReqeuster, friendRecipient]);
+
+        followingFriends(req.user, recipientId);
 
         res.json({ userId: requesterId, status: 3 });
     }

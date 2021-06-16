@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import dayjs from '../../utils/relativeDate';
 
-const DotDotDot = lazy(() => import('react-dotdotdot'));
+const ParseHtml = lazy(() => import('../shared/ParseHtml'));
 const LazyLoadingImage = lazy(() => import('../post/lazy-loading-image/LazyLoadingImage'));
 
 const Review = ({ review: { _id, wallpaper, post, createdAt, descriptions } }) => {
@@ -25,11 +25,11 @@ const Review = ({ review: { _id, wallpaper, post, createdAt, descriptions } }) =
                                     </div>
                                 </div>
                                 <h5 className="mb-2">{post.text}</h5>
-                                <Suspense fallback={<div></div>}>
-                                    <DotDotDot clamp={4}>
-                                        <p>{descriptions.general}</p>
-                                    </DotDotDot>
-                                </Suspense>
+                                <div className="form-group">
+                                    <Suspense fallback={<div></div>}>
+                                        <ParseHtml text={descriptions.general} shouldTruncate={true} />
+                                    </Suspense>
+                                </div>
                                 <Link to={`/reviews/${_id}`} tabIndex={-1}>Read More <i className="ri-arrow-right-s-line" /></Link>
                                 <div className="group-smile mt-4 d-flex flex-wrap align-items-center justify-content-between">
                                     <div className="d-flex flex-wrap mb-2 float-right">

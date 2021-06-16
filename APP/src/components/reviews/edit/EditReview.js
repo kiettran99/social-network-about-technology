@@ -4,6 +4,7 @@ import { connect, useSelector } from 'react-redux';
 import { editReview } from '../../../actions/review';
 
 const ImageUploader = lazy(() => import('react-images-upload'));
+const SnowEditor = lazy(() => import('../../post/editor/SnowEditor'));
 
 const EditReview = ({ editReview, closeModal }) => {
 
@@ -13,6 +14,9 @@ const EditReview = ({ editReview, closeModal }) => {
 
     const [wallpaper, setWallpaper] = useState(null);
     const [pictures, setPictures] = useState([]);
+
+    // BubbleEditor value text state
+    const [general, setGeneral] = useState('');
 
     // Get state from redux store
     const { review, post } = useSelector((state) => {
@@ -24,7 +28,6 @@ const EditReview = ({ editReview, closeModal }) => {
 
     const titleRef = useRef();
     const priceRef = useRef();
-    const generalRef = useRef();
     const favoriteRef = useRef();
     const restrictRef = useRef();
     const linkRef = useRef();
@@ -33,10 +36,11 @@ const EditReview = ({ editReview, closeModal }) => {
         if (review && post) {
             titleRef.current.value = post.text;
             priceRef.current.value = review.price;
-            generalRef.current.value = review.descriptions.general;
             favoriteRef.current.value = review.descriptions.favorite;
             restrictRef.current.value = review.descriptions.restrict;
             linkRef.current.value = review.link || '';
+
+            setGeneral(review.descriptions.general);
         }
     }, [review, post]);
 
@@ -55,7 +59,7 @@ const EditReview = ({ editReview, closeModal }) => {
             title: titleRef.current?.value,
             price: priceRef.current?.value,
             descriptions: {
-                general: generalRef.current?.value,
+                general,
                 favorite: favoriteRef.current?.value,
                 restrict: restrictRef.current?.value
             },
@@ -101,7 +105,7 @@ const EditReview = ({ editReview, closeModal }) => {
             <div className="modal-content">
                 <div className="modal-header">
                     <h4 className="modal-title">Create Review</h4>
-                    <button onClick={() => closeModal()} type="button" className="btn btn-secondary" data-dismiss="modal"><i className="ri-close-fill" /></button>
+                    <button onClick={() => closeModal()} type="button" className="btn btn-secondary" data-dismiss="modal"><i className="ri-close-fill mr-0" /></button>
                 </div>
                 <div className="modal-body">
                     <form onSubmit={onSubmit}>
@@ -151,9 +155,12 @@ const EditReview = ({ editReview, closeModal }) => {
 
                         <div className="form-group">
                             <label htmlFor="cgeneral">General information about the product</label>
-                            <textarea type="text" className="form-control" id="cgeneral" placeholder="Reviewing product technology about smartphones and new pcs."
-                                rows={5} style={{ lineHeight: '22px' }}
-                                ref={generalRef} />
+                            <Suspense fallback={<div>Loading editor....</div>}>
+                                <div className="snow-editor">
+                                    <SnowEditor placeholder="Reviewing product technology about smartphones and new pcs."
+                                        id="cgeneral" text={general} setText={setGeneral} />
+                                </div>
+                            </Suspense>
                         </div>
 
                         <div className="form-group">
@@ -184,7 +191,7 @@ const EditReview = ({ editReview, closeModal }) => {
                         {isWaiting ? (
                             <button type="button" className="btn btn-primary mr-2" disabled={true}>
                                 <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                             Loading...
+                                Loading...
                             </button>
                         ) : (
                             <button type="submit" className="btn btn-primary mr-2">Submit</button>
