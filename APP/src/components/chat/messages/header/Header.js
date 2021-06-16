@@ -40,7 +40,7 @@ const Header = () => {
                 </div>
                 <UserDetail userProfile={userProfile} />
                 <div className="chat-header-icons d-flex">
-                    <a href="#!" className="chat-icon-phone iq-bg-primary">
+                    {/* <a href="#!" className="chat-icon-phone iq-bg-primary">
                         <i className="ri-phone-line" />
                     </a>
                     <a href="#!" className="chat-icon-video iq-bg-primary">
@@ -48,13 +48,13 @@ const Header = () => {
                     </a>
                     <a href="#!" className="chat-icon-delete iq-bg-primary">
                         <i className="ri-delete-bin-line" />
-                    </a>
+                    </a> */}
                     <span className="dropdown iq-bg-primary">
                         <i className="ri-more-2-line cursor-pointer dropdown-toggle nav-hide-arrow cursor-pointer pr-0" id="dropdownMenuButton02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu" />
                         <span className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton02">
-                            <a className="dropdown-item" href="#!"><i className="fa fa-thumb-tack" aria-hidden="true" /> Pin to top</a>
-                            <a className="dropdown-item" href="#!"><i className="fa fa-trash-o" aria-hidden="true" /> Delete chat</a>
-                            <a className="dropdown-item" href="#!"><i className="fa fa-ban" aria-hidden="true" /> Block</a>
+                            {/* <a className="dropdown-item" href="#!"><i className="fas fa-thumb-tack" aria-hidden="true" /> Pin to top</a> */}
+                            <a className="dropdown-item text-danger" href="#!"><i className="ri-delete-bin-7-line" aria-hidden="true" /> Delete chat</a>
+                            <a className="dropdown-item" href="#!"><i className="fas fa-ban" aria-hidden="true" /> Report</a>
                         </span>
                     </span>
                 </div>

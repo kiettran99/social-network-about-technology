@@ -185,7 +185,7 @@ const ShareModal = ({ auth: { user, isAuthenticated },
     return (
         <>
             <a onClick={() => openModal()}><i className="ri-share-line" />
-                <span className={`ml-1 ${isMobileScreen ? 'd-none': ''}`} id="share-post-line">Share this post</span>
+                <span className={`ml-1 ${isMobileScreen ? 'd-none' : ''}`} id="share-post-line">Share this post</span>
             </a>
             <Modal style={customStyles}
                 isOpen={modalIsOpen}
@@ -204,7 +204,8 @@ const ShareModal = ({ auth: { user, isAuthenticated },
                                 <form className="post-text ml-3 w-100" >
                                     <div className="standalone-container">
                                         <Suspense fallback={<div>Loading...</div>}>
-                                            <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />
+                                            <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })}
+                                                placeholder="Write something here..." />
                                         </Suspense>
                                     </div>
                                 </form>

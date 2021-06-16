@@ -142,7 +142,8 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
           <form className="post-text ml-3 w-100" onSubmit={e => onSubmit(e)}>
             <div className="standalone-container">
               <Suspense fallback={<div>Loading...</div>}>
-                <BubbleEditor readOnly={true} text={text} setText={(value) => setFormData({ ...formData, text: value })} />
+                <BubbleEditor readOnly={true} text={text} setText={(value) => setFormData({ ...formData, text: value })}
+                  placeholder="Write something here..." />
               </Suspense>
             </div>
           </form>
@@ -197,7 +198,8 @@ const CreatePost = ({ auth: { user, isAuthenticated }, addPost, type }) => {
                   <form className="post-text ml-3 w-100" onSubmit={e => onSubmit(e)}>
                     <div className="standalone-container">
                       <Suspense fallback={<div>Loading...</div>}>
-                        <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />
+                        <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })}
+                          placeholder="Write something here..." />
                       </Suspense>
                     </div>
                   </form>

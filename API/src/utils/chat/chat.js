@@ -43,7 +43,7 @@ const getChatList = async (requesterId) => {
         },
         {
             $sort: {
-                'messageBox.updatedAt': -1
+                'messageBox.lastTime': -1
             }
         },
         {
@@ -58,7 +58,8 @@ const getChatList = async (requesterId) => {
                 messageBox: {
                     messages: {
                         "$arrayElemAt": ['$messageBox.messages', 0]
-                    }
+                    },
+                    lastTime: 1
                 }
             }
         }

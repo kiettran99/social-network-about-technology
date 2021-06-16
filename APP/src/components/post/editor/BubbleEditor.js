@@ -1,7 +1,7 @@
 import React from 'react';
 import Editor from './Editor';
 
-const BubbleEditor = ({ text, setText, readOnly = false }) => {
+const BubbleEditor = ({ text, setText, readOnly = false, ...rest }) => {
 
     const modules = {
         toolbar: [
@@ -19,10 +19,11 @@ const BubbleEditor = ({ text, setText, readOnly = false }) => {
     const props = {
         modules,
         formats,
-        setText: readOnly ? () => {}: setText,
+        setText: readOnly ? () => { } : setText,
         theme: "bubble",
         text,
-        readOnly
+        readOnly,
+        ...rest
     };
 
     return <Editor {...props} />

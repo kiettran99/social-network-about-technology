@@ -160,7 +160,7 @@ const createServer = (server) => {
 
                     messageBox.messages.unshift(message);
 
-                    await messageBox.save();
+                    await messageBox.updateLastTime();
                 }
 
                 io.to(socket.decoded._id).to(recipient).emit('reload-messages');

@@ -21,6 +21,8 @@ const BubbleEditor = lazy(() => import('./editor/BubbleEditor'));
 const HashTag = lazy(() => import('./user-post-sub/hash-tag/HashTag'));
 const Review = lazy(() => import('./user-post-sub/previews/Review'));
 
+const RenderHtml = lazy(() => import('../shared/RenderHtml'))
+
 const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, comments, createdAt, lengthOfComments,
     user: userId, buildParts, share, hashtag, tags, privacy, shop },
     handleClick
@@ -135,7 +137,9 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
                         <Review text={text} Component={BubbleEditor}
                             reviewId={type.review} /> : (
                             <div className="mt-3">
-                                <BubbleEditor readOnly={true} text={text} />
+                                <RenderHtml text={text}
+                                    readOnly={true}
+                                    Component={BubbleEditor} />
                             </div>
                         )}
                     <Addons buildParts={buildParts} />
