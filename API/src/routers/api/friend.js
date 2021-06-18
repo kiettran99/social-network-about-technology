@@ -252,4 +252,30 @@ router.put('/unaccept/:user_id', auth, async (req, res) => {
     }
 });
 
+// @route GET /api/friends/friend/:user_id
+// @desc Get status friend
+// @access private
+router.get('/friend/:user_id', auth, async (req, res) => {
+    try {
+        // 1. Validation params.
+        const userId = req.params.user_id;
+
+        if (!userId) {
+            return res.status(400).send('User Id is required.');
+        }
+
+        // 2. Find Friend and Response client.
+        const friend = await Friend.findOne({
+            requester: req.user.id,
+            recipient: userId
+        });
+
+        res.json(friend);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
 module.exports = router;

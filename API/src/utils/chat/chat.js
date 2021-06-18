@@ -4,18 +4,21 @@ const MessageBox = require('../../models/messagebox');
 
 const ObjectId = require('mongoose').Types.ObjectId;
 
-const getChatList = async (requesterId) => {
+const LIMIT_MESSAGES = 7;
+
+const getChatList = async (requesterId, limit = LIMIT_MESSAGES) => {
     const chatList = await Chat.aggregate([
         {
             $match: {
-                'requester': ObjectId(requesterId)
+                'requester': ObjectId(requesterId),
+                'isBlock': false
             }
         },
         {
             $skip: 0
         },
         {
-            $limit: 5
+            $limit: limit
         },
         // Get Message Box
         {

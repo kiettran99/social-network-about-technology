@@ -1,6 +1,5 @@
 const Friend = require('../models/friend');
 const User = require('../models/user');
-const Notification = require('../models/notification');
 const { Document } = require('mongoose');
 const { registerNotification } = require('./notification');
 

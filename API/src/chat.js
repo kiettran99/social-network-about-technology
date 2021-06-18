@@ -30,10 +30,10 @@ const createServer = (server) => {
         socket.emit('notification', 'Welcome');
 
         // User is listeing massageBox
-        socket.on('chat-rooms', async () => {
+        socket.on('chat-rooms', async ({ limit }) => {
             try {
                 // Fetch message box list
-                const chatList = await getChatList(socket.decoded._id);
+                const chatList = await getChatList(socket.decoded._id, limit);
 
                 socket.emit('get-chat-list', { error: null, chatList });
             }
@@ -104,7 +104,10 @@ const createServer = (server) => {
                     }
                 }).exec();
 
-                socket.emit('loading', messageBox.messages);
+                socket.emit('loading', {
+                    messages: messageBox.messages,
+                    isBlock: chat.isBlock
+                });
 
                 callback();
             }
@@ -156,6 +159,12 @@ const createServer = (server) => {
 
                     io.to(chat.messageBox.toString()).emit('message', message);
 
+                    // User blocked before, and then retores.
+                    if (chat.isBlock) {
+                        chat.isBlock = false;
+                        await chat.save();
+                    }
+
                     const messageBox = await MessageBox.findById(chat.messageBox);
 
                     messageBox.messages.unshift(message);
@@ -164,6 +173,27 @@ const createServer = (server) => {
                 }
 
                 io.to(socket.decoded._id).to(recipient).emit('reload-messages');
+
+                callback();
+            }
+            catch (e) {
+                callback(e);
+            }
+        });
+
+        socket.on('block', async ({ recipient }, callback) => {
+            try {
+                if (!recipient) {
+                    return callback('Recipient not found');
+                }
+
+                const chat = await Chat.findOne({ requester: socket.decoded._id, recipient });
+
+                chat.isBlock = true;
+
+                await chat.save();
+
+                io.to(socket.decoded._id).emit('reload-messages');
 
                 callback();
             }

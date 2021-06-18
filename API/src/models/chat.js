@@ -14,6 +14,10 @@ const chatSchema = new Schema({
     messageBox: {
         type: ObjectId,
         ref: 'MessageBox'
+    },
+    isBlock: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import dayjs from '../../../../utils/dayjs/calendar';
 
-const Contents = ({ messages }) => {
+const Contents = ({ messages, isBlock }) => {
 
     const { requester, recipient } = useSelector((state) => {
         return {
@@ -43,7 +43,7 @@ const Contents = ({ messages }) => {
 
     return (
         <div id="messages" className="chat-content scroller">
-            {messages && messages.length > 0 && messages.map((message, index) => (
+            {!isBlock && messages && messages.length > 0 && messages.map((message, index) => (
                 <div className={`chat ${isUserOfMessage(message) ? '' : 'chat-left'}`} key={index}>
                     <div className="chat-user">
                         <a className="avatar m-0">
