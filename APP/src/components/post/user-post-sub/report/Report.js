@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
+
 import data from './service/data';
 import { createReport } from './service/report';
 
-const Report = ({ closeModal, postId }) => {
+const Report = ({ closeModal, postId, ...rest }) => {
 
     const [issues, setIssues] = useState(data);
 
     const [message, setMessage] = useState(null);
     const [isWaiting, setWating] = useState(false);
+
+    // Extentsion Report User or Group
+    const [images, setImages] = useState([]);
+
+    // Object Destructuring
+    const { targetId, type = 'Post', onDropImages, ImageUploader } = rest;
 
     const onHandleClick = (issueId) => {
         setIssues(issues.map(issue => ({
@@ -17,15 +24,22 @@ const Report = ({ closeModal, postId }) => {
     };
 
     const onReportPost = () => {
-        const body = {
-            target: postId,
-            type: 'Post',
-            description: issues.find(issue => issue.status)?.description,
-        };
+
+        const formData = new FormData();
+
+        formData.append('target', postId || targetId);
+        formData.append('type', type);
+        formData.append('description', issues.find(issue => issue.status)?.description);
+
+        if (images && images.length > 0) {
+            images.forEach((image) => {
+                formData.append(`images`, image);
+            })
+        }
 
         setWating(true);
 
-        createReport(body).then((report) => {
+        createReport(formData).then((report) => {
             if (report) {
                 setWating(false);
                 setMessage({ description: 'Report successfully. Thanks you your reporting.', status: 'success' });
@@ -35,7 +49,7 @@ const Report = ({ closeModal, postId }) => {
                     closeModal();
                 }, 2000);
             }
-      
+
         }).catch(() => {
             setWating(false);
             setMessage({ description: 'Report not Successfully. Please try again later.', status: 'danger' });
@@ -62,6 +76,23 @@ const Report = ({ closeModal, postId }) => {
                             </button>
                         ))}
                     </div>
+
+                    {type !== 'Post' && ImageUploader && (
+                        <div className="form-group">
+                            <h5>Please Send More Context</h5>
+                            <br />
+                            <React.Suspense fallback={<div>Loading Upload Images....</div>}>
+                                <ImageUploader
+                                    withIcon={true}
+                                    buttonText='Choose images'
+                                    onChange={(pictureFiles) => onDropImages(pictureFiles, setImages)}
+                                    imgExtension={['.jpg', '.gif', '.png', '.gif', 'jpeg']}
+                                    maxFileSize={5242880}
+                                    withPreview={true}
+                                />
+                            </React.Suspense>
+                        </div>
+                    )}
                 </div>
                 <div className="modal-footer">
                     {message && (
@@ -72,7 +103,7 @@ const Report = ({ closeModal, postId }) => {
                     {isWaiting ? (
                         <button type="button" className="btn btn-primary mr-2" disabled={true}>
                             <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                         Loading...
+                            Loading...
                         </button>
                     ) : (
                         <button type="button" className="btn btn-primary"
@@ -85,4 +116,4 @@ const Report = ({ closeModal, postId }) => {
     );
 };
 
-export default Report;
+export default React.memo(Report);

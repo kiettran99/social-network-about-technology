@@ -15,9 +15,8 @@ import {
 import "./style.css";
 
 import { getReports } from "src/services/report";
-import CIcon from "@coreui/icons-react";
 
-const ReportDetail = lazy(() => import('./ReportDefail'));
+const ReportDetail = lazy(() => import('./modal/ReviewDetail'));
 
 const DialogBox = lazy(() => import('../../reusable/DialogBox'));
 
@@ -89,6 +88,7 @@ const Report = () => {
                         fields={fields}
                         hover
                         striped
+                        pagination
                         itemsPerPage={5}
                         activePage={page}
                         clickableRows
@@ -114,19 +114,14 @@ const Report = () => {
                                 )
                         }}
                     />
-                    <CPagination
-                        activePage={page}
-                        onActivePageChange={pageChange}
-                        pages={reports.length}
-                        doubleArrows={false}
-                        align=""
-                    />
                 </CCardBody>
             </CCard>
-            <DialogBox props={{
-                modalIsOpen, closeModal, openModal,
-                detail
-            }} Component={ReportDetail} />
+            <React.Suspense fallback={<div></div>}>
+                <DialogBox props={{
+                    modalIsOpen, closeModal, openModal,
+                    detail
+                }} Component={ReportDetail} />
+            </React.Suspense>
         </>
     );
 }

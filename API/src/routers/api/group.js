@@ -2,7 +2,6 @@ const router = require('express').Router();
 const { body, validationResult } = require('express-validator');
 
 const Group = require('../../models/group');
-const Notification = require('../../models/notification');
 
 const upload = require('../../utils/upload');
 const storage = require('../../firebase/firebase');

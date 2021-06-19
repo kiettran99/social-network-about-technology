@@ -17,7 +17,7 @@ const LoadMore = ({ action }) => {
     }
 
     return !isLoading ? (
-        <button className="btn btn-lg btn-primary"
+        <button className="btn btn-primary"
             onClick={() => onHandleClick()}>
             Load More <i className="ri-arrow-down-line mr-0"></i>
         </button>

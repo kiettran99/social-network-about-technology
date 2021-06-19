@@ -34,4 +34,4 @@ const StartChat = () => {
     );
 };
 
-export default StartChat;
+export default React.memo(StartChat);

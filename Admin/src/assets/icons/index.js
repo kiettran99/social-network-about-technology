@@ -127,7 +127,9 @@ import {
   cilUserUnfollow,
   cilX,
   cilXCircle,
-  cilWarning
+  cilWarning,
+  cibSuperuser,
+  cilReportSlash
 } from '@coreui/icons'
 
 export const icons = Object.assign({}, {
@@ -225,7 +227,8 @@ export const icons = Object.assign({}, {
   cilUserUnfollow,
   cilX,
   cilXCircle,
-  cilWarning
+  cilWarning,
+  cilReportSlash
 }, {
   cifUs,
   cifBr,
@@ -257,5 +260,6 @@ export const icons = Object.assign({}, {
   cibStripe,
   cibPaypal,
   cibGooglePay,
-  cibCcAmex
+  cibCcAmex,
+  cibSuperuser,
 })

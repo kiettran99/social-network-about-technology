@@ -111,7 +111,7 @@ const CreateReview = ({ addReview, closeModal }) => {
                                     singleImage={true}
                                     buttonText='Choose image'
                                     onChange={onDropWallpaper}
-                                    imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                                    imgExtension={['.jpg', '.gif', '.png', '.gif', 'jpeg']}
                                     maxFileSize={5242880}
                                     withPreview={true}
                                 />
@@ -126,7 +126,7 @@ const CreateReview = ({ addReview, closeModal }) => {
                                     withIcon={true}
                                     buttonText='Choose images'
                                     onChange={onDropPictures}
-                                    imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                                    imgExtension={['.jpg', '.gif', '.png', '.gif', 'jpeg']}
                                     maxFileSize={5242880}
                                     withPreview={true}
                                 />

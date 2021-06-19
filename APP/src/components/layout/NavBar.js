@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import LoadingBar from 'react-top-loading-bar';
 import { logout } from '../../actions/auth';
@@ -14,11 +14,13 @@ const NotificationBar = lazy(() => import('./notification-bar/NotificationBar'))
 const FriendsRequest = lazy(() => import('./friends-request/FriendsRequest'));
 
 const NavBar = ({ auth: { isAuthenticated, user, loading },
-  logout, loadingBar, resetPost, history
+  logout, loadingBar, resetPost
 }) => {
 
   const ref = useRef(null);
   useAppearAdsManageer();
+
+  const history = useHistory();
 
   useEffect(() => {
     if (ref.current) {
@@ -257,4 +259,6 @@ const mapStateToProps = (state) => ({
   loadingBar: state.loadingBar
 })
 
-export default connect(mapStateToProps, { logout, resetPost })(withRouter(NavBar));
+export default connect(mapStateToProps, {
+  logout, resetPost
+})(React.memo(NavBar));

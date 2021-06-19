@@ -120,6 +120,7 @@ const Collaborator = () => {
                         fields={fields}
                         hover
                         striped
+                        pagination
                         itemsPerPage={5}
                         activePage={page}
                         clickableRows
@@ -151,13 +152,6 @@ const Collaborator = () => {
 
                                 )
                         }}
-                    />
-                    <CPagination
-                        activePage={page}
-                        onActivePageChange={pageChange}
-                        pages={collaborators.length}
-                        doubleArrows={false}
-                        align=""
                     />
                 </CCardBody>
             </CCard>

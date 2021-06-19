@@ -122,7 +122,7 @@ const Messages = ({ socket, match, getUserProfile, getChatErrors }) => {
                     </div>
                 </div>
                 <div className="tab-pane fade active show" id="chatbox1" role="tabpanel">
-                    <Header blockUser={blockUser} />
+                    <Header blockUser={blockUser} match={match} />
                     <Contents messages={messages} isBlock={isBlock} />
                     <Footer socket={socket} match={match} retsoreMessages={retsoreMessages} />
                 </div>

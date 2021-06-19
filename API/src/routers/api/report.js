@@ -1,8 +1,11 @@
 const router = require('express').Router();
-const { body, validationResult, param } = require('express-validator');
+const { check, validationResult, param } = require('express-validator');
 
 const auth = require('../../middleware/auth');
 const authByRole = require('../../middleware/auth-by-role');
+const upload = require('../../utils/upload');
+const storage = require('../../firebase/firebase');
+
 const Post = require('../../models/post');
 const Report = require('../../models/report');
 const User = require('../../models/user');
@@ -29,10 +32,10 @@ router.get('/', authByRole('admin'), async (req, res) => {
 // @route POST /api/reports
 // @desc Create a report. 
 // @access Private
-router.post('/', auth, [
-    body('target', 'Target is required.').not().isEmpty(),
-    body('type', 'Type is required.').not().isEmpty(),
-    body('description', 'Description is required.').not().isEmpty(),
+router.post('/', auth, upload.array('images', 10), [
+    check('target', 'Target is required.').not().isEmpty(),
+    check('type', 'Type is required.').not().isEmpty(),
+    check('description', 'Description is required.').not().isEmpty(),
 ], async (req, res) => {
     try {
         // 1. Validation
@@ -58,6 +61,24 @@ router.post('/', auth, [
             owner: req.user._id,
             description: req.body.description
         });
+
+        // 4. Report User - Get More Informations from images.
+        if (req.files) {
+
+            await Promise.all(req.files.map(async (file) => {
+                //Create a storage ref
+                const storageRef = storage.ref(`/reports/${report.id}/${file.originalname}`);
+
+                //Upload image
+                await storageRef.put(file.buffer);
+
+                const fileUrl = await storageRef.getDownloadURL();
+
+                report.images.push(fileUrl);
+            }));
+
+            await report.save();
+        }
 
         res.json(report);
     }
@@ -87,7 +108,7 @@ router.get('/user/:user_id', authByRole('admin'), [
 
         const [user, posts] = await Promise.all([
             User.findById(userId).select('fullname avatar email status'),
-            Post.find({ user: userId, status: 2}).select('status')
+            Post.find({ user: userId, status: 2 }).select('status')
         ])
 
         // 3. Response client

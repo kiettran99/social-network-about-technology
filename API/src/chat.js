@@ -30,12 +30,16 @@ const createServer = (server) => {
         socket.emit('notification', 'Welcome');
 
         // User is listeing massageBox
-        socket.on('chat-rooms', async ({ limit }) => {
+        socket.on('chat-rooms', async (limit) => {
             try {
+                
                 // Fetch message box list
-                const chatList = await getChatList(socket.decoded._id, limit);
+                const [chatList, length] = await Promise.all([
+                    getChatList(socket.decoded._id, limit),
+                    Chat.countDocuments({ requester: socket.decoded._id })
+                ]);
 
-                socket.emit('get-chat-list', { error: null, chatList });
+                socket.emit('get-chat-list', { error: null, chatList, length });
             }
             catch (e) {
                 console.log(e);
