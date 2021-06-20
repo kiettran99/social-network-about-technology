@@ -30,10 +30,16 @@ export const addReview = (formData, callback) => async dispatch => {
     }
 };
 
-export const getReviews = (skip = 0, limit = 5) => async dispatch => {
+export const getReviews = (skip = 0, limit = 5, title = '', filterBy = 'all') => async dispatch => {
     try {
-        const res = await axios.get(`${urlAPI}/api/reviews?limit=${limit}&skip=${skip}`);
+        const titleQuery = title ? `&title=${title}` : '';
 
+        const filterByQuery = filterBy ? `&filterBy=${filterBy}` : '';
+
+        const query = titleQuery + filterByQuery;
+
+        const res = await axios.get(`${urlAPI}/api/reviews?limit=${limit}&skip=${skip}` + query);
+        console.log(res)
         dispatch({
             type: GET_REVIEWS,
             payload: res.data,
@@ -136,10 +142,16 @@ export const resetReview = () => dispatch => {
     });
 };
 
-export const getMoreReviews = (skip = 0, limit = 5, callback) => async dispatch => {
+export const getMoreReviews = (skip = 0, limit = 5, title = '', filterBy = 'all', callback) => async dispatch => {
     try {
-        const res = await axios.get(`${urlAPI}/api/reviews?limit=${limit}&skip=${skip}`);
-        console.log(res)
+        const titleQuery = title ? `&title=${title}` : '';
+
+        const filterByQuery = filterBy ? `&filterBy=${filterBy}` : '';
+
+        const query = titleQuery + filterByQuery;
+
+        const res = await axios.get(`${urlAPI}/api/reviews?limit=${limit}&skip=${skip}` + query);
+
         dispatch({
             type: GET_MORE_REVIEWS,
             payload: res.data,

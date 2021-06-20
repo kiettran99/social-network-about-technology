@@ -15,6 +15,9 @@ const CreateReview = ({ addReview, closeModal }) => {
     const [wallpaper, setWallpaper] = useState(null);
     const [pictures, setPictures] = useState([]);
 
+    const [isReview, setReview] = useState(false);
+    const [type, setType] = useState('');
+
     // BubbleEditor value text state
     const [general, setGeneral] = useState('');
 
@@ -43,7 +46,7 @@ const CreateReview = ({ addReview, closeModal }) => {
                 favorite: favoriteRef.current?.value,
                 restrict: restrictRef.current?.value
             },
-            link: linkRef.current?.value
+            link: linkRef.current?.value,
         }
 
         const formData = new FormData();
@@ -52,7 +55,8 @@ const CreateReview = ({ addReview, closeModal }) => {
         formData.append('price', data.price);
         formData.append('descriptions', JSON.stringify(data.descriptions));
         formData.append('link', data.link);
-
+        formData.append('isReview', isReview);
+        formData.append('type', type);
 
         if (wallpaper && wallpaper.length > 0) {
             wallpaper.forEach((picture) => {
@@ -84,23 +88,37 @@ const CreateReview = ({ addReview, closeModal }) => {
         <div className="modal-lg m-0" role="document">
             <div className="modal-content">
                 <div className="modal-header">
-                    <h4 className="modal-title">Create Review</h4>
+                    <h4 className="modal-title">Create Technology New</h4>
                     <button onClick={() => closeModal()} type="button" className="btn btn-secondary" data-dismiss="modal"><i className="ri-close-fill mr-0" /></button>
                 </div>
                 <div className="modal-body">
                     <form onSubmit={onSubmit}>
                         <div className="form-group">
-                            <label htmlFor="ctitle">Name of Product / Service</label>
+                            <label htmlFor="ctitle">Title New</label>
                             <input type="text" className="form-control" id="ctitle" placeholder="Technology Group"
                                 ref={titleRef} />
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="cprice">What price did you bought it ?</label>
-                            <input type="text" className="form-control" id="cprice" placeholder="$420.00"
-                                ref={priceRef} />
+                            <label>Type</label>
+                            <select className="form-control bg-white"
+                                onChange={(e) => setType(e.target.value)} required={true}>
+                                <option value=''>-- Chose type Technology new --</option>
+                                <option value='computers'>Computers</option>
+                                <option value='smartphones'>Smartphones</option>
+                                <option value='others'>Others</option>
+                            </select>
                         </div>
 
+                        <div className="form-group">
+                            <label htmlFor="cgeneral">General information</label>
+                            <Suspense fallback={<div>Loading editor....</div>}>
+                                <div className="snow-editor">
+                                    <SnowEditor placeholder="Reviewing product technology about smartphones and new pcs."
+                                        id="cgeneral" text={general} setText={setGeneral} />
+                                </div>
+                            </Suspense>
+                        </div>
 
                         <div className="form-group">
                             <label htmlFor="cprice">Wallpaper</label>
@@ -133,35 +151,44 @@ const CreateReview = ({ addReview, closeModal }) => {
                             </Suspense>
                         </div>
 
-                        <div className="form-group">
-                            <label htmlFor="cgeneral">General information about the product</label>
-                            <Suspense fallback={<div>Loading editor....</div>}>
-                                <div className="snow-editor">
-                                    <SnowEditor placeholder="Reviewing product technology about smartphones and new pcs."
-                                        id="cgeneral" text={general} setText={setGeneral} />
+                        <div className="form-group form-check">
+                            <input type="checkbox" className="form-check-input" id="exampleCheck1" defaultChecked={false}
+                                onChange={(e) => setReview(e.target.checked)} />
+                            <label className="form-check-label" htmlFor="exampleCheck1">Review Smartphones or Computers ?</label>
+                        </div>
+
+                        {isReview && (
+                            <div>
+                                <div className="form-group">
+                                    <label htmlFor="cfavorite">What do you like about this device?</label>
+                                    <textarea type="text" className="form-control" id="cfavorite" placeholder="Reviewing product technology about smartphones and new pcs."
+                                        rows={5} style={{ lineHeight: '22px' }}
+                                        required={true}
+                                        ref={favoriteRef} />
                                 </div>
-                            </Suspense>
-                        </div>
 
-                        <div className="form-group">
-                            <label htmlFor="cfavorite">What do you like about this device?</label>
-                            <textarea type="text" className="form-control" id="cfavorite" placeholder="Reviewing product technology about smartphones and new pcs."
-                                rows={5} style={{ lineHeight: '22px' }}
-                                ref={favoriteRef} />
-                        </div>
+                                <div className="form-group">
+                                    <label htmlFor="crestrict">What don't you like about it?</label>
+                                    <textarea type="text" className="form-control" id="crestrict" placeholder="Reviewing product technology about smartphones and new pcs."
+                                        rows={5} style={{ lineHeight: '22px' }}
+                                        required={true}
+                                        ref={restrictRef} />
+                                </div>
 
-                        <div className="form-group">
-                            <label htmlFor="crestrict">What don't you like about it?</label>
-                            <textarea type="text" className="form-control" id="crestrict" placeholder="Reviewing product technology about smartphones and new pcs."
-                                rows={5} style={{ lineHeight: '22px' }}
-                                ref={restrictRef} />
-                        </div>
+                                <div className="form-group">
+                                    <label htmlFor="cprice">What price did you bought it ?</label>
+                                    <input type="text" className="form-control" id="cprice" placeholder="$420.00"
+                                        required={true}
+                                        ref={priceRef} />
+                                </div>
 
-                        <div className="form-group">
-                            <label htmlFor="clink">Purchase link (if any)</label>
-                            <input type="text" className="form-control" id="clink" placeholder="Link Purchase"
-                                ref={linkRef} />
-                        </div>
+                                <div className="form-group">
+                                    <label htmlFor="clink">Purchase link (if any)</label>
+                                    <input type="text" className="form-control" id="clink" placeholder="Link Purchase"
+                                        ref={linkRef} />
+                                </div>
+                            </div>
+                        )}
 
                         {message && (
                             <div className="form-group">

@@ -1,7 +1,10 @@
 import api from './index';
 
 export const getCollaborators = () => {
-    return api.get(`${api.url.user}/admin/collaborators`).then(res => res.data);
+    return api.get(`${api.url.user}/admin/collaborators`).then(res => {
+        console.log(res);
+        return res.data
+    });
 }
 
 export const inviteToCollaborators = (data) => {

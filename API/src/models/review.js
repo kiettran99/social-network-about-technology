@@ -7,12 +7,23 @@ const reviewSchema = new Schema({
         type: ObjectId,
         ref: 'Post'
     },
+    title: {
+        type: String
+    },
+    isReview: {
+        type: Boolean,
+        default: false
+    },
+    type: {
+        type: String
+    },
     user: {
         type: ObjectId,
         ref: 'User'
     },
     price: {
-        type: String
+        type: String,
+        default: ''
     },
     wallpaper: {
         type: String
@@ -22,14 +33,17 @@ const reviewSchema = new Schema({
             type: String
         },
         favorite: {
-            type: String
+            type: String,
+            default: ''
         },
         restrict: {
-            type: String
+            type: String,
+            default: ''
         }
     },
     link: {
-        type: String
+        type: String,
+        default: ''
     },
     status: {
         type: Number,

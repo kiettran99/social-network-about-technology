@@ -31,7 +31,7 @@ const User = ({ match }) => {
 
   return (
     <CRow>
-      <CCol lg={6}>
+      <CCol cols={12}>
         <CCard>
           <CCardHeader>
             User id: {match.params.id}

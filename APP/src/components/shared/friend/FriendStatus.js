@@ -3,11 +3,15 @@ import { useSelector } from 'react-redux';
 
 import { getFriendStatus, acceptFriend, requestFriend, unAcceptFriend } from './services';
 
+const DialogBox = React.lazy(() => import('../DialogBox'));
+const ReportUser = React.lazy(() => import('../report/ReportUser'));
+
 const FriendStatus = ({ match }) => {
 
     // State
     const [friend, setFriend] = useState(null);
     const [isActive, setActive] = useState(true);
+    const [modalIsOpen, setIsOpen] = useState(false);
 
     const { isAuthenticated } = useSelector((state) => {
         return state.auth;
@@ -60,9 +64,17 @@ const FriendStatus = ({ match }) => {
         });
     };
 
+    const closeModal = () => {
+        setIsOpen(false);
+    };
+
+    const openModal = () => {
+        setIsOpen(true);
+    };
+
     const getStatus = useMemo(() => {
         const friendsStatus = friend?.status;
-        
+
         switch (friendsStatus) {
             case 1:
                 return (
@@ -106,12 +118,16 @@ const FriendStatus = ({ match }) => {
                     </span>
                     <div className="dropdown-menu m-0 p-0 shadow-sm">
                         {isAuthenticated && getStatus}
-                        <button className="dropdown-item btn text-danger my-2">
+                        <button className="dropdown-item btn text-danger my-2"
+                            onClick={() => openModal()}>
                             <i className="ri-error-warning-line icon-18"></i> Report
                         </button>
                     </div>
                 </div>
             </div>
+            <React.Suspense fallback={<div></div>}>
+                <DialogBox props={{ modalIsOpen, closeModal, openModal, userId: match.params?.id }} Component={ReportUser} />
+            </React.Suspense>
         </a>
     );
 };

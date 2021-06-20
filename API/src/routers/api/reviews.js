@@ -15,7 +15,21 @@ router.get('/', async (req, res) => {
         const limit = parseInt(req.query.limit) || 5;
         const skip = parseInt(req.query.skip) || 0;
 
-        const reviews = await Review.find({ status: 1 }).limit(limit).skip(skip)
+        const { title, filterBy } = req.query;
+
+        const conditions = {
+            status: 1
+        };
+
+        if (title && title !== '') {
+            conditions.title = { '$regex': title, $options: 'i' }
+        }
+
+        if (filterBy && filterBy !== 'all') {
+            conditions.type = filterBy;
+        }
+
+        const reviews = await Review.find(conditions).limit(limit).skip(skip)
             .sort({ _id: 'desc' }).populate('post');
 
         res.json(reviews);
@@ -103,7 +117,10 @@ router.post('/', auth,
             post: post._id,
             price: req.body.price,
             descriptions: JSON.parse(req.body.descriptions),
-            link: req.body.link
+            link: req.body.link,
+            isReview: req.body.isReview,
+            type: req.body.type,
+            title: req.body.title
         };
 
         const review = await Review.create(reviewObj);
@@ -163,6 +180,9 @@ router.put('/:id', auth,
         review.price = req.body.price;
         review.descriptions = JSON.parse(req.body.descriptions);
         review.link = req.body.link;
+        review.isReview = req.body.isReview;
+        review.type = req.body.type;
+        review.title = req.body.title;
 
         await review.save();
 

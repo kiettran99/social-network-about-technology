@@ -64,8 +64,6 @@ export const getMoreUsers = (name = '', limit = 3, skip = 0, callback) => async 
 
         const res = await axios.get(`${urlAPI}/api/users/search?name=${name}&skip=${skip}&limit=${limit}`)
 
-        console.log(res)
-
         dispatch({
             type: GET_MORE_SEARCH_USERS,
             payload: res.data,

@@ -151,6 +151,13 @@ router.post('/', auth, upload.fields([
             owner: req.user._id
         });
 
+        if (req.user.role !== 'admin') {
+            group.members.push({ user: req.user.id, avatar: req.user.avatar });
+            group.lengthOfMembers += 1;
+
+            await group.save();
+        }
+
         if (req.files && req.files.avatar) {
             const file = req.files.avatar[0];
 

@@ -34,14 +34,18 @@ const Post = ({ review }) => {
                                     </Suspense>
                                 </div>
 
-                                <h5 className="font-italic pb-3">Things I like</h5>
-                                <p style={{ whiteSpace: 'pre-wrap' }}>{review.descriptions.favorite}</p>
+                                {review?.isReview && (
+                                    <div>
+                                        <h5 className="font-italic pb-3">Things I like</h5>
+                                        <p style={{ whiteSpace: 'pre-wrap' }}>{review.descriptions.favorite}</p>
 
-                                <h5 className="font-italic pb-3">Things I don't like</h5>
-                                <p style={{ whiteSpace: 'pre-wrap' }}>{review.descriptions.restrict}</p>
+                                        <h5 className="font-italic pb-3">Things I don't like</h5>
+                                        <p style={{ whiteSpace: 'pre-wrap' }}>{review.descriptions.restrict}</p>
 
-                                <h5 className="font-italic pb-3">Link</h5>
-                                <p><a href={review.link} target="_blank">{review.link}</a></p>
+                                        <h5 className="font-italic pb-3">Link</h5>
+                                        <p><a href={review.link} target="_blank">{review.link}</a></p>
+                                    </div>
+                                )}
 
 
                                 <a className="text-primary button"
