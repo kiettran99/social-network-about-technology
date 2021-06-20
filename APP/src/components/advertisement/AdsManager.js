@@ -145,9 +145,9 @@ const AdsManager = () => {
                                             </td>
                                             <td>{displayStatus(ad.status)}</td>
                                             <td>{ad.activities ? ad.activities.length : 0}</td>
-                                            <td>{ad.post.likes.length}</td>
-                                            <td>{ad.post.lengthOfComments}</td>
-                                            <td>{ad.post.share.users.length}</td>
+                                            <td>{ad.post?.likes?.length}</td>
+                                            <td>{ad.post?.lengthOfComments}</td>
+                                            <td>{ad.post?.share?.users?.length}</td>
                                             <td>
                                                 <i className="ri-edit-2-line button"
                                                     onClick={() => onEditAds(ad)}></i>

@@ -1,15 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import dayjs from '../../../../utils/relativeDate';
-
 import UserDetail from './user-detail/UserDetail';
 
-const Header = () => {
+const DialogBox = React.lazy(() => import('../../../shared/DialogBox'));
+const ReportUser = React.lazy(() => import('../../../shared/report/ReportUser'));
+
+const Header = ({ blockUser, match }) => {
+
+    const [modalIsOpen, setIsOpen] = useState(false);
 
     const userProfile = useSelector((state) => {
         return state.chat.userProfile
     });
+
+    const closeModal = () => {
+        setIsOpen(false);
+    }
+
+    const openModal = () => {
+        setIsOpen(true);
+    }
 
     return (
         <div className="chat-head">
@@ -40,7 +52,7 @@ const Header = () => {
                 </div>
                 <UserDetail userProfile={userProfile} />
                 <div className="chat-header-icons d-flex">
-                    <a href="#!" className="chat-icon-phone iq-bg-primary">
+                    {/* <a href="#!" className="chat-icon-phone iq-bg-primary">
                         <i className="ri-phone-line" />
                     </a>
                     <a href="#!" className="chat-icon-video iq-bg-primary">
@@ -48,19 +60,24 @@ const Header = () => {
                     </a>
                     <a href="#!" className="chat-icon-delete iq-bg-primary">
                         <i className="ri-delete-bin-line" />
-                    </a>
+                    </a> */}
                     <span className="dropdown iq-bg-primary">
                         <i className="ri-more-2-line cursor-pointer dropdown-toggle nav-hide-arrow cursor-pointer pr-0" id="dropdownMenuButton02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu" />
                         <span className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton02">
-                            <a className="dropdown-item" href="#!"><i className="fa fa-thumb-tack" aria-hidden="true" /> Pin to top</a>
-                            <a className="dropdown-item" href="#!"><i className="fa fa-trash-o" aria-hidden="true" /> Delete chat</a>
-                            <a className="dropdown-item" href="#!"><i className="fa fa-ban" aria-hidden="true" /> Block</a>
+                            {/* <a className="dropdown-item" href="#!"><i className="fas fa-thumb-tack" aria-hidden="true" /> Pin to top</a> */}
+                            <a className="dropdown-item text-danger"
+                                onClick={blockUser}><i className="ri-delete-bin-7-line" aria-hidden="true" /> Delete chat</a>
+                            <a className="dropdown-item"
+                                onClick={() => openModal()}><i className="fas fa-ban" aria-hidden="true" /> Report</a>
                         </span>
                     </span>
                 </div>
             </header>
+            <React.Suspense fallback={<div></div>}>
+                <DialogBox props={{ modalIsOpen, closeModal, openModal, userId: match.params?.id }} Component={ReportUser} />
+            </React.Suspense>
         </div>
     );
 };
 
-export default Header;
+export default React.memo(Header);

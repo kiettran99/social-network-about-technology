@@ -2,7 +2,7 @@ const router = require('express').Router();
 const Friend = require('../../models/friend');
 const User = require('../../models/user');
 const auth = require('../../middleware/auth');
-const { getUserFriends, getRequestFriends, getUsersList, getAll
+const { getUserFriends, getRequestFriends, getUsersList, getAll, followingFriends
 } = require('../../utils/friend');
 
 // @route get /api/friends
@@ -198,6 +198,8 @@ router.put('/accept/:user_id', auth, async (req, res) => {
 
         await Promise.all([friendReqeuster, friendRecipient]);
 
+        followingFriends(req.user, recipientId);
+
         res.json({ userId: requesterId, status: 3 });
     }
     catch (e) {
@@ -243,6 +245,32 @@ router.put('/unaccept/:user_id', auth, async (req, res) => {
         await Promise.all([userRequester, userRecipient]);
 
         res.json({ userId: requesterId, status: 0 });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route GET /api/friends/friend/:user_id
+// @desc Get status friend
+// @access private
+router.get('/friend/:user_id', auth, async (req, res) => {
+    try {
+        // 1. Validation params.
+        const userId = req.params.user_id;
+
+        if (!userId) {
+            return res.status(400).send('User Id is required.');
+        }
+
+        // 2. Find Friend and Response client.
+        const friend = await Friend.findOne({
+            requester: req.user.id,
+            recipient: userId
+        });
+
+        res.json(friend);
     }
     catch (e) {
         console.log(e);

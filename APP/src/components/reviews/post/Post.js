@@ -3,6 +3,7 @@ import dayjs from '../../../utils/relativeDate';
 import Bar from './bar/Bar';
 
 const AttachPost = lazy(() => import('../../post/AttachPost'));
+const ParseHtml = lazy(() => import('../../shared/ParseHtml'));
 
 const Post = ({ review }) => {
 
@@ -20,7 +21,11 @@ const Post = ({ review }) => {
                         <Bar createdAt={dayjs(review.createdAt).fromNow()} postId={review.post._id} />
 
                         <h5 className="font-italic pb-3">General description</h5>
-                        <p style={{ whiteSpace: 'pre-wrap' }}>{review.descriptions.general}</p>
+                        <div className="form-group review-detail-general">
+                            <Suspense fallback={<div></div>}>
+                                <ParseHtml text={review.descriptions.general} />
+                            </Suspense>
+                        </div>
                         {isShowMore ? (
                             <>
                                 <div className="my-4">
@@ -28,14 +33,19 @@ const Post = ({ review }) => {
                                         <AttachPost imageUrls={review.post.imageUrls} />
                                     </Suspense>
                                 </div>
-                                <h5 className="font-italic pb-3">Things I like</h5>
-                                <p style={{ whiteSpace: 'pre-wrap' }}>{review.descriptions.favorite}</p>
 
-                                <h5 className="font-italic pb-3">Things I don't like</h5>
-                                <p style={{ whiteSpace: 'pre-wrap' }}>{review.descriptions.restrict}</p>
+                                {review?.isReview && (
+                                    <div>
+                                        <h5 className="font-italic pb-3">Things I like</h5>
+                                        <p style={{ whiteSpace: 'pre-wrap' }}>{review.descriptions.favorite}</p>
 
-                                <h5 className="font-italic pb-3">Link</h5>
-                                <p><a href={review.link} target="_blank">{review.link}</a></p>
+                                        <h5 className="font-italic pb-3">Things I don't like</h5>
+                                        <p style={{ whiteSpace: 'pre-wrap' }}>{review.descriptions.restrict}</p>
+
+                                        <h5 className="font-italic pb-3">Link</h5>
+                                        <p><a href={review.link} target="_blank">{review.link}</a></p>
+                                    </div>
+                                )}
 
 
                                 <a className="text-primary button"

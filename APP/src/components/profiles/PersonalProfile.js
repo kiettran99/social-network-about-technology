@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getProfileById } from '../../actions/profile';
+import FriendStatus from '../shared/friend/FriendStatus';
 
 const PersonalProfile = ({ auth: { user, isAuthenticated },
     profile: { profile, loading }, getProfileById, match
@@ -20,7 +21,11 @@ const PersonalProfile = ({ auth: { user, isAuthenticated },
                         <ul className="header-nav d-flex flex-wrap justify-end p-0 m-0">
                             {user && isAuthenticated && user._id === profile.user._id &&
                                 <li style={{ cursor: "pointer", zIndex: "2" }}><Link to={`/profile/edit`}><i className="ri-pencil-line" /></Link></li>}
-                            <li><a href=""><i className="ri-settings-4-line" /></a></li>
+                            {user && isAuthenticated && user._id !== profile.user._id && (
+                                <li style={{ cursor: "pointer", zIndex: "2" }}>
+                                    <FriendStatus match={match} />
+                                </li>
+                            )}
                         </ul>
                     </div>
                     <div className="user-detail text-center mb-3">

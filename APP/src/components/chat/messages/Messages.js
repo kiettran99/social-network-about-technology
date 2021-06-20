@@ -10,6 +10,7 @@ import Header from './header/Header';
 const Messages = ({ socket, match, getUserProfile, getChatErrors }) => {
 
     const [messages, setMessages] = useState([]);
+    const [isBlock, setBlock] = useState(false);
 
     useEffect(() => {
 
@@ -26,7 +27,10 @@ const Messages = ({ socket, match, getUserProfile, getChatErrors }) => {
         socket.off('update-user-profile');
 
         socket.on('loading', (data) => {
-            setMessages(data.reverse());
+            const { messages = [], isBlock = false } = data;
+            setMessages(messages.reverse());
+            setBlock(isBlock);
+
             autoScroll();
         });
 
@@ -85,6 +89,28 @@ const Messages = ({ socket, match, getUserProfile, getChatErrors }) => {
         }
     };
 
+    // Block User
+    const blockUser = () => {
+
+        const confirm = window.confirm('Are you sure delete chat ?');
+
+        if (confirm) {
+            socket.emit('block', { recipient: match.params.id }, (error) => {
+                if (error) {
+                    return console.log(error);
+                }
+            });
+        }
+    };
+
+    // Restore Chat Messages.
+    const retsoreMessages = () => {
+        if (isBlock) {
+            setBlock(false);
+            autoScroll();
+        }
+    };
+
     return (
         <div className="col-lg-9 chat-data p-0 chat-data-right">
             <div className="tab-content">
@@ -92,13 +118,13 @@ const Messages = ({ socket, match, getUserProfile, getChatErrors }) => {
                     <div className="chat-start">
                         <span className="iq-start-icon text-primary"><i className="ri-message-3-line" /></span>
                         <button id="chat-start" className="btn bg-white mt-3">Start
-                        Conversation!</button>
+                            Conversation!</button>
                     </div>
                 </div>
                 <div className="tab-pane fade active show" id="chatbox1" role="tabpanel">
-                    <Header />
-                    <Contents messages={messages} />
-                    <Footer socket={socket} match={match} />
+                    <Header blockUser={blockUser} match={match} />
+                    <Contents messages={messages} isBlock={isBlock} />
+                    <Footer socket={socket} match={match} retsoreMessages={retsoreMessages} />
                 </div>
             </div>
         </div>

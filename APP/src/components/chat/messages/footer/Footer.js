@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 
-const Footer = ({ socket, match }) => {
+const Footer = ({ socket, match, retsoreMessages }) => {
 
     const inputRef = useRef();
     const [isDisabledButton, setDisableButton] = useState(false);
@@ -22,6 +22,8 @@ const Footer = ({ socket, match }) => {
             if (error) {
                 return console.log(error);
             }
+
+            retsoreMessages();
 
             console.log('Message delivered!');
         });

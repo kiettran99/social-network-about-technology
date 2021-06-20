@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { connect, useSelector } from 'react-redux';
 
 import Review from './Review';
@@ -12,14 +12,21 @@ const Reviews = ({ getReviews, resetReview, getMoreReviews }) => {
 
     const [modalIsOpen, setIsOpen] = useState(false);
 
-    const { auth, review: { reviews, loading } } = useSelector((state) => ({
+    const [filterBy, setFilterBy] = useState('all');
+
+    const { auth, user, review: { reviews, loading } } = useSelector((state) => ({
         auth: state.auth,
-        review: state.review
+        review: state.review,
+        user: state.auth.user
     }));
+
+    const searchTitleRef = useRef(null);
 
     useEffect(() => {
         getReviews();
+    }, []);
 
+    useEffect(() => {
         return () => {
             resetReview();
         }
@@ -34,7 +41,24 @@ const Reviews = ({ getReviews, resetReview, getMoreReviews }) => {
     }
 
     const getMore = (callback) => {
-        getMoreReviews(reviews.length, 5, callback);
+        getMoreReviews(reviews.length, 5, searchTitleRef.current.value, filterBy, callback);
+    };
+
+    /**
+     * @desc Form handles search news by tiltles.
+     * @param {Event} e
+     */
+    const onSearchTitle = (e) => {
+        if (e.keyCode === 13) {
+            const limit = reviews.length > 5 ? reviews.length : 5;
+            getReviews(0, limit, searchTitleRef.current.value, filterBy);
+        }
+    };
+
+    const onHandleFilterBy = (e) => {
+        setFilterBy(e.target.value);
+        const limit = reviews.length > 5 ? reviews.length : 5;
+        getReviews(0, limit, searchTitleRef.current.value, e.target.value);
     }
 
     return (
@@ -45,20 +69,38 @@ const Reviews = ({ getReviews, resetReview, getMoreReviews }) => {
                         <div className="col-sm-12">
                             <div className="iq-card position-relative inner-page-bg bg-primary" style={{ height: "150px" }}>
                                 <div className="inner-page-title">
-                                    <h3 className="text-white">Review Pages</h3>
-                                    <p className="text-white">Share your thoughts with everyone by submitting a review.
-                                 You can always add text, photos or videos to your review at any time.</p>
+                                    <h3 className="text-white">Technology News</h3>
+                                    <p className="text-white">Reporting on the popularity of technology, reviews about Computers, Smartphones.</p>
                                 </div>
                             </div>
                         </div>
                         <div className="col-sm-12 form-group">
-                            {auth.isAuthenticated && (
+                            {auth.isAuthenticated && user && user.role !== 'user' && (
                                 <button className="btn btn-primary float-right"
                                     onClick={() => openModal()}>
-                                    <i className="ri-add-line pr-2" />Create New Review
+                                    <i className="ri-add-line pr-2" />Create a New
                                 </button>
                             )}
                         </div>
+                        <div className="col-12 form-group">
+                            <div className="d-flex justify-content-between mt-sm-2">
+                                <input className="form-control float-left w-50 bg-white" placeholder="Find by name"
+                                    ref={searchTitleRef} onKeyDown={onSearchTitle}
+                                />
+
+                                <div className="form-inline">
+                                    <label>Filter By: &nbsp;</label>
+                                    <select className="form-control bg-white" defaultValue={filterBy}
+                                        onChange={onHandleFilterBy}>
+                                        <option value='all'>All</option>
+                                        <option value='computers'>Computers</option>
+                                        <option value='smartphones'>Smartphones</option>
+                                        <option value='others'>Others</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
                         {reviews && reviews.length > 0 && reviews.map(review => (
                             <Review key={review._id} review={review} />
                         ))}

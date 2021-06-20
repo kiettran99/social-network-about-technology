@@ -1,6 +1,3 @@
-import React from 'react'
-import CIcon from '@coreui/icons-react'
-
 export default [
   // {
   //   _tag: 'CSidebarNavItem',
@@ -66,7 +63,7 @@ export default [
     _tag: "CSidebarNavItem",
     name: "Reports",
     to: "/reports",
-    icon: "cil-report",
+    icon: "cil-report-slash",
   },
   // {
   //   _tag: 'CSidebarNavDropdown',

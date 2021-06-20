@@ -25,10 +25,26 @@ const messageBoxSchema = new Schema({
                 default: false
             }
         }]
-    }]
+    }],
+    lastTime: {
+        type: Date,
+        default: Date.now
+    }
 }, {
     timestamps: true
 });
+
+messageBoxSchema.methods.updateLastTime = async function () {
+    const messageBox = this;
+
+    if (messageBox.messages.length > 0) {
+        const [message] = messageBox.messages;
+
+        messageBox.lastTime = message.createdAt;
+
+        await messageBox.save();
+    }
+};
 
 const MessageBox = mongoose.model('MessageBox', messageBoxSchema);
 

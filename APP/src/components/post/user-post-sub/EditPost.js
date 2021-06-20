@@ -241,7 +241,8 @@ const EditPost = ({ auth: { user, isAuthenticated },
                                         <form className="post-text ml-3 w-100" onSubmit={e => onSubmit(e)}>
                                             <div className="standalone-container">
                                                 <Suspense fallback={<div>Loading...</div>}>
-                                                    <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })} />
+                                                    <BubbleEditor text={text} setText={(value) => setFormData({ ...formData, text: value })}
+                                                        placeholder="Write something here..." />
                                                 </Suspense>
                                             </div>
                                         </form>

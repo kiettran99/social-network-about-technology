@@ -49,7 +49,7 @@ const Reply = ({ reply: { _id, name, text, avatar, date, user: userComment, like
                 <div className="iq-card-body">
                     <div className="d-flex align-items-center">
                         <div className="user-image mb-3">
-                            <img className="avatar-80 rounded" src={avatar} alt="#" data-original-title title />
+                            <img className="avatar-80 rounded-circle" src={avatar} alt="#" data-original-title title />
                         </div>
                         <div className="ml-3">
                             <h5><Link to={`/profile/${userComment}`}>{name}</Link></h5>

@@ -63,8 +63,10 @@ const Collaborator = () => {
 
     const reload = () => {
         getCollaborators().then((data) => {
+            setCollaborators(data);
             setUsers(data);
-            findByName('');
+           
+            //findByName('');
         }).catch((e) => {
             console.log(e);
         });
@@ -110,8 +112,8 @@ const Collaborator = () => {
                     <div className="d-flex justify-content-between mt-sm-2">
                         <input className="form-control float-left w-50" placeholder="Find by name"
                             onChange={e => findByName(e.target.value)} />
-                        <buton className="float-right btn btn-primary"
-                            onClick={() => openModal()}>+ Add collaborator</buton>
+                        <button className="float-right btn btn-primary"
+                            onClick={() => openModal()}>+ Add collaborator</button>
                     </div>
                 </CCardHeader>
                 <CCardBody>
@@ -120,6 +122,7 @@ const Collaborator = () => {
                         fields={fields}
                         hover
                         striped
+                        pagination
                         itemsPerPage={5}
                         activePage={page}
                         clickableRows
@@ -135,7 +138,7 @@ const Collaborator = () => {
                                 ),
                             'action':
                                 (item) => (
-                                    <div>
+                                    <td>
                                         <button className="btn btn-primary mt-1"
                                             onClick={() => {
                                                 history.push(`/users/${item?._id}`)
@@ -147,17 +150,10 @@ const Collaborator = () => {
                                             onClick={(e) => handleRemoveCollaborator(e, item?._id)}>
                                             Remove
                                         </button>
-                                    </div>
+                                    </td>
 
                                 )
                         }}
-                    />
-                    <CPagination
-                        activePage={page}
-                        onActivePageChange={pageChange}
-                        pages={collaborators.length}
-                        doubleArrows={false}
-                        align=""
                     />
                 </CCardBody>
             </CCard>
@@ -177,9 +173,10 @@ const Collaborator = () => {
                                 if (data) {
                                     setMessage('Sucessfully invited.');
 
+                                    reload();
+
                                     setTimeout(() => {
                                         closeModal();
-                                        reload();
                                     }, 2000);
 
                                     return;

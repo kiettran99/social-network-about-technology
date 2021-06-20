@@ -31,7 +31,8 @@ const Channel = ({ previewMessageBox }) => {
         <ul className="iq-chat-ui nav flex-column nav-pills">
             {previewMessageBox && previewMessageBox.map(preview => (
                 <li key={preview._id}
-                    onClick={() => onHandleClickNextPage(preview.recipient._id)}>
+                    onClick={() => onHandleClickNextPage(preview.recipient._id)}
+                    className="chat-channel">
                     <a data-toggle="pill" href="chat.html#chatbox1">
                         <div className="d-flex align-items-center">
                             <div className="avatar mr-2">

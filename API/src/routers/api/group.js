@@ -2,7 +2,6 @@ const router = require('express').Router();
 const { body, validationResult } = require('express-validator');
 
 const Group = require('../../models/group');
-const Notification = require('../../models/notification');
 
 const upload = require('../../utils/upload');
 const storage = require('../../firebase/firebase');
@@ -151,6 +150,13 @@ router.post('/', auth, upload.fields([
             avatar: '/images/page-img/profile-bg8.jpg',
             owner: req.user._id
         });
+
+        if (req.user.role !== 'admin') {
+            group.members.push({ user: req.user.id, avatar: req.user.avatar });
+            group.lengthOfMembers += 1;
+
+            await group.save();
+        }
 
         if (req.files && req.files.avatar) {
             const file = req.files.avatar[0];

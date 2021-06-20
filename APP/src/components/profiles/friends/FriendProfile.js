@@ -2,10 +2,10 @@ import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getFriendsById } from '../../../actions/friend';
+import { getFriendsById, resetFriend } from '../../../actions/friend';
 
 const FriendProfile = ({ match, getFriendsById,
-    friend: { friends }
+    friend: { friends }, resetFriend
 }) => {
 
     const auth = useSelector((state) => ({
@@ -14,8 +14,14 @@ const FriendProfile = ({ match, getFriendsById,
     }));
 
     useEffect(() => {
-        getFriendsById(match.params.id);
+        getFriendsById(match.params.bid);
     }, [match, getFriendsById]);
+
+    useEffect(() => {
+        return () => {
+            resetFriend();
+        };
+    }, []);
 
     const editFriends = useMemo(() => {
         return match && auth && auth.user && auth.isAuthenticated
@@ -53,11 +59,15 @@ const FriendProfile = ({ match, getFriendsById,
 
 FriendProfile.propTypes = {
     getFriendsById: PropTypes.func.isRequired,
-    friend: PropTypes.object.isRequired
+    friend: PropTypes.object.isRequired,
+    resetFriend: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
     friend: state.friend
 });
 
-export default connect(mapStateToProps, { getFriendsById })(FriendProfile);
+export default connect(mapStateToProps, {
+    getFriendsById,
+    resetFriend
+})(FriendProfile);

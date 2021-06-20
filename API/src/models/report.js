@@ -15,7 +15,10 @@ const reportSchema = new Schema({
     },
     description: {
         type: String
-    }
+    },
+    images: [{
+        type: String
+    }],
 }, {
     timestamps: true
 });

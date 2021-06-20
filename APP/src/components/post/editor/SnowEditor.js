@@ -1,7 +1,7 @@
 import React from 'react';
 import Editor from './Editor';
 
-const SnowEditor = ({ text, setText, readOnly = false }) => {
+const SnowEditor = ({ text, setText, readOnly = false, ...rest }) => {
 
     const modules = {
         toolbar: [
@@ -25,7 +25,8 @@ const SnowEditor = ({ text, setText, readOnly = false }) => {
         setText,
         theme: "snow",
         text,
-        readOnly
+        readOnly,
+        ...rest
     };
 
     return <Editor {...props} />
