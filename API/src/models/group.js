@@ -9,7 +9,6 @@ const groupSchema = new Schema({
     },
     name: {
         type: String,
-        unique: true,
         required: true
     },
     info: {
@@ -20,6 +19,10 @@ const groupSchema = new Schema({
     },
     avatar: {
         type: String
+    },
+    isPublic: {
+        type: Boolean,
+        default: true
     },
     status: {
         type: Number,

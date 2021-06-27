@@ -13,7 +13,14 @@ const GroupsItem = ({ group: { _id, name, info, wallpaper, avatar, lengthOfMembe
 
     useEffect(() => {
         if (user && !loading) {
-            const isMembered = members.filter(member => member.user._id === user._id).length > 0;
+            const isMembered = members.filter(member => {
+
+                if (member.user === user._id) {
+                    return true;
+                }
+
+                return member.user._id === user._id;
+            }).length > 0;
 
             setIsJoinedGroup(isMembered);
         }
@@ -72,11 +79,21 @@ const GroupsItem = ({ group: { _id, name, info, wallpaper, avatar, lengthOfMembe
                     </div>
                     <div className="group-member mb-3">
                         <div className="iq-media-group">
-                            {members && members.map(member => (
-                                <Link to={`/profile/${member.user._id}`} className="iq-media" key={member._id}>
-                                    <img className="img-fluid avatar-40 rounded-circle" src={member.user.avatar} alt="" />
-                                </Link>
-                            ))}
+                            {members && members.map(member => {
+                                if (member.user === user._id) {
+                                    return (
+                                        <Link to={`/profile/${user._id}`} className="iq-media" key={user._id}>
+                                            <img className="img-fluid avatar-40 rounded-circle" src={user.avatar} alt="" />
+                                        </Link>
+                                    );
+                                }
+                                return (
+                                    <Link to={`/profile/${member.user._id}`} className="iq-media" key={member._id}>
+                                        <img className="img-fluid avatar-40 rounded-circle" src={member.user.avatar} alt="" />
+                                    </Link>
+                                );
+                            }
+                            )}
                         </div>
                     </div>
                     <button type="submit" className="btn btn-primary d-block w-100"

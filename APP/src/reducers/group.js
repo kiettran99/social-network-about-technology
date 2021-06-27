@@ -1,7 +1,7 @@
 import {
     GET_GROUPS, GET_GROUP, GROUP_ERROR, CLEAR_GROUP,
     GET_MORE_GROUPS, JOIN_GROUP, UNJOIN_GROUP, ADD_GROUP, RESET_GROUP,
-    INVITE_GROUP
+    INVITE_GROUP, EDIT_GROUP
 } from '../actions/types';
 
 const initState = {
@@ -39,6 +39,15 @@ export default function (state = initState, action) {
             return {
                 ...state,
                 group: payload,
+                loading: false
+            };
+        case EDIT_GROUP:
+            return {
+                ...state,
+                group: {
+                    ...state.group,
+                    ...payload
+                },
                 loading: false
             };
         case JOIN_GROUP:

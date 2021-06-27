@@ -4,6 +4,10 @@ import { connect, useSelector } from 'react-redux';
 
 import { getGroups, getGroupsByTab, resetGroups } from '../../actions/group';
 import GroupsItem from './GroupsItem';
+import LoadMore from '../shared/LoadMore';
+
+// Constant
+const GROUP_LIMIT = 6;
 
 const GroupList = ({ group: { groups, search, loading },
     getGroups, resetGroups, getGroupsByTab
@@ -12,15 +16,16 @@ const GroupList = ({ group: { groups, search, loading },
     // State tab Home - JoinedGroup - Discovery
     const [tab, setTab] = useState(0);
     const [isLoading, setLoading] = useState(0);
+    const [length, setLength] = useState(0);
 
     // Get Current User
-    const isAuthenticated = useSelector((state) => {
-        return state.auth.isAuthenticated;
+    const { isAuthenticated, loading: loadingUser } = useSelector((state) => {
+        return state.auth;
     })
 
     useEffect(() => {
-        if (!isAuthenticated) {
-            getGroups();
+        if (!isAuthenticated && !loadingUser) {
+            getGroups(0, GROUP_LIMIT);
         }
 
         // Clean up reducers
@@ -33,14 +38,23 @@ const GroupList = ({ group: { groups, search, loading },
         if (isAuthenticated) {
             setLoading(true);
 
-            getGroupsByTab(0, 5, search, tab, () => {
+            getGroupsByTab(0, GROUP_LIMIT, search, tab, (length = 0) => {
                 setLoading(false);
+                setLength(length);
             });
         }
     }, [isAuthenticated, tab]);
 
     const changeTab = (tab) => {
         setTab(tab);
+    }
+
+    const getMore = (callback) => {
+        getGroupsByTab(0, groups.length + GROUP_LIMIT, search, tab, (length = 0, data = []) => {
+            if (data.length < length) {
+                callback();
+            }
+        });
     }
 
     return (
@@ -80,6 +94,11 @@ const GroupList = ({ group: { groups, search, loading },
                     <p>Please wait...</p>
                 </div>
             )}
+            <div className="col-sm-12 form-group text-center">
+                {groups && groups.length > 0 && groups.length < length && (
+                    <LoadMore action={getMore} />
+                )}
+            </div>
         </div>
     )
 };

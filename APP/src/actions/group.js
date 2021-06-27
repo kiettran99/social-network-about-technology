@@ -1,6 +1,6 @@
 import {
     GET_GROUPS, GET_GROUP, GROUP_ERROR, CLEAR_GROUP, JOIN_GROUP, UNJOIN_GROUP,
-    ADD_GROUP, RESET_GROUP, INVITE_GROUP
+    ADD_GROUP, RESET_GROUP, INVITE_GROUP, EDIT_GROUP
 } from './types';
 import axios from 'axios';
 import urlAPI from '../utils/urlAPI';
@@ -42,12 +42,13 @@ export const getGroupsByTab = (skip = 0, limit = 5, name = '', tab = 0, callback
 
         const res = await axios.get(`${urlAPI}/api/groups/me?skip=${skip}&limit=${limit}&name=${name}` + queryStringByTab(tab));
 
-        console.log(res);
         dispatch({
             type: GET_GROUPS,
-            payload: res.data,
+            payload: res.data?.groups,
             name
         });
+
+        return callback(res.data?.length, res.data?.groups);
     }
     catch (e) {
         console.log(e);
@@ -56,9 +57,6 @@ export const getGroupsByTab = (skip = 0, limit = 5, name = '', tab = 0, callback
             type: GROUP_ERROR,
             payload: { msg: e.response.data, status: e.response.statusText }
         })
-    }
-    finally {
-        callback();
     }
 };
 
@@ -181,3 +179,34 @@ export const inviteGroup = (groupId, formData, handleAddGroup) => async dispatch
         })
     }
 }
+
+export const editGroup = (id, formData, handleAddGroup) => async dispatch => {
+    try {
+        const res = await axios.put(`${urlAPI}/api/groups/${id}`, formData);
+
+        const groupEdited = res.data;
+
+        dispatch({
+            type: EDIT_GROUP,
+            payload: {
+                name: groupEdited.name,
+                info: groupEdited.info,
+                isPublic: groupEdited.isPublic,
+                wallpaper: groupEdited.wallpaper,
+                avatar: groupEdited.avatar
+            }
+        });
+
+        handleAddGroup('Successfully create a group.', true);
+    }
+    catch (e) {
+        console.log(e);
+
+        handleAddGroup('Failed create a group.', false);
+
+        dispatch({
+            type: GROUP_ERROR,
+            payload: { msg: e.response.data, status: e.response.statusText }
+        })
+    }
+};

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 
 import { unjoinGroup } from '../../../actions/group';
+import Edit from '../edit/Edit';
+
+const DialogBox = React.lazy(() => import('../../shared/DialogBox'));
 
 const GroupToolbar = ({ unjoinGroup }) => {
 
@@ -12,6 +15,7 @@ const GroupToolbar = ({ unjoinGroup }) => {
     }));
 
     const [isJoinedGroup, setIsJoinedGroup] = useState(false);
+    const [modalIsOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
         if (isAuthenticated && user && group) {
@@ -30,6 +34,14 @@ const GroupToolbar = ({ unjoinGroup }) => {
             setIsJoinedGroup(false);
             return unjoinGroup(group._id);
         }
+    }
+
+    const closeModal = () => {
+        setIsOpen(false);
+    }
+
+    const openModal = () => {
+        setIsOpen(true);
     }
 
     return (
@@ -54,7 +66,7 @@ const GroupToolbar = ({ unjoinGroup }) => {
                                         </div>
                                     </div>
                                 </a>
-                                <a className="dropdown-item p-3" href="group-detail.html#">
+                                {/* <a className="dropdown-item p-3" href="group-detail.html#">
                                     <div className="d-flex align-items-top">
                                         <div className="icon font-size-20"><i className="ri-save-line" /></div>
                                         <div className="data ml-2">
@@ -62,17 +74,19 @@ const GroupToolbar = ({ unjoinGroup }) => {
                                             <p className="mb-0">Pin your favourite groups for quick access.</p>
                                         </div>
                                     </div>
-                                </a>
-                                <a className="dropdown-item p-3" href="group-detail.html#">
-                                    <div className="d-flex align-items-top">
-                                        <div className="icon font-size-20"><i className="ri-pencil-line" /></div>
-                                        <div className="data ml-2">
-                                            <h6>Following</h6>
-                                            <p className="mb-0">Follow or unfollow groups to control what you see in News Feed.</p>
+                                </a> */}
+                                {group && user && group.owner === user._id && (
+                                    <a className="dropdown-item p-3" onClick={() => openModal()}>
+                                        <div className="d-flex align-items-top">
+                                            <div className="icon font-size-20"><i className="ri-pencil-line" /></div>
+                                            <div className="data ml-2">
+                                                <h6>Edit Group</h6>
+                                                <p className="mb-0">Update infomation for group.</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
-                                {isJoinedGroup && (
+                                    </a>
+                                )}
+                                {isJoinedGroup && group && user && group.owner !== user._id  && (
                                     <a className="dropdown-item p-3" onClick={onHandleUnjoinGroup}>
                                         <div className="d-flex align-items-top">
                                             <div className="icon font-size-20"><i className="ri-close-circle-line" /></div>
@@ -108,6 +122,9 @@ const GroupToolbar = ({ unjoinGroup }) => {
                     </li>
                 </ul>
             </div>
+            <React.Suspense fallback={<div></div>}>
+                <DialogBox props={{ modalIsOpen, closeModal, openModal }} Component={Edit} />
+            </React.Suspense>
         </div>
     );
 };

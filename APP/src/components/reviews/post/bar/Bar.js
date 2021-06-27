@@ -76,7 +76,7 @@ const Bar = ({ createdAt, postId, likePost, unlikePost, removeReview }) => {
 
     return post && (
         <div className="blog-meta d-flex align-items-center mb-3">
-            <div className="date mr-4"><i className="ri-calendar-2-fill text-primary pr-2" />{createdAt}</div>
+            <div className="date mr-2 mr-md-4"><i className="ri-calendar-2-fill text-primary pr-2" />{createdAt}</div>
             {isAuthenticated && (
                 <>
                     <div className="like-data mr-4">

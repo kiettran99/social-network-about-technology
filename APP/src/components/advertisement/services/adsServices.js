@@ -39,10 +39,14 @@ export const hasUserCreatedAds = async () => {
     }
 };
 
-export const getListAds = async ({ skip, limit, selectedPage }) => {
+export const getListAds = async ({ skip, limit, selectedPage, search, viewAs, ...rest }) => {
     try {
 
-        const options = { skip, limit, page: selectedPage };
+        const options = {
+            skip, limit,
+            page: selectedPage, search, viewAs,
+            ...rest
+        };
 
         let query = '?';
 

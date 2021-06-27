@@ -25,7 +25,7 @@ const Process = ({ length, loading, actionDispatch }) => {
         }
     }, [isTrigged, length]);
 
-    return !loading && (
+    return !loading && length > 0 && (
         <img ref={ref} src="/images/page-img/page-load-loader.gif" alt="loader" style={{ height: '100px' }} />
     );
 };

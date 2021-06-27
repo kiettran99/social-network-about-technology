@@ -8,7 +8,7 @@ const API_URL = process.env.API_URL || 'http://localhost:3001';
 const auth = require('../../middleware/auth');
 const getUserByToken = require('../../middleware/getUserByToken');
 const isEmptyObject = require('../../utils/isEmptyObject');
-const { canAddActivity } = require('../../utils/ads/ads');
+const { canAddActivity, getClicksByDate } = require('../../utils/ads/ads');
 const paypal = require('../../utils/paypal/paypal');
 
 const Ads = require('../../models/ads');
@@ -311,17 +311,36 @@ router.get('/list', auth, async (req, res) => {
         const limit = parseInt(req.query.limit) || 4;
         const page = parseInt(req.query.page) || 1;
 
+        const search = req.query.search;
+        const viewAs = req.query.viewAs;
+
         // Server decides page size
         const skip = (page - 1) * limit;
 
-        // Count Ads user has create before that.
-        const totalAds = await Ads.find({ owner: req.user._id }).countDocuments() || 0;
+        // Conditions to filter
+        const conditions = { owner: req.user._id };
 
-        const ads = await Ads.find({ owner: req.user._id })
+        if (search) {
+            conditions.name = { '$regex': search, $options: 'i' };
+        }
+
+        if (viewAs && viewAs !== 'all') {
+            conditions['activities.date'] = getClicksByDate(viewAs, req.query.startDate, req.query.endDate);
+        }
+
+        // Count Ads user has create before that.
+        const totalAdsPromise = Ads.countDocuments(conditions);
+
+        const adsPromise = Ads.find(conditions)
             .sort({ _id: -1 })
             .skip(skip)
             .limit(limit)
-            .populate('post', '-comments');
+            .populate('post', 'likes lengthOfComments share');
+
+        const [totalAds = 0, ads] = await Promise.all([
+            totalAdsPromise,
+            adsPromise
+        ]);
 
         // Reponse client about data and pagination info
         res.json({
