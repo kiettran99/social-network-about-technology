@@ -83,12 +83,12 @@ const Reviews = ({ getReviews, resetReview, getMoreReviews }) => {
                             )}
                         </div>
                         <div className="col-12 form-group">
-                            <div className="d-flex justify-content-between mt-sm-2">
+                            <div className="d-flex flex-md-row justify-content-md-between flex-column mt-sm-2">
                                 <input className="form-control float-left w-50 bg-white" placeholder="Find by name"
                                     ref={searchTitleRef} onKeyDown={onSearchTitle}
                                 />
 
-                                <div className="form-inline">
+                                <div className="form-inline ml-1 ml-md-0 mt-2 mt-md-0">
                                     <label>Filter By: &nbsp;</label>
                                     <select className="form-control bg-white" defaultValue={filterBy}
                                         onChange={onHandleFilterBy}>

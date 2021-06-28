@@ -27,10 +27,22 @@ const useNotificationPusher = (isAuthenticated, notification, loadNotification) 
                 }
             }
 
+            const subscribeGroupEvent = (data) => {
+                const { user, topicId } = data;
+
+                const { notificationGroups, user: userId } = notification;
+
+                if (user && topicId && user !== userId && notificationGroups.includes(topicId)) {
+                    //console.log('loading notification ...');
+                    loadNotification();
+                }
+            }
+
             const channel = pusher.subscribe('app_notifications');
 
             channel.bind('notification', updateEvents);
             channel.bind('mentions', mentionsEvent);
+            channel.bind('notification-group', subscribeGroupEvent);
 
             return () => {
                 channel.unbind();

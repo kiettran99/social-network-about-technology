@@ -339,6 +339,20 @@ router.post('/', auth, upload.array('images'), [
             await post.save();
         }
 
+        // Notify for user when posting in group
+        if (!!req.body.groupId) {
+            // Notification
+            const message = `${req.user.fullname} posted in group.`;
+
+            notify(message, {
+                user: req.user,
+                collection: { id: req.body.groupId },
+                topic: 'groups',
+                following: 'notificationGroups',
+                event: 'notification-group'
+            });
+        }
+
         const postCreated = await post.populate({
             path: 'buildParts',
             populate: {

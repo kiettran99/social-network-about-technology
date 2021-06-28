@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { body, validationResult } = require('express-validator');
+const { body, validationResult, param } = require('express-validator');
 
 const Group = require('../../models/group');
 
@@ -73,6 +73,8 @@ router.get('/me', auth, async (req, res) => {
                     '_id': {
                         $nin: groupsAdmin
                     }
+                }, {
+                    isPublic: true
                 }];
                 break;
             default:
@@ -86,13 +88,20 @@ router.get('/me', auth, async (req, res) => {
             conditions.name = { '$regex': name, $options: 'i' };
         }
 
-        const groups = await Group.find(conditions, {
+        const groupsPromise = Group.find(conditions, {
             members: {
                 $slice: [0, 6]
             }
         }).limit(limit).skip(skip).populate('members.user', 'avatar');
 
-        res.json(groups);
+        const lengthPromise = Group.countDocuments(conditions);
+
+        const [groups, length] = await Promise.all([
+            groupsPromise,
+            lengthPromise
+        ])
+
+        res.json({ groups, length });
     }
     catch (e) {
         console.log(e);
@@ -152,8 +161,10 @@ router.post('/', auth, upload.fields([
         });
 
         if (req.user.role !== 'admin') {
-            group.members.push({ user: req.user.id, avatar: req.user.avatar });
+            group.members.push({ user: req.user.id });
             group.lengthOfMembers += 1;
+
+            registerNotification(req.user, group, 'GROUP');
 
             await group.save();
         }
@@ -165,7 +176,7 @@ router.post('/', auth, upload.fields([
             const storageRef = storage.ref(`/groups/${group.id}/avatar/${file.originalname}`);
 
             // Upload Image
-            await storageRef.put(req.file.buffer);
+            await storageRef.put(file.buffer);
 
             group.avatar = await storageRef.getDownloadURL();
 
@@ -173,13 +184,13 @@ router.post('/', auth, upload.fields([
         }
 
         // Check image is uploaded
-        if (req.files && req.files.avatar.wallpaper) {
+        if (req.files && req.files.wallpaper) {
             const file = req.files.wallpaper[0];
 
             const storageRef = storage.ref(`/groups/${group.id}/wallpaper/${file.originalname}`);
 
             //Upload image
-            await storageRef.put(req.file.buffer);
+            await storageRef.put(file.buffer);
 
             group.wallpaper = await storageRef.getDownloadURL();
 
@@ -197,21 +208,58 @@ router.post('/', auth, upload.fields([
 // @route PUT /api/groups/:id
 // @desc update profile a group.
 // @access private
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, upload.fields([
+    { name: 'avatar', maxCount: 1 }, { name: 'wallpaper', maxCount: 1 }
+]), [
+    body('name', 'Name is required.').not().isEmpty(),
+    body('info', 'Info is required.').not().isEmpty(),
+    param('id', 'Group id is required').not().isEmpty()
+], async (req, res) => {
     try {
 
-        const id = req.params.id;
-        const { name, info } = req.body;
+        // Validation
+        const errors = validationResult(req);
 
-        // Check id is not empty
-        if (!id) {
-            return res.status(400).send('Group id is empty.');
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ msg: errors.array() });
         }
+
+        const id = req.params.id;
+        const { name, info, isPublic } = req.body;
 
         const group = await Group.findByIdAndUpdate(id, {
             name,
-            info
-        });
+            info,
+            isPublic
+        }, { new: true });
+
+        if (req.files && req.files.avatar) {
+            const file = req.files.avatar[0];
+
+            // Create a storage ref
+            const storageRef = storage.ref(`/groups/${group.id}/avatar/${file.originalname}`);
+
+            // Upload Image
+            await storageRef.put(file.buffer);
+
+            group.avatar = await storageRef.getDownloadURL();
+
+            await group.save();
+        }
+
+        // Check image is uploaded
+        if (req.files && req.files.wallpaper) {
+            const file = req.files.wallpaper[0];
+
+            const storageRef = storage.ref(`/groups/${group.id}/wallpaper/${file.originalname}`);
+
+            //Upload image
+            await storageRef.put(file.buffer);
+
+            group.wallpaper = await storageRef.getDownloadURL();
+
+            await group.save();
+        }
 
         res.json(group);
     }

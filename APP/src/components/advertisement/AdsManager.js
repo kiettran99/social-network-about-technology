@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
-import Pagination from './pagination/Pagination';
+import dayjs from 'dayjs';
 
-import { getListAds, toggleStatusCompaign } from './services/adsServices';
+import useLocalStorage from '../../hooks/useLocalStorage';
+
+import Pagination from './pagination/Pagination';
+import { getListAds, toggleStatusCompaign, getReportExcel } from './services/adsServices';
 
 const AdsManager = () => {
 
@@ -12,6 +15,13 @@ const AdsManager = () => {
     const [pages, setPages] = useState(0);
 
     const [isLoading, setLoading] = useState(false);
+    const [viewAs, setviewAs] = useLocalStorage('ads-view-by', 'all');
+
+    const [startDate, setStartDate] = useLocalStorage('ads-start-date', dayjs().toDate());
+    const [endDate, setEndDate] = useLocalStorage('ads-end-date', dayjs().toDate());
+
+    // Refs
+    const searchTitleRef = useRef(null);
 
     // History
     const history = useHistory();
@@ -19,8 +29,9 @@ const AdsManager = () => {
     // Function run when compoent did mount
     useEffect(() => {
         setLoading(true);
-        loadAds();
-    }, []);
+        setAds([])
+        loadAds(currentPage, null, viewAs);
+    }, [startDate, endDate]);
 
     // Event Handler
     const displayStatus = (status) => {
@@ -35,8 +46,23 @@ const AdsManager = () => {
         }
     }
 
-    const loadAds = (selectedPage) => {
-        getListAds({ selectedPage }).then(data => {
+    const loadAds = (selectedPage, search, viewAs) => {
+
+        const params = {};
+
+        if (selectedPage) params.selectedPage = selectedPage;
+        if (search) params.search = search;
+        if (viewAs) {
+            params.viewAs = viewAs;
+
+            // Extra params when viewAs is custom
+            if (viewAs === 'custom') {
+                params.startDate = dayjs(startDate).format('YYYY-MM-DD');
+                params.endDate = dayjs(endDate).format('YYYY-MM-DD');
+            }
+        }
+
+        getListAds(params).then(data => {
             // { ads, pages, currentPage }
 
             // Set State data from API
@@ -58,7 +84,7 @@ const AdsManager = () => {
         history.push('/ads/create');
     };
 
-    const onToggleAds = (e, id) => {
+    const onToggleAds = (_, id) => {
         // Call API to active or deactive
         toggleStatusCompaign(id).then(() => {
             // If success and then update state from client
@@ -84,8 +110,32 @@ const AdsManager = () => {
     }
 
     const onPageChange = (selectedPage) => {
-        loadAds(selectedPage);
+        loadAds(selectedPage, searchTitleRef.current?.value, viewAs);
     };
+
+    /**
+   * @desc Form handles search news by tiltles.
+   * @param {Event} e
+   */
+    const onSearchTitle = (e) => {
+        if (e.keyCode === 13) {
+            loadAds(currentPage, searchTitleRef.current?.value, viewAs);
+        }
+    };
+
+    const onHandleViewAs = (e) => {
+        setviewAs(e.target.value);
+        loadAds(currentPage, searchTitleRef.current?.value, e.target.value);
+    }
+
+    const exportExcel = () => {
+        const confirm = window.confirm('Are you sure export to excel ?');
+
+        if (confirm) {
+            getReportExcel();
+            alert('Please waiting for export excel from server...');
+        }
+    }
 
     return (
         <div id="content-page" className="content-page">
@@ -100,15 +150,69 @@ const AdsManager = () => {
                         <div className="mb-4 text-center">
                             <p>When you create a campaign, select a goal that corresponds to the main thing you want your campaign to achieve for your business.</p>
                         </div>
+                        <div className="row">
 
-                        <div className="float-right form-group">
-                            <button className="btn btn-primary"
-                                onClick={() => onClickCreate()}><i className="ri-add-line pr-2"></i>Create Ads</button>
+                            <div className="col-12 form-group">
+                                <button className="btn btn-primary float-right"
+                                    onClick={() => onClickCreate()}><i className="ri-add-line pr-2"></i>Create Ads</button>
+                            </div>
+
+                            <div className="col-12 form-group">
+                                <div className="d-flex flex-md-row justify-content-md-between flex-column mt-sm-2">
+                                    <input className="form-control float-left w-50 bg-white" placeholder="Find by name"
+                                        ref={searchTitleRef} onKeyDown={onSearchTitle}
+                                    />
+
+                                    <div className="form-inline ml-1 ml-md-0 mt-2 mt-md-0">
+                                        <label>View As: &nbsp;</label>
+                                        <select className="form-control bg-white" defaultValue={viewAs}
+                                            onChange={onHandleViewAs}>
+                                            <option value='all'>All</option>
+                                            <option value='today'>Today</option>
+                                            <option value='month'>Month</option>
+                                            <option value='year'>Year</option>
+                                            <option value='custom'>Custom</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {viewAs === 'custom' && (
+                                <div className="col-12 form-group">
+                                    <div className="row">
+                                        <div className="col-6">
+                                            <p className="ml-1">Start Date</p>
+                                        </div>
+                                        <div className="col-6">
+                                            <p className="ml-1 ml-md-0">End Date</p>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-6">
+                                            <input className="form-control"
+                                                type="date"
+                                                name="startDate"
+                                                defaultValue={dayjs(startDate).format('YYYY-MM-DD')}
+                                                onChange={(e) => setStartDate(e.target.valueAsDate)}
+                                            />
+                                        </div>
+
+                                        <div className="col-6">
+                                            <input className="form-control"
+                                                type="date"
+                                                defaultValue={dayjs(endDate).format('YYYY-MM-DD')}
+                                                name="endDate"
+                                                onChange={(e) => setEndDate(e.target.valueAsDate)}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         <table className="table table-striped table-hover">
                             {!isLoading && ads && ads.length > 0 && (
-                                <caption>Display result: {((currentPage - 1) * 4 ) + 1} - {currentPage * 4} of {pages * 4}</caption>
+                                <caption>Display result: {((currentPage - 1) * 4) + 1} - {currentPage * 4} of {pages * 4}</caption>
                             )}
                             <thead>
                                 <tr>
@@ -157,6 +261,12 @@ const AdsManager = () => {
                             </tbody>
                         </table>
 
+                        {!isLoading && ads.length === 0 && (
+                            <div className="text-center mt-3">
+                                <p>No Campiagns Found.</p>
+                            </div>
+                        )}
+
                         {!isLoading && (
                             <Pagination currentPage={currentPage} pages={pages}
                                 onPageChange={onPageChange} />
@@ -168,6 +278,13 @@ const AdsManager = () => {
                                     <span className="sr-only">Loading...</span>
                                 </div>
                                 <p>Please wait...</p>
+                            </div>
+                        )}
+
+                        {!isLoading && (
+                            <div className="col-12 form-group">
+                                <button className="btn btn-outline-primary"
+                                    onClick={() => exportExcel()}><i className="ri-file-excel-2-fill pr-2 icon-18"></i>Export as Excel</button>
                             </div>
                         )}
                     </div>

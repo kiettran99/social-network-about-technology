@@ -163,4 +163,4 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
     )
 };
 
-export default UserPost;
+export default React.memo(UserPost);

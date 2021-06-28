@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const { param, validationResult } = require('express-validator');
+
 const Notification = require('../../models/notification');
 const auth = require('../../middleware/auth');
 
@@ -169,6 +171,82 @@ router.put('/unfollowing/:id', auth, async (req, res) => {
         }
 
         notification.followingPosts.pull(postId);
+
+        await notification.save();
+
+        res.json(notification);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route PUT /api/notification/groups/:id/following
+// @route-param id Object's Id which user wants follow.
+// @desc Registry following group. 
+// @access Private
+router.put('/groups/:id/following', auth, [
+    param('id', 'Group id is required.').not().isEmpty()
+], async (req, res) => {
+    try {
+        //Validation params
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ msg: errors.array() });
+        }
+
+        const groupId = req.params.id;
+
+        const notification = await Notification.findOne({
+            user: req.user._id,
+            'notificationGroups': { $nin: groupId }
+        });
+
+        if (!notification) {
+            return res.status(400).json({ msg: 'Group has subcribed yet.' });
+        }
+
+        notification.notificationGroups.push(groupId);
+
+        await notification.save();
+
+        res.json(notification);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send('Server is errors.');
+    }
+});
+
+// @route PUT /api/notification/unfollowing/:id
+// @route-param id Object's Id which user wants unfollow.
+// @desc Registry unfollowing post. 
+// @access Private
+router.put('/groups/:id/unfollowing', auth, [
+    param('id', 'Group id is required.').not().isEmpty()
+], async (req, res) => {
+    try {
+        //Validation params
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ msg: errors.array() });
+        }
+
+        const groupId = req.params.id;
+
+        const notification = await Notification.findOne({
+            user: req.user._id,
+            'notificationGroups': groupId
+        });
+
+        if (!notification) {
+            return res.status(400).json({ msg: 'Group has not subcribed yet.' });
+        }
+
+        notification.notificationGroups.pull(groupId);
 
         await notification.save();
 

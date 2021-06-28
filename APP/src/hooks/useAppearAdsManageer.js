@@ -7,8 +7,8 @@ import useLocalStorage from './useLocalStorage';
 const useAppearAdsManageer = () => {
 
     // Redux storages, get user
-    const user = useSelector((state) => {
-        return state.auth.user;
+    const { user, loading } = useSelector((state) => {
+        return state.auth;
     });
 
     // get local storage to check user can go ads manager
@@ -16,7 +16,7 @@ const useAppearAdsManageer = () => {
     const [isAppear, setAppear] = useLocalStorage('ads-manager', false);
 
     useEffect(() => {
-        if (!user) {
+        if (!user && !loading) {
             setAppear(false);
         }
         

@@ -24,6 +24,7 @@
     "moment": "^2.27.0",
     "mongoose": "^5.11.14",
     "multer": "^1.4.2",
+    "node-excel-export": "^1.4.4",
     "nodemailer": "^6.4.16",
     "passport": "^0.4.1",
     "passport-facebook": "^3.0.0",

@@ -3,9 +3,9 @@ import { connect, useSelector } from 'react-redux';
 
 import DialogBox from '../../shared/DialogBox';
 import Core from './core/Core';
-import { getGroups } from '../../../actions/group';
+import { getGroupsByTab } from '../../../actions/group';
 
-const CreateGroup = ({ getGroups }) => {
+const CreateGroup = ({ getGroupsByTab }) => {
 
     const [modalIsOpen, setIsOpen] = useState(false);
 
@@ -14,7 +14,8 @@ const CreateGroup = ({ getGroups }) => {
     }));
 
     const group = useSelector((state) => ({
-        name: state.group.name
+        name: state.group.name,
+        length: state.groups?.length || 5
     }));
 
     const nameRef = useRef();
@@ -27,11 +28,34 @@ const CreateGroup = ({ getGroups }) => {
         setIsOpen(true);
     }
 
+    const getCurrentTab = () => {
+        const $tabOne = document.getElementById('group-tab-one');
+        const $tabTwo = document.getElementById('group-tab-two');
+        const $tabThree = document.getElementById('group-tab-three');
+
+        if ($tabOne && $tabOne.className.includes('active')) {
+            return 0;
+        }
+
+        if ($tabTwo && $tabTwo.className.includes('active')) {
+            return 1;
+        }
+
+        if ($tabThree && $tabThree.className.includes('active')) {
+            return 2;
+        }
+
+        // Default
+        return 0;
+    }
+
     // Handle submit form to search group
     const onSubmit = (e) => {
         e.preventDefault();
 
-        getGroups(0, 5, nameRef.current.value);
+        getGroupsByTab(0, group.length, nameRef.current.value, getCurrentTab(), () => {
+
+        });
     };
 
     return (
@@ -88,11 +112,11 @@ const CreateGroup = ({ getGroups }) => {
                                     <p className="mb-0">Introduction</p>
                                 </li>
                                 <li className="mb-3">
-                                    <h6><i className="ri-lock-fill pr-2" />Public</h6>
+                                    <h6><i className="ri-earth-fill pr-2" />Public</h6>
                                     <p className="mb-0 pl-4">Everyone can join and share in group.</p>
                                 </li>
                                 <li className="mb-3">
-                                    <h6><i className="ri-eye-fill pr-2" />Private</h6>
+                                    <h6><i className="ri-lock-fill pr-2" />Private</h6>
                                     <p className="mb-0 pl-4">Only menbers can view and post.</p>
                                 </li>
                             </ul>
@@ -105,4 +129,4 @@ const CreateGroup = ({ getGroups }) => {
     );
 };
 
-export default connect(null, { getGroups })(CreateGroup);
+export default connect(null, { getGroupsByTab })(CreateGroup);

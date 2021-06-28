@@ -6,7 +6,7 @@ import DialogBox from '../shared/DialogBox';
 import InviteUser from '../shared/InviteUser';
 import { inviteGroup, joinGroup } from '../../actions/group';
 
-const GroupProfile = ({ group: { _id, name, avatar, lengthOfMembers, members = [] },
+const GroupProfile = ({ group: { _id, name, avatar, lengthOfMembers, members = [], isPublic },
     inviteGroup, joinGroup
 }) => {
 
@@ -43,7 +43,9 @@ const GroupProfile = ({ group: { _id, name, avatar, lengthOfMembers, members = [
                         </div>
                         <div className="info">
                             <h4>{name}</h4>
-                            <p className="mb-0"><i className="las la-users pr-2" />Group . {lengthOfMembers} members</p>
+                            <p className="mb-0">
+                                <i className="las la-users pr-2" /> {isPublic ? 'Public ' : 'Private '}Group . {lengthOfMembers} members
+                            </p>
                         </div>
                     </div>
                     <div className="group-member d-flex align-items-center">
@@ -58,10 +60,10 @@ const GroupProfile = ({ group: { _id, name, avatar, lengthOfMembers, members = [
                             <button type="button" className="btn btn-primary mb-2"
                                 onClick={() => setIsOpen(true)}>
                                 <i className="ri-add-line" />Invite</button>
-                        ): (
+                        ) : (
                             <button type="button" className="btn btn-primary mb-2"
                                 onClick={() => onHandleJoinGroup()}>
-                            <i className="ri-add-line" />Join</button>
+                                <i className="ri-add-line" />Join</button>
                         )}
                     </div>
                 </div>

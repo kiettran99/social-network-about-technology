@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { getPosts, resetPost, assignPost, updatePostsById } from '../../actions/post';
 import { connect } from 'react-redux';
 import UserPost from './UserPost';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const PostsPage = ({ post: { posts, post, isInPosts, loading }, getPosts, resetPost,
-    history, groupId = '', match, assignPost, updatePostsById
+    groupId = '', match, assignPost, updatePostsById
 }) => {
+
+    const history = useHistory();
 
     useEffect(() => {
         if (isInPosts) {
@@ -59,6 +61,7 @@ const PostsPage = ({ post: { posts, post, isInPosts, loading }, getPosts, resetP
     }
 
     const onClick = (id) => {
+        if (post && post._id === id) return;
         assignPost(id);
     }
 
@@ -85,5 +88,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
     getPosts, resetPost,
     assignPost, updatePostsById
-})(withRouter(PostsPage));
+})(React.memo(PostsPage));
 

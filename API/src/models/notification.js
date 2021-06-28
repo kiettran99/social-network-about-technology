@@ -19,6 +19,10 @@ const notificationSchema = new Schema({
         type: ObjectId,
         ref: 'User'
     }],
+    notificationGroups: [{
+        type: ObjectId,
+        ref: 'Group'
+    }],
     messages: [{
         user: {
             type: ObjectId,
