@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
 import Pagination from './pagination/Pagination';
-import { getListAds, toggleStatusCompaign } from './services/adsServices';
+import { getListAds, toggleStatusCompaign, getReportExcel } from './services/adsServices';
 
 const AdsManager = () => {
 
@@ -126,6 +126,15 @@ const AdsManager = () => {
     const onHandleViewAs = (e) => {
         setviewAs(e.target.value);
         loadAds(currentPage, searchTitleRef.current?.value, e.target.value);
+    }
+
+    const exportExcel = () => {
+        const confirm = window.confirm('Are you sure export to excel ?');
+
+        if (confirm) {
+            getReportExcel();
+            alert('Please waiting for export excel from server...');
+        }
     }
 
     return (
@@ -253,7 +262,7 @@ const AdsManager = () => {
                         </table>
 
                         {!isLoading && ads.length === 0 && (
-                            <div className="text-center mt-3">                        
+                            <div className="text-center mt-3">
                                 <p>No Campiagns Found.</p>
                             </div>
                         )}
@@ -269,6 +278,13 @@ const AdsManager = () => {
                                     <span className="sr-only">Loading...</span>
                                 </div>
                                 <p>Please wait...</p>
+                            </div>
+                        )}
+
+                        {!isLoading && (
+                            <div className="col-12 form-group">
+                                <button className="btn btn-outline-primary"
+                                    onClick={() => exportExcel()}><i className="ri-file-excel-2-fill pr-2 icon-18"></i>Export as Excel</button>
                             </div>
                         )}
                     </div>

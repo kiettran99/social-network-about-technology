@@ -2,91 +2,149 @@ const excel = require('node-excel-export');
 
 // You can define styles as json object
 const styles = {
-    headerDark: {
-      fill: {
-        fgColor: {
-          rgb: 'FF000000'
+  headerDark: {
+    fill: {
+      fgColor: {
+        rgb: 'FF000000'
+      }
+    },
+    font: {
+      color: {
+        rgb: 'FFFFFFFF'
+      },
+      sz: 14,
+      bold: true,
+      underline: true
+    }
+  },
+  headerWhite: {
+    fill: {
+      fgColor: {
+        rgb: 'ffffff'
+      }
+    },
+    font: {
+      color: {
+        rgb: '000000'
+      },
+      sz: 18,
+      bold: true
+    },
+    alignment: {
+      horizontal: 'center'
+    },
+    border: {
+      top: {
+        style: 'thin',
+        color: {
+          rgb: 'ffffff'
         }
       },
-      font: {
+      left: {
+        style: 'thin',
         color: {
-          rgb: 'FFFFFFFF'
-        },
-        sz: 14,
-        bold: true,
-        underline: true
-      }
-    },
-    cellPink: {
-      fill: {
-        fgColor: {
-          rgb: 'FFFFCCFF'
+          rgb: 'ffffff'
         }
-      }
-    },
-    cellGreen: {
-      fill: {
-        fgColor: {
-          rgb: 'FF00FF00'
+      },
+      right: {
+        style: 'thin',
+        color: {
+          rgb: 'ffffff'
+        }
+      },
+      bottom: {
+        style: 'thin',
+        color: {
+          rgb: 'ffffff'
         }
       }
     }
-  };
-   
-  //Array of objects representing heading rows (very top)
-  const heading = [
-    [{value: 'a1', style: styles.headerDark}, {value: 'b1', style: styles.headerDark}, {value: 'c1', style: styles.headerDark}],
-    ['a2', 'b2', 'c2'] // <-- It can be only values
-  ];
-   
-  //Here you specify the export structure
-  const specification = {
-    customer_name: { // <- the key should match the actual data key
-      displayName: 'Customer', // <- Here you specify the column header
-      headerStyle: styles.headerDark, // <- Header style
-      cellStyle: function(value, row) { // <- style renderer function
-        // if the status is 1 then color in green else color in red
-        // Notice how we use another cell value to style the current one
-        return (row.status_id == 1) ? styles.cellGreen : {fill: {fgColor: {rgb: 'FFFF0000'}}}; // <- Inline cell style is possible 
-      },
-      width: 120 // <- width in pixels
+  },
+  cell: {
+    font: {
+      sz: 16,
+      bold: false
     },
-    status_id: {
-      displayName: 'Status',
-      headerStyle: styles.headerDark,
-      cellFormat: function(value, row) { // <- Renderer function, you can access also any row.property
-        return (value == 1) ? 'Active' : 'Inactive';
-      },
-      width: '10' // <- width in chars (when the number is passed as string)
-    },
-    note: {
-      displayName: 'Description',
-      headerStyle: styles.headerDark,
-      cellStyle: styles.cellPink, // <- Cell style
-      width: 220 // <- width in pixels
+  },
+  cellPink: {
+    fill: {
+      fgColor: {
+        rgb: 'FFFFCCFF'
+      }
+    }
+  },
+  cellGreen: {
+    fill: {
+      fgColor: {
+        rgb: 'FF00FF00'
+      }
     }
   }
-   
-  // The data set should have the following shape (Array of Objects)
-  // The order of the keys is irrelevant, it is also irrelevant if the
-  // dataset contains more fields as the report is build based on the
-  // specification provided above. But you should have all the fields
-  // that are listed in the report specification
-  const dataset = [
-    {customer_name: 'IBM', status_id: 1, note: 'some note', misc: 'not shown'},
-    {customer_name: 'HP', status_id: 0, note: 'some note'},
-    {customer_name: 'MS', status_id: 0, note: 'some note', misc: 'not shown'}
-  ]
-   
-  // Define an array of merges. 1-1 = A:1
-  // The merges are independent of the data.
-  // A merge will overwrite all data _not_ in the top-left cell.
-  const merges = [
-    { start: { row: 1, column: 1 }, end: { row: 1, column: 10 } },
-    { start: { row: 2, column: 1 }, end: { row: 2, column: 5 } },
-    { start: { row: 2, column: 6 }, end: { row: 2, column: 10 } }
-  ]
-   
+};
+
+//Array of objects representing heading rows (very top)
+const heading = [
+  [{ value: 'Report Ads Compaign', style: styles.headerWhite }],
+  []
+];
+
+// Define an array of merges. 1-1 = A:1
+// The merges are independent of the data.
+// A merge will overwrite all data _not_ in the top-left cell.
+const merges = [
+  { start: { row: 1, column: 1 }, end: { row: 1, column: 10 } },
+  { start: { row: 2, column: 1 }, end: { row: 2, column: 5 } },
+  { start: { row: 2, column: 6 }, end: { row: 2, column: 10 } }
+]
+
+const exportExcel = (dataset) => {
+
+  //Here you specify the export structure
+  const specification = {
+    id: { // <- the key should match the actual data key
+      displayName: 'ID Compaign', // <- Here you specify the column header
+      headerStyle: styles.headerWhite, // <- Header style
+      cellStyle: styles.cell,
+      width: 120 // <- width in pixels
+    },
+    name: {
+      displayName: 'Name Compaign',
+      headerStyle: styles.headerWhite,
+      cellFormat: styles.cell,
+      width: 200 // <- width in chars (when the number is passed as string)
+    },
+    status: {
+      displayName: 'Status',
+      headerStyle: styles.headerWhite,
+      cellStyle: styles.cell, // <- Cell style
+      width: 120 // <- width in chars (when the number is passed as string)
+    },
+    likes: {
+      displayName: 'Likes',
+      headerStyle: styles.headerWhite,
+      cellStyle: styles.cell, // <- Cell style
+      width: 120 // <- width in chars (when the number is passed as string)
+    },
+    comments: {
+      displayName: 'Comments',
+      headerStyle: styles.headerWhite,
+      cellStyle: styles.cell, // <- Cell style
+      width: 120 // <- width in chars (when the number is passed as string)
+    },
+    shares: {
+      displayName: 'Shares',
+      headerStyle: styles.headerWhite,
+      cellStyle: styles.cell, // <- Cell style
+      width: 120 // <- width in chars (when the number is passed as string)
+    },
+    created_at: {
+      displayName: 'Date Created',
+      headerStyle: styles.headerWhite,
+      cellStyle: styles.cell, // <- Cell style
+      width: 120 // <- width in chars (when the number is passed as string)
+    }
+  }
+
   // Create the excel report.
   // This function will return Buffer
   const report = excel.buildExport(
@@ -100,9 +158,11 @@ const styles = {
       }
     ]
   );
-   
-  // You can then return this straight
-  res.attachment('report.xlsx'); // This is sails.js specific (in general you need to set headers)
-  return res.send(report);
-   
-  // OR you can save this buffer to the disk by creating a file.
+
+  return report;
+}
+
+
+module.exports = {
+  exportExcel
+};

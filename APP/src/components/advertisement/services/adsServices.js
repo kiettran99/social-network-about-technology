@@ -1,4 +1,7 @@
 import axios from 'axios';
+import fileDownload from 'js-file-download';
+import dayjs from 'dayjs';
+
 import urlAPI from '../../../utils/urlAPI';
 
 export const getPosts = (headline) => {
@@ -112,5 +115,18 @@ export const editAds = async (id, data) => {
     }
     catch (e) {
         console.log({ e });
+    }
+};
+
+export const getReportExcel = async () => {
+    try {
+        const res = await axios.get(`${urlAPI}/api/ads/export/excel`, {
+            responseType: 'blob'
+        });
+
+        fileDownload(res.data, `Report Ads on ${dayjs().format('YYYY-MM-DD')}.xlsx`);
+    }
+    catch (e) {
+        console.log(e);
     }
 };
