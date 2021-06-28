@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 const DotDotDot = lazy(() => import('react-dotdotdot'));
 
-const GroupsItem = ({ group: { _id, name, info, wallpaper, avatar, lengthOfMembers, members = [] },
+const GroupsItem = ({ group: { _id, name, info, wallpaper, avatar, lengthOfMembers, members = [], owner },
     auth: { user, loading, isAuthenticated }, joinGroup, unjoinGroup, history
 }) => {
 
@@ -96,8 +96,16 @@ const GroupsItem = ({ group: { _id, name, info, wallpaper, avatar, lengthOfMembe
                             )}
                         </div>
                     </div>
-                    <button type="submit" className="btn btn-primary d-block w-100"
-                        onClick={() => onHandlAassociationGroup()}>{isJoinedGroup ? 'UnJoin' : 'Join'}</button>
+                    {user && owner && user._id === owner && (
+                        <p>Group which you created.</p>
+                    )}
+                    {user && owner ? user._id !== owner && (
+                        <button type="submit" className="btn btn-primary d-block w-100"
+                            onClick={() => onHandlAassociationGroup()}>{isJoinedGroup ? 'UnJoin' : 'Join'}</button>
+                    ) : (
+                        <button type="submit" className="btn btn-primary d-block w-100"
+                            onClick={() => onHandlAassociationGroup()}>{isJoinedGroup ? 'UnJoin' : 'Join'}</button>
+                    )}
                 </div>
             </div>
         </div>

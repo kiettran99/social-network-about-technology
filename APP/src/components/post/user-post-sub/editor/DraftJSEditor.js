@@ -63,4 +63,4 @@ const DraftJSEditor = ({ disabled, placeholder, editorState, setEditorState }) =
     );
 };
 
-export default DraftJSEditor;
+export default React.memo(DraftJSEditor);

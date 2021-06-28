@@ -96,8 +96,6 @@ export const unfollowingNotification = (id) => async dispatch => {
         dispatch(loadNotification());
     }
     catch (e) {
-        console.log(e.response);
-
         dispatch({
             type: NOTIFICATION_ERROR,
             payload: { msg: e.response.data, status: e.response.statusText }
@@ -148,3 +146,35 @@ export const unFollowingFriend = (friendId) => async dispatch => {
         });
     }
 };
+
+export const subcribeGroup = (id) => async dispatch => {
+    try {
+        await axios.put(`${urlAPI}/api/notification/groups/${id}/following`);
+
+        dispatch(loadNotification());
+    }
+    catch (e) {
+        console.log(e.response);
+
+        dispatch({
+            type: NOTIFICATION_ERROR,
+            payload: { msg: e.response.data, status: e.response.statusText }
+        });
+    }
+}
+
+export const unsubcribeGroup = (id) => async dispatch => {
+    try {
+        await axios.put(`${urlAPI}/api/notification/groups/${id}/unfollowing`);
+
+        dispatch(loadNotification());
+    }
+    catch (e) {
+        console.log(e.response);
+
+        dispatch({
+            type: NOTIFICATION_ERROR,
+            payload: { msg: e.response.data, status: e.response.statusText }
+        });
+    }
+}

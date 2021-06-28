@@ -63,20 +63,20 @@ const GroupList = ({ group: { groups, search, loading },
                 <ul className="nav nav-tabs" id="myTab-two" role="tablist">
                     <li className="nav-item">
                         <a className="nav-link active"
-                            id="home-tab-two" data-toggle="tab" href="ui-tabs.html#home-two"
+                            id="group-tab-one" data-toggle="tab" href="ui-tabs.html#home-two"
                             role="tab" aria-controls="home" aria-selected="true"
                             onClick={() => changeTab(0)}>Home</a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link"
-                            id="profile-tab-two" data-toggle="tab"
+                             id="group-tab-two" data-toggle="tab"
                             href="ui-tabs.html#profile-two" role="tab"
                             aria-controls="profile" aria-selected="false"
                             onClick={() => changeTab(1)}>Joined</a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link"
-                            id="contact-tab-two" data-toggle="tab"
+                             id="group-tab-three" data-toggle="tab"
                             href="ui-tabs.html#contact-two" role="tab"
                             aria-controls="contact" aria-selected="false"
                             onClick={() => changeTab(2)}>Discovery</a>

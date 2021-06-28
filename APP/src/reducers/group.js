@@ -63,7 +63,12 @@ export default function (state = initState, action) {
                     }
 
                     return group;
-                })
+                }),
+                group: state.group && {
+                    ...state.group,
+                    members: payload,
+                    lengthOfMembers: state.group?.lengthOfMembers + 1
+                }
             };
         case UNJOIN_GROUP:
             return {
@@ -78,7 +83,12 @@ export default function (state = initState, action) {
                     }
 
                     return group;
-                })
+                }),
+                group: state.group && {
+                    ...state.group,
+                    members: payload,
+                    lengthOfMembers: state.group?.lengthOfMembers - 1
+                }
             };
         case ADD_GROUP:
             return {

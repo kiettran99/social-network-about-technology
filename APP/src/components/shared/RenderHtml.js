@@ -19,10 +19,11 @@ const RenderHtml = ({ text, Component, length = 150, isEllipsis = true, ...rest 
     }
 
     return (
-        <div>
-            <Component {...rest} value={textTruncated} />
+        <>
+            {Component ? <Component {...rest} value={textTruncated} /> :
+                <p>{textTruncated}</p>}
             {isEllipsis && !isTruncated && (<p className="pointer text-primary ml-3" onClick={toggleLines}>Read More</p>)}
-        </div>
+        </>
     );
 };
 

@@ -12,14 +12,15 @@ const { channel, pusher } = require('./pusher/pusher');
  *           user: req.user,
  *           collection: product,
  *           topic: 'products',
- *          following: 'followingPosts'
+ *           following: 'followingPosts',
+ *           event: 'notification'
  *       });
  */
 const notify = async (message, options = {
-    user, collection, topic, following
+    user, collection, topic, following, event: 'notification'
 }) => {
 
-    const { user, collection, topic, following } = options;
+    const { user, collection, topic, following, event } = options;
 
     try {
         await Notification.updateMany({
@@ -41,7 +42,7 @@ const notify = async (message, options = {
         });
 
         // Puhser notification to client referesh notifcation.
-        pusher.trigger(channel, 'notification', {
+        pusher.trigger(channel, event, {
             user: user.id,
             topic,
             topicId: collection.id,
@@ -160,7 +161,7 @@ const pushNotificationMentions = async (user, post, usersFromMention) => {
         const message = `${user.fullname} mentioned you in post.`;
         const mentions = usersFromMention.map(mention => mention.id);
 
-        await notifyToUsers(message, mentions,  {
+        await notifyToUsers(message, mentions, {
             user,
             collection: post,
             topic: 'posts',
@@ -187,7 +188,7 @@ const pushNotificationMentions = async (user, post, usersFromMention) => {
  *          following: 'followingPosts'
  *       });
  */
- const notifyToUsers = async (message, recipients, options = {
+const notifyToUsers = async (message, recipients, options = {
     user, collection, topic, following
 }) => {
 

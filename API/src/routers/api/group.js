@@ -73,6 +73,8 @@ router.get('/me', auth, async (req, res) => {
                     '_id': {
                         $nin: groupsAdmin
                     }
+                }, {
+                    isPublic: true
                 }];
                 break;
             default:
@@ -162,6 +164,8 @@ router.post('/', auth, upload.fields([
             group.members.push({ user: req.user.id });
             group.lengthOfMembers += 1;
 
+            registerNotification(req.user, group, 'GROUP');
+
             await group.save();
         }
 
@@ -212,7 +216,7 @@ router.put('/:id', auth, upload.fields([
     param('id', 'Group id is required').not().isEmpty()
 ], async (req, res) => {
     try {
-debugger
+
         // Validation
         const errors = validationResult(req);
 

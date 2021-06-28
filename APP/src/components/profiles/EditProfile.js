@@ -11,7 +11,7 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
 
     const [formData, setFormData] = useState({
         fullname: '',
-        dateOfBirth: null,
+        dateOfBirth: dayjs().toDate(),
         city: '',
         age: '19-32',
         maritalStatus: 'Single',
@@ -56,7 +56,7 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                 ...formData,
                 ...user,
                 ...rest,
-                dateOfBirth: dayjs(rest.dateOfBirth).format('YYYY-MM-DD')
+                dateOfBirth: dayjs(rest.dateOfBirth).toDate()
             });
 
             setManageContact({
@@ -110,17 +110,17 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                                         <li className="col-md-3 p-0">
                                             <a className="nav-link" data-toggle="pill" href="#chang-pwd">
                                                 Change Password
-                          </a>
+                                            </a>
                                         </li>
                                         <li className="col-md-3 p-0">
                                             <a className="nav-link" data-toggle="pill" href="#emailandsms">
                                                 Email and SMS
-                          </a>
+                                            </a>
                                         </li>
                                         <li className="col-md-3 p-0">
                                             <a className="nav-link" data-toggle="pill" href="#manage-contact">
                                                 Manage Contact
-                          </a>
+                                            </a>
                                         </li>
                                     </ul>
                                 </div>
@@ -201,7 +201,7 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                                                     <div className="form-group col-sm-6">
                                                         <label className="d-block">Gender:</label>
                                                         <div className="custom-control custom-radio custom-control-inline">
-                                                            <input type="radio" id="customRadio6" name="customRadio1" className="custom-control-input" defaultChecked={true}
+                                                            <input type="radio" id="customRadio6" name="customRadio1" className="custom-control-input"
                                                                 checked={gender === 'm'}
                                                                 name="gender"
                                                                 value="m"
@@ -223,18 +223,18 @@ const EditProfile = ({ profile: { profile, loading }, getMeProfile,
                                                         <label htmlFor="dob">Date Of Birth:</label>
                                                         <input className="form-control"
                                                             type="date"
-                                                            id="dob" placeholder="1984-01-24"
+                                                            id="dob"
                                                             name="dateOfBirth"
-                                                            value={dateOfBirth}
+                                                            value={dayjs(dateOfBirth).format('YYYY-MM-DD')}
                                                             onChange={(e) => onChange(e)}
                                                         />
                                                     </div>
                                                     <div className="form-group col-sm-6">
                                                         <label>Age:</label>
                                                         <select className="form-control" id="exampleFormControlSelect2"
-                                                            name="age" value={age} onChange={e => onChange(e)}>
+                                                            name="age" defaultValue={age} onChange={e => onChange(e)}>
                                                             <option>12-18</option>
-                                                            <option selected>19-32</option>
+                                                            <option>19-32</option>
                                                             <option>33-45</option>
                                                             <option>46-62</option>
                                                             <option>63 &gt; </option>
