@@ -76,7 +76,7 @@ const UserPost = ({ post: { _id, name, text, avatar, imageUrls, likes, type, com
     };
 
     return (
-        <div className="iq-card iq-card-block iq-card-stretch iq-card-height">
+        <div className="iq-card iq-card-block iq-card-stretch iq-card-height user-post">
             <div className="iq-card-body">
                 <div className="user-post-data">
                     <div className="d-flex flex-wrap">

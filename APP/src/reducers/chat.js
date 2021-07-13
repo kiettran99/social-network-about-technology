@@ -5,6 +5,7 @@ import {
 
 const initialState = {
     previewMessageBox: [],
+    length: 0,
     userProfile: null,
     errors: {}
 };
@@ -16,7 +17,7 @@ export default function (state = initialState, action) {
         case GET_PREVIEW_MESSAGE_BOX:
             return {
                 ...state,
-                previewMessageBox: payload
+                ...payload  // { previewMessageBox, length }
             };
         case GET_USER_PROFILE:
             return {

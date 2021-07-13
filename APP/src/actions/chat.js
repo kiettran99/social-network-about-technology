@@ -3,10 +3,13 @@ import {
 } from './types';
 
 // Get Preview Message box to loading preview some message
-export const getPreviewMessageBox = (previewMessageBox) => dispatch => {
+export const getPreviewMessageBox = (previewMessageBox, length) => dispatch => {
     dispatch({
         type: GET_PREVIEW_MESSAGE_BOX,
-        payload: previewMessageBox
+        payload: {
+            previewMessageBox,
+            length
+        }
     });
 };
 

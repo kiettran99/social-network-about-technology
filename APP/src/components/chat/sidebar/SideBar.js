@@ -1,7 +1,6 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { connect, useSelector } from 'react-redux';
 
-import { getPreviewMessageBox } from '../../../actions/chat';
 import { searchUser } from '../../groups/services/groupServices';
 
 import LoadMore from '../../shared/LoadMore';
@@ -13,42 +12,18 @@ const Search = lazy(() => import('./search/Search'));
 // Constant
 const CHANNEL_LIMIT = 7;
 
-const SideBar = ({ socket, getPreviewMessageBox }) => {
+const SideBar = ({ socket }) => {
 
     const [search, setSearch] = useState('');
-    const [length, setLength] = useState(0);
     const [users, setUsers] = useState([]);
 
-    const { user, previewMessageBox } = useSelector((state) => {
+    const { user, previewMessageBox, length } = useSelector((state) => {
         return {
             user: state.auth.user,
-            previewMessageBox: state.chat.previewMessageBox
+            previewMessageBox: state.chat.previewMessageBox,
+            length: state.chat.length
         };
-    })
-
-    useEffect(() => {
-        // Emit events and provide limit users.
-        socket.emit('chat-rooms', previewMessageBox.length + CHANNEL_LIMIT);
-
-        socket.off('reload-messages');
-        socket.off('get-chat-list');
-
-        socket.on('reload-messages', () => {
-            socket.emit('chat-rooms', previewMessageBox.length + CHANNEL_LIMIT);
-        });
-
-        socket.on('get-chat-list', (options) => {
-
-            const { error, chatList, length = 0 } = options || {};
-
-            if (error) {
-                return console.log(error);
-            }
-
-            setLength(length);
-            getPreviewMessageBox(chatList);
-        });
-    }, []);
+    });
 
     const onSearchUser = (e) => {
         setSearch(e.target.value);
@@ -96,4 +71,4 @@ const SideBar = ({ socket, getPreviewMessageBox }) => {
     );
 };
 
-export default connect(null, { getPreviewMessageBox })(SideBar);
+export default connect(null)(SideBar);

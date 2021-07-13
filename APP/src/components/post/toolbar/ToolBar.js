@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 
-const Toolbar = ({ type, privacy, edit = false }) => {
+const Toolbar = ({ privacy, edit = false }) => {
 
     const [status, setStatus] = useLocalStorage('post-privacy', 1);
 
@@ -60,7 +60,7 @@ const Toolbar = ({ type, privacy, edit = false }) => {
                             </div>
                         </div>
                     </a>
-                    <a className="dropdown-item p-3" href="#"
+                    {/* <a className="dropdown-item p-3" href="#"
                         onClick={onHandleChoosePrivacy}>
                         <div className="d-flex align-items-top">
                             <div className="icon font-size-20"><i className="ri-user-unfollow-line" /></div>
@@ -69,7 +69,7 @@ const Toolbar = ({ type, privacy, edit = false }) => {
                                 <p className="mb-0">Don't show to some friends</p>
                             </div>
                         </div>
-                    </a>
+                    </a> */}
                     <a className="dropdown-item p-3" href="#"
                         onClick={(e) => onHandleChoosePrivacy(e, 0)}>
                         <div className="d-flex align-items-top">
