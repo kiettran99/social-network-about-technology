@@ -30,7 +30,7 @@ const PostsPage = ({ post: { posts, post, isInPosts, loading }, getPosts, resetP
             // Dispose state posts from store
             // check history.location
             try {
-                const pathname = history.location.pathname || [];
+                const pathname = history.location.pathname || '';
 
                 const routePath = pathname.split('/');
 

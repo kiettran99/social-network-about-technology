@@ -32,7 +32,15 @@ const createServer = (server) => {
         // User is listeing massageBox
         socket.on('chat-rooms', async (limit) => {
             try {
-                
+                // Find user has joined rooms and if true then join
+                if (socket.rooms) {
+
+                    const rooms = Object.keys(socket.rooms).filter(item => item != socket.id);
+
+                    if (!rooms.includes(socket.decoded._id))
+                        socket.join(socket.decoded._id);
+                }
+
                 // Fetch message box list
                 const [chatList, length] = await Promise.all([
                     getChatList(socket.decoded._id, limit),
@@ -91,7 +99,9 @@ const createServer = (server) => {
                     }
                 });
 
-                socket.join([messageBox.id, socket.decoded._id]);
+                //socket.join([messageBox.id, socket.decoded._id]);
+
+                socket.join(messageBox.id);
 
                 // Update User to online and read all messages
                 User.findByIdAndUpdate(socket.decoded._id, {

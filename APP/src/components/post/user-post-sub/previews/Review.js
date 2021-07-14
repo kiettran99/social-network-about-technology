@@ -6,7 +6,7 @@ const Review = ({ text, Component, reviewId }) => {
         <div className="bg-light p-1 mt-3 rounded">
             <div className="d-flex justify-content-between">
                 <div>
-                    <h4 className="ml-3 mt-2">Reviews</h4>
+                    <h4 className="ml-3 mt-2">News</h4>
                     <Component readOnly={true} text={text} />
                 </div>
                 <div className="my-auto mr-2">

@@ -16,6 +16,8 @@ const forgotPassword = async (user, data) => {
 
     const renderFile = await ejs.renderFile(path.join(__dirname, '/template/reset-password.ejs'), {
         name: fullname,
+        logoLink: 'https://www.dksocialnetwork.tk/images/logo.png',
+        background: 'https://github.com/ColorlibHQ/email-templates/blob/master/10/images/email.png?raw=true',
         link: data
     });
 
@@ -23,7 +25,7 @@ const forgotPassword = async (user, data) => {
     const mainOptions = {
         from: 'Mạng xã hội ',
         to: user.email,
-        subject: 'Reset your password on SocialV',
+        subject: 'RESET YOUR PASSWORD ON SocialV',
         html: renderFile
     };
 
@@ -34,14 +36,16 @@ const welcome = async (user) => {
     const fullname = user.fullname;
 
     const renderFile = await ejs.renderFile(path.join(__dirname, '/template/welcome.ejs'), {
-        name: fullname
+        name: fullname,
+        logoLink: 'https://www.dksocialnetwork.tk/images/logo.png',
+        background: 'https://www.dksocialnetwork.tk/images/page-img/07.jpg'
     });
 
     // Thiết lập đối tượng, nội dung gửi mail 
     const mainOptions = {
-        from: 'Mạng xã hội ',
+        from: 'Mạng xã hội',
         to: user.email,
-        subject: 'Welcome To Social Network',
+        subject: 'WELCOME TO SOCIAL NETWORK',
         html: renderFile
     };
 

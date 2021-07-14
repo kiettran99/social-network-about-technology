@@ -44,7 +44,7 @@ const Report = React.lazy(() => import('./views/report/Report'));
 const Collaborator = React.lazy(() => import('./views/collaborator/Collaborator'));
 
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
+  { path: '/', exact: true, name: 'Home', component: Account },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: "/account", name: "Account", component: Account },
   { path: "/Addgroup", name: "AddGroup", component: Addgroup },

@@ -45,7 +45,7 @@ const NotificationBar = ({ notification: { notification, loading }, auth: { isAu
                         to={`/${message.topic}/${message.topicId}`}>
                         <div className="media align-items-center">
                             <div className="">
-                                <img className="avatar-40 rounded" src={message.user?.avatar} alt="" />
+                                <img className="avatar-40 rounded-circle" src={message.user?.avatar} alt="" />
                             </div>
                             <div className="media-body ml-3">
                                 <h6 className={`mb-0 ${message.status ? '' : 'font-weight-bold'}`}>{message.text}</h6>

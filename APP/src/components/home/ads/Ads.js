@@ -14,10 +14,10 @@ const Ads = () => {
     }, []);
 
     return (
-        <div className="col-lg-4">
+        <div id="sponsor-ads" className="col-lg-4">
             {
                 ads.length > 0 && (
-                    <div className="bg-white shadow-sm rounded p-2">
+                    <div className="pl-2">
                         <h4 className="ml-2">Sponsored Posts</h4>
                     </div>
                 )

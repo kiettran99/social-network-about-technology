@@ -39,40 +39,10 @@ const PersonalProfile = ({ auth: { user, isAuthenticated },
                     <div className="profile-info p-4 d-flex align-items-center justify-content-between position-relative">
                         <div className="social-links">
                             <ul className="social-data-block d-flex align-items-center justify-content-between list-inline p-0 m-0">
-                                {/* <li className="text-center pr-3">
-                                    <a href="profile.html#"><img src="/images/icon/08.png" className="img-fluid rounded" alt="facebook" /></a>
-                                </li>
-                                <li className="text-center pr-3">
-                                    <a href="profile.html#"><img src="/images/icon/09.png" className="img-fluid rounded" alt="Twitter" /></a>
-                                </li>
-                                <li className="text-center pr-3">
-                                    <a href="profile.html#"><img src="/images/icon/10.png" className="img-fluid rounded" alt="Instagram" /></a>
-                                </li>
-                                <li className="text-center pr-3">
-                                    <a href="profile.html#"><img src="/images/icon/11.png" className="img-fluid rounded" alt="Google plus" /></a>
-                                </li>
-                                <li className="text-center pr-3">
-                                    <a href="profile.html#"><img src="/images/icon/12.png" className="img-fluid rounded" alt="You tube" /></a>
-                                </li>
-                                <li className="text-center pr-3">
-                                    <a href="profile.html#"><img src="/images/icon/13.png" className="img-fluid rounded" alt="linkedin" /></a>
-                                </li> */}
                             </ul>
                         </div>
-                        <div className="social-info">
+                        <div className="social-info mt-4">
                             <ul className="social-data-block d-flex align-items-center justify-content-between list-inline p-0 m-0">
-                                <li className="text-center pl-3">
-                                    <h6>Posts</h6>
-                                    <p className="mb-0">690</p>
-                                </li>
-                                <li className="text-center pl-3">
-                                    <h6>Followers</h6>
-                                    <p className="mb-0">206</p>
-                                </li>
-                                <li className="text-center pl-3">
-                                    <h6>Following</h6>
-                                    <p className="mb-0">100</p>
-                                </li>
                             </ul>
                         </div>
                     </div>
