@@ -12,7 +12,7 @@ const FriendsRequest = ({ friend: { requests, loading }, auth: { user, isAuthent
 
     return (
         <li className="nav-item d-none d-sm-block">
-            <a className="search-toggle iq-waves-effect" href="index.html#"><i className="ri-group-line" /></a>
+            <a className="search-toggle iq-waves-effect" href="#"><i className="ri-group-line" /></a>
             <div className="iq-sub-dropdown iq-sub-dropdown-large">
                 <div className="iq-card shadow-none m-0">
                     <div className="iq-card-body p-0 ">

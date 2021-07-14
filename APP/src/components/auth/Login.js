@@ -50,24 +50,7 @@ const Login = ({ auth: { isAuthenticated, user }, login, history }) => {
                     <div className="col-md-6 text-center pt-5">
                         <div className="sign-in-detail text-white">
                             <Link className="sign-in-logo mb-5" to="/"><img src="images/logo-full.png" className="img-fluid" alt="logo" /></Link>
-                            <div className="owl-carousel" data-autoplay="true" data-loop="true" data-nav="false" data-dots="true" data-items={1} data-items-laptop={1} data-items-tab={1} data-items-mobile={1} data-items-mobile-sm={1} data-margin={0}>
-                                <div className="item">
-                                    <img src="images/login/1.png" className="img-fluid mb-4" alt="logo" />
-                                    <h4 className="mb-1 text-white">Find new friends</h4>
-                                    <p>It is a long established fact that a reader will be distracted by the readable content.</p>
-                                </div>
-                                <div className="item">
-                                    <img src="images/login/2.png" className="img-fluid mb-4" alt="logo" />
-                                    <h4 className="mb-1 text-white">Connect with the world</h4>
-                                    <p>It is a long established fact that a reader will be distracted by the readable content.</p>
-                                </div>
-                                <div className="item">
-                                    <img src="images/login/3.png" className="img-fluid mb-4" alt="logo" />
-                                    <h4 className="mb-1 text-white">Create new events</h4>
-                                    <p>It is a long established fact that a reader will be distracted by the readable content.</p>
-                                </div>
-                            </div>
-                        </div>
+                       </div>
                     </div>
                     <div className="col-md-6 bg-white pt-5">
                         <div className="sign-in-from">

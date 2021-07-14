@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const url = {
-    // baseUrl: 'https://radiun42-tlcn-mang-xa-hoi-may-tinh-dien-thoai-gv4q-3001.githubpreview.dev/api',
     baseUrl: 'https://tlcn-social-network-api.herokuapp.com/api',
     report: '/reports',
     post: '/posts',

@@ -1,9 +1,15 @@
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const SideBar = () => {
 
     const location = useLocation();
+
+    // Get user in store
+    const user = useSelector((state) => {
+        return state.auth.user;
+    });
 
     useEffect(() => {
 
@@ -65,27 +71,37 @@ const SideBar = () => {
                         <li className="reviews">
                             <Link to="/reviews" className="iq-waves-effect"><i className="lar la-star"></i><span>Technology News</span></Link>
                         </li>
-                        <li className="friend-list">
-                            <Link to="/friend-list" className="iq-waves-effect"><i className="las la-user-friends" /><span>Friends List</span></Link>
-                        </li>
-                        <li className="friend-request">
-                            <Link to="/friend-request" className="iq-waves-effect"><i className="las la-user-plus" /><span>Friend Requests</span></Link>
-                        </li>
-                        <li className="messages">
-                            <Link to="/messages" className="iq-waves-effect"><i className="lab la-rocketchat" /><span>Messages</span></Link>
-                        </li>
-                        <li className="groups">
-                            <Link to="/groups" className="iq-waves-effect"><i className="las la-users" /><span>Groups</span></Link>
-                        </li>
-                        <li className="photos">
-                            <Link to="/photos" className="iq-waves-effect"><i className="las la-image" /><span>Photos</span></Link>
-                        </li>
-                        <li className="notifications">
-                            <Link to="/notification" className="iq-waves-effect"><i className="las la-bell" /><span>Notifications</span></Link>
-                        </li>
-                        <li className="ads">
-                            <Link to="/ads" className="iq-waves-effect"><i className="las la-bullhorn"></i><span>Advertisements</span></Link>
-                        </li>
+                        {user ? (
+                            <>
+                                <li className="friend-list">
+                                    <Link to="/friend-list" className="iq-waves-effect"><i className="las la-user-friends" /><span>Friends List</span></Link>
+                                </li>
+                                <li className="friend-request">
+                                    <Link to="/friend-request" className="iq-waves-effect"><i className="las la-user-plus" /><span>Friend Requests</span></Link>
+                                </li>
+                                <li className="messages">
+                                    <Link to="/messages" className="iq-waves-effect"><i className="lab la-rocketchat" /><span>Messages</span></Link>
+                                </li>
+                                <li className="groups">
+                                    <Link to="/groups" className="iq-waves-effect"><i className="las la-users" /><span>Groups</span></Link>
+                                </li>
+                                <li className="photos">
+                                    <Link to="/photos" className="iq-waves-effect"><i className="las la-image" /><span>Photos</span></Link>
+                                </li>
+                                <li className="notifications">
+                                    <Link to="/notification" className="iq-waves-effect"><i className="las la-bell" /><span>Notifications</span></Link>
+                                </li>
+                                <li className="ads">
+                                    <Link to="/ads" className="iq-waves-effect"><i className="las la-bullhorn"></i><span>Advertisements</span></Link>
+                                </li>
+                            </>
+                        ) : (
+                            <>
+                                <li>
+                                    <Link to="/register" className="iq-waves-effect"><i className="las la-pen" /><span>Create Your Account</span></Link>
+                                </li>
+                            </>
+                        )}
                         <li className="faq">
                             <Link to="/faq" className="iq-waves-effect"><i className="las la-comments"></i><span>FAQ</span></Link>
                         </li>

@@ -32,10 +32,12 @@ const TheHeaderDropdown = () => {
             className="c-avatar-img"
             alt="admin@bootstrapmaster.com"
           />
+
+          <p className="mx-3 mt-3">Admin</p>
         </div>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownItem
+        {/* <CDropdownItem
           header
           tag="div"
           color="light"
@@ -88,7 +90,7 @@ const TheHeaderDropdown = () => {
           Projects
           <CBadge color="primary" className="mfs-auto">42</CBadge>
         </CDropdownItem>
-        <CDropdownItem divider />
+        <CDropdownItem divider /> */}
         <CDropdownItem onClick={onLogOut}>
           <CIcon name="cil-lock-locked" className="mfe-2" />
           Logout Account

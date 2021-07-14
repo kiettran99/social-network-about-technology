@@ -9,10 +9,10 @@ import { resetPost } from '../../actions/post';
 import Search from './search/Search';
 
 import useAppearAdsManageer from '../../hooks/useAppearAdsManageer';
-import Channel from './channel/Channel';
 
 const NotificationBar = lazy(() => import('./notification-bar/NotificationBar'));
 const FriendsRequest = lazy(() => import('./friends-request/FriendsRequest'));
+const Channel =  lazy(() => import('./channel/Channel'));
 
 const NavBar = ({ auth: { isAuthenticated, user, loading },
   logout, loadingBar, resetPost

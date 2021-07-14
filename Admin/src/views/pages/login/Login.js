@@ -30,7 +30,13 @@ class Login extends Component {
 
     };
   }
+
   componentDidMount() {
+    const token = localStorage.getItem('Token');
+
+    if (token) {
+      this.setState({ isAuthenticated: true });
+    }
   }
 
   handleChange = event => {
@@ -74,7 +80,7 @@ class Login extends Component {
     return (
 
       <div className="c-app c-default-layout flex-row align-items-center">
-        {this.state.isAuthenticated ? <Redirect to='/dashboard' /> : null}
+        {this.state.isAuthenticated ? <Redirect to='/account' /> : null}
         <CContainer>
 
           <CRow className="justify-content-center">
