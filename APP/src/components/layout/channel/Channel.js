@@ -7,6 +7,8 @@ import { getPreviewMessageBox } from '../../../actions/chat';
 import useSocketIO from '../../chat/useSocketIO';
 import urlAPI from '../../../utils/urlAPI';
 
+const ParseHtml = React.lazy(() => import('../../shared/ParseHtml'));
+
 // Constant
 const CHANNEL_LIMIT = 7;
 
@@ -14,7 +16,8 @@ const Channel = ({ getPreviewMessageBox }) => {
 
     const { socket } = useSocketIO(urlAPI, {
         query: { token: localStorage.token },
-        reconnect: true
+        reconnect: true,
+        transports: ['websocket']
     });
 
     const { user, previewMessageBox } = useSelector((state) => {
@@ -34,11 +37,11 @@ const Channel = ({ getPreviewMessageBox }) => {
 
                 const isAsRead = messages.status.find((object => object.user === user._id))?.isAsRead;
 
-               if (!isAsRead) {
-                   return prevValue + 1;
-               }
+                if (!isAsRead) {
+                    return prevValue + 1;
+                }
 
-               return prevValue;
+                return prevValue;
             }, 0);
 
             setCountUnRead(count);
@@ -90,10 +93,10 @@ const Channel = ({ getPreviewMessageBox }) => {
         if (messages && user) {
             const isAsRead = messages.status.find((object => object.user === user._id))?.isAsRead;
 
-            return <span className={`${isAsRead ? '' : 'font-weight-bold'}`}>{preview.messageBox.messages?.text}</span>
+            return <small className={`${isAsRead ? '' : 'font-weight-bold'}`}><ParseHtml text={preview.messageBox.messages?.text} length={30} shouldTruncate={true} byWords={false} /></small>
         }
 
-        return <span>{preview.messageBox.messages?.text}</span>
+        return <small><ParseHtml text={preview.messageBox.messages?.text} length={30} shouldTruncate={true} byWords={false} /></small>
     }
 
     return (
@@ -122,7 +125,7 @@ const Channel = ({ getPreviewMessageBox }) => {
                                     </div>
                                     <div className="media-body ml-3">
                                         <h6 className="mb-0">{preview.recipient.fullname}</h6>
-                                        <div> {previewOnMessage(preview)}</div>
+                                        <div className="mb-1"> {previewOnMessage(preview)}</div>
                                         <small className="float-left font-size-12">{dayjs(preview.messageBox.messages?.createdAt).fromNow(true)}</small>
                                     </div>
                                 </div>

@@ -4,6 +4,8 @@ import dayjs from 'dayjs';
 import useLocalStorage from '../../../../hooks/useLocalStorage';
 import { getPosts } from '../../services/adsServices';
 
+const ParseHtml = React.lazy(() => import('../../../shared/ParseHtml'));
+
 const Posts = ({ closeModal, post, setPost, changeCurrentAds }) => {
 
     // State
@@ -92,7 +94,7 @@ const Posts = ({ closeModal, post, setPost, changeCurrentAds }) => {
                     <table className="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
+                                <th scope="col">Wallpaper</th>
                                 <th scope="col">Headline</th>
                                 <th scope="col">Date</th>
                                 <th scope="col">Likes</th>
@@ -108,9 +110,9 @@ const Posts = ({ closeModal, post, setPost, changeCurrentAds }) => {
                                         onClick={() => onRowClick(post)}
                                         className={styleChooseRow(post)}>
                                         <th scope="row">
-                                            <img src={post.imageUrls?.[0]} className="img-fluid rounded-circle mr-3 avatar-40" alt="user" />
+                                            {post.imageUrls?.[0] && <img src={post.imageUrls?.[0]} className="img-fluid rounded-circle mr-3 avatar-40" alt="user" />}
                                         </th>
-                                        <td>{post.text}</td>
+                                        <td><ParseHtml text={post.text} shouldTruncate={true} /></td>
                                         <td>{dayjs(post.createdAt).format('DD/MM/YYYY')}</td>
                                         <td>{post.likes.length}</td>
                                         <td>{post.lengthOfComments}</td>

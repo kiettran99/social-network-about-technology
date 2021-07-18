@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import dayjs from '../../../../utils/relativeDate';
 
+const ParseHtml = React.lazy(() => import('../../../shared/ParseHtml'));
+
 const Channel = ({ previewMessageBox }) => {
 
     const user = useSelector((state) => {
@@ -21,10 +23,10 @@ const Channel = ({ previewMessageBox }) => {
         if (messages && user) {
             const isAsRead = messages.status.find((object => object.user === user._id))?.isAsRead;
 
-            return <span className={`${isAsRead ? '' : 'font-weight-bold'}`}>{preview.messageBox.messages?.text}</span>
+            return <small className={`${isAsRead ? '' : 'font-weight-bold'}`}><ParseHtml text={preview.messageBox.messages?.text} length={14} shouldTruncate={true} byWords={false} /></small>
         }
 
-        return <span>{preview.messageBox.messages?.text}</span>
+        return <small><ParseHtml text={preview.messageBox.messages?.text} length={14} shouldTruncate={true} byWords={false} /></small>
     }
 
     return (

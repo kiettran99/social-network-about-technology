@@ -537,7 +537,8 @@ router.get('/:id', auth, async (req, res) => {
             return res.status(400).send('Ads Id is required.');
         }
 
-        const ad = await Ads.findOne({ _id: id, owner: req.user._id });
+        const ad = await Ads.findOne({ _id: id, owner: req.user._id })
+            .populate('post', 'likes lengthOfComments share text imageUrls');
 
         res.json(ad);
     }
@@ -555,7 +556,7 @@ router.get('/export/excel', auth, async (req, res) => {
         const ads = await Ads.find({ owner: req.user._id })
             .sort({ _id: -1 })
             .populate('post', 'likes lengthOfComments share');
-        
+
         const statusToString = (status) => {
             switch (status) {
                 case 0:

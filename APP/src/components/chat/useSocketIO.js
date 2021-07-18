@@ -5,7 +5,6 @@ const useSocketIO = (...args) => {
     const { current: socket } = useRef(io(...args));
 
     useEffect(() => {
-
         return () => {
             if (socket) {
                 socket.removeAllListeners();

@@ -15,11 +15,25 @@ const Edit = ({ match }) => {
     useEffect(() => {
         if (location.state?.ad) {
             setAd(location.state.ad);
-        }
-        else {
+
             //Call API to get ad by Id
             getAdById(match.params.id).then(data => {
-                setAd(data);
+                try {
+                    const { text, imageUrls } = data?.post || {};
+                    setAd(currentAd => {
+                        return {
+                            ...currentAd,
+                            post: {
+                                ...currentAd.post,
+                                text,
+                                imageUrls
+                            }
+                        };
+                    });
+                }
+                catch (e) {
+                    console.log(e);
+                }
             });
         }
     }, [location]);

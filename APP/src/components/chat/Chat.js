@@ -10,7 +10,8 @@ const Chat = ({ match }) => {
 
     const { socket } = useSocketIO(urlAPI, {
         query: { token: localStorage.token },
-        reconnect: true
+        reconnect: true,
+        transports: ['websocket']
     });
 
     useEffect(() => {
