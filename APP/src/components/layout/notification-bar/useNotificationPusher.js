@@ -44,6 +44,16 @@ const useNotificationPusher = (isAuthenticated, notification, loadNotification) 
             channel.bind('mentions', mentionsEvent);
             channel.bind('notification-group', subscribeGroupEvent);
 
+            channel.bind('notification-system', (data) => {
+                const { user, topicId } = data;
+
+                const { user: userId } = notification;
+
+                if (user && topicId && user === userId) {
+                    loadNotification();
+                }
+            });
+
             return () => {
                 channel.unbind();
                 pusher.unsubscribe(channel);

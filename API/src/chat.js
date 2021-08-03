@@ -136,54 +136,77 @@ const createServer = (server) => {
                     return callback('Recipient not found');
                 }
 
-                const chat = await Chat.findOne({ requester: socket.decoded._id, recipient });
+                // 1. Store 2 userId
+                const requester = socket.decoded._id;
 
-                // if chat not exists, create new if user firstly chat.
+                const [chatRequester, chatRecipient] = await Promise.all([
+                    Chat.findOne({ requester, recipient }),
+                    Chat.findOne({ requester: recipient, recipient: requester })
+                ]);
+
+                // 2. if chat not exists, create new if user firstly chat.
                 const message = {
                     text,
-                    user: socket.decoded._id,
+                    user: requester,
                     createdAt: Date.now(),
-                    status: [{ user: socket.decoded._id, isAsRead: true }, { user: recipient }]
+                    status: [{ user: requester, isAsRead: true }, { user: recipient }]
                 };
 
-                if (!chat) {
+                if (!chatRequester) {
 
-                    const messageBox = await MessageBox.create({
-                        messages: [message]
-                    });
+                    // Create twice messagebox and store
+                    const [messageBoxRequester, messageBoxRecipient] = await Promise.all([
+                        MessageBox.create({
+                            messages: [message]
+                        }),
+                        MessageBox.create({
+                            messages: [message]
+                        })
+                    ])
 
                     await Promise.all([
                         Chat.create({
-                            requester: socket.decoded._id, recipient,
-                            messageBox: messageBox._id
+                            requester: requester, recipient,
+                            messageBox: messageBoxRequester._id
                         }),
                         Chat.create({
-                            requester: recipient, recipient: socket.decoded._id,
-                            messageBox: messageBox._id
+                            requester: recipient, recipient: requester,
+                            messageBox: messageBoxRecipient._id
                         })
                     ]);
 
-                    socket.join([messageBox.id, socket.decoded._id]);
+                    socket.join([messageBoxRequester.id, messageBoxRecipient.id, requester]);
 
                     socket.emit('message', message);
 
-                    io.to(messageBox.id).emit('message', message);
+                    io.to(messageBoxRequester.id)
+                        .to(messageBoxRecipient.id)
+                        .emit('message', message);
                 }
                 else {
-
-                    io.to(chat.messageBox.toString()).emit('message', message);
+                    // 3. Both users has chated before and then add message.
+                    io.to(chatRequester.messageBox.toString())
+                        .to(chatRecipient.messageBox.toString())
+                        .emit('message', message);
 
                     // User blocked before, and then retores.
-                    if (chat.isBlock) {
-                        chat.isBlock = false;
-                        await chat.save();
+                    if (chatRequester.isBlock) {
+                        chatRequester.isBlock = false;
+                        await chatRequester.save();
                     }
 
-                    const messageBox = await MessageBox.findById(chat.messageBox);
+                    const [messageBoxRequester, messageBoxRecipient] = await Promise.all([
+                        MessageBox.findById(chatRequester.messageBox),
+                        MessageBox.findById(chatRecipient.messageBox)
+                    ]);
 
-                    messageBox.messages.unshift(message);
+                    messageBoxRequester.messages.unshift(message);
+                    messageBoxRecipient.messages.unshift(message);
 
-                    await messageBox.updateLastTime();
+                    await Promise.all([
+                        messageBoxRequester.updateLastTime(),
+                        messageBoxRecipient.updateLastTime(),
+                    ])
                 }
 
                 io.to(socket.decoded._id).to(recipient).emit('reload-messages');
@@ -206,6 +229,28 @@ const createServer = (server) => {
                 chat.isBlock = true;
 
                 await chat.save();
+
+                io.to(socket.decoded._id).emit('reload-messages');
+
+                callback();
+            }
+            catch (e) {
+                callback(e);
+            }
+        });
+
+        socket.on('remove-messages', async ({ recipient }, callback) => {
+            try {
+                if (!recipient) {
+                    return callback('Recipient not found');
+                }
+
+                const chat = await Chat.findOne({ requester: socket.decoded._id, recipient })
+                const messageBox = await MessageBox.findById(chat.messageBox);
+
+                messageBox.messages = [];
+
+                await messageBox.save();
 
                 io.to(socket.decoded._id).emit('reload-messages');
 

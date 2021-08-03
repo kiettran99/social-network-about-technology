@@ -42,7 +42,7 @@ const notify = async (message, options = {
         });
 
         // Puhser notification to client referesh notifcation.
-        pusher.trigger(channel, event, {
+        pusher.trigger(channel, event || 'notification', {
             user: user.id,
             topic,
             topicId: collection.id,
@@ -246,7 +246,7 @@ const notifyToUser = async (message, recipient, options = {
     const { user, collection, topic } = options;
 
     try {
-        await Notification.updateMany({
+        await Notification.updateOne({
             user: recipient
         }, {
             $push: {
@@ -264,8 +264,8 @@ const notifyToUser = async (message, recipient, options = {
         });
 
         // Puhser notification to client referesh notifcation.
-        pusher.trigger(channel, 'mention', {
-            user: user.id,
+        pusher.trigger(channel, 'notification-system', {
+            user: recipient,
             topic,
             topicId: collection.id,
             triggeredAt: Date.now()
@@ -281,5 +281,6 @@ module.exports = {
     createNotification,
     registerNotification, unregisterNotification,
     registerNotifications,
-    pushNotificationMentions
+    pushNotificationMentions,
+    notifyToUser
 };

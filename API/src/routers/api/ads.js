@@ -201,7 +201,9 @@ router.get('/posts', auth, async (req, res) => {
 
         const conditions = {
             user: req.user._id,
-            'type.user': { $exists: true }
+            'type.user': { $exists: true },
+            privacy: 1,
+            status: 1
         };
 
         if (headline) {

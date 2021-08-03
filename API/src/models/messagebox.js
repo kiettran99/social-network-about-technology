@@ -29,6 +29,10 @@ const messageBoxSchema = new Schema({
     lastTime: {
         type: Date,
         default: Date.now
+    },
+    owner: {
+        type: ObjectId,
+        ref: 'User'
     }
 }, {
     timestamps: true

@@ -7,7 +7,7 @@ import UserDetail from './user-detail/UserDetail';
 const DialogBox = React.lazy(() => import('../../../shared/DialogBox'));
 const ReportUser = React.lazy(() => import('../../../shared/report/ReportUser'));
 
-const Header = ({ blockUser, match }) => {
+const Header = ({ blockUser, removeMessages, match }) => {
 
     const [modalIsOpen, setIsOpen] = useState(false);
 
@@ -66,7 +66,9 @@ const Header = ({ blockUser, match }) => {
                         <span className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton02">
                             {/* <a className="dropdown-item" href="#!"><i className="fas fa-thumb-tack" aria-hidden="true" /> Pin to top</a> */}
                             <a className="dropdown-item text-danger"
-                                onClick={blockUser}><i className="ri-delete-bin-7-line" aria-hidden="true" /> Delete chat</a>
+                                onClick={removeMessages}><i className="ri-delete-bin-7-line" aria-hidden="true" /> Delete chat</a>
+                            <a className="dropdown-item text-danger"
+                                onClick={blockUser}><i className="ri-user-unfollow-line" aria-hidden="true" /> Block User</a>
                             <a className="dropdown-item"
                                 onClick={() => openModal()}><i className="fas fa-ban" aria-hidden="true" /> Report</a>
                         </span>

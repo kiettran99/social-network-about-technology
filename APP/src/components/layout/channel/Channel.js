@@ -30,21 +30,28 @@ const Channel = ({ getPreviewMessageBox }) => {
     const [countUnRead, setCountUnRead] = useState(0);
 
     const calculateCountUnRead = () => {
-        if (user && previewMessageBox && previewMessageBox.length > 0) {
+        try {
+            if (user && previewMessageBox && previewMessageBox.length > 0) {
 
-            const count = previewMessageBox.reduce((prevValue, preview) => {
-                const messages = preview.messageBox.messages;
+                const count = previewMessageBox.reduce((prevValue, preview) => {
+                    const messages = preview.messageBox.messages;
 
-                const isAsRead = messages.status.find((object => object.user === user._id))?.isAsRead;
+                    if (messages) {
+                        const isAsRead = messages.status.find((object => object.user === user._id))?.isAsRead;
 
-                if (!isAsRead) {
-                    return prevValue + 1;
-                }
+                        if (!isAsRead) {
+                            return prevValue + 1;
+                        }
+                    }
 
-                return prevValue;
-            }, 0);
+                    return prevValue;
+                }, 0);
 
-            setCountUnRead(count);
+                setCountUnRead(count);
+            }
+        }
+        catch (e) {
+            console.log(e);
         }
     }
 
@@ -88,15 +95,20 @@ const Channel = ({ getPreviewMessageBox }) => {
 
 
     const previewOnMessage = (preview) => {
-        const messages = preview.messageBox.messages;
+        try {
+            const messages = preview.messageBox.messages;
 
-        if (messages && user) {
-            const isAsRead = messages.status.find((object => object.user === user._id))?.isAsRead;
+            if (messages && user) {
+                const isAsRead = messages.status.find((object => object.user === user._id))?.isAsRead;
 
-            return <small className={`${isAsRead ? '' : 'font-weight-bold'}`}><ParseHtml text={preview.messageBox.messages?.text} length={30} shouldTruncate={true} byWords={false} /></small>
+                return <small className={`${isAsRead ? '' : 'font-weight-bold'}`}><ParseHtml text={preview.messageBox.messages?.text} length={30} shouldTruncate={true} byWords={false} /></small>
+            }
+
+            return <small><ParseHtml text={preview.messageBox.messages?.text} length={30} shouldTruncate={true} byWords={false} /></small>
         }
-
-        return <small><ParseHtml text={preview.messageBox.messages?.text} length={30} shouldTruncate={true} byWords={false} /></small>
+        catch (e) {
+            console.log(e);
+        }
     }
 
     return (

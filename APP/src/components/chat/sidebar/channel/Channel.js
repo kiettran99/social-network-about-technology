@@ -18,15 +18,20 @@ const Channel = ({ previewMessageBox }) => {
     };
 
     const previewOnMessage = (preview) => {
-        const messages = preview.messageBox.messages;
+        try {
+            const messages = preview.messageBox.messages;
 
-        if (messages && user) {
-            const isAsRead = messages.status.find((object => object.user === user._id))?.isAsRead;
+            if (messages && user) {
+                const isAsRead = messages.status.find((object => object.user === user._id))?.isAsRead;
 
-            return <small className={`${isAsRead ? '' : 'font-weight-bold'}`}><ParseHtml text={preview.messageBox.messages?.text} length={14} shouldTruncate={true} byWords={false} /></small>
+                return <small className={`${isAsRead ? '' : 'font-weight-bold'}`}><ParseHtml text={preview.messageBox.messages?.text} length={14} shouldTruncate={true} byWords={false} /></small>
+            }
+
+            return <small><ParseHtml text={preview.messageBox.messages?.text} length={14} shouldTruncate={true} byWords={false} /></small>
         }
-
-        return <small><ParseHtml text={preview.messageBox.messages?.text} length={14} shouldTruncate={true} byWords={false} /></small>
+        catch (e) {
+            console.log(e);
+        }
     }
 
     return (

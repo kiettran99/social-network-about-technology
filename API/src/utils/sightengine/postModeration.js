@@ -1,19 +1,37 @@
-const Post = require('../../models/post');
 const { nudityModeration } = require('./imageModeration');
+const { Document } = require('mongoose');
 
-const postModeration = async (postId, images) => {
-
-    // If images has one change into array.
-    if (typeof images !== 'object') {
-        images = [images];
-    }
+/**
+ * @desc Post moderates filter images to safe images
+ * @param {Document} post 
+ */
+const postModeration = async (post) => {
 
     try {
+        const images = post?.imageUrls;
+
+        // If images has one change into array.
+        if (typeof images !== 'object') {
+            images = [images];
+        }
+
         const moderations = [];
+
+        // Safe Images from post
+        const safeImages = [];
 
         for (const image of images) {
             const result = await nudityModeration(image);
-            moderations.push(nudityDetect(result));
+
+            // Return result
+            const moderation = nudityDetect(result);
+
+            moderations.push(moderation);
+
+            if (!moderation) {
+                safeImages.push(image);
+            }
+
         }
 
         // Check true if array of boolean all true.
@@ -21,10 +39,11 @@ const postModeration = async (postId, images) => {
 
         // if true pass, fasle looked this post.
         if (checker) {
-            await Post.findByIdAndUpdate(postId, {
-                status: 3   // Looked
-            });
+            post.imageUrls = safeImages;
+            await post.save();
         }
+
+        return checker;
     }
     catch (e) {
         console.log(e);

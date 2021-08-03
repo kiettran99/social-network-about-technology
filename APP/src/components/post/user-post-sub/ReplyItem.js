@@ -43,12 +43,12 @@ const ReplyItem = ({ reply: { _id, name, text, avatar, date, user: userComment, 
 
     return (
         <div className="mb-2">
-            <div className="d-flex flex-wrap">
+            <div className="media">
                 <div className="user-img">
                     <img src={avatar} alt="userimg" className="avatar-35 rounded-circle img-fluid m-sm-0 m-2" />
                 </div>
-                <div className="comment-data-block ml-sm-3">
-                    <h6>{name}</h6>
+                <div className="media-body comment-data-block ml-sm-3">
+                    <h6 className="mt-1">{name}</h6>
                     <Suspense fallback={<div>Loading...</div>}>
                         <div className="editor-text">
                             <BubbleEditor readOnly={true} text={text} />

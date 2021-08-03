@@ -92,7 +92,7 @@ const Messages = ({ socket, match, getUserProfile, getChatErrors }) => {
     // Block User
     const blockUser = () => {
 
-        const confirm = window.confirm('Are you sure delete chat ?');
+        const confirm = window.confirm('Are you BLOCK user ? You can restore if you inbox again.');
 
         if (confirm) {
             socket.emit('block', { recipient: match.params.id }, (error) => {
@@ -102,6 +102,20 @@ const Messages = ({ socket, match, getUserProfile, getChatErrors }) => {
             });
         }
     };
+
+    const removeMessages = () => {
+        const confirm = window.confirm('Are you sure delete chat ? You can\'t retore messages.');
+
+        if (confirm) {
+            socket.emit('remove-messages', { recipient: match.params.id }, (error) => {
+                if (error) {
+                    return console.log(error);
+                }
+
+                setMessages([]);
+            });
+        }
+    }
 
     // Restore Chat Messages.
     const retsoreMessages = () => {
@@ -122,7 +136,7 @@ const Messages = ({ socket, match, getUserProfile, getChatErrors }) => {
                     </div>
                 </div>
                 <div className="tab-pane fade active show" id="chatbox1" role="tabpanel">
-                    <Header blockUser={blockUser} match={match} />
+                    <Header blockUser={blockUser} removeMessages={removeMessages} match={match} />
                     <Contents messages={messages} isBlock={isBlock} />
                     <Footer socket={socket} match={match} retsoreMessages={retsoreMessages} />
                 </div>

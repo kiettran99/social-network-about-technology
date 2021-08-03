@@ -1,12 +1,13 @@
 const router = require('express').Router();
 const { body, validationResult } = require('express-validator');
+const ObjectId = require('mongoose').Types.ObjectId;
 const Post = require('../../models/post');
 const Notification = require('../../models/notification');
 const auth = require('../../middleware/auth');
 const getUserByToken = require('../../middleware/getUserByToken');
 const storage = require('../../firebase/firebase');
 const upload = require('../../utils/upload');
-const { notify, pushNotificationMentions } = require('../../utils/notification');
+const { notify, pushNotificationMentions, notifyToUser } = require('../../utils/notification');
 const { createBuildPart } = require('../../utils/build-part/build-part');
 const postModeration = require('../../utils/sightengine/postModeration');
 
@@ -353,14 +354,26 @@ router.post('/', auth, upload.array('images'), [
             });
         }
 
+        const result = await postModeration(post);
+
+        if (result) {
+            // Notification
+            const message = `Your post has unsafe images.`;
+
+            notifyToUser(message, req.user.id, {
+                user: { _id: ObjectId('5f829c086c8dd7204c31b556'), id: '5f829c086c8dd7204c31b556', name: 'admin' },
+                collection: post,
+                topic: 'posts',
+                following: 'followingPosts'
+            });
+        };
+
         const postCreated = await post.populate({
             path: 'buildParts',
             populate: {
                 path: 'hardwares.hardware'
             }
         }).execPopulate();
-
-        postModeration(post.id, post.imageUrls);
 
         res.json(postCreated);
     }
@@ -455,7 +468,19 @@ router.put('/:id', auth, upload.array('images'), [
             await post.save();
         }
 
-        postModeration(post.id, post.imageUrls);
+        const result = await postModeration(post);
+
+        if (result) {
+            // Notification
+            const message = `Your post has unsafe images.`;
+
+            notifyToUser(message, req.user.id, {
+                user: { _id: ObjectId('5f829c086c8dd7204c31b556'), id: '5f829c086c8dd7204c31b556', name: 'admin' },
+                collection: post,
+                topic: 'posts',
+                following: 'followingPosts'
+            });
+        }
 
         res.json(post);
     }

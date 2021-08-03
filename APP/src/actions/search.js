@@ -13,7 +13,7 @@ export const searchUsers = (name, search, limit = 3, skip = 0) => async dispatch
         });
 
         const res = await axios.get(`${urlAPI}/api/users/search?name=${name}&skip=${skip}&limit=${limit}`)
-
+        
         dispatch({
             type: SEARCH_USERS,
             payload: res.data,
