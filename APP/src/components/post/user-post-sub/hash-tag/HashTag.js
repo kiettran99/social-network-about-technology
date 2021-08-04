@@ -7,7 +7,7 @@ const HashTag = ({ hashtag: { tags } }) => {
             <p className="d-inline">Tags: </p>
             {tags.map((tag, index) => (
                 <Link key={index} className="badge badge-pill badge-light"
-                    to={`/search&tag=${tag}`}>
+                    to={`/search?tag=${tag}`}>
                     #{tag}
                 </Link>
             ))}

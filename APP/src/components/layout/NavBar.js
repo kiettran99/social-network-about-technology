@@ -12,7 +12,7 @@ import useAppearAdsManageer from '../../hooks/useAppearAdsManageer';
 
 const NotificationBar = lazy(() => import('./notification-bar/NotificationBar'));
 const FriendsRequest = lazy(() => import('./friends-request/FriendsRequest'));
-const Channel =  lazy(() => import('./channel/Channel'));
+const Channel = lazy(() => import('./channel/Channel'));
 
 const NavBar = ({ auth: { isAuthenticated, user, loading },
   logout, loadingBar, resetPost
@@ -51,7 +51,10 @@ const NavBar = ({ auth: { isAuthenticated, user, loading },
             </Link>
           </li>
           <li>
-            <Link to="/" className="iq-waves-effect d-flex align-items-center">
+            <Link to="/" className="iq-waves-effect d-flex align-items-center"
+              onClick={() => {
+                resetPost(true);
+              }}>
               <i className="ri-home-line" />
             </Link>
           </li>

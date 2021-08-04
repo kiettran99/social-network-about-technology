@@ -201,7 +201,7 @@ export const removePost = (id, history) => async dispatch => {
         await axios.delete(`${urlAPI}/api/posts/${id}`);
 
         dispatch(setAlert('Remove post succesfully !', 'Notification', 'success', 2000));
-       
+
         history.push('/');
 
         dispatch({
@@ -490,10 +490,15 @@ export const hidePost = (id) => dispatch => {
     })
 };
 
-export const resetPost = () => dispatch => {
-    dispatch({
-        type: RESET_POST
-    });
+export const resetPost = (isReloadPost = false) => dispatch => {
+    if (isReloadPost) {
+        dispatch(getPosts());
+    }
+    else {
+        dispatch({
+            type: RESET_POST
+        });
+    }
 }
 
 export const assignPost = (id) => dispatch => {

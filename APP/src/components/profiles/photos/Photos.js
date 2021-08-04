@@ -14,13 +14,18 @@ const Photos = ({ match }) => {
     }));
 
     useEffect(() => {
-        if (match) {
-            getPhotosByUserId(match.params.id).then(data => {
+        try {
+            if (match) {
+                getPhotosByUserId(match.params.id).then(data => {
 
-                const photos = mapDataToPhotos(data);
+                    const photos = mapDataToPhotos(data);
 
-                setPhotos(photos);
-            });
+                    setPhotos(photos);
+                });
+            }
+        }
+        catch (e) {
+            console.log(e);
         }
     }, [match]);
 

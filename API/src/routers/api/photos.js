@@ -14,7 +14,7 @@ router.get('/', auth, async (req, res) => {
 
         const posts = await Post.aggregate([
             {
-                $match: { 
+                $match: {
                     user: req.user._id,
                     status: 1,
                     'imageUrls.0': { $exists: true }
@@ -48,7 +48,7 @@ router.get('/:user_id', async (req, res) => {
         // Get userId to find photos
         const userId = req.params.user_id;
 
-        if (!userId && typeof(userId) !== 'string') {
+        if (!userId && typeof (userId) !== 'string') {
             return res.status(400).send('UserId is required.');
         }
 
@@ -58,13 +58,16 @@ router.get('/:user_id', async (req, res) => {
 
         const posts = await Post.aggregate([
             {
+                $match: {
+                    user: ObjectId(userId), status: 1,
+                    "imageUrls.0": { $exists: 1 }
+                }
+            },
+            {
                 $skip: skip
             },
             {
                 $limit: limit
-            },
-            {
-                $match: { user: ObjectId(userId), status: 1 }
             },
             {
                 $project: {

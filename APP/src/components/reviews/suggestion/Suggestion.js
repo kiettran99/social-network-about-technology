@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom';
 import dayjs from '../../../utils/relativeDate';
 import { getReviews } from '../../../actions/review';
 
-const Suggestion = ({ review: { reviews, loading }, getReviews }) => {
+const Suggestion = ({ review: { reviews, loading }, getReviews, match }) => {
 
     useEffect(() => {
         getReviews();
-    }, []);
+    }, [match]);
 
     return !loading && (
         <div className="col-lg-4">

@@ -16,6 +16,8 @@ const ReviewDetail = ({ match, getReview, resetReview }) => {
     }));
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+        
         getReview(match.params.id, history);
 
         return () => {
@@ -28,7 +30,7 @@ const ReviewDetail = ({ match, getReview, resetReview }) => {
             <div className="container">
                 <div className="row">
                     <Post review={review} />
-                    <Suggestion />
+                    <Suggestion match={match} />
                     <Comments />
                 </div>
             </div>

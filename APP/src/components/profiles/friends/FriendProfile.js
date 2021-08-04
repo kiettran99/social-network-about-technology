@@ -14,7 +14,7 @@ const FriendProfile = ({ match, getFriendsById,
     }));
 
     useEffect(() => {
-        getFriendsById(match.params.bid);
+        getFriendsById(match.params.id);
     }, [match, getFriendsById]);
 
     useEffect(() => {

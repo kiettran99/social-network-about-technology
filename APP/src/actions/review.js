@@ -39,7 +39,8 @@ export const getReviews = (skip = 0, limit = 5, title = '', filterBy = 'all') =>
         const query = titleQuery + filterByQuery;
 
         const res = await axios.get(`${urlAPI}/api/reviews?limit=${limit}&skip=${skip}` + query);
-        console.log(res)
+        //console.log(res)
+        
         dispatch({
             type: GET_REVIEWS,
             payload: res.data,

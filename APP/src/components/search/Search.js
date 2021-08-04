@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import queryString from 'query-string';
+import { useLocation } from 'react-router';
+
 import { searchUsers, resetSearch, searchPosts } from '../../actions/search';
 
 import SearchPosts from './search-posts/SearchPosts';
@@ -7,15 +10,29 @@ import SearchUsers from './search-users/SearchUsers';
 
 const Search = ({ search: { users, posts, search, loading }, searchUsers, resetSearch, searchPosts }) => {
 
+    // History
+    const location = useLocation();
+
     // Call Services
     useEffect(() => {
 
-        if (!loading && search === '') {
-            searchUsers('');
-            searchPosts('');
+        const query = queryString.parse(location.search);
+        
+        if (query.tag) {
+            const hashtag = '#' + query.tag;
+
+            searchUsers(hashtag, hashtag);
+            searchPosts(hashtag);
+
+        }
+        else {
+            if (search === '') {
+                searchUsers('');
+                searchPosts('');
+            }
         }
 
-    }, [loading]);
+    }, []);
 
     // Auto Sroll on Top, when component did mount
     useEffect(() => {
