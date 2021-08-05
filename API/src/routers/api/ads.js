@@ -65,6 +65,11 @@ router.get('/', getUserByToken, async (req, res) => {
         // Find 2 random sample to repose client
         const pipeline = [
             {
+                $match: {
+                    status: 1
+                }
+            },
+            {
                 $sample: { size: 2 }
             },
             // Populate post by Id
