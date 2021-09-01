@@ -1,4 +1,4 @@
-<h1>Tiểu Luận Chuyên Ngành Công Nghệ Phần Mềm</h1>
+<h1>Khóa Luận Tốt Nghiệp Công Nghệ Phần Mềm</h1>
 <h2>Đề tài: Mạng xã hội về máy tính và điện thoại di động. </h2>
 <p>Xây dựng website mạng xã hội, người dùng có thể trao đổi và chia sẻ kinh nghiệm về những kiến thức về công nghệ.</p>
 <h2>Công Nghệ Phát Triển</h2>
